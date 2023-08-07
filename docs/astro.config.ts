@@ -1,8 +1,16 @@
 import starlight from '@astrojs/starlight'
 import { defineConfig } from 'astro/config'
+import { generateAPI } from 'starlight-openapi'
+
+// TODO(HiDeoo)
+const { starlightOpenAPI } = await generateAPI([
+  { base: 'yaml', schema: '../schemas/v3.0/petstore.yaml' },
+  { base: 'json', schema: '../schemas/v3.0/petstore.json' },
+])
 
 export default defineConfig({
   integrations: [
+    starlightOpenAPI(),
     starlight({
       title: '// TODO(HiDeoo)',
       // TODO(HiDeoo)
