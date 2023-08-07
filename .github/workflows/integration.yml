@@ -31,6 +31,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Generates docs TypeScript types
+        run: pnpm astro sync
+        working-directory: docs
+
       - name: Lint
         run: pnpm lint
 
