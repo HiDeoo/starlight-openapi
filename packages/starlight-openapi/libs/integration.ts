@@ -1,29 +1,22 @@
 import type { AstroIntegration, AstroUserConfig } from 'astro'
-import type { OpenAPI } from 'openapi-types'
 
-import type { StarlightOpenAPIConfig } from './config'
-import { stripLeadingAndTrailingSlashes } from './path'
+import type { Schemas } from './schema'
+import { vitePluginStarlightOpenAPISchemas } from './vite'
 
-export function createStarlightOpenAPIIntegration(config: StarlightOpenAPIConfig, schemas: OpenAPI.Document[]) {
-  // FIXME(HiDeoo)
-  schemas
-
+export function createStarlightOpenAPIIntegration(schemas: Schemas) {
   return function starlightOpenAPIIntegration(): AstroIntegration {
     return {
       name: 'starlight-openapi',
       hooks: {
         'astro:config:setup': ({ injectRoute, updateConfig }) => {
-          for (const { base } of config) {
-            injectRoute({
-              entryPoint: 'starlight-openapi/api',
-              pattern: `/${stripLeadingAndTrailingSlashes(base)}/[...page]`,
-            })
-          }
+          injectRoute({
+            entryPoint: 'starlight-openapi/api',
+            pattern: `/[base]/[...slug]`,
+          })
 
           const astroConfig: AstroUserConfig = {
             vite: {
-              // TODO(HiDeoo)
-              // plugins: [vitePluginStarlightBlogComponents(), vitePluginStarlightBlogConfig(config)],
+              plugins: [vitePluginStarlightOpenAPISchemas(schemas)],
             },
           }
 

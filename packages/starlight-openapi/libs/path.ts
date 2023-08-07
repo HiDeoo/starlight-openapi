@@ -11,7 +11,7 @@ function stripLeadingSlash(path: string) {
 }
 
 function stripTrailingSlash(path: string) {
-  if (path.endsWith('/')) {
+  if (!path.endsWith('/')) {
     return path
   }
 

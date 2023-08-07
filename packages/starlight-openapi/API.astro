@@ -1,5 +1,9 @@
 ---
+import { getSchemasStaticPaths } from './libs/schema'
 
+export function getStaticPaths() {
+  return getSchemasStaticPaths()
+}
 ---
 
 <div>plop</div>

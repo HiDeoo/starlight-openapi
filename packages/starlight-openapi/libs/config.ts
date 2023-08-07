@@ -4,14 +4,14 @@ import { logError } from './logger'
 
 // TODO(HiDeoo) baseUrl
 
-const apiSchema = z.object({
+const schemaConfigSchema = z.object({
   // TODO(HiDeoo)
   base: z.string().min(1),
   // TODO(HiDeoo)
   schema: z.string().min(1),
 })
 
-const configSchema = z.array(apiSchema).min(1)
+const configSchema = z.array(schemaConfigSchema).min(1)
 
 export function validateConfig(userConfig: unknown): StarlightOpenAPIConfig {
   const config = configSchema.safeParse(userConfig)
