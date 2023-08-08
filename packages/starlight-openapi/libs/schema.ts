@@ -9,6 +9,7 @@ import { logInfo } from './logger'
 import { getSchemaFilePath, getSchemaPath, slugifyPath, stripLeadingAndTrailingSlashes } from './path'
 import type { SidebarGroup } from './starlight'
 
+const untaggedSidebarItemLabel = 'Operations'
 const httpMethods = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'] as const
 
 // TODO(HiDeoo) baseUrl
@@ -43,7 +44,6 @@ ${JSON.stringify(schema, null, 2)}}
   )
 
   return {
-    label: config.label ?? schema.info.title,
     items: [
       {
         label: 'Overview',
@@ -51,6 +51,7 @@ ${JSON.stringify(schema, null, 2)}}
       },
       ...(await generatePathItemDocs(config, schema)),
     ],
+    label: config.label ?? schema.info.title,
   }
 }
 
@@ -60,9 +61,7 @@ async function generatePathItemDocs(
 ): Promise<SidebarGroup['items']> {
   const baseLink = getBaseLink(config)
   const schemaPaths: Paths = schema.paths ?? {}
-  const sidebarItems: SidebarGroup['items'] = []
-
-  // TODO(HiDeoo) group by tags
+  const sidebarItemsByTags = new Map<string, SidebarGroup['items']>()
 
   for (const [schemaPath, schemaPathItem] of Object.entries(schemaPaths)) {
     if (!isPathItem(schemaPathItem)) {
@@ -89,14 +88,23 @@ ${JSON.stringify(schema, null, 2)}}
 `,
       )
 
-      sidebarItems.push({
-        label: operation.summary ?? schemaPath,
-        link: baseLink + operationPath,
-      })
+      for (const tag of operation.tags ?? [untaggedSidebarItemLabel]) {
+        const sidebarItems = sidebarItemsByTags.get(tag) ?? []
+
+        sidebarItems.push({
+          label: operation.summary ?? schemaPath,
+          link: baseLink + operationPath,
+        })
+
+        sidebarItemsByTags.set(tag, sidebarItems)
+      }
     }
   }
 
-  return sidebarItems
+  return [...sidebarItemsByTags.entries()].map(([tag, items]) => ({
+    items,
+    label: tag,
+  }))
 }
 
 function getBaseLink(config: StarlightOpenAPISchemaConfig) {
