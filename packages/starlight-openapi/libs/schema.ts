@@ -1,10 +1,12 @@
+import fs from 'node:fs/promises'
+import path from 'node:path'
+
 import { z } from 'astro/zod'
 import { slug } from 'github-slugger'
 import type { OpenAPI } from 'openapi-types'
 
 import { logInfo } from './logger'
-import { writeMdFile } from './markdown'
-import { slugifyPath, stripLeadingAndTrailingSlashes } from './path'
+import { getSchemaFilePath, getSchemaPath, slugifyPath, stripLeadingAndTrailingSlashes } from './path'
 import type { SidebarGroup } from './starlight'
 
 const httpMethods = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'] as const
@@ -26,7 +28,9 @@ export async function generateDocs(
 ): Promise<SidebarGroup> {
   logInfo(`Generating OpenAPI documentation for '${config.schema}'.`)
 
-  await writeMdFile(
+  await clearSchemaDirectory(config)
+
+  await writeSchemaFile(
     config,
     'index.md',
     // FIXME(HiDeoo)
@@ -73,7 +77,7 @@ async function generatePathItemDocs(
       const operation = schemaPathItem[method]
       const operationPath = `operations/${slug(operation.operationId ?? schemaPath)}`
 
-      await writeMdFile(
+      await writeSchemaFile(
         config,
         `${operationPath}.md`,
         // FIXME(HiDeoo)
@@ -97,6 +101,19 @@ ${JSON.stringify(schema, null, 2)}}
 
 function getBaseLink(config: StarlightOpenAPISchemaConfig) {
   return `/${slugifyPath(config.output)}/`
+}
+
+function clearSchemaDirectory(config: StarlightOpenAPISchemaConfig) {
+  return fs.rm(getSchemaPath(config), { recursive: true, force: true })
+}
+
+async function writeSchemaFile(config: StarlightOpenAPISchemaConfig, relativeFilePath: string, content: string) {
+  const file = getSchemaFilePath(config, relativeFilePath)
+  const dir = path.dirname(file)
+
+  await fs.mkdir(dir, { recursive: true })
+
+  return fs.writeFile(file, content, 'utf8')
 }
 
 function isPathItem(pathItem: unknown): pathItem is PathItem {

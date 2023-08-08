@@ -1,4 +1,16 @@
+import { join } from 'node:path'
+
 import { slug } from 'github-slugger'
+
+import type { StarlightOpenAPISchemaConfig } from './schema'
+
+export function getSchemaPath(config: StarlightOpenAPISchemaConfig) {
+  return join('src/content/docs', config.output)
+}
+
+export function getSchemaFilePath(config: StarlightOpenAPISchemaConfig, relativeFilePath: string) {
+  return join(getSchemaPath(config), relativeFilePath)
+}
 
 export function stripLeadingAndTrailingSlashes(path: string): string {
   return stripLeadingSlash(stripTrailingSlash(path))
