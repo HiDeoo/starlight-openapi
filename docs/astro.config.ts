@@ -3,9 +3,9 @@ import { defineConfig } from 'astro/config'
 import { generateAPI } from 'starlight-openapi'
 
 // TODO(HiDeoo)
-const { starlightOpenAPI } = await generateAPI([
-  { base: '/yaml', schema: '../schemas/v3.0/petstore.yaml' },
-  { base: '/json', schema: '../schemas/v3.0/petstore.json' },
+const { openAPISidebarGroups, starlightOpenAPI } = await generateAPI([
+  { base: '/json', label: 'Petstore v3.0 (JSON)', schema: '../schemas/v3.0/petstore.json' },
+  { base: '/yaml', label: 'Petstore v3.0 (YAML)', schema: '../schemas/v3.0/petstore.yaml' },
 ])
 
 export default defineConfig({
@@ -17,18 +17,15 @@ export default defineConfig({
       social: {
         github: 'https://github.com/withastro/starlight',
       },
-      // TODO(HiDeoo)
       sidebar: [
         {
           label: 'Guides',
-          items: [
-            // Each item here is one entry in the navigation menu.
-            { label: 'Example Guide', link: '/guides/example/' },
-          ],
+          // TODO(HiDeoo)
+          items: [{ label: 'Example Guide', link: '/guides/example/' }],
         },
         {
-          label: 'Reference',
-          autogenerate: { directory: 'reference' },
+          label: 'Examples',
+          items: openAPISidebarGroups,
         },
       ],
     }),

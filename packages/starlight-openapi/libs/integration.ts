@@ -1,7 +1,7 @@
 import type { AstroIntegration, AstroUserConfig } from 'astro'
 
 import type { Schemas } from './schema'
-import { vitePluginStarlightOpenAPISchemas } from './vite'
+import { vitePluginStarlightOpenAPIComponents, vitePluginStarlightOpenAPISchemas } from './vite'
 
 export function createStarlightOpenAPIIntegration(schemas: Schemas) {
   return function starlightOpenAPIIntegration(): AstroIntegration {
@@ -16,7 +16,7 @@ export function createStarlightOpenAPIIntegration(schemas: Schemas) {
 
           const astroConfig: AstroUserConfig = {
             vite: {
-              plugins: [vitePluginStarlightOpenAPISchemas(schemas)],
+              plugins: [vitePluginStarlightOpenAPIComponents(), vitePluginStarlightOpenAPISchemas(schemas)],
             },
           }
 
