@@ -9,7 +9,7 @@ export async function generateAPI(userConfig: StarlightOpenAPIConfig): Promise<S
   return Promise.all(
     config.map(async (schemaConfig) => {
       const schema = await parseSchema(schemaConfig)
-      return generateDocs(schema)
+      return generateDocs(schemaConfig, schema)
     }),
   )
 }

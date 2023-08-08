@@ -1,19 +1,16 @@
 import OpenAPIParser from '@readme/openapi-parser'
 
 import { logError, logInfo } from './logger'
-import type { Schema, StarlightOpenAPISchemaConfig } from './schema'
+import type { StarlightOpenAPISchema, StarlightOpenAPISchemaConfig } from './schema'
 
-export async function parseSchema(config: StarlightOpenAPISchemaConfig): Promise<Schema> {
+export async function parseSchema(config: StarlightOpenAPISchemaConfig): Promise<StarlightOpenAPISchema> {
   try {
     logInfo(`Parsing OpenAPI schema at '${config.schema}'.`)
 
     // TODO(HiDeoo) remote schema
-    const document = await OpenAPIParser.dereference(config.schema)
+    const schema = await OpenAPIParser.dereference(config.schema)
 
-    return {
-      config,
-      schema: document,
-    }
+    return schema
   } catch (error) {
     if (error instanceof Error) {
       logError(error.message)
