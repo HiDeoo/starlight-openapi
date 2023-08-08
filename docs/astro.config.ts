@@ -3,14 +3,13 @@ import { defineConfig } from 'astro/config'
 import { generateAPI } from 'starlight-openapi'
 
 // TODO(HiDeoo)
-const { openAPISidebarGroups, starlightOpenAPI } = await generateAPI([
-  { base: '/json', label: 'Petstore v3.0 (JSON)', schema: '../schemas/v3.0/petstore.json' },
-  { base: '/yaml', label: 'Petstore v3.0 (YAML)', schema: '../schemas/v3.0/petstore.yaml' },
+const openAPISidebarGroups = await generateAPI([
+  { label: 'Petstore v3.0 (JSON)', output: 'api/v3.0/petstore/json', schema: '../schemas/v3.0/petstore.json' },
+  { label: 'Petstore v3.0 (YAML)', output: 'api/v3.0/petstore/yaml', schema: '../schemas/v3.0/petstore.yaml' },
 ])
 
 export default defineConfig({
   integrations: [
-    starlightOpenAPI(),
     starlight({
       title: '// TODO(HiDeoo)',
       // TODO(HiDeoo)

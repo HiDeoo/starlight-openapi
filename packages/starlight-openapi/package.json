@@ -7,7 +7,6 @@
   "type": "module",
   "exports": {
     ".": "./index.ts",
-    "./api": "./API.astro",
     "./package.json": "./package.json"
   },
   "scripts": {
@@ -15,9 +14,11 @@
   },
   "dependencies": {
     "@readme/openapi-parser": "2.5.0",
+    "github-slugger": "2.0.0",
     "kleur": "4.1.5"
   },
   "devDependencies": {
+    "@types/node": "18.17.3",
     "openapi-types": "12.1.3"
   },
   "peerDependencies": {

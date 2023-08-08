@@ -1,19 +1,15 @@
 import { validateConfig, type StarlightOpenAPIConfig } from './libs/config'
-import { createStarlightOpenAPIIntegration } from './libs/integration'
 import { parseSchema } from './libs/parser'
-import type { Schemas } from './libs/schema'
-import { getSidebarGroups } from './libs/starlight'
+import { generateDocs } from './libs/schema'
+import type { SidebarGroup } from './libs/starlight'
 
-export async function generateAPI(userConfig: StarlightOpenAPIConfig) {
+export async function generateAPI(userConfig: StarlightOpenAPIConfig): Promise<SidebarGroup[]> {
   const config = validateConfig(userConfig)
-  const schemas: Schemas = {}
 
-  for (const schema of config) {
-    schemas[schema.base] = await parseSchema(schema)
-  }
-
-  return {
-    openAPISidebarGroups: getSidebarGroups(schemas),
-    starlightOpenAPI: createStarlightOpenAPIIntegration(schemas),
-  }
+  return Promise.all(
+    config.map(async (schemaConfig) => {
+      const schema = await parseSchema(schemaConfig)
+      return generateDocs(schema)
+    }),
+  )
 }

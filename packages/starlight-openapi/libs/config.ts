@@ -1,17 +1,7 @@
 import { z } from 'astro/zod'
 
 import { logError } from './logger'
-
-// TODO(HiDeoo) baseUrl
-
-export const SchemaConfigSchema = z.object({
-  // TODO(HiDeoo)
-  base: z.string().min(1),
-  // TODO(HiDeoo)
-  label: z.string().optional(),
-  // TODO(HiDeoo)
-  schema: z.string().min(1),
-})
+import { SchemaConfigSchema } from './schema'
 
 const configSchema = z.array(SchemaConfigSchema).min(1)
 

@@ -1,23 +1,50 @@
-import type { z } from 'astro/zod'
+import fs from 'node:fs/promises'
+import path from 'node:path'
+
+import { z } from 'astro/zod'
 import type { OpenAPI } from 'openapi-types'
-import schemas from 'virtual:starlight-openapi-schemas'
 
-import type { SchemaConfigSchema } from './config'
-import { stripLeadingAndTrailingSlashes } from './path'
+import { logInfo } from './logger'
+import { slugifyPath, stripLeadingAndTrailingSlashes } from './path'
+import type { SidebarGroup } from './starlight'
 
-export function getSchemasStaticPaths() {
-  return Object.values(schemas).map(({ config, schema }) => {
-    return {
-      params: {
-        base: stripLeadingAndTrailingSlashes(config.base),
-        slug: undefined,
+// TODO(HiDeoo) baseUrl
+
+export const SchemaConfigSchema = z.object({
+  // TODO(HiDeoo)
+  label: z.string().optional(),
+  // TODO(HiDeoo)
+  output: z.string().min(1).transform(stripLeadingAndTrailingSlashes),
+  // TODO(HiDeoo)
+  schema: z.string().min(1),
+})
+
+export async function generateDocs({ config, schema }: Schema): Promise<SidebarGroup> {
+  logInfo(`Generating OpenAPI documentation for '${config.schema}'.`)
+
+  const outputPath = path.join('src/content/docs', config.output)
+
+  await fs.mkdir(outputPath, { recursive: true })
+
+  // FIXME(HiDeoo)
+  const content = `---
+title: ${schema.info.title}
+---
+
+${JSON.stringify(schema, null, 2)}}
+`
+
+  await fs.writeFile(path.join(outputPath, 'index.md'), content)
+
+  return {
+    label: config.label ?? schema.info.title,
+    items: [
+      {
+        label: 'Overview',
+        link: `/${slugifyPath(config.output)}/`,
       },
-      props: {
-        config,
-        schema,
-      },
-    }
-  })
+    ],
+  }
 }
 
 export type StarlightOpenAPISchema = OpenAPI.Document
@@ -28,4 +55,4 @@ export interface Schema {
   schema: StarlightOpenAPISchema
 }
 
-export type Schemas = Record<StarlightOpenAPISchemaConfig['base'], Schema>
+export type Schemas = Record<StarlightOpenAPISchemaConfig['output'], Schema>
