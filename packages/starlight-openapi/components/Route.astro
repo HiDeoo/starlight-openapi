@@ -1,0 +1,19 @@
+---
+import type { InferGetStaticPropsType } from 'astro'
+
+import Page from './overrides/Page.astro'
+import { getSchemaStaticPaths } from '../libs/route'
+import { getPageProps } from '../libs/starlight'
+
+export function getStaticPaths() {
+  return getSchemaStaticPaths()
+}
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>
+
+const { schema } = Astro.props
+---
+
+<Page {...getPageProps('// TODO(HiDeoo)')}>
+  <div>{schema.document.info.version}</div>
+</Page>

@@ -1,21 +1,11 @@
-import { join } from 'node:path'
-
 import { slug } from 'github-slugger'
 
-import type { StarlightOpenAPISchemaConfig } from './config'
+import type { StarlightOpenAPISchemaConfig } from './schema'
 
 export { slug } from 'github-slugger'
 
-export function getSchemaPath(config: StarlightOpenAPISchemaConfig) {
-  return join('src/content/docs', config.output)
-}
-
-export function getSchemaFilePath(config: StarlightOpenAPISchemaConfig, relativeFilePath: string) {
-  return join(getSchemaPath(config), relativeFilePath)
-}
-
 export function getBaseLink(config: StarlightOpenAPISchemaConfig) {
-  const path = config.output
+  const path = config.base
     .split('/')
     .map((part) => slug(part))
     .join('/')

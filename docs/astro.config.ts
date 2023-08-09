@@ -3,12 +3,12 @@ import { defineConfig } from 'astro/config'
 import { generateAPI } from 'starlight-openapi'
 
 // TODO(HiDeoo)
-const openAPISidebarGroups = await generateAPI([
-  { label: 'Petstore v3.0 (JSON)', output: 'api/v3.0/petstore/json', schema: '../schemas/v3.0/petstore.json' },
-  { label: 'Petstore v3.0 (YAML)', output: 'api/v3.0/petstore/yaml', schema: '../schemas/v3.0/petstore.yaml' },
+const { openAPISidebarGroups, starlightOpenAPI } = await generateAPI([
+  { base: 'api/v3.0/petstore/json', label: 'Petstore v3.0 (JSON)', schema: '../schemas/v3.0/petstore.json' },
+  { base: 'api/v3.0/petstore/yaml', label: 'Petstore v3.0 (YAML)', schema: '../schemas/v3.0/petstore.yaml' },
   {
+    base: 'api/v3.0/petstore/no-tags',
     label: 'Petstore v3.0 (no tags)',
-    output: 'api/v3.0/petstore/no-tags',
     schema: '../schemas/v3.0/petstore-no-tags.yaml',
   },
 ])
@@ -33,6 +33,7 @@ export default defineConfig({
         },
       ],
     }),
+    starlightOpenAPI(),
   ],
   image: { service: { entrypoint: 'astro/assets/services/sharp' } },
 })

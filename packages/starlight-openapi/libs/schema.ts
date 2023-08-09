@@ -1,36 +1,33 @@
+import { z } from 'astro/zod'
 import type { OpenAPI } from 'openapi-types'
 
-import type { StarlightOpenAPISchemaConfig } from './config'
-import { clearSchemaDirectory, writeSchemaFile } from './fs'
-import { logInfo } from './logger'
-import { getBaseLink } from './path'
-import { generatePathItemDocs } from './pathItem'
+import { getBaseLink, stripLeadingAndTrailingSlashes } from './path'
+import { getPathItemSidebarGroups } from './pathItem'
 import { makeSidebarGroup, makeSidebarLink, type SidebarGroup } from './starlight'
 
-export async function generateSchemaDocs(
-  config: StarlightOpenAPISchemaConfig,
-  schema: StarlightOpenAPISchema,
-): Promise<SidebarGroup> {
-  logInfo(`Generating OpenAPI documentation for '${config.schema}'.`)
+// TODO(HiDeoo) baseUrl
 
-  await clearSchemaDirectory(config)
+export const SchemaConfigSchema = z.object({
+  // TODO(HiDeoo)
+  base: z.string().min(1).transform(stripLeadingAndTrailingSlashes),
+  // TODO(HiDeoo)
+  label: z.string().optional(),
+  // TODO(HiDeoo)
+  schema: z.string().min(1),
+})
 
-  await writeSchemaFile(
-    config,
-    'index.md',
-    // FIXME(HiDeoo)
-    `---
-title: ${schema.info.title}
----
+export function getSchemaSidebarGroups(schema: Schema): SidebarGroup {
+  const { config, document } = schema
 
-${JSON.stringify(schema, null, 2)}}
-  `,
-  )
-
-  return makeSidebarGroup(config.label ?? schema.info.title, [
+  return makeSidebarGroup(config.label ?? document.info.title, [
     makeSidebarLink('Overview', getBaseLink(config)),
-    ...(await generatePathItemDocs(config, schema)),
+    ...getPathItemSidebarGroups(schema),
   ])
 }
 
-export type StarlightOpenAPISchema = OpenAPI.Document
+export type StarlightOpenAPISchemaConfig = z.infer<typeof SchemaConfigSchema>
+
+export interface Schema {
+  config: StarlightOpenAPISchemaConfig
+  document: OpenAPI.Document
+}

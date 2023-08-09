@@ -1,3 +1,22 @@
+const locale = 'en'
+
+export function getPageProps(title: string) {
+  return {
+    entry: {
+      data: {
+        editUrl: false,
+        head: [],
+        tableOfContents: false,
+        title,
+      },
+    },
+    entryMeta: {
+      lang: locale,
+    },
+    lang: locale,
+  }
+}
+
 export function makeSidebarGroup(label: string, items: SidebarGroup['items']): SidebarGroup {
   return { items, label }
 }
