@@ -1,9 +1,20 @@
 import { z } from 'astro/zod'
 
 import { logError } from './logger'
-import { SchemaConfigSchema } from './schema'
+import { stripLeadingAndTrailingSlashes } from './path'
 
-const configSchema = z.array(SchemaConfigSchema).min(1)
+// TODO(HiDeoo) baseUrl
+
+export const schemaConfigSchema = z.object({
+  // TODO(HiDeoo)
+  label: z.string().optional(),
+  // TODO(HiDeoo)
+  output: z.string().min(1).transform(stripLeadingAndTrailingSlashes),
+  // TODO(HiDeoo)
+  schema: z.string().min(1),
+})
+
+const configSchema = z.array(schemaConfigSchema).min(1)
 
 export function validateConfig(userConfig: unknown): StarlightOpenAPIConfig {
   const config = configSchema.safeParse(userConfig)
@@ -25,3 +36,4 @@ ${Object.entries(errors.fieldErrors)
 }
 
 export type StarlightOpenAPIConfig = z.infer<typeof configSchema>
+export type StarlightOpenAPISchemaConfig = z.infer<typeof schemaConfigSchema>

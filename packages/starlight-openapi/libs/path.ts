@@ -2,7 +2,9 @@ import { join } from 'node:path'
 
 import { slug } from 'github-slugger'
 
-import type { StarlightOpenAPISchemaConfig } from './schema'
+import type { StarlightOpenAPISchemaConfig } from './config'
+
+export { slug } from 'github-slugger'
 
 export function getSchemaPath(config: StarlightOpenAPISchemaConfig) {
   return join('src/content/docs', config.output)
@@ -12,15 +14,17 @@ export function getSchemaFilePath(config: StarlightOpenAPISchemaConfig, relative
   return join(getSchemaPath(config), relativeFilePath)
 }
 
-export function stripLeadingAndTrailingSlashes(path: string): string {
-  return stripLeadingSlash(stripTrailingSlash(path))
-}
-
-export function slugifyPath(path: string) {
-  return path
+export function getBaseLink(config: StarlightOpenAPISchemaConfig) {
+  const path = config.output
     .split('/')
     .map((part) => slug(part))
     .join('/')
+
+  return `/${path}/`
+}
+
+export function stripLeadingAndTrailingSlashes(path: string): string {
+  return stripLeadingSlash(stripTrailingSlash(path))
 }
 
 function stripLeadingSlash(path: string) {

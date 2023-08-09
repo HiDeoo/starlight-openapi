@@ -28,5 +28,6 @@ npm-debug.log*
 out
 pnpm-debug.log*
 releases
+test-results
 yarn-debug.log*
 yarn-error.log*
