@@ -25,7 +25,7 @@ export default defineConfig({
         {
           label: 'Guides',
           // TODO(HiDeoo)
-          items: [{ label: 'Example Guide', link: '/guides/example/' }],
+          items: [{ label: 'Example Guide', link: '/guides/getting-started/' }],
         },
         {
           label: 'Examples',
