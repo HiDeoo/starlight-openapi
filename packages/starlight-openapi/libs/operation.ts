@@ -8,7 +8,7 @@ const defaultOperationTag = 'Operations'
 const operationHttpMethods = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'] as const
 
 export function getOperationsByTag(document: Schema['document']) {
-  const operationsByTag = new Map<string, { operation: Operation; path: string }[]>()
+  const operationsByTag = new Map<string, { id: string; operation: Operation; path: string }[]>()
 
   for (const [pathItemPath, pathItem] of Object.entries(document.paths ?? {})) {
     if (!isPathItem(pathItem)) {
@@ -21,11 +21,12 @@ export function getOperationsByTag(document: Schema['document']) {
       }
 
       const operation = pathItem[method]
-      const operationPath = `operations/${slug(operation.operationId ?? pathItemPath)}`
+      const id = operation.operationId ?? pathItemPath
+      const operationPath = `operations/${slug(id)}`
 
       for (const tag of operation.tags ?? [defaultOperationTag]) {
         const operations = operationsByTag.get(tag) ?? []
-        operations.push({ operation, path: operationPath })
+        operations.push({ id, operation, path: operationPath })
         operationsByTag.set(tag, operations)
       }
     }

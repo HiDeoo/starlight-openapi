@@ -10,7 +10,7 @@ export function getPathItemSidebarGroups({ config, document }: Schema): SidebarG
   return [...operations.entries()].map(([tag, operations]) =>
     makeSidebarGroup(
       tag,
-      operations.map(({ operation, path }) => makeSidebarLink(operation.summary ?? path, baseLink + path)),
+      operations.map(({ id, operation, path }) => makeSidebarLink(operation.summary ?? id, baseLink + path)),
     ),
   )
 }
