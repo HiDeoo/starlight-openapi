@@ -4,6 +4,7 @@ import type { InferGetStaticPropsType } from 'astro'
 import Page from './overrides/Page.astro'
 import { getSchemaStaticPaths } from '../libs/route'
 import { getPageProps } from '../libs/starlight'
+import Overview from './Overview.astro'
 
 export function getStaticPaths() {
   return getSchemaStaticPaths()
@@ -11,9 +12,9 @@ export function getStaticPaths() {
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>
 
-const { schema } = Astro.props
+const { schema, type } = Astro.props
 ---
 
 <Page {...getPageProps('// TODO(HiDeoo)')}>
-  <div>{schema.document.info.version}</div>
+  {type === 'overview' ? <Overview schema={schema} /> : <div>operation</div>}
 </Page>

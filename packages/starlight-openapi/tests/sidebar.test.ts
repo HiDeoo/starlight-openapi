@@ -1,6 +1,6 @@
 import { expect, test } from './test'
 
-test('should list operations grouped by tag', async ({ sidebarPage }) => {
+test('list operations grouped by tag', async ({ sidebarPage }) => {
   await sidebarPage.goto()
 
   const items = await sidebarPage.getSidebarGroupItems('Petstore v3.0 (JSON)')
@@ -14,7 +14,7 @@ test('should list operations grouped by tag', async ({ sidebarPage }) => {
   ])
 })
 
-test('should use a fallback group for untagged operations', async ({ sidebarPage }) => {
+test('use a fallback group for untagged operations', async ({ sidebarPage }) => {
   await sidebarPage.goto()
 
   const items = await sidebarPage.getSidebarGroupItems('Petstore v3.0 (no tags)')

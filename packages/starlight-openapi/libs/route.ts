@@ -12,13 +12,14 @@ export function getSchemaStaticPaths(): StarlighOpenAPIRoute[] {
       },
       props: {
         schema,
+        type: 'overview',
       },
     },
     ...getPathItemStaticPaths(schema),
   ])
 }
 
-function getPathItemStaticPaths(schema: Schema) {
+function getPathItemStaticPaths(schema: Schema): StarlighOpenAPIRoute[] {
   const baseLink = getBaseLink(schema.config)
   const operations = getOperationsByTag(schema.document)
 
@@ -29,6 +30,7 @@ function getPathItemStaticPaths(schema: Schema) {
       },
       props: {
         schema,
+        type: 'operation',
       },
     })),
   )
@@ -40,5 +42,6 @@ interface StarlighOpenAPIRoute {
   }
   props: {
     schema: Schema
+    type: 'overview' | 'operation'
   }
 }

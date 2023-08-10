@@ -1,0 +1,42 @@
+---
+import { getLicenseIdentifier, getOpenAPIVersion, getSummary } from '../libs/document'
+import type { Schema } from '../libs/schema'
+
+interface Props {
+  schema: Schema
+}
+
+const {
+  schema: { document },
+} = Astro.props
+
+const summary = getSummary(document)
+const licenseIdentifier = getLicenseIdentifier(document)
+---
+
+<div>
+  <div>OpenAPI version: {getOpenAPIVersion(document)}</div>
+  <div>Title: {document.info.title}</div>
+  <div>Version: {document.info.version}</div>
+  {summary && <div>Summary: {getSummary(document)}</div>}
+  {document.info.description && <div>Description in MARKDOWN: {document.info.description}</div>}
+  {document.info.termsOfService && <div>TOS: {document.info.termsOfService}</div>}
+  {
+    document.info.contact && (
+      <div>
+        {document.info.contact.name && <div>Contact name: {document.info.contact.name}</div>}
+        {document.info.contact.email && <div>Contact email: {document.info.contact.email}</div>}
+        {document.info.contact.url && <div>Contact URL: {document.info.contact.url}</div>}
+      </div>
+    )
+  }
+  {
+    document.info.license && (
+      <div>
+        <div>License name: {document.info.license.name}</div>
+        {document.info.license.url && <div>License URL: {document.info.license.url}</div>}
+        {licenseIdentifier && <div>License identifier: {licenseIdentifier}</div>}
+      </div>
+    )
+  }
+</div>
