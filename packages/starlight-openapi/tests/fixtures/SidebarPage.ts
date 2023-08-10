@@ -16,7 +16,7 @@ export class SidebarPage {
   }
 
   #getSidebarRootDetails(label: string) {
-    return this.#sidebar.getByRole('listitem').locator(`details:has(summary > h2:has-text("${label}"))`).last()
+    return this.#sidebar.getByRole('listitem').locator(`details:has(summary > h2:text-is("${label}"))`).last()
   }
 
   async #getSidebarChildrenItems(list: Locator): Promise<SidebarItem[]> {

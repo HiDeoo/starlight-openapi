@@ -4,15 +4,13 @@ import { generateAPI } from 'starlight-openapi'
 
 // TODO(HiDeoo)
 const { openAPISidebarGroups, starlightOpenAPI } = await generateAPI([
-  { base: 'api/v3.0/petstore/json', label: 'Petstore v3.0 (JSON)', schema: '../schemas/v3.0/petstore.json' },
-  { base: 'api/v3.0/petstore/yaml', label: 'Petstore v3.0 (YAML)', schema: '../schemas/v3.0/petstore.yaml' },
   {
-    base: 'api/v3.0/petstore/no-tags',
-    label: 'Petstore v3.0 (no tags)',
-    schema: '../schemas/v3.0/petstore-no-tags.yaml',
+    base: 'api/v3.0/petstore',
+    label: 'Petstore v3.0',
+    schema: '../schemas/v3.0/petstore.json',
   },
   {
-    base: 'api/v3.0/petstore/expanded',
+    base: 'api/v3.0/petstore-expanded',
     label: 'Petstore v3.0 (expanded)',
     schema: '../schemas/v3.0/petstore-expanded.yaml',
   },
