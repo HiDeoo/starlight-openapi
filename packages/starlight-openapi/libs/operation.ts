@@ -8,7 +8,7 @@ const defaultOperationTag = 'Operations'
 const operationHttpMethods = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'] as const
 
 export function getOperationsByTag(document: Schema['document']) {
-  const operationsByTag = new Map<string, { id: string; operation: Operation; path: string }[]>()
+  const operationsByTag = new Map<string, PathItemOperation[]>()
 
   for (const [pathItemPath, pathItem] of Object.entries(document.paths ?? {})) {
     if (!isPathItem(pathItem)) {
@@ -21,12 +21,12 @@ export function getOperationsByTag(document: Schema['document']) {
       }
 
       const operation = pathItem[method]
-      const id = operation.operationId ?? pathItemPath
-      const operationPath = `operations/${slug(id)}`
+      const operationId = operation.operationId ?? pathItemPath
+      const operationSlug = `operations/${slug(operationId)}`
 
       for (const tag of operation.tags ?? [defaultOperationTag]) {
         const operations = operationsByTag.get(tag) ?? []
-        operations.push({ id, operation, path: operationPath })
+        operations.push({ id: operationId, method, operation, path: pathItemPath, slug: operationSlug })
         operationsByTag.set(tag, operations)
       }
     }
@@ -40,6 +40,14 @@ export function isPathItemOperation<TMethod extends OperationHttpMethod>(
   method: TMethod,
 ): pathItem is { [key in TMethod]: Operation } {
   return method in pathItem
+}
+
+export interface PathItemOperation {
+  id: string
+  method: OperationHttpMethod
+  operation: Operation
+  path: string
+  slug: string
 }
 
 type Operation = OpenAPI.Operation

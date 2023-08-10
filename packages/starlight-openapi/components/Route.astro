@@ -5,6 +5,7 @@ import Page from './overrides/Page.astro'
 import { getSchemaStaticPaths } from '../libs/route'
 import { getPageProps } from '../libs/starlight'
 import Overview from './Overview.astro'
+import Operation from './Operation.astro'
 
 export function getStaticPaths() {
   return getSchemaStaticPaths()
@@ -16,5 +17,5 @@ const { schema, type } = Astro.props
 ---
 
 <Page {...getPageProps('// TODO(HiDeoo)')}>
-  {type === 'overview' ? <Overview schema={schema} /> : <div>operation</div>}
+  {type === 'overview' ? <Overview {schema} /> : <Operation {schema} operation={Astro.props.operation} />}
 </Page>

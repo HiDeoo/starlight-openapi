@@ -1,0 +1,11 @@
+---
+import type { PathItemOperation } from '../libs/operation'
+import type { Schema } from '../libs/schema'
+
+interface Props {
+  operation: PathItemOperation
+  schema: Schema
+}
+---
+
+<div>{JSON.stringify(Astro.props.operation, null, '\t')}</div>
