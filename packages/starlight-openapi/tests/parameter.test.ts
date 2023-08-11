@@ -74,4 +74,8 @@ test('displays type informations for a v2.0 schema', async ({ docPage }) => {
   await expect(filterParameter.getByText('Max Length: 100')).toBeVisible()
   await expect(filterParameter.getByText('Min Length: 3')).toBeVisible()
   await expect(filterParameter.getByText('Pattern: ^[a-zA-Z0-9]+$')).toBeVisible()
+
+  const sortParameter = docPage.getParameters('query').filter({ hasText: 'sort' })
+
+  await expect(sortParameter.getByText('Enum: asc,desc')).toBeVisible()
 })

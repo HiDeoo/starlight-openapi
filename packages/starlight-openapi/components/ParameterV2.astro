@@ -22,3 +22,4 @@ const { parameter } = Astro.props
 {parameter.minItems && <div>Min Items: {parameter.minItems}</div>}
 {parameter.uniqueItems && <div>ONLY UNIQUE ITEMS</div>}
 {parameter.multipleOf && <div>Multiple Of: {parameter.multipleOf}</div>}
+{parameter.enum && <div>Enum: {parameter.enum.join(',')}</div>}

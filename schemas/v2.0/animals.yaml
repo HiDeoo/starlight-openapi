@@ -24,10 +24,15 @@ paths:
           type: 'array'
           items:
             type: 'string'
-          collectionFormat: 'csv'
           maxItems: 10
           minItems: 1
           uniqueItems: true
+        - name: 'sort'
+          in: 'query'
+          description: 'sort order'
+          required: false
+          type: 'string'
+          enum: ['asc', 'desc']
         - name: 'limit'
           in: 'query'
           description: 'maximum number of animals to return'
