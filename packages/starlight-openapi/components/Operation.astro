@@ -6,6 +6,29 @@ interface Props {
   operation: PathItemOperation
   schema: Schema
 }
+
+const {
+  operation: { method, operation, path },
+} = Astro.props
+
+// TODO(HiDeoo) capitalize description
 ---
 
-<div>{JSON.stringify(Astro.props.operation, null, '\t')}</div>
+<div>
+  {operation.description && <div>Description in MARKDOWN: {operation.description}</div>}
+  {
+    operation.externalDocs && (
+      <div>
+        <div>External Docs URL: {operation.externalDocs.url}</div>
+        {operation.externalDocs.description && (
+          <div>External Docs Description: {operation.externalDocs.description}</div>
+        )}
+      </div>
+    )
+  }
+  <div>
+    <div>Method: {method}</div>
+    <div>Path: {path}</div>
+  </div>
+  {operation.deprecated && <div>DEPRECATED</div>}
+</div>

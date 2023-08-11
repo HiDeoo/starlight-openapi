@@ -14,6 +14,12 @@ const { openAPISidebarGroups, starlightOpenAPI } = await generateAPI([
     label: 'Petstore v3.0 (expanded)',
     schema: '../schemas/v3.0/petstore-expanded.yaml',
   },
+  // TODO(HiDeoo) hide
+  {
+    base: 'api/v3.0/petstore-custom',
+    label: 'Petstore v3.0 (custom)',
+    schema: '../schemas/v3.0/petstore-custom.yaml',
+  },
 ])
 
 export default defineConfig({
