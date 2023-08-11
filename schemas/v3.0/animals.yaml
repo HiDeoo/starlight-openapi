@@ -18,7 +18,7 @@ paths:
       - name: tags
         in: query
         description: tags to filter by
-        required: false
+        required: true
         style: form
         schema:
           type: array
@@ -39,6 +39,7 @@ paths:
         - name: limit
           in: query
           description: How many animals to return at one time (max 100)
+          deprecated: true
         - name: offset
           in: header
           description: The number of animals to skip before starting to collect the result set

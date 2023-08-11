@@ -30,6 +30,6 @@ function isParameter(parameter: OpenAPI.Parameter): parameter is Parameter {
   return typeof parameter === 'object' && !('$ref' in parameter)
 }
 
-type Parameter = OpenAPIV2.Parameter | OpenAPIV3.ParameterObject | OpenAPIV3_1.ParameterObject
+export type Parameter = OpenAPIV2.Parameter | OpenAPIV3.ParameterObject | OpenAPIV3_1.ParameterObject
 type ParameterId = `${Parameter['name']}:${Parameter['in']}`
 type Parameters = Map<ParameterId, Parameter>

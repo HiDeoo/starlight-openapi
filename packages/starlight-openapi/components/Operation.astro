@@ -13,6 +13,7 @@ const {
 } = Astro.props
 
 // TODO(HiDeoo) capitalize description
+// TODO(HiDeoo) request body
 ---
 
 <div>
@@ -31,6 +32,6 @@ const {
     <div>Method: {method}</div>
     <div>Path: {path}</div>
   </div>
-  {operation.deprecated && <div>DEPRECATED</div>}
+  {operation.deprecated && <div>OPERATION DEPRECATED</div>}
   <Parameters operation={Astro.props.operation} />
 </div>

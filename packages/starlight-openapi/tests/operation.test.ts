@@ -20,5 +20,5 @@ test('displays basic informations', async ({ docPage }) => {
   await expect(docPage.getByText('External Docs Description: Find out more about our animals')).toBeVisible()
   await expect(docPage.getByText('Method: get')).toBeVisible()
   await expect(docPage.getByText('Path: /animals')).toBeVisible()
-  await expect(docPage.getByText('DEPRECATED')).toBeVisible()
+  await expect(docPage.getByText('OPERATION DEPRECATED')).toBeVisible()
 })

@@ -1,0 +1,16 @@
+---
+import type { Parameter } from '../libs/parameter'
+
+interface Props {
+  parameter: Parameter
+}
+
+const { parameter } = Astro.props
+---
+
+<li>
+  <div>{parameter.name}</div>
+  {parameter.description && <div>{parameter.description}</div>}
+  <div>{parameter.required ? 'REQUIRED' : 'NOT REQUIRED'}</div>
+  {parameter.deprecated && <div>DEPRECATED</div>}
+</li>

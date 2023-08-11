@@ -18,3 +18,19 @@ test('overrides path item level parameters', async ({ docPage }) => {
     docPage.getParameters('query').getByText('How many animals to return at one time (max 100)'),
   ).toBeVisible()
 })
+
+test('displays a basic parameter', async ({ docPage }) => {
+  await docPage.goto('/v30/animals/operations/listanimals/')
+
+  const limitParameter = docPage.getParameters('query').filter({ hasText: 'limit' })
+
+  await expect(limitParameter.getByText('How many animals to return at one time (max 100)')).toBeVisible()
+  await expect(limitParameter.getByText('NOT REQUIRED')).toBeVisible()
+  await expect(limitParameter.getByText('DEPRECATED')).toBeVisible()
+
+  const tagParameter = docPage.getParameters('query').filter({ hasText: 'tags' })
+
+  await expect(tagParameter.getByText('REQUIRED')).toBeVisible()
+  await expect(tagParameter.getByText('NOT REQUIRED')).not.toBeVisible()
+  await expect(tagParameter.getByText('DEPRECATED')).not.toBeVisible()
+})
