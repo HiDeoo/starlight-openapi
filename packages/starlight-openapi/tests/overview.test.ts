@@ -3,6 +3,8 @@ import { expect, test } from './test'
 test('display a basic overview', async ({ docPage }) => {
   await docPage.goto('/v30/petstore/')
 
+  await docPage.expectToHaveTitle('Overview')
+
   await expect(docPage.getByText('OpenAPI version: 3.0.0')).toBeVisible()
   await expect(docPage.getByText('Title: Swagger Petstore')).toBeVisible()
   await expect(docPage.getByText('Version: 1.0.0')).toBeVisible()
@@ -11,6 +13,8 @@ test('display a basic overview', async ({ docPage }) => {
 
 test('display advanced overviews', async ({ docPage }) => {
   await docPage.goto('/v30/petstore-expanded/')
+
+  await docPage.expectToHaveTitle('Overview')
 
   await expect(docPage.getByText('OpenAPI version: 3.0.0')).toBeVisible()
   await expect(docPage.getByText('Title: Swagger Petstore')).toBeVisible()

@@ -22,11 +22,19 @@ export function getOperationsByTag(document: Schema['document']) {
 
       const operation = pathItem[method]
       const operationId = operation.operationId ?? pathItemPath
-      const operationSlug = `operations/${slug(operationId)}`
 
       for (const tag of operation.tags ?? [defaultOperationTag]) {
         const operations = operationsByTag.get(tag) ?? []
-        operations.push({ id: operationId, method, operation, path: pathItemPath, slug: operationSlug })
+
+        operations.push({
+          method,
+          operation,
+          path: pathItemPath,
+          pathItem,
+          slug: `operations/${slug(operationId)}`,
+          title: operation.summary ?? operationId,
+        })
+
         operationsByTag.set(tag, operations)
       }
     }
@@ -43,11 +51,12 @@ export function isPathItemOperation<TMethod extends OperationHttpMethod>(
 }
 
 export interface PathItemOperation {
-  id: string
   method: OperationHttpMethod
   operation: Operation
   path: string
+  pathItem: PathItem
   slug: string
+  title: string
 }
 
 type Operation = OpenAPI.Operation
