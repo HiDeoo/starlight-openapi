@@ -18,6 +18,7 @@ paths:
       - name: tags
         in: query
         description: tags to filter by
+        allowEmptyValue: true
         required: true
         style: form
         schema:

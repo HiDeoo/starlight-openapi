@@ -1,0 +1,91 @@
+---
+swagger: '2.0'
+info:
+  version: '1.0.0'
+  title: 'Animals'
+  license:
+    name: 'MIT'
+basePath: '/api'
+paths:
+  /animals:
+    get:
+      description: 'Returns all animals'
+      operationId: 'findAnimals'
+      produces:
+        - 'application/json'
+        - 'application/xml'
+        - 'text/xml'
+        - 'text/html'
+      parameters:
+        - name: 'tags'
+          in: 'query'
+          description: 'tags to filter by'
+          required: false
+          type: 'array'
+          items:
+            type: 'string'
+          collectionFormat: 'csv'
+          maxItems: 10
+          minItems: 1
+          uniqueItems: true
+        - name: 'limit'
+          in: 'query'
+          description: 'maximum number of animals to return'
+          default: 10
+          maximum: 100
+          exclusiveMaximum: true
+          minimum: 1
+          multipleOf: 2
+          required: false
+          type: 'integer'
+          format: 'int32'
+        - name: 'filter'
+          in: 'query'
+          description: 'specify a filter query'
+          required: false
+          type: 'string'
+          maxLength: 100
+          minLength: 3
+          pattern: '^[a-zA-Z0-9]+$'
+      responses:
+        '200':
+          description: 'animal response'
+          schema:
+            type: 'array'
+            items:
+              $ref: '#/definitions/Animal'
+        default:
+          description: 'unexpected error'
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  Animal:
+    type: 'object'
+    allOf:
+      - $ref: '#/definitions/NewAnimal'
+      - required:
+          - 'id'
+        properties:
+          id:
+            type: 'integer'
+            format: 'int64'
+  NewAnimal:
+    type: 'object'
+    required:
+      - 'name'
+    properties:
+      name:
+        type: 'string'
+      tag:
+        type: 'string'
+  Error:
+    type: 'object'
+    required:
+      - 'code'
+      - 'message'
+    properties:
+      code:
+        type: 'integer'
+        format: 'int32'
+      message:
+        type: 'string'

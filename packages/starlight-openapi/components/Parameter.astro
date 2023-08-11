@@ -1,5 +1,6 @@
 ---
-import type { Parameter } from '../libs/parameter'
+import { isOpenAPIV2Parameter, type Parameter } from '../libs/parameter'
+import ParameterV2 from './ParameterV2.astro'
 
 interface Props {
   parameter: Parameter
@@ -13,4 +14,6 @@ const { parameter } = Astro.props
   {parameter.description && <div>{parameter.description}</div>}
   <div>{parameter.required ? 'REQUIRED' : 'NOT REQUIRED'}</div>
   {parameter.deprecated && <div>DEPRECATED</div>}
+  {parameter.allowEmptyValue ? <div>ALLOW EMPTY VALUE</div> : <div>DO NOT ALLOW EMPTY VALUE</div>}
+  {isOpenAPIV2Parameter(parameter) && <ParameterV2 {parameter} />}
 </li>

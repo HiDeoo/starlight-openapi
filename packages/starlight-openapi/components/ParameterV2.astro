@@ -1,0 +1,24 @@
+---
+import { type ParameterV2 } from '../libs/parameter'
+
+interface Props {
+  parameter: ParameterV2
+}
+
+const { parameter } = Astro.props
+---
+
+<div>Type: {parameter.type}</div>
+{parameter.format && <div>Format: {parameter.format}</div>}
+{!parameter.required && parameter.default && <div>Default Value: {parameter.default}</div>}
+{parameter.maximum && <div>Maximum: {parameter.maximum}</div>}
+{parameter.exclusiveMaximum && <div>Exclusive Maximum</div>}
+{parameter.minimum && <div>Minimum: {parameter.minimum}</div>}
+{parameter.exclusiveMinimum && <div>Exclusive Minimum</div>}
+{parameter.maxLength && <div>Max Length: {parameter.maxLength}</div>}
+{parameter.minLength && <div>Min Length: {parameter.minLength}</div>}
+{parameter.pattern && <div>Pattern: {parameter.pattern}</div>}
+{parameter.maxItems && <div>Max Items: {parameter.maxItems}</div>}
+{parameter.minItems && <div>Min Items: {parameter.minItems}</div>}
+{parameter.uniqueItems && <div>ONLY UNIQUE ITEMS</div>}
+{parameter.multipleOf && <div>Multiple Of: {parameter.multipleOf}</div>}
