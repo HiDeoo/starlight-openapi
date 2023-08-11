@@ -34,3 +34,9 @@ test('displays a basic parameter', async ({ docPage }) => {
   await expect(tagParameter.getByText('NOT REQUIRED')).not.toBeVisible()
   await expect(tagParameter.getByText('DEPRECATED')).not.toBeVisible()
 })
+
+test('does not display the body parameter in a v2.0 schema', async ({ docPage }) => {
+  await docPage.goto('/v20/petstore-simple/operations/addpet/')
+
+  await expect(docPage.getParameters('body')).not.toBeVisible()
+})

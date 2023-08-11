@@ -20,6 +20,11 @@ const { openAPISidebarGroups, starlightOpenAPI } = await generateAPI([
     label: 'Animals v3.0',
     schema: '../schemas/v3.0/animals.yaml',
   },
+  {
+    base: 'api/v2.0/petstore-simple',
+    label: 'Petstore v2.0 (simple)',
+    schema: '../schemas/v2.0/petstore-simple.yaml',
+  },
 ])
 
 export default defineConfig({

@@ -7,7 +7,7 @@ export function getParametersByLocation(
   const parametersByLocation = new Map<string, Parameters>()
 
   for (const parameter of [...(pathItemParameters ?? []), ...(operationParameters ?? [])]) {
-    if (!isParameter(parameter)) {
+    if (!isParameter(parameter) || parameter.in === 'body') {
       continue
     }
 
