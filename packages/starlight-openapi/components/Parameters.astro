@@ -16,16 +16,20 @@ const parametersByLocation = getParametersByLocation(operation.parameters, pathI
 // TODO(HiDeoo) Format location
 ---
 
-<h2>Parameters</h2>
 {
-  Array.from(parametersByLocation.entries()).map(([location, parameters]) => (
+  parametersByLocation.size > 0 && (
     <>
-      <h3>{location} parameters</h3>
-      <ul>
-        {Array.from(parameters.values()).map((parameter) => (
-          <Parameter {parameter} />
-        ))}
-      </ul>
+      <h2>Parameters</h2>
+      {Array.from(parametersByLocation.entries()).map(([location, parameters]) => (
+        <>
+          <h3>{location} parameters</h3>
+          <ul>
+            {Array.from(parameters.values()).map((parameter) => (
+              <Parameter {parameter} />
+            ))}
+          </ul>
+        </>
+      ))}
     </>
-  ))
+  )
 }

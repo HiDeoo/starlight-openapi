@@ -1,5 +1,11 @@
 import { expect, test } from './test'
 
+test('hides the parameters section with no parameters', async ({ docPage }) => {
+  await docPage.goto('/v30/animals/operations/listcats/')
+
+  await expect(docPage.page.getByRole('heading', { level: 2, name: 'Parameters' })).not.toBeVisible()
+})
+
 test('displays all parameters grouped by location', async ({ docPage }) => {
   await docPage.goto('/v30/animals/operations/listanimals/')
 
