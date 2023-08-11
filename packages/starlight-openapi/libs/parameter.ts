@@ -22,10 +22,6 @@ export function getParametersByLocation(
   return parametersByLocation
 }
 
-export function isOpenAPIV2Parameter(parameter: Parameter): parameter is ParameterV2 {
-  return 'type' in parameter
-}
-
 function getParameterId(parameter: Parameter): ParameterId {
   return `${parameter.name}:${parameter.in}`
 }
@@ -35,6 +31,5 @@ function isParameter(parameter: OpenAPI.Parameter): parameter is Parameter {
 }
 
 export type Parameter = OpenAPIV2.Parameter | OpenAPIV3.ParameterObject | OpenAPIV3_1.ParameterObject
-export type ParameterV2 = OpenAPIV2.GeneralParameterObject
 type ParameterId = `${Parameter['name']}:${Parameter['in']}`
 type Parameters = Map<ParameterId, Parameter>

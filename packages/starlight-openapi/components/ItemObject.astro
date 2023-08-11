@@ -1,0 +1,33 @@
+---
+import { isItemObject, type ItemObject } from '../libs/itemObject'
+
+interface Props {
+  itemObject: ItemObject
+}
+
+const { itemObject } = Astro.props
+---
+
+<div>Type: {itemObject.type}</div>
+{itemObject.format && <div>Format: {itemObject.format}</div>}
+{!itemObject.required && itemObject.default && <div>Default Value: {itemObject.default}</div>}
+{itemObject.maximum && <div>Maximum: {itemObject.maximum}</div>}
+{itemObject.exclusiveMaximum && <div>Exclusive Maximum</div>}
+{itemObject.minimum && <div>Minimum: {itemObject.minimum}</div>}
+{itemObject.exclusiveMinimum && <div>Exclusive Minimum</div>}
+{itemObject.maxLength && <div>Max Length: {itemObject.maxLength}</div>}
+{itemObject.minLength && <div>Min Length: {itemObject.minLength}</div>}
+{itemObject.pattern && <div>Pattern: {itemObject.pattern}</div>}
+{itemObject.maxItems && <div>Max Items: {itemObject.maxItems}</div>}
+{itemObject.minItems && <div>Min Items: {itemObject.minItems}</div>}
+{itemObject.uniqueItems && <div>ONLY UNIQUE ITEMS</div>}
+{itemObject.multipleOf && <div>Multiple Of: {itemObject.multipleOf}</div>}
+{itemObject.enum && <div>Enum: {itemObject.enum.join(',')}</div>}
+{
+  isItemObject(itemObject.items) && (
+    <>
+      <div>Items:</div>
+      <Astro.self itemObject={itemObject.items} />
+    </>
+  )
+}
