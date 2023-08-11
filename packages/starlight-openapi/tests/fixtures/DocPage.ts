@@ -15,4 +15,8 @@ export class DocPage {
     await expect(this.page).toHaveTitle(title)
     await expect(this.page.getByRole('heading', { exact: true, level: 1, name: title })).toBeVisible()
   }
+
+  getParameters(location: string) {
+    return this.page.locator(`h3:has-text("${`${location} parameters`}") + ul`).getByRole('listitem')
+  }
 }

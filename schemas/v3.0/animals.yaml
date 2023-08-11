@@ -1,0 +1,111 @@
+openapi: '3.0.0'
+info:
+  version: 1.0.0
+  title: Animals
+  license:
+    name: MIT
+paths:
+  /animals:
+    parameters:
+      - name: limit
+        in: query
+        description: The path item level limit parameter
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          format: int32
+      - name: tags
+        in: query
+        description: tags to filter by
+        required: false
+        style: form
+        schema:
+          type: array
+          items:
+            type: string
+    get:
+      summary: List all animals
+      operationId: listAnimals
+      description: |
+        Returns all animals
+      deprecated: true
+      externalDocs:
+        description: Find out more about our animals
+        url: https://example.com/more-info
+      tags:
+        - animals
+      parameters:
+        - name: limit
+          in: query
+          description: How many animals to return at one time (max 100)
+        - name: offset
+          in: header
+          description: The number of animals to skip before starting to collect the result set
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: A paged array of animals
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Animals'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /cats:
+    get:
+      summary: List all cats
+      operationId: listCats
+      tags:
+        - animals
+      responses:
+        '200':
+          description: A paged array of cats
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Animals'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Animal:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        tag:
+          type: string
+    Animals:
+      type: array
+      maxItems: 100
+      items:
+        $ref: '#/components/schemas/Animal'
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string

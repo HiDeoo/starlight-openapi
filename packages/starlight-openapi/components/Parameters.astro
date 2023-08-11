@@ -1,0 +1,32 @@
+---
+import type { PathItemOperation } from '../libs/operation'
+import { getParametersByLocation } from '../libs/parameter'
+
+interface Props {
+  operation: PathItemOperation
+}
+
+const {
+  operation: { operation, pathItem },
+} = Astro.props
+
+const parametersByLocation = getParametersByLocation(operation.parameters, pathItem.parameters)
+---
+
+<h2>Parameters</h2>
+{
+  Array.from(parametersByLocation.entries()).map(([name, parameters]) => (
+    <>
+      <h3>{name} parameters</h3>
+      <ul>
+        {Array.from(parameters.values()).map((parameter) => (
+          <li>
+            <div>{parameter.name}</div>
+            <div>{parameter.in}</div>
+            {parameter.description && <div>{parameter.description}</div>}
+          </li>
+        ))}
+      </ul>
+    </>
+  ))
+}

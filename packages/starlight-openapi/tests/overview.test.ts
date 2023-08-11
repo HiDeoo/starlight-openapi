@@ -1,6 +1,6 @@
 import { expect, test } from './test'
 
-test('display a basic overview', async ({ docPage }) => {
+test('displays a basic overview', async ({ docPage }) => {
   await docPage.goto('/v30/petstore/')
 
   await docPage.expectToHaveTitle('Overview')
@@ -11,7 +11,7 @@ test('display a basic overview', async ({ docPage }) => {
   await expect(docPage.getByText('License name: MIT')).toBeVisible()
 })
 
-test('display advanced overviews', async ({ docPage }) => {
+test('displays advanced overviews', async ({ docPage }) => {
   await docPage.goto('/v30/petstore-expanded/')
 
   await docPage.expectToHaveTitle('Overview')
