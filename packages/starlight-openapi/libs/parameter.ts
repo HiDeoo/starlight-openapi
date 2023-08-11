@@ -1,5 +1,7 @@
 import type { OpenAPI, OpenAPIV2, OpenAPIV3, OpenAPIV3_1 } from 'openapi-types'
 
+const ignoredHeaderParameters = new Set(['accept', 'authorization', 'content-type'])
+
 export function getParametersByLocation(
   operationParameters: OpenAPI.Parameters | undefined,
   pathItemParameters: OpenAPI.Parameters | undefined,
@@ -7,7 +9,7 @@ export function getParametersByLocation(
   const parametersByLocation = new Map<string, Parameters>()
 
   for (const parameter of [...(pathItemParameters ?? []), ...(operationParameters ?? [])]) {
-    if (!isParameter(parameter) || parameter.in === 'body') {
+    if (!isParameter(parameter) || isIgnoredParameter(parameter)) {
       continue
     }
 
@@ -28,6 +30,12 @@ function getParameterId(parameter: Parameter): ParameterId {
 
 function isParameter(parameter: OpenAPI.Parameter): parameter is Parameter {
   return typeof parameter === 'object' && !('$ref' in parameter)
+}
+
+function isIgnoredParameter(parameter: Parameter): boolean {
+  return (
+    parameter.in === 'body' || (parameter.in === 'header' && ignoredHeaderParameters.has(parameter.name.toLowerCase()))
+  )
 }
 
 export type Parameter = OpenAPIV2.Parameter | OpenAPIV3.ParameterObject | OpenAPIV3_1.ParameterObject

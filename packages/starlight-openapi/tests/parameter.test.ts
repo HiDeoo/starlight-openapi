@@ -80,3 +80,9 @@ test('displays type informations for a v2.0 schema', async ({ docPage }) => {
 
   await expect(sortParameter.getByText('Enum: asc,desc')).toBeVisible()
 })
+
+test('hides various header parameters', async ({ docPage }) => {
+  await docPage.goto('/v30/animals/operations/addanimal/')
+
+  await expect(docPage.getParameters('header')).not.toBeVisible()
+})

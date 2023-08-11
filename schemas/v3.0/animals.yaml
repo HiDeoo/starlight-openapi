@@ -61,6 +61,37 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+    post:
+      summary: Create an animal
+      description: Creates a new animal
+      operationId: addAnimal
+      tags:
+        - animals
+      parameters:
+        - name: authorization
+          in: header
+          description: The authorization token
+          required: true
+      requestBody:
+        description: Animal to add
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Animal'
+      responses:
+        '200':
+          description: animal response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Animal'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /cats:
     get:
       summary: List all cats
