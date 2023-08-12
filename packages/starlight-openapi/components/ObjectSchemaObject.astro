@@ -1,5 +1,5 @@
 ---
-import { getProperties, type SchemaObject } from '../libs/schemaObject'
+import { getProperties, isAdditionalPropertiesWithSchemaObject, type SchemaObject } from '../libs/schemaObject'
 import Schema from './SchemaObject.astro'
 
 interface Props {
@@ -11,6 +11,8 @@ const { schemaObject } = Astro.props
 const properties = getProperties(schemaObject)
 ---
 
+{schemaObject.minProperties && <div>Min Properties: {schemaObject.minProperties}</div>}
+{schemaObject.maxProperties && <div>Max Properties: {schemaObject.maxProperties}</div>}
 <ul>
   {
     Object.entries(properties).map(([name, schema]) => (
@@ -20,4 +22,17 @@ const properties = getProperties(schemaObject)
       </li>
     ))
   }
+  {
+    schemaObject.additionalProperties && (
+      <li>
+        <div>Additional Properties</div>
+        {schemaObject.additionalProperties === true ? (
+          <div>Any additional properties are allowed</div>
+        ) : isAdditionalPropertiesWithSchemaObject(schemaObject.additionalProperties) ? (
+          <Schema schemaObject={schemaObject.additionalProperties} />
+        ) : null}
+      </li>
+    )
+  }
 </ul>
+<div>Required Properties: {schemaObject.required?.join(' - ')}</div>

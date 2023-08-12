@@ -97,6 +97,7 @@ definitions:
             format: 'int64'
   NewAnimal:
     type: 'object'
+    description: 'A representation of an animal'
     required:
       - 'name'
     properties:
@@ -104,6 +105,10 @@ definitions:
         type: 'string'
       tag:
         type: 'string'
+    minProperties: 1
+    maxProperties: 4
+    additionalProperties:
+      type: number
   Error:
     type: 'object'
     required:

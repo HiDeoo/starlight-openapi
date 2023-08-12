@@ -18,5 +18,11 @@ export function getProperties(schemaObject: SchemaObject): Properties {
   return (schemaObject.properties ?? {}) as Properties
 }
 
+export function isAdditionalPropertiesWithSchemaObject(
+  additionalProperties: SchemaObject['additionalProperties'],
+): additionalProperties is SchemaObject {
+  return typeof additionalProperties === 'object'
+}
+
 export type SchemaObject = OpenAPIV2.SchemaObject | OpenAPIV3.NonArraySchemaObject | OpenAPIV3_1.NonArraySchemaObject
 type Properties = Record<string, SchemaObject>
