@@ -1,0 +1,13 @@
+---
+import { getNullable, type SchemaObject } from '../libs/schemaObject'
+import Items from './Items.astro'
+
+interface Props {
+  schemaObject: SchemaObject
+}
+
+const { schemaObject } = Astro.props
+---
+
+<Items items={schemaObject} />
+{getNullable(schemaObject) && <div>NULLABLE</div>}

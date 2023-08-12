@@ -1,0 +1,36 @@
+---
+import { isOpenAPIV2Items, type Items } from '../libs/items'
+import SchemaObject from './SchemaObject.astro'
+
+interface Props {
+  items: Items
+}
+
+const { items } = Astro.props
+---
+
+{items.type && <div>Type: {Array.isArray(items.type) ? items.type.join(' ') : items.type}</div>}
+{items.format && <div>Format: {items.format}</div>}
+{items.default && <div>Default Value: {items.default}</div>}
+{items.maximum && <div>Maximum: {items.maximum}</div>}
+{items.exclusiveMaximum && <div>Exclusive Maximum</div>}
+{items.minimum && <div>Minimum: {items.minimum}</div>}
+{items.exclusiveMinimum && <div>Exclusive Minimum</div>}
+{items.maxLength && <div>Max Length: {items.maxLength}</div>}
+{items.minLength && <div>Min Length: {items.minLength}</div>}
+{items.pattern && <div>Pattern: {items.pattern}</div>}
+{items.maxItems && <div>Max Items: {items.maxItems}</div>}
+{items.minItems && <div>Min Items: {items.minItems}</div>}
+{items.uniqueItems && <div>ONLY UNIQUE ITEMS</div>}
+{items.multipleOf && <div>Multiple Of: {items.multipleOf}</div>}
+{items.enum && <div>Enum: {items.enum.join(',')}</div>}
+{
+  isOpenAPIV2Items(items.items) ? (
+    <>
+      <div>Items:</div>
+      <Astro.self items={items.items} />
+    </>
+  ) : items.items ? (
+    <SchemaObject schemaObject={items.items} />
+  ) : null
+}

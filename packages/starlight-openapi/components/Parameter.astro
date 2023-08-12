@@ -1,13 +1,17 @@
 ---
-import { isItemObject } from '../libs/itemObject'
+import { isOpenAPIV2Items } from '../libs/items'
 import type { Parameter } from '../libs/parameter'
-import ItemObject from './ItemObject.astro'
+import { isParameterWithSchemaObject } from '../libs/schemaObject'
+import Items from './Items.astro'
+import SchemaObject from './SchemaObject.astro'
 
 interface Props {
   parameter: Parameter
 }
 
 const { parameter } = Astro.props
+
+parameter.schema
 ---
 
 <li>
@@ -16,5 +20,11 @@ const { parameter } = Astro.props
   <div>{parameter.required ? 'REQUIRED' : 'NOT REQUIRED'}</div>
   {parameter.deprecated && <div>DEPRECATED</div>}
   {parameter.allowEmptyValue ? <div>ALLOW EMPTY VALUE</div> : <div>DO NOT ALLOW EMPTY VALUE</div>}
-  {isItemObject(parameter) && <ItemObject itemObject={parameter} />}
+  {
+    isOpenAPIV2Items(parameter) ? (
+      <Items items={parameter} />
+    ) : isParameterWithSchemaObject(parameter) ? (
+      <SchemaObject schemaObject={parameter.schema} />
+    ) : null
+  }
 </li>
