@@ -142,6 +142,36 @@ paths:
           description: 'unexpected error'
           schema:
             $ref: '#/definitions/Error'
+  /dogs:
+    post:
+      description: 'Creates a new dog'
+      operationId: 'addDog'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'dog'
+          in: 'body'
+          description: 'Dog to add'
+          required: true
+          schema:
+            anyOf:
+              - $ref: '#/definitions/NewAnimal'
+              - type: 'object'
+                properties:
+                  name:
+                    type: 'string'
+                  age:
+                    type: 'integer'
+                    format: 'int32'
+      responses:
+        '200':
+          description: 'animal response'
+          schema:
+            $ref: '#/definitions/Animal'
+        default:
+          description: 'unexpected error'
+          schema:
+            $ref: '#/definitions/Error'
 definitions:
   Animal:
     type: 'object'

@@ -52,3 +52,16 @@ test('supports schema object `oneOf` property', async ({ docPage }) => {
   await expect(requestBody.getByText('Type: object')).toBeVisible()
   await expect(requestBody.getByText('Property Name: name')).toBeVisible()
 })
+
+test('supports schema object `onyOf` property', async ({ docPage }) => {
+  await docPage.goto('/v20/animals/operations/adddog/')
+
+  const requestBody = docPage.getRequestBody()
+
+  await expect(requestBody.getByText('MULTIPLE TYPE: anyOf')).toBeVisible()
+
+  expect(await requestBody.getByText('Type: object').count()).toBe(2)
+
+  await expect(requestBody.getByText('Property Name: tag')).toBeVisible()
+  await expect(requestBody.getByText('Property Name: age')).toBeVisible()
+})

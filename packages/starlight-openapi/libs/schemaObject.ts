@@ -36,6 +36,11 @@ export function getSchemaObjects(schemaObject: SchemaObject): SchemaObjects | un
       schemaObjects: schemaObject.oneOf as SchemaObject[],
       type: 'oneOf',
     }
+  } else if (schemaObject.anyOf && schemaObject.anyOf.length > 0) {
+    return {
+      schemaObjects: schemaObject.anyOf as SchemaObject[],
+      type: 'anyOf',
+    }
   }
 
   return
@@ -46,5 +51,5 @@ export type Properties = Record<string, SchemaObject>
 
 export interface SchemaObjects {
   schemaObjects: SchemaObject[]
-  type: 'oneOf'
+  type: 'anyOf' | 'oneOf'
 }
