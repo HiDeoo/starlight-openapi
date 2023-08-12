@@ -1,0 +1,19 @@
+---
+import type { Properties } from '../libs/schemaObject'
+import SchemaObject from './SchemaObject.astro'
+
+interface Props {
+  properties: Properties
+}
+
+const { properties } = Astro.props
+---
+
+{
+  Object.entries(properties).map(([name, schema]) => (
+    <li>
+      <div>Property Name: {name}</div>
+      <SchemaObject schemaObject={schema} />
+    </li>
+  ))
+}

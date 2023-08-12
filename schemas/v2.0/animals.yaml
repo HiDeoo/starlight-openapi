@@ -84,6 +84,36 @@ paths:
           description: 'unexpected error'
           schema:
             $ref: '#/definitions/Error'
+  /cats:
+    post:
+      description: 'Creates a new cat'
+      operationId: 'addCat'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'cat'
+          in: 'body'
+          description: 'Cat to add'
+          required: true
+          schema:
+            allOf:
+              - $ref: '#/definitions/NewAnimal'
+              - type: 'object'
+                required:
+                  - 'age'
+                properties:
+                  age:
+                    type: 'integer'
+                    format: 'int32'
+      responses:
+        '200':
+          description: 'animal response'
+          schema:
+            $ref: '#/definitions/Animal'
+        default:
+          description: 'unexpected error'
+          schema:
+            $ref: '#/definitions/Error'
 definitions:
   Animal:
     type: 'object'
