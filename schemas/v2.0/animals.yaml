@@ -114,6 +114,34 @@ paths:
           description: 'unexpected error'
           schema:
             $ref: '#/definitions/Error'
+  /birds:
+    post:
+      description: 'Creates a new bird'
+      operationId: 'addBird'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'bird'
+          in: 'body'
+          description: 'Bird to add'
+          required: true
+          schema:
+            oneOf:
+              - type: 'string'
+                description: 'bird name'
+              - type: 'object'
+                properties:
+                  name:
+                    type: 'string'
+      responses:
+        '200':
+          description: 'animal response'
+          schema:
+            $ref: '#/definitions/Animal'
+        default:
+          description: 'unexpected error'
+          schema:
+            $ref: '#/definitions/Error'
 definitions:
   Animal:
     type: 'object'

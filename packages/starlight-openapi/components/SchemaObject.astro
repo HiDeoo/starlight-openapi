@@ -1,15 +1,27 @@
 ---
-import { getNullable, isSchemaObjectObject, type SchemaObject } from '../libs/schemaObject'
+import { getNullable, getSchemaObjects, isSchemaObjectObject, type SchemaObject } from '../libs/schemaObject'
 import Items from './Items.astro'
 import SchemaObjectObject from './SchemaObjectObject.astro'
+import SchemaObjects from './SchemaObjects.astro'
 
 interface Props {
   schemaObject: SchemaObject
 }
 
 const { schemaObject } = Astro.props
+
+const schemaObjects = getSchemaObjects(schemaObject)
 ---
 
-<Items items={schemaObject} />
-{isSchemaObjectObject(schemaObject) && <SchemaObjectObject {schemaObject} />}
-{getNullable(schemaObject) && <div>NULLABLE</div>}
+{
+  schemaObjects ? (
+    <SchemaObjects {schemaObjects} />
+  ) : (
+    <>
+      {schemaObject.description && <div>{schemaObject.description}</div>}
+      <Items items={schemaObject} />
+      {isSchemaObjectObject(schemaObject) && <SchemaObjectObject {schemaObject} />}
+      {getNullable(schemaObject) && <div>NULLABLE</div>}
+    </>
+  )
+}
