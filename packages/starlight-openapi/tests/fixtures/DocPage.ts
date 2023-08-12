@@ -20,6 +20,10 @@ export class DocPage {
     return this.page.locator(`h3:has-text("${`${location} parameters`}") + ul`).getByRole('listitem')
   }
 
+  getRequestBody() {
+    return this.page.locator(`div:has(> h2:first-child:has-text("Request Body"))`)
+  }
+
   getParameter(location: string, name: string) {
     return this.getParameters(location).filter({ hasText: name })
   }

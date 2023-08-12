@@ -1,6 +1,7 @@
 ---
-import { getNullable, type SchemaObject } from '../libs/schemaObject'
+import { getNullable, isObjectSchemaObject, type SchemaObject } from '../libs/schemaObject'
 import Items from './Items.astro'
+import ObjectSchemaObject from './ObjectSchemaObject.astro'
 
 interface Props {
   schemaObject: SchemaObject
@@ -10,4 +11,5 @@ const { schemaObject } = Astro.props
 ---
 
 <Items items={schemaObject} />
+{isObjectSchemaObject(schemaObject) && <ObjectSchemaObject {schemaObject} />}
 {getNullable(schemaObject) && <div>NULLABLE</div>}

@@ -59,5 +59,5 @@ export interface PathItemOperation {
   title: string
 }
 
-type Operation = OpenAPI.Operation
+export type Operation = OpenAPI.Operation
 type OperationHttpMethod = (typeof operationHttpMethods)[number]

@@ -1,0 +1,30 @@
+---
+import type { Operation } from '../libs/operation'
+import { getOpenAPIV2RequestBodyParameter } from '../libs/requestBody'
+import SchemaObject from './SchemaObject.astro'
+
+interface Props {
+  operation: Operation
+}
+
+const { operation } = Astro.props
+
+const openAPIV2RequestBodyParameter = getOpenAPIV2RequestBodyParameter(operation)
+
+// TODO(HiDeoo) v3
+const hasRequestBody = openAPIV2RequestBodyParameter !== undefined
+// TODO(HiDeoo) v3
+const description = openAPIV2RequestBodyParameter ? openAPIV2RequestBodyParameter.description : null
+
+// TODO(HiDeoo) handle OpenAPI v3 request body
+---
+
+{
+  hasRequestBody && (
+    <div>
+      <h2>Request Body</h2>
+      {description && <div>Description: {description}</div>}
+      {openAPIV2RequestBodyParameter ? <SchemaObject schemaObject={openAPIV2RequestBodyParameter.schema} /> : null}
+    </div>
+  )
+}
