@@ -1,3 +1,34 @@
 {
-  "extends": ["@hideoo"]
+  "extends": ["@hideoo", "plugin:astro/recommended", "plugin:astro/jsx-a11y-recommended"],
+  "overrides": [
+    {
+      "files": ["*.astro"],
+      "parser": "astro-eslint-parser",
+      "parserOptions": {
+        "parser": "@typescript-eslint/parser",
+        "extraFileExtensions": [".astro"]
+      },
+      "rules": {
+        "jsx-a11y/aria-activedescendant-has-tabindex": "off",
+        "jsx-a11y/no-access-key": "off",
+        "jsx-a11y/no-noninteractive-element-interactions": "off",
+        "jsx-a11y/no-noninteractive-tabindex": "off",
+        "jsx-a11y/no-redundant-roles": "off",
+        "jsx-a11y/no-static-element-interactions": "off",
+        "jsx-a11y/role-supports-aria-props": "off",
+        "jsx-a11y/interactive-supports-focus": "off",
+        "jsx-a11y/autocomplete-valid": "off",
+        "jsx-a11y/click-events-have-key-events": "off",
+
+        "react/jsx-key": "off",
+        "react/jsx-no-undef": "off"
+      }
+    },
+    {
+      "files": ["packages/starlight-openapi/components/Route.astro"],
+      "rules": {
+        "unicorn/consistent-destructuring": "off"
+      }
+    }
+  ]
 }

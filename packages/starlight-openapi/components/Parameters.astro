@@ -1,6 +1,7 @@
 ---
 import type { PathItemOperation } from '../libs/operation'
 import { getParametersByLocation } from '../libs/parameter'
+
 import Parameter from './Parameter.astro'
 
 interface Props {
@@ -21,11 +22,11 @@ const parametersByLocation = getParametersByLocation(operation.parameters, pathI
     <>
       <h2>Parameters</h2>
       <div>
-        {Array.from(parametersByLocation.entries()).map(([location, parameters]) => (
+        {[...parametersByLocation.entries()].map(([location, parameters]) => (
           <>
             <h3>{location} parameters</h3>
             <ul>
-              {Array.from(parameters.values()).map((parameter) => (
+              {[...parameters.values()].map((parameter) => (
                 <Parameter {parameter} />
               ))}
             </ul>
