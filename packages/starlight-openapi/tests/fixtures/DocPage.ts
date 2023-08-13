@@ -28,7 +28,17 @@ export class DocPage {
     return this.getParameters(location).filter({ hasText: name })
   }
 
-  getResponse(name: string) {
-    return this.page.locator(`h3:has-text("Response ${`${name}`}") + div`)
+  getResponse(status: string) {
+    return this.page.locator(`h3:has-text("Response ${`${status}`}") + div`)
+  }
+
+  getResponseHeaders(status: string) {
+    return this.page
+      .locator(`h3:has-text("Response ${`${status}`}") + div`)
+      .getByRole('heading', { level: 4, name: 'HEADERS' })
+  }
+
+  getResponseHeader(status: string, name: string) {
+    return this.getResponse(status).getByRole('listitem').filter({ hasText: name })
   }
 }

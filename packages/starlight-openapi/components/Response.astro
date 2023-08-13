@@ -1,4 +1,5 @@
 ---
+import { isResponseWithHeaders } from '../libs/header'
 import {
   getOpenAPIV2ResponseSchema,
   getOpenAPIV3ResponseContent,
@@ -7,6 +8,7 @@ import {
 } from '../libs/response'
 
 import Content from './Content.astro'
+import ResponseHeaders from './ResponseHeaders.astro'
 import SchemaObject from './SchemaObject.astro'
 
 interface Props {
@@ -23,6 +25,8 @@ const openAPIV3ResponseContent = getOpenAPIV3ResponseContent(response)
 <h3>Response {name}</h3>
 <div>
   <div>Description: {response.description}</div>
+  {isResponseWithHeaders(response) && <ResponseHeaders headers={response.headers} />}
+  {(openAPIV2ResponseSchema || openAPIV3ResponseContent) && <h4>Response schema</h4>}
   {
     openAPIV2ResponseSchema ? (
       <SchemaObject schemaObject={openAPIV2ResponseSchema} />

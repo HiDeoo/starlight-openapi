@@ -205,6 +205,9 @@ paths:
           description: 'animal response'
           schema:
             $ref: '#/definitions/Animal'
+          headers:
+            'Content-Type':
+              type: 'string'
         default:
           description: 'unexpected error'
           schema:
@@ -240,6 +243,15 @@ paths:
       responses:
         '200':
           description: 'animal response'
+          headers:
+            X-Rate-Limit-Limit:
+              description: 'The number of allowed requests in the current period'
+              type: integer
+              format: int32
+            X-Rate-Limit-Reset:
+              description: 'The number of seconds left in the current period'
+              type: integer
+              format: int32
           schema:
             $ref: '#/definitions/Animal'
         default:

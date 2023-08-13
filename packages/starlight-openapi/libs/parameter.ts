@@ -1,5 +1,7 @@
 import type { OpenAPI, OpenAPIV2, OpenAPIV3, OpenAPIV3_1 } from 'openapi-types'
 
+import type { Header } from './header'
+
 const ignoredHeaderParameters = new Set(['accept', 'authorization', 'content-type'])
 
 export function getParametersByLocation(
@@ -22,6 +24,10 @@ export function getParametersByLocation(
   }
 
   return parametersByLocation
+}
+
+export function isHeaderParameter(parameter: Header): parameter is Omit<Parameter, 'type'> {
+  return typeof parameter === 'object' && !('name' in parameter) && !('in' in parameter)
 }
 
 function getParameterId(parameter: Parameter): ParameterId {

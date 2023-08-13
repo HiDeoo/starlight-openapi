@@ -1,0 +1,39 @@
+---
+import { type Headers } from '../libs/header'
+import { isOpenAPIV2Items } from '../libs/items'
+import { isHeaderParameter } from '../libs/parameter'
+
+import Items from './Items.astro'
+import Parameter from './Parameter.astro'
+
+interface Props {
+  headers: Headers
+}
+
+const headers = Object.entries(Astro.props.headers).filter(([key]) => key.toLowerCase() !== 'content-type')
+---
+
+{
+  headers.length > 0 && (
+    <>
+      <h4>HEADERS</h4>
+      <ul>
+        {headers.map(([name, header]) => (
+          <li>
+            <div>Header name: {name}</div>
+            {isOpenAPIV2Items(header) ? (
+              <>
+                {header.description && <div>Header description: {header.description}</div>}
+                <Items items={header} />
+              </>
+            ) : isHeaderParameter(header) ? (
+              <ul>
+                <Parameter parameter={header} />
+              </ul>
+            ) : null}
+          </li>
+        ))}
+      </ul>
+    </>
+  )
+}
