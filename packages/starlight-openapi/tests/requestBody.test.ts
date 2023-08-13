@@ -30,6 +30,21 @@ test('displays the request body for a v2.0 schema', async ({ docPage }) => {
   await expect(requestBody.getByText('Required Properties: name')).toBeVisible()
 })
 
+test('displays the request body for a v3.0 schema', async ({ docPage }) => {
+  await docPage.goto('/v30/animals/operations/addanimal/')
+
+  const requestBody = docPage.getRequestBody()
+
+  await expect(requestBody).toBeVisible()
+
+  await expect(requestBody.getByText('Required Request Body')).toBeVisible()
+
+  await expect(requestBody.getByText('Description: Animal to add')).toBeVisible()
+
+  await expect(requestBody.getByText('Media type: application/json')).toBeVisible()
+  await expect(requestBody.getByText('Type: object')).toBeVisible()
+})
+
 test('supports schema object `allOf` property', async ({ docPage }) => {
   await docPage.goto('/v20/animals/operations/addcat/')
 
