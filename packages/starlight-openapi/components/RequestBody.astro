@@ -1,15 +1,21 @@
 ---
 import type { Operation } from '../libs/operation'
-import { getOpenAPIV2RequestBodyParameter, getOpenAPIV3RequestBody } from '../libs/requestBody'
+import {
+  getOpenAPIV2OperationConsumes,
+  getOpenAPIV2RequestBodyParameter,
+  getOpenAPIV3RequestBody,
+} from '../libs/requestBody'
+import type { Schema } from '../libs/schema'
 
 import Content from './Content.astro'
 import SchemaObject from './SchemaObject.astro'
 
 interface Props {
   operation: Operation
+  schema: Schema
 }
 
-const { operation } = Astro.props
+const { operation, schema } = Astro.props
 
 const openAPIV2RequestBodyParameter = getOpenAPIV2RequestBodyParameter(operation)
 const openAPIV3RequestBody = getOpenAPIV3RequestBody(operation)
@@ -18,12 +24,15 @@ const hasRequestBody = openAPIV2RequestBodyParameter !== undefined || openAPIV3R
 const description = openAPIV2RequestBodyParameter
   ? openAPIV2RequestBodyParameter.description
   : openAPIV3RequestBody?.description
+
+const consumes = getOpenAPIV2OperationConsumes(schema, operation)
 ---
 
 {
   hasRequestBody && (
     <div>
       <h2>Request Body</h2>
+      {consumes && consumes.length > 0 && <div>Consumes: {consumes.join(', ')}</div>}
       {openAPIV3RequestBody?.required && <div>Required Request Body</div>}
       {description && <div>Description: {description}</div>}
       {openAPIV2RequestBodyParameter ? (

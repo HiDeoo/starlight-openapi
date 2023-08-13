@@ -13,6 +13,7 @@ interface Props {
 
 const {
   operation: { method, operation, path },
+  schema,
 } = Astro.props
 
 // TODO(HiDeoo) capitalize description
@@ -27,5 +28,5 @@ const {
   </div>
   {operation.deprecated && <div>OPERATION DEPRECATED</div>}
   <Parameters operation={Astro.props.operation} />
-  <RequestBody {operation} />
+  <RequestBody {operation} {schema} />
 </div>

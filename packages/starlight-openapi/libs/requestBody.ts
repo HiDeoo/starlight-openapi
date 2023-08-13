@@ -2,6 +2,7 @@ import type { OpenAPIV2, OpenAPIV3, OpenAPIV3_1 } from 'openapi-types'
 
 import type { Operation } from './operation'
 import type { Parameter } from './parameter'
+import type { Schema } from './schema'
 
 export function getOpenAPIV2RequestBodyParameter(operation: Operation): OpenAPIV2.InBodyParameterObject | undefined {
   if ('requestBody' in operation || operation.parameters === undefined) {
@@ -17,6 +18,16 @@ export function getOpenAPIV3RequestBody(operation: Operation): RequestBody | und
   }
 
   return operation.requestBody
+}
+
+export function getOpenAPIV2OperationConsumes(schema: Schema, operation: Operation): OpenAPIV2.MimeTypes | undefined {
+  if ('consumes' in operation) {
+    return operation.consumes
+  } else if ('consumes' in schema.document) {
+    return schema.document.consumes
+  }
+
+  return
 }
 
 function isOpenAPIV2RequestBodyParameter(parameter: Parameter): parameter is OpenAPIV2.InBodyParameterObject {

@@ -115,3 +115,19 @@ test('displays examples', async ({ docPage }) => {
   await expect(requestBody.getByText('Example value: "Aubrey"')).toBeVisible()
   await expect(requestBody.getByText('Example value: {"name":"Harley"}')).toBeVisible()
 })
+
+test('displays the global `consumes` property', async ({ docPage }) => {
+  await docPage.goto('/v20/petstore-simple/operations/addpet/')
+
+  const requestBody = docPage.getRequestBody()
+
+  await expect(requestBody.getByText('Consumes: application/json')).toBeVisible()
+})
+
+test('overrides the global `consumes` property', async ({ docPage }) => {
+  await docPage.goto('/v20/animals/operations/addanimal/')
+
+  const requestBody = docPage.getRequestBody()
+
+  await expect(requestBody.getByText('Consumes: application/json, application/xml')).toBeVisible()
+})
