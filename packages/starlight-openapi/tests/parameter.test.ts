@@ -125,3 +125,14 @@ test('displays multiple examples', async ({ docPage }) => {
   await expect(limitParameter.getByText('Example name: multiple')).toBeVisible()
   await expect(limitParameter.getByText('Example value: 30')).toBeVisible()
 })
+
+test('uses the `content` property over a schema', async ({ docPage }) => {
+  await docPage.goto('/v30/animals/operations/listbears/')
+
+  const limitParameter = docPage.getParameter('query', 'limit')
+
+  await expect(limitParameter.getByText('Media type: application/json')).toBeVisible()
+  await expect(limitParameter.getByText('Example value: 20')).toBeVisible()
+  await expect(limitParameter.getByText('Media type: application/xml')).toBeVisible()
+  await expect(limitParameter.getByText('Example value: 30')).toBeVisible()
+})

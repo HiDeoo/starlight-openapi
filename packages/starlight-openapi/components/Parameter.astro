@@ -3,17 +3,15 @@ import { isOpenAPIV2Items } from '../libs/items'
 import type { Parameter } from '../libs/parameter'
 import { isParameterWithSchemaObject } from '../libs/schemaObject'
 
-import Examples from './Examples.astro'
+import Content from './Content.astro'
 import Items from './Items.astro'
-import SchemaObject from './SchemaObject.astro'
+import Schema from './Schema.astro'
 
 interface Props {
   parameter: Parameter
 }
 
 const { parameter } = Astro.props
-
-const hasExamples = parameter.example !== undefined || parameter.examples !== undefined
 ---
 
 <li>
@@ -25,11 +23,10 @@ const hasExamples = parameter.example !== undefined || parameter.examples !== un
   {
     isOpenAPIV2Items(parameter) ? (
       <Items items={parameter} />
+    ) : parameter.content ? (
+      <Content content={parameter.content} />
     ) : isParameterWithSchemaObject(parameter) ? (
-      <>
-        <SchemaObject schemaObject={parameter.schema} hideExample={hasExamples} />
-        <Examples example={parameter.example} examples={parameter.examples} />
-      </>
+      <Schema example={parameter.example} examples={parameter.examples} schema={parameter.schema} />
     ) : null
   }
 </li>

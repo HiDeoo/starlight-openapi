@@ -177,6 +177,38 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /bears:
+    get:
+      summary: List all bears
+      operationId: listBears
+      tags:
+        - animals
+      parameters:
+        - name: limit
+          in: query
+          description: How many birds to return at one time (max 100)
+          content:
+            application/json:
+              schema:
+                type: integer
+              example: 20
+            application/xml:
+              schema:
+                type: integer
+              example: 30
+      responses:
+        '200':
+          description: A paged array of cats
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Animals'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
   schemas:
     Animal:
