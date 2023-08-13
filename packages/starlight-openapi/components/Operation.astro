@@ -5,6 +5,7 @@ import type { Schema } from '../libs/schema'
 import ExternalDocs from './ExternalDocs.astro'
 import Parameters from './Parameters.astro'
 import RequestBody from './RequestBody.astro'
+import Responses from './Responses.astro'
 
 interface Props {
   operation: PathItemOperation
@@ -29,4 +30,5 @@ const {
   {operation.deprecated && <div>OPERATION DEPRECATED</div>}
   <Parameters operation={Astro.props.operation} />
   <RequestBody {operation} {schema} />
+  <Responses responses={operation.responses} />
 </div>

@@ -1,0 +1,33 @@
+---
+import {
+  getOpenAPIV2ResponseSchema,
+  getOpenAPIV3ResponseContent,
+  type Response,
+  type Responses,
+} from '../libs/response'
+
+import Content from './Content.astro'
+import SchemaObject from './SchemaObject.astro'
+
+interface Props {
+  name: keyof Responses
+  response: Response
+}
+
+const { name, response } = Astro.props
+
+const openAPIV2ResponseSchema = getOpenAPIV2ResponseSchema(response)
+const openAPIV3ResponseContent = getOpenAPIV3ResponseContent(response)
+---
+
+<h3>Response {name}</h3>
+<div>
+  <div>Description: {response.description}</div>
+  {
+    openAPIV2ResponseSchema ? (
+      <SchemaObject schemaObject={openAPIV2ResponseSchema} />
+    ) : openAPIV3ResponseContent ? (
+      <Content content={openAPIV3ResponseContent} />
+    ) : null
+  }
+</div>

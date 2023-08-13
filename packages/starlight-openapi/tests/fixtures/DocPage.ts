@@ -27,4 +27,8 @@ export class DocPage {
   getParameter(location: string, name: string) {
     return this.getParameters(location).filter({ hasText: name })
   }
+
+  getResponse(name: string) {
+    return this.page.locator(`h3:has-text("Response ${`${name}`}") + div`)
+  }
 }

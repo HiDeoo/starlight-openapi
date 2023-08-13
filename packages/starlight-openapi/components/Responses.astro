@@ -1,0 +1,27 @@
+---
+import { includesDefaultResponse, type Responses } from '../libs/response'
+
+import Response from './Response.astro'
+
+interface Props {
+  responses: Responses | undefined
+}
+
+const { responses } = Astro.props
+---
+
+{
+  responses && (
+    <div>
+      <h2>Responses</h2>
+      {Object.entries(responses).map(([name, response]) => {
+        if (name === 'default') {
+          return null
+        }
+
+        return <Response {name} {response} />
+      })}
+      {includesDefaultResponse(responses) && <Response name="default" response={responses['default']} />}
+    </div>
+  )
+}
