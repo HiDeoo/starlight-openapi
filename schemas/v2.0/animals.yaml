@@ -172,6 +172,32 @@ paths:
           description: 'unexpected error'
           schema:
             $ref: '#/definitions/Error'
+  /wolves:
+    post:
+      description: 'Creates a new wolf'
+      operationId: 'addWolf'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'wolf'
+          in: 'body'
+          description: 'Wolf to add'
+          required: true
+          schema:
+            type: 'object'
+            properties:
+              name:
+                not:
+                  type: 'string'
+      responses:
+        '200':
+          description: 'animal response'
+          schema:
+            $ref: '#/definitions/Animal'
+        default:
+          description: 'unexpected error'
+          schema:
+            $ref: '#/definitions/Error'
 definitions:
   Animal:
     type: 'object'

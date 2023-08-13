@@ -12,11 +12,18 @@ interface Props {
 const { schemaObject } = Astro.props
 
 const schemaObjects = getSchemaObjects(schemaObject)
+
+const hasMany = schemaObjects !== undefined
+const isNegated = schemaObject.not !== undefined
 ---
 
 {
-  schemaObjects ? (
+  hasMany ? (
     <SchemaObjects {schemaObjects} />
+  ) : isNegated ? (
+    <div>
+      NOT Type: <Astro.self schemaObject={schemaObject.not} />{' '}
+    </div>
   ) : (
     <>
       {schemaObject.description && <div>{schemaObject.description}</div>}
