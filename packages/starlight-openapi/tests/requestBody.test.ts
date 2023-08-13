@@ -75,3 +75,11 @@ test('supports schema object `not` property', async ({ docPage }) => {
 
   await expect(requestBody.getByText('Type: string')).toBeVisible()
 })
+
+test('supports schema object `discriminator` property', async ({ docPage }) => {
+  await docPage.goto('/v20/animals/operations/addbear/')
+
+  const requestBody = docPage.getRequestBody()
+
+  await expect(requestBody.getByText('Discriminator: type')).toBeVisible()
+})

@@ -1,16 +1,33 @@
 ---
-import type { SchemaObjects } from '../libs/schemaObject'
+import type { Discriminator, SchemaObjects } from '../libs/schemaObject'
 
 import SchemaObject from './SchemaObject.astro'
 
 interface Props {
+  discriminator: Discriminator
   schemaObjects: SchemaObjects
 }
 
 const {
+  discriminator,
   schemaObjects: { schemaObjects, type },
 } = Astro.props
+
+const discriminatorPropertyName =
+  typeof discriminator === 'string'
+    ? discriminator
+    : typeof discriminator === 'object'
+    ? discriminator.propertyName
+    : undefined
 ---
 
 <div>MULTIPLE TYPE: {type}</div>
-{schemaObjects.map((schemaObject) => <SchemaObject schemaObject={schemaObject} />)}
+{discriminatorPropertyName && <div>Discriminator: {discriminatorPropertyName}</div>}
+{
+  schemaObjects.map((schemaObject) => (
+    <>
+      {schemaObject.title && <div>{schemaObject.title}</div>}
+      <SchemaObject schemaObject={schemaObject} />
+    </>
+  ))
+}

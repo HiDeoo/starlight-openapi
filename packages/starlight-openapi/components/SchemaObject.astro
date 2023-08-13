@@ -19,7 +19,7 @@ const isNegated = schemaObject.not !== undefined
 
 {
   hasMany ? (
-    <SchemaObjects {schemaObjects} />
+    <SchemaObjects discriminator={schemaObject.discriminator} {schemaObjects} />
   ) : isNegated ? (
     <div>
       NOT Type: <Astro.self schemaObject={schemaObject.not} />{' '}

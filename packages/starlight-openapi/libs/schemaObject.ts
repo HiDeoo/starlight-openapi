@@ -48,6 +48,7 @@ export function getSchemaObjects(schemaObject: SchemaObject): SchemaObjects | un
 
 export type SchemaObject = OpenAPIV2.SchemaObject | OpenAPIV3.NonArraySchemaObject | OpenAPIV3_1.NonArraySchemaObject
 export type Properties = Record<string, SchemaObject>
+export type Discriminator = SchemaObject['discriminator']
 
 export interface SchemaObjects {
   schemaObjects: SchemaObject[]

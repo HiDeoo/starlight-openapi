@@ -198,6 +198,43 @@ paths:
           description: 'unexpected error'
           schema:
             $ref: '#/definitions/Error'
+  /bears:
+    post:
+      description: 'Creates a new bear'
+      operationId: 'addBear'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'bear'
+          in: 'body'
+          description: 'Bear to add'
+          required: true
+          schema:
+            discriminator: 'type'
+            oneOf:
+              - type: object
+                title: 'white bear'
+                properties:
+                  name:
+                    type: string
+                  type:
+                    type: string
+              - type: object
+                title: 'brown bear'
+                properties:
+                  name:
+                    type: string
+                  type:
+                    type: string
+      responses:
+        '200':
+          description: 'animal response'
+          schema:
+            $ref: '#/definitions/Animal'
+        default:
+          description: 'unexpected error'
+          schema:
+            $ref: '#/definitions/Error'
 definitions:
   Animal:
     type: 'object'
