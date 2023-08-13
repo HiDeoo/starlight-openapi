@@ -132,10 +132,13 @@ paths:
             oneOf:
               - type: 'string'
                 description: 'bird name'
+                example: 'Aubrey'
               - type: 'object'
                 properties:
                   name:
                     type: 'string'
+                example:
+                  name: 'Harley'
       responses:
         '200':
           description: 'animal response'

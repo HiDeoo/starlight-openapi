@@ -32,6 +32,7 @@ const isNegated = schemaObject.not !== undefined
       <Items items={schemaObject} />
       {isSchemaObjectObject(schemaObject) && <SchemaObjectObject {schemaObject} />}
       {getNullable(schemaObject) && <div>NULLABLE</div>}
+      {schemaObject.example && <div>Example: {JSON.stringify(schemaObject.example)}</div>}
     </>
   )
 }

@@ -87,5 +87,16 @@ test('supports schema object `discriminator` property', async ({ docPage }) => {
 test('displays external docs', async ({ docPage }) => {
   await docPage.goto('/v20/animals/operations/addcat/')
 
-  await expect(docPage.page.getByText('External Docs URL')).toBeVisible()
+  const requestBody = docPage.getRequestBody()
+
+  await expect(requestBody.getByText('External Docs URL')).toBeVisible()
+})
+
+test('displays examples', async ({ docPage }) => {
+  await docPage.goto('/v20/animals/operations/addbird/')
+
+  const requestBody = docPage.getRequestBody()
+
+  await expect(requestBody.getByText('Example: "Aubrey"')).toBeVisible()
+  await expect(requestBody.getByText('Example: {"name":"Harley"}')).toBeVisible()
 })
