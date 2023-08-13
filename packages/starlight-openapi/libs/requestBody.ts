@@ -30,6 +30,16 @@ export function getOpenAPIV2OperationConsumes(schema: Schema, operation: Operati
   return
 }
 
+export function getOpenAPIV2OperationProduces(schema: Schema, operation: Operation): OpenAPIV2.MimeTypes | undefined {
+  if ('produces' in operation) {
+    return operation.produces
+  } else if ('produces' in schema.document) {
+    return schema.document.produces
+  }
+
+  return
+}
+
 function isOpenAPIV2RequestBodyParameter(parameter: Parameter): parameter is OpenAPIV2.InBodyParameterObject {
   return parameter.in === 'body'
 }

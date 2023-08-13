@@ -8,6 +8,8 @@ info:
 basePath: '/api'
 consumes:
   - 'application/json'
+produces:
+  - 'application/json'
 paths:
   /animals:
     get:
@@ -73,6 +75,7 @@ paths:
         - 'application/xml'
       produces:
         - 'application/json'
+        - 'application/xml'
       parameters:
         - name: 'animal'
           in: 'body'
@@ -93,8 +96,6 @@ paths:
     post:
       description: 'Creates a new cat'
       operationId: 'addCat'
-      produces:
-        - 'application/json'
       parameters:
         - name: 'cat'
           in: 'body'

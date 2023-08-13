@@ -29,3 +29,19 @@ test('displays the responses for a v3.0 schema', async ({ docPage }) => {
   await expect(defaultResponse.getByText('Media type: application/json')).toBeVisible()
   await expect(defaultResponse.getByText('Type: object')).toBeVisible()
 })
+
+test('displays the global `produces` property for a v2.0 schema', async ({ docPage }) => {
+  await docPage.goto('/v20/petstore-simple/operations/addpet/')
+
+  const requestBody = docPage.getResponse('200')
+
+  await expect(requestBody.getByText('Produces: application/json')).toBeVisible()
+})
+
+test('overrides the global `produces` property for a v2.0 schema', async ({ docPage }) => {
+  await docPage.goto('/v20/animals/operations/addanimal/')
+
+  const requestBody = docPage.getResponse('200')
+
+  await expect(requestBody.getByText('Produces: application/json, application/xml')).toBeVisible()
+})

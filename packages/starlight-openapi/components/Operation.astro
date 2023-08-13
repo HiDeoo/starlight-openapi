@@ -30,5 +30,5 @@ const {
   {operation.deprecated && <div>OPERATION DEPRECATED</div>}
   <Parameters operation={Astro.props.operation} />
   <RequestBody {operation} {schema} />
-  <Responses responses={operation.responses} />
+  <Responses {operation} responses={operation.responses} {schema} />
 </div>

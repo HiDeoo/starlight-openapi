@@ -1,13 +1,17 @@
 ---
+import type { Operation } from '../libs/operation'
 import { includesDefaultResponse, type Responses } from '../libs/response'
+import type { Schema } from '../libs/schema'
 
 import Response from './Response.astro'
 
 interface Props {
+  operation: Operation
   responses: Responses | undefined
+  schema: Schema
 }
 
-const { responses } = Astro.props
+const { operation, responses, schema } = Astro.props
 ---
 
 {
@@ -19,9 +23,11 @@ const { responses } = Astro.props
           return null
         }
 
-        return <Response {name} {response} />
+        return <Response {name} {operation} {response} {schema} />
       })}
-      {includesDefaultResponse(responses) && <Response name="default" response={responses['default']} />}
+      {includesDefaultResponse(responses) && (
+        <Response name="default" {operation} response={responses['default']} {schema} />
+      )}
     </div>
   )
 }

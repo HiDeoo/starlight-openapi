@@ -116,7 +116,7 @@ test('displays examples', async ({ docPage }) => {
   await expect(requestBody.getByText('Example value: {"name":"Harley"}')).toBeVisible()
 })
 
-test('displays the global `consumes` property', async ({ docPage }) => {
+test('displays the global `consumes` property for a v2.0 schema', async ({ docPage }) => {
   await docPage.goto('/v20/petstore-simple/operations/addpet/')
 
   const requestBody = docPage.getRequestBody()
@@ -124,7 +124,7 @@ test('displays the global `consumes` property', async ({ docPage }) => {
   await expect(requestBody.getByText('Consumes: application/json')).toBeVisible()
 })
 
-test('overrides the global `consumes` property', async ({ docPage }) => {
+test('overrides the global `consumes` property for a v2.0 schema', async ({ docPage }) => {
   await docPage.goto('/v20/animals/operations/addanimal/')
 
   const requestBody = docPage.getRequestBody()
