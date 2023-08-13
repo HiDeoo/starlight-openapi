@@ -1,6 +1,7 @@
 ---
 import type { PathItemOperation } from '../libs/operation'
 import type { Schema } from '../libs/schema'
+import ExternalDocs from './ExternalDocs.astro'
 
 import Parameters from './Parameters.astro'
 import RequestBody from './RequestBody.astro'
@@ -19,16 +20,7 @@ const {
 
 <div>
   {operation.description && <div>Description in MARKDOWN: {operation.description}</div>}
-  {
-    operation.externalDocs && (
-      <div>
-        <div>External Docs URL: {operation.externalDocs.url}</div>
-        {operation.externalDocs.description && (
-          <div>External Docs Description: {operation.externalDocs.description}</div>
-        )}
-      </div>
-    )
-  }
+  <ExternalDocs docs={operation.externalDocs} />
   <div>
     <div>Method: {method}</div>
     <div>Path: {path}</div>

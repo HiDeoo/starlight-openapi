@@ -1,6 +1,7 @@
 ---
 import { getNullable, getSchemaObjects, isSchemaObjectObject, type SchemaObject } from '../libs/schemaObject'
 
+import ExternalDocs from './ExternalDocs.astro'
 import Items from './Items.astro'
 import SchemaObjectObject from './SchemaObjectObject.astro'
 import SchemaObjects from './SchemaObjects.astro'
@@ -27,6 +28,7 @@ const isNegated = schemaObject.not !== undefined
   ) : (
     <>
       {schemaObject.description && <div>{schemaObject.description}</div>}
+      <ExternalDocs docs={schemaObject.externalDocs} />
       <Items items={schemaObject} />
       {isSchemaObjectObject(schemaObject) && <SchemaObjectObject {schemaObject} />}
       {getNullable(schemaObject) && <div>NULLABLE</div>}
