@@ -116,6 +116,67 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /birds:
+    get:
+      summary: List all birds
+      operationId: listBirds
+      tags:
+        - animals
+      parameters:
+        - name: limit
+          in: query
+          description: How many birds to return at one time (max 100)
+          schema:
+            type: integer
+            example: 10
+          example: 20
+      responses:
+        '200':
+          description: A paged array of cats
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Animals'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /dogs:
+    get:
+      summary: List all dogs
+      operationId: listDogs
+      tags:
+        - animals
+      parameters:
+        - name: limit
+          in: query
+          description: How many birds to return at one time (max 100)
+          schema:
+            type: integer
+          example: 20
+          examples:
+            single:
+              summary: A single dog
+              description: A unique dog
+              value: 1
+              externalValue: 'https://example.com/dogs/1'
+            multiple:
+              value: 30
+      responses:
+        '200':
+          description: A paged array of cats
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Animals'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
   schemas:
     Animal:

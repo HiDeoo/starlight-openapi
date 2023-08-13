@@ -4,10 +4,11 @@ import { isOpenAPIV2Items, type Items } from '../libs/items'
 import SchemaObject from './SchemaObject.astro'
 
 interface Props {
+  hideExample?: boolean
   items: Items
 }
 
-const { items } = Astro.props
+const { hideExample, items } = Astro.props
 ---
 
 {items.type && <div>Type: {Array.isArray(items.type) ? items.type.join(' ') : items.type}</div>}
@@ -32,6 +33,6 @@ const { items } = Astro.props
       <Astro.self items={items.items} />
     </>
   ) : items.items ? (
-    <SchemaObject schemaObject={items.items} />
+    <SchemaObject schemaObject={items.items} {hideExample} />
   ) : null
 }

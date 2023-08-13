@@ -97,6 +97,6 @@ test('displays examples', async ({ docPage }) => {
 
   const requestBody = docPage.getRequestBody()
 
-  await expect(requestBody.getByText('Example: "Aubrey"')).toBeVisible()
-  await expect(requestBody.getByText('Example: {"name":"Harley"}')).toBeVisible()
+  await expect(requestBody.getByText('Example value: "Aubrey"')).toBeVisible()
+  await expect(requestBody.getByText('Example value: {"name":"Harley"}')).toBeVisible()
 })

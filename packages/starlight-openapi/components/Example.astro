@@ -1,0 +1,23 @@
+---
+import type { Example } from '../libs/example'
+
+interface Props {
+  example?: Example
+  raw?: Example['value']
+}
+
+const { example, raw } = Astro.props
+
+const exampleToRender = raw === undefined ? example : { value: raw }
+---
+
+{
+  exampleToRender && (
+    <>
+      {exampleToRender.summary && <div>Example Summary: {exampleToRender.summary}</div>}
+      {exampleToRender.description && <div>Example Description IN MARKDOWN: {exampleToRender.description}</div>}
+      {exampleToRender.externalValue && <div>Example external value (LINK): {exampleToRender.externalValue}</div>}
+      {exampleToRender.value && <div>Example value: {JSON.stringify(exampleToRender.value)}</div>}
+    </>
+  )
+}

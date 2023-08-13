@@ -98,7 +98,30 @@ test('displays type informations for a v3.0 schema shared with a v2.0 schema', a
 test('displays type informations for a v3.0 schema', async ({ docPage }) => {
   await docPage.goto('/v30/animals/operations/listanimals/')
 
-  const tagsParameter = docPage.getParameter('query', 'limit')
+  const limitParameter = docPage.getParameter('query', 'limit')
 
-  await expect(tagsParameter.getByText('NULLABLE')).toBeVisible()
+  await expect(limitParameter.getByText('NULLABLE')).toBeVisible()
+})
+
+test('overrides a schema example by a parameter example', async ({ docPage }) => {
+  await docPage.goto('/v30/animals/operations/listbirds/')
+
+  const limitParameter = docPage.getParameter('query', 'limit')
+
+  await expect(limitParameter.getByText('Example value: 10')).not.toBeVisible()
+  await expect(limitParameter.getByText('Example value: 20')).toBeVisible()
+})
+
+test('displays multiple examples', async ({ docPage }) => {
+  await docPage.goto('/v30/animals/operations/listdogs/')
+
+  const limitParameter = docPage.getParameter('query', 'limit')
+
+  await expect(limitParameter.getByText('Example name: single')).toBeVisible()
+  await expect(limitParameter.getByText('Example Summary: A single dog')).toBeVisible()
+  await expect(limitParameter.getByText('Example Description IN MARKDOWN: A unique dog')).toBeVisible()
+  await expect(limitParameter.getByText('Example external value (LINK): https://example.com/dogs/1')).toBeVisible()
+
+  await expect(limitParameter.getByText('Example name: multiple')).toBeVisible()
+  await expect(limitParameter.getByText('Example value: 30')).toBeVisible()
 })
