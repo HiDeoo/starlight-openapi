@@ -1,5 +1,5 @@
 ---
-import { getLicenseIdentifier, getOpenAPIVersion, getSummary, isOpenAPIV2Document } from '../libs/document'
+import { getLicenseIdentifier, getOpenAPIVersion, getSummary } from '../libs/document'
 import type { Schema } from '../libs/schema'
 
 interface Props {
@@ -39,15 +39,6 @@ const licenseIdentifier = getLicenseIdentifier(document)
         {document.info.license.url && <div>License URL: {document.info.license.url}</div>}
         {licenseIdentifier && <div>License identifier: {licenseIdentifier}</div>}
       </div>
-    )
-  }
-  {
-    isOpenAPIV2Document(document) && (
-      <>
-        {document.host && <div>Host: {document.host}</div>}
-        {document.basePath && <div>Base Path: {document.basePath}</div>}
-        {document.schemes && <div>Schemes: {document.schemes.join(', ')}</div>}
-      </>
     )
   }
 </div>
