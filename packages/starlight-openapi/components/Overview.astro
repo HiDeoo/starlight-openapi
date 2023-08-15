@@ -1,6 +1,7 @@
 ---
 import { getLicenseIdentifier, getOpenAPIVersion, getSummary } from '../libs/document'
 import type { Schema } from '../libs/schema'
+import ExternalDocs from './ExternalDocs.astro'
 
 interface Props {
   schema: Schema
@@ -41,4 +42,5 @@ const licenseIdentifier = getLicenseIdentifier(document)
       </div>
     )
   }
+  <ExternalDocs docs={document.externalDocs} />
 </div>

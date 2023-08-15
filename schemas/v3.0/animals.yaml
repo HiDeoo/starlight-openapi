@@ -7,6 +7,9 @@ info:
 security:
   - petstore_auth:
       - 'read:pets'
+externalDocs:
+  description: Find out more about our animals
+  url: https://example.com/more-info
 paths:
   /animals:
     parameters:

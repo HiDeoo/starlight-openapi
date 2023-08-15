@@ -30,3 +30,10 @@ test('displays advanced overviews', async ({ docPage }) => {
   await expect(docPage.getByText('License name: Apache 2.0')).toBeVisible()
   await expect(docPage.getByText('License URL: https://www.apache.org/licenses/LICENSE-2.0.html')).toBeVisible()
 })
+
+test('displays external docs link in the overview', async ({ docPage }) => {
+  await docPage.goto('/v30/animals/')
+
+  await expect(docPage.getByText('External Docs URL: https://example.com/more-info')).toBeVisible()
+  await expect(docPage.getByText('External Docs Description: Find out more about our animals')).toBeVisible()
+})
