@@ -1,0 +1,20 @@
+---
+import type { ExamplesV2 } from '../libs/example'
+
+import Example from './Example.astro'
+
+interface Props {
+  examples: ExamplesV2
+}
+
+const { examples } = Astro.props
+---
+
+{
+  Object.entries(examples).map(([name, data]) => (
+    <>
+      <div>Example name: {name}</div>
+      <Example raw={data} />
+    </>
+  ))
+}

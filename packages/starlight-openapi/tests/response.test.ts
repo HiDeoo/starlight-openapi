@@ -45,3 +45,12 @@ test('overrides the global `produces` property for a v2.0 schema', async ({ docP
 
   await expect(requestBody.getByText('Produces: application/json, application/xml')).toBeVisible()
 })
+
+test('display the examples for a v2.0 schema', async ({ docPage }) => {
+  await docPage.goto('/v20/animals/operations/findanimals/')
+
+  const requestBody = docPage.getResponse('200')
+
+  await expect(requestBody.getByText('Example name: application/json')).toBeVisible()
+  await expect(requestBody.getByText('Example value: [{"id":1,"name":"Bessy"},{"id":2,"name":"Hazel"}]')).toBeVisible()
+})

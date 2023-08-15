@@ -63,6 +63,12 @@ paths:
             type: 'array'
             items:
               $ref: '#/definitions/Animal'
+          examples:
+            application/json:
+              - id: 1
+                name: 'Bessy'
+              - id: 2
+                name: 'Hazel'
         default:
           description: 'unexpected error'
           schema:

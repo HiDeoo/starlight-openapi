@@ -1,11 +1,11 @@
 ---
-import type { Examples } from '../libs/example'
+import type { ExamplesV3 } from '../libs/example'
 
 import Example from './Example.astro'
 
 export interface Props {
   example: unknown | undefined
-  examples: Examples | undefined
+  examples: ExamplesV3 | undefined
 }
 
 const { example, examples } = Astro.props
