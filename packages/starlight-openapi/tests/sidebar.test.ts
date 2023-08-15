@@ -41,5 +41,28 @@ test('respects tags order', async ({ sidebarPage }) => {
     {
       label: 'animals',
     },
+    {
+      label: 'Webhooks',
+    },
+  ])
+})
+
+test('lists webhooks', async ({ sidebarPage }) => {
+  await sidebarPage.goto()
+
+  const items = await sidebarPage.getSidebarGroupItems('Animals v3.0')
+
+  expect(items).toMatchObject([
+    { name: 'Overview' },
+    {
+      label: 'places',
+    },
+    {
+      label: 'animals',
+    },
+    {
+      label: 'Webhooks',
+      items: [{ name: 'New animal' }, { name: 'newCat' }],
+    },
   ])
 })

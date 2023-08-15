@@ -26,7 +26,7 @@ const {
   <ExternalDocs docs={operation.externalDocs} />
   <div>
     <div>Method: {method}</div>
-    <div>Path: {path}</div>
+    {path && <div>Path: {path}</div>}
   </div>
   {operation.deprecated && <div>OPERATION DEPRECATED</div>}
   <Security {operation} {schema} />

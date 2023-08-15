@@ -1,4 +1,4 @@
-import { getOperationsByTag } from './operation'
+import { getOperationsByTag, getWebhooksOperations } from './operation'
 import { getBaseLink } from './path'
 import type { Schema } from './schema'
 import { makeSidebarGroup, makeSidebarLink, type SidebarGroup } from './starlight'
@@ -13,6 +13,22 @@ export function getPathItemSidebarGroups({ config, document }: Schema): SidebarG
       operations.map(({ slug, title }) => makeSidebarLink(title, baseLink + slug)),
     ),
   )
+}
+
+export function getWebhooksSidebarGroups({ config, document }: Schema): SidebarGroup['items'] {
+  const baseLink = getBaseLink(config)
+  const operations = getWebhooksOperations(document)
+
+  if (operations.length === 0) {
+    return []
+  }
+
+  return [
+    makeSidebarGroup(
+      'Webhooks',
+      operations.map(({ slug, title }) => makeSidebarLink(title, baseLink + slug)),
+    ),
+  ]
 }
 
 export function isPathItem(pathItem: unknown): pathItem is PathItem {

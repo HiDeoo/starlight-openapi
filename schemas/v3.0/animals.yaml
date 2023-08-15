@@ -1,4 +1,4 @@
-openapi: '3.0.0'
+openapi: '3.1.0'
 info:
   version: 1.0.0
   title: Animals
@@ -252,6 +252,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+webhooks:
+  newAnimal:
+    post:
+      summary: New animal
+      operationId: newAnimal
+      requestBody:
+        description: New animal details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Animal'
+      responses:
+        '200':
+          description: Return a 200 status to indicate that the data was received successfully
+  newCat:
+    post:
+      operationId: newCat
+      requestBody:
+        description: New cat details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Animal'
+      responses:
+        '200':
+          description: Return a 200 status to indicate that the data was received successfully
 components:
   schemas:
     Animal:

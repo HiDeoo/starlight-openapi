@@ -59,6 +59,39 @@ export function getOperationsByTag(document: Schema['document']) {
   return operationsByTag
 }
 
+export function getWebhooksOperations(document: Schema['document']): PathItemOperation[] {
+  if (!('webhooks' in document)) {
+    return []
+  }
+
+  const operations: PathItemOperation[] = []
+
+  for (const [webhookKey, pathItem] of Object.entries(document.webhooks)) {
+    if (!isPathItem(pathItem)) {
+      continue
+    }
+
+    for (const method of operationHttpMethods) {
+      if (!isPathItemOperation(pathItem, method)) {
+        continue
+      }
+
+      const operation = pathItem[method]
+      const operationId = operation.operationId ?? webhookKey
+
+      operations.push({
+        method,
+        operation,
+        pathItem,
+        slug: `webhooks/${slug(operationId)}`,
+        title: operation.summary ?? operationId,
+      })
+    }
+  }
+
+  return operations
+}
+
 export function isPathItemOperation<TMethod extends OperationHttpMethod>(
   pathItem: PathItem,
   method: TMethod,
@@ -69,7 +102,7 @@ export function isPathItemOperation<TMethod extends OperationHttpMethod>(
 export interface PathItemOperation {
   method: OperationHttpMethod
   operation: Operation
-  path: string
+  path?: string
   pathItem: PathItem
   slug: string
   title: string
