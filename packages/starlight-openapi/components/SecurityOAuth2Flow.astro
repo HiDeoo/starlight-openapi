@@ -1,0 +1,29 @@
+---
+import type { SecuritySchemeOAuth2Flow } from '../libs/security'
+
+interface Props {
+  flow: SecuritySchemeOAuth2Flow
+  type: string
+}
+
+const { flow, type } = Astro.props
+---
+
+<div>Flow type: {type}</div>
+{'authorizationUrl' in flow && <div>Authorization URL: {flow.authorizationUrl}</div>}
+{'tokenUrl' in flow && <div>Token URL: {flow.tokenUrl}</div>}
+{'refreshUrl' in flow && <div>Refresh URL: {flow.refreshUrl}</div>}
+{
+  Object.keys(flow.scopes).length > 0 && (
+    <>
+      <div>Scopes:</div>
+      <ul>
+        {Object.entries(flow.scopes).map(([scope, description]) => (
+          <li>
+            {scope} -{description}
+          </li>
+        ))}
+      </ul>
+    </>
+  )
+}

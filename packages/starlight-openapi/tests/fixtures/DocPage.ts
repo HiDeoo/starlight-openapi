@@ -45,4 +45,12 @@ export class DocPage {
   getAuthorizations() {
     return this.page.locator(`div:has(> h2:first-child:has-text("Authorizations"))`)
   }
+
+  getAuthentication() {
+    return this.page.locator(`div:has(> h2:first-child:has-text("Authentication"))`)
+  }
+
+  getAuthenticationMethod(name: string) {
+    return this.getAuthentication().filter({ hasText: name }).getByRole('listitem').filter({ hasText: name })
+  }
 }

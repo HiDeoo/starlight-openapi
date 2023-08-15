@@ -301,3 +301,20 @@ definitions:
         format: 'int32'
       message:
         type: 'string'
+securityDefinitions:
+  basic_auth:
+    type: basic
+    description: 'HTTP Basic Authentication'
+  api_key:
+    type: apiKey
+    description: 'API Key Authentication'
+    name: api_key
+    in: header
+  animals_auth:
+    type: oauth2
+    authorizationUrl: https://example.com/api/oauth/dialog
+    tokenUrl: https://example.com/api/oauth/token
+    flow: implicit
+    scopes:
+      write:animals: write animals
+      read:animals: read animals

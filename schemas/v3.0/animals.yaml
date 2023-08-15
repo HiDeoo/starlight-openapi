@@ -5,8 +5,8 @@ info:
   license:
     name: MIT
 security:
-  - petstore_auth:
-      - 'read:pets'
+  - animals_auth:
+      - 'read:animals'
 externalDocs:
   description: Find out more about our animals
   url: https://example.com/more-info
@@ -95,9 +95,9 @@ paths:
               $ref: '#/components/schemas/Animal'
       security:
         - {}
-        - petstore_auth:
-            - 'write:pets'
-            - 'read:pets'
+        - animals_auth:
+            - 'write:animals'
+            - 'read:animals'
         - api_key: []
       responses:
         '200':
@@ -299,3 +299,30 @@ components:
           format: int32
         message:
           type: string
+  securitySchemes:
+    basic_auth:
+      type: http
+      scheme: basic
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    api_key:
+      type: apiKey
+      name: api_key
+      in: cookie
+    mutual_tls_auth:
+      type: mutualTLS
+    animals_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://example.com/api/oauth/dialog
+          tokenUrl: https://example.com/api/oauth/token
+          refreshUrl: https://example.com/api/oauth/refresh
+          scopes:
+            'read:animals': read animals
+            'write:animals': write animals
+    openIdConnect:
+      type: openIdConnect
+      openIdConnectUrl: https://example.com/.well-known/openid-configuration

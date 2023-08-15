@@ -1,7 +1,10 @@
 ---
 import { getLicenseIdentifier, getOpenAPIVersion, getSummary } from '../libs/document'
 import type { Schema } from '../libs/schema'
+import { getSecurityDefinitions } from '../libs/security'
+
 import ExternalDocs from './ExternalDocs.astro'
+import SecurityDefinitions from './SecurityDefinitions.astro'
 
 interface Props {
   schema: Schema
@@ -13,8 +16,7 @@ const {
 
 const summary = getSummary(document)
 const licenseIdentifier = getLicenseIdentifier(document)
-
-// TODO(HiDeoo) Auth
+const securityDefinitions = getSecurityDefinitions(document)
 ---
 
 <div>
@@ -43,4 +45,5 @@ const licenseIdentifier = getLicenseIdentifier(document)
     )
   }
   <ExternalDocs docs={document.externalDocs} />
+  <SecurityDefinitions definitions={securityDefinitions} />
 </div>

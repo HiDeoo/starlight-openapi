@@ -18,5 +18,5 @@ function isOpenAPIV2Document(document: Document): document is DocumentV2 {
   return 'swagger' in document
 }
 
-type Document = Schema['document']
+export type Document = Schema['document']
 type DocumentV2 = OpenAPIV2.Document
