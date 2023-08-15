@@ -41,5 +41,13 @@ const licenseIdentifier = getLicenseIdentifier(document)
       </div>
     )
   }
-  {isOpenAPIV2Document(document) && <>{document.schemes && <div>Schemes: {document.schemes.join(', ')}</div>}</>}
+  {
+    isOpenAPIV2Document(document) && (
+      <>
+        {document.host && <div>Host: {document.host}</div>}
+        {document.basePath && <div>Base Path: {document.basePath}</div>}
+        {document.schemes && <div>Schemes: {document.schemes.join(', ')}</div>}
+      </>
+    )
+  }
 </div>
