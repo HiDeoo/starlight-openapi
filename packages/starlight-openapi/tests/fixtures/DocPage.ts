@@ -41,4 +41,8 @@ export class DocPage {
   getResponseHeader(status: string, name: string) {
     return this.getResponse(status).getByRole('listitem').filter({ hasText: name })
   }
+
+  getAuthorizations() {
+    return this.page.locator(`div:has(> h2:first-child:has-text("Authorizations"))`)
+  }
 }

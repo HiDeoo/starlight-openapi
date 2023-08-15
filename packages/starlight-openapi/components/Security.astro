@@ -1,0 +1,40 @@
+---
+import type { Operation } from '../libs/operation'
+import type { Schema } from '../libs/schema'
+import { getSecurityRequirements } from '../libs/security'
+
+interface Props {
+  operation: Operation
+  schema: Schema
+}
+
+const { operation, schema } = Astro.props
+
+const requirements = getSecurityRequirements(schema, operation)
+---
+
+{
+  requirements && requirements.length > 0 ? (
+    <div>
+      <h2>Authorizations</h2>
+      <ul>
+        {requirements.map((requirement) => {
+          const schemes = Object.keys(requirement)
+
+          if (schemes.length === 0) {
+            return <li>None</li>
+          }
+
+          return Object.entries(requirement).map(([scheme, scopes]) => {
+            return (
+              <li>
+                {scheme}
+                {scopes.length > 0 ? `(${scopes.join(',')})` : null}
+              </li>
+            )
+          })
+        })}
+      </ul>
+    </div>
+  ) : null
+}

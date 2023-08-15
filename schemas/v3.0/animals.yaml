@@ -4,6 +4,9 @@ info:
   title: Animals
   license:
     name: MIT
+security:
+  - petstore_auth:
+      - 'read:pets'
 paths:
   /animals:
     parameters:
@@ -84,6 +87,12 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Animal'
+      security:
+        - {}
+        - petstore_auth:
+            - 'write:pets'
+            - 'read:pets'
+        - api_key: []
       responses:
         '200':
           description: animal response
