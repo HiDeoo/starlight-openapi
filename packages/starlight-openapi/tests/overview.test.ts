@@ -30,3 +30,9 @@ test('displays advanced overviews', async ({ docPage }) => {
   await expect(docPage.getByText('License name: Apache 2.0')).toBeVisible()
   await expect(docPage.getByText('License URL: https://www.apache.org/licenses/LICENSE-2.0.html')).toBeVisible()
 })
+
+test('displays the schemes for a v2.0 schema', async ({ docPage }) => {
+  await docPage.goto('/v20/petstore-simple/')
+
+  await expect(docPage.getByText('Schemes: http')).toBeVisible()
+})
