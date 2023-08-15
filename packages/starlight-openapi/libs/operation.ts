@@ -40,6 +40,22 @@ export function getOperationsByTag(document: Schema['document']) {
     }
   }
 
+  if (document.tags) {
+    const orderedTags = new Map(document.tags.map((tag, index) => [tag.name, index]))
+    const operationsByTagArray = [...operationsByTag.entries()].sort(([tagA], [tagB]) => {
+      const orderA = orderedTags.get(tagA) ?? Number.POSITIVE_INFINITY
+      const orderB = orderedTags.get(tagB) ?? Number.POSITIVE_INFINITY
+
+      return orderA - orderB
+    })
+
+    operationsByTag.clear()
+
+    for (const [tag, operations] of operationsByTagArray) {
+      operationsByTag.set(tag, operations)
+    }
+  }
+
   return operationsByTag
 }
 

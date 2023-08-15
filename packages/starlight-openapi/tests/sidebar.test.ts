@@ -27,3 +27,19 @@ test('uses a fallback group for untagged operations', async ({ sidebarPage }) =>
     },
   ])
 })
+
+test('respects tags order', async ({ sidebarPage }) => {
+  await sidebarPage.goto()
+
+  const items = await sidebarPage.getSidebarGroupItems('Animals v3.0')
+
+  expect(items).toMatchObject([
+    { name: 'Overview' },
+    {
+      label: 'places',
+    },
+    {
+      label: 'animals',
+    },
+  ])
+})
