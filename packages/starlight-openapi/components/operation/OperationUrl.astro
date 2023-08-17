@@ -1,0 +1,27 @@
+---
+import { getOperationURLs, type PathItemOperation } from '../../libs/operation'
+import type { Schema } from '../../libs/schema'
+
+interface Props {
+  operation: PathItemOperation
+  schema: Schema
+}
+
+const { operation: pathItemOperation, schema } = Astro.props
+const { method, path } = pathItemOperation
+
+const urls = getOperationURLs(schema.document, pathItemOperation)
+---
+
+<div>
+  <div>Method: {method}</div>
+  {path && <div>Path: {path}</div>}
+  {
+    urls.map(({ description, url }) => (
+      <div>
+        <div>URL: {url}</div>
+        {description && <div>URL description: {description}</div>}
+      </div>
+    ))
+  }
+</div>

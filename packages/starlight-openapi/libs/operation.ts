@@ -1,5 +1,6 @@
 import type { OpenAPI } from 'openapi-types'
 
+import { type Document, isOpenAPIV2Document } from './document'
 import { slug } from './path'
 import { isPathItem, type PathItem } from './pathItem'
 import type { Schema } from './schema'
@@ -99,6 +100,38 @@ export function isPathItemOperation<TMethod extends OperationHttpMethod>(
   return method in pathItem
 }
 
+export function getOperationURLs(document: Document, { operation, path, pathItem }: PathItemOperation): OperationURL[] {
+  const urls: OperationURL[] = []
+
+  if (isOpenAPIV2Document(document)) {
+    let url = document.host ?? ''
+    url += document.basePath ?? ''
+    url += path ?? ''
+
+    if (url.length > 0) {
+      urls.push(makeOperationURL(url))
+    }
+  } else {
+    const servers =
+      ('servers' in operation ? operation.servers : 'servers' in pathItem ? pathItem.servers : document.servers) ?? []
+
+    for (const server of servers) {
+      let url = server.url
+      url += path ?? ''
+
+      if (url.length > 0) {
+        urls.push(makeOperationURL(url, server.description))
+      }
+    }
+  }
+
+  return urls
+}
+
+function makeOperationURL(url: string, description?: string): OperationURL {
+  return { description, url: url.replace(/^\/\//, '') }
+}
+
 export interface PathItemOperation {
   method: OperationHttpMethod
   operation: Operation
@@ -110,3 +143,8 @@ export interface PathItemOperation {
 
 export type Operation = OpenAPI.Operation
 type OperationHttpMethod = (typeof operationHttpMethods)[number]
+
+interface OperationURL {
+  description?: string | undefined
+  url: string
+}

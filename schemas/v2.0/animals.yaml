@@ -5,6 +5,7 @@ info:
   title: 'Animals'
   license:
     name: 'MIT'
+host: 'example.com'
 basePath: '/api'
 consumes:
   - 'application/json'

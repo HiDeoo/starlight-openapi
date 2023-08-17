@@ -1,0 +1,32 @@
+---
+import type { PathItemOperation } from '../../libs/operation'
+import type { Schema } from '../../libs/schema'
+import ExternalDocs from '../ExternalDocs.astro'
+import Md from '../Md.astro'
+import Parameters from '../parameter/Parameters.astro'
+import RequestBody from '../RequestBody.astro'
+import Responses from '../response/Responses.astro'
+import Security from '../security/Security.astro'
+
+import OperationUrl from './OperationUrl.astro'
+
+interface Props {
+  operation: PathItemOperation
+  schema: Schema
+}
+
+const { operation: pathItemOperation, schema } = Astro.props
+const { operation } = pathItemOperation
+---
+
+<Md text={operation.description} />
+
+<div>
+  <ExternalDocs docs={operation.externalDocs} />
+  <OperationUrl operation={pathItemOperation} {schema} />
+  {operation.deprecated && <div>OPERATION DEPRECATED</div>}
+  <Security {operation} {schema} />
+  <Parameters operation={pathItemOperation} />
+  <RequestBody {operation} {schema} />
+  <Responses {operation} responses={operation.responses} {schema} />
+</div>

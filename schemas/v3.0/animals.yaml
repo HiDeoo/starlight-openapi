@@ -10,6 +10,11 @@ security:
 externalDocs:
   description: Find out more about our animals
   url: https://example.com/more-info
+servers:
+  - url: //example.com/api
+    description: Default server
+  - url: //sandbox.example.com/api
+    description: Sandbox server
 tags:
   - name: places
   - name: animals
@@ -198,6 +203,9 @@ paths:
       operationId: listBears
       tags:
         - animals
+      servers:
+        - url: //custom.example.com/api
+          description: Custom server
       parameters:
         - name: limit
           in: query
