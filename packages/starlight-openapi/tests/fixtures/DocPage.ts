@@ -21,9 +21,7 @@ export class DocPage {
   }
 
   getOperation() {
-    return this.getContent()
-      .locator('.operation-description')
-      .or(this.getContent().locator('.operation-description-urls'))
+    return this.getContent().getByRole('group')
   }
 
   getParameters(location: string) {
