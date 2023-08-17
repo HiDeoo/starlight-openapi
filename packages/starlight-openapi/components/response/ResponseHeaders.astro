@@ -1,10 +1,9 @@
 ---
-import { type Headers } from '../libs/header'
-import { isOpenAPIV2Items } from '../libs/items'
-import { isHeaderParameter } from '../libs/parameter'
-
-import Items from './Items.astro'
-import Parameter from './Parameter.astro'
+import { type Headers } from '../../libs/header'
+import { isOpenAPIV2Items } from '../../libs/items'
+import { isHeaderParameter } from '../../libs/parameter'
+import Items from '../Items.astro'
+import Parameter from '../parameter/Parameter.astro'
 
 interface Props {
   headers: Headers

@@ -4,10 +4,10 @@ import type { Schema } from '../libs/schema'
 
 import ExternalDocs from './ExternalDocs.astro'
 import Md from './Md.astro'
-import Parameters from './Parameters.astro'
+import Parameters from './parameter/Parameters.astro'
 import RequestBody from './RequestBody.astro'
-import Responses from './Responses.astro'
-import Security from './Security.astro'
+import Responses from './response/Responses.astro'
+import Security from './security/Security.astro'
 
 interface Props {
   operation: PathItemOperation
@@ -21,8 +21,6 @@ const {
 ---
 
 <Md text={operation.description} />
-
-<div>// FIXME(HiDeoo)</div>
 
 <div>
   <ExternalDocs docs={operation.externalDocs} />

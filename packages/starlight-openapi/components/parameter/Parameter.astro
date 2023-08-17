@@ -1,11 +1,10 @@
 ---
-import { isOpenAPIV2Items } from '../libs/items'
-import type { Parameter } from '../libs/parameter'
-import { isParameterWithSchemaObject } from '../libs/schemaObject'
-
-import Content from './Content.astro'
-import Items from './Items.astro'
-import Schema from './Schema.astro'
+import { isOpenAPIV2Items } from '../../libs/items'
+import type { Parameter } from '../../libs/parameter'
+import { isParameterWithSchemaObject } from '../../libs/schemaObject'
+import Content from '../Content.astro'
+import Items from '../Items.astro'
+import Schema from '../schema/Schema.astro'
 
 interface Props {
   parameter: Parameter

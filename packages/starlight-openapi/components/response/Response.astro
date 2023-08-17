@@ -1,20 +1,20 @@
 ---
-import { isOpenAPIV2ResponseWithExamples } from '../libs/example'
-import { isResponseWithHeaders } from '../libs/header'
-import type { Operation } from '../libs/operation'
-import { getOpenAPIV2OperationProduces } from '../libs/requestBody'
+import { isOpenAPIV2ResponseWithExamples } from '../../libs/example'
+import { isResponseWithHeaders } from '../../libs/header'
+import type { Operation } from '../../libs/operation'
+import { getOpenAPIV2OperationProduces } from '../../libs/requestBody'
 import {
   getOpenAPIV2ResponseSchema,
   getOpenAPIV3ResponseContent,
   type Response,
   type Responses,
-} from '../libs/response'
-import type { Schema } from '../libs/schema'
+} from '../../libs/response'
+import type { Schema } from '../../libs/schema'
+import Content from '../Content.astro'
+import SchemaObject from '../schema/SchemaObject.astro'
 
-import Content from './Content.astro'
 import ResponseExamples from './ResponseExamples.astro'
 import ResponseHeaders from './ResponseHeaders.astro'
-import SchemaObject from './SchemaObject.astro'
 
 interface Props {
   name: keyof Responses
