@@ -3,6 +3,7 @@ import type { PathItemOperation } from '../libs/operation'
 import type { Schema } from '../libs/schema'
 
 import ExternalDocs from './ExternalDocs.astro'
+import Md from './Md.astro'
 import Parameters from './Parameters.astro'
 import RequestBody from './RequestBody.astro'
 import Responses from './Responses.astro'
@@ -17,12 +18,13 @@ const {
   operation: { method, operation, path },
   schema,
 } = Astro.props
-
-// TODO(HiDeoo) capitalize description
 ---
 
+<Md text={operation.description} />
+
+<div>// FIXME(HiDeoo)</div>
+
 <div>
-  {operation.description && <div>Description in MARKDOWN: {operation.description}</div>}
   <ExternalDocs docs={operation.externalDocs} />
   <div>
     <div>Method: {method}</div>

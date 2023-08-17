@@ -38,7 +38,7 @@ paths:
       summary: List all animals
       operationId: listAnimals
       description: |
-        Returns all animals
+        returns _all_ animals
       deprecated: true
       externalDocs:
         description: Find out more about our animals

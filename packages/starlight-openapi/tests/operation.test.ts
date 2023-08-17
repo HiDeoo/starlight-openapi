@@ -15,7 +15,7 @@ test('falls back to the operation ID for title', async ({ docPage }) => {
 test('displays basic informations', async ({ docPage }) => {
   await docPage.goto('/v30/animals/operations/listanimals/')
 
-  await expect(docPage.getByText('Description in MARKDOWN: Returns all animals')).toBeVisible()
+  await expect(docPage.getByText('Returns all animals')).toBeVisible()
   await expect(docPage.getByText('External Docs URL: https://example.com/more-info')).toBeVisible()
   await expect(docPage.getByText('External Docs Description: Find out more about our animals')).toBeVisible()
   await expect(docPage.getByText('Method: get')).toBeVisible()
