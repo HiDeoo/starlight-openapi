@@ -1,0 +1,127 @@
+---
+import type { OperationHttpMethod } from '../../libs/operation'
+
+interface Props {
+  method: OperationHttpMethod
+  path?: string
+}
+
+const { method, path } = Astro.props
+---
+
+<div class="method-path">
+  <div class:list={['method', method]}>{method.toUpperCase()}</div>
+  <div class="path">{path}</div>
+</div>
+
+<style>
+  :global(:root) {
+    --sl-openapi-method-hue-get: 204;
+    --sl-openapi-method-hue-put: var(--sl-hue-orange);
+    --sl-openapi-method-hue-post: var(--sl-hue-green);
+    --sl-openapi-method-hue-delete: var(--sl-hue-red);
+    --sl-openapi-method-hue-options: var(--sl-hue-blue);
+    --sl-openapi-method-hue-head: var(--sl-hue-purple);
+    --sl-openapi-method-hue-patch: 181;
+    --sl-openapi-method-hue-trace: 224;
+
+    --sl-openapi-method-bg-get: hsl(var(--sl-openapi-method-hue-get), 100%, 10%);
+    --sl-openapi-method-bg-put: hsl(var(--sl-openapi-method-hue-put), 82%, 13%);
+    --sl-openapi-method-bg-post: hsl(var(--sl-openapi-method-hue-post), 82%, 13%);
+    --sl-openapi-method-bg-delete: hsl(var(--sl-openapi-method-hue-delete), 82%, 13%);
+    --sl-openapi-method-bg-options: hsl(var(--sl-openapi-method-hue-options), 100%, 10%);
+    --sl-openapi-method-bg-head: hsl(var(--sl-openapi-method-hue-head), 82%, 13%);
+    --sl-openapi-method-bg-patch: hsl(var(--sl-openapi-method-hue-patch), 82%, 13%);
+    --sl-openapi-method-bg-trace: hsl(var(--sl-openapi-method-hue-trace), 10%, 12%);
+
+    --sl-openapi-method-border-get: hsl(var(--sl-openapi-method-hue-get), 100%, 60%);
+    --sl-openapi-method-border-put: hsl(var(--sl-openapi-method-hue-put), 82%, 63%);
+    --sl-openapi-method-border-post: hsl(var(--sl-openapi-method-hue-post), 82%, 63%);
+    --sl-openapi-method-border-delete: hsl(var(--sl-openapi-method-hue-delete), 82%, 63%);
+    --sl-openapi-method-border-options: hsl(var(--sl-openapi-method-hue-options), 100%, 60%);
+    --sl-openapi-method-border-head: hsl(var(--sl-openapi-method-hue-head), 82%, 63%);
+    --sl-openapi-method-border-patch: hsl(var(--sl-openapi-method-hue-patch), 82%, 63%);
+    --sl-openapi-method-border-trace: hsl(var(--sl-openapi-method-hue-trace), 10%, 70%);
+  }
+
+  :global(:root[data-theme='light']) {
+    --sl-openapi-method-bg-get: hsl(var(--sl-openapi-method-hue-get), 90%, 40%);
+    --sl-openapi-method-bg-put: hsl(var(--sl-openapi-method-hue-put), 90%, 32%);
+    --sl-openapi-method-bg-post: hsl(var(--sl-openapi-method-hue-post), 90%, 21%);
+    --sl-openapi-method-bg-delete: hsl(var(--sl-openapi-method-hue-delete), 90%, 35%);
+    --sl-openapi-method-bg-options: hsl(var(--sl-openapi-method-hue-options), 90%, 35%);
+    --sl-openapi-method-bg-head: hsl(var(--sl-openapi-method-hue-head), 90%, 35%);
+    --sl-openapi-method-bg-patch: hsl(var(--sl-openapi-method-hue-patch), 90%, 25%);
+    --sl-openapi-method-bg-trace: hsl(var(--sl-openapi-method-hue-trace), 10%, 12%);
+
+    --sl-openapi-method-border-get: hsl(var(--sl-openapi-method-hue-get), 90%, 60%);
+    --sl-openapi-method-border-put: hsl(var(--sl-openapi-method-hue-put), 90%, 60%);
+    --sl-openapi-method-border-post: hsl(var(--sl-openapi-method-hue-post), 90%, 46%);
+    --sl-openapi-method-border-delete: hsl(var(--sl-openapi-method-hue-delete), 90%, 60%);
+    --sl-openapi-method-border-options: hsl(var(--sl-openapi-method-hue-options), 90%, 65%);
+    --sl-openapi-method-border-head: hsl(var(--sl-openapi-method-hue-head), 90%, 60%);
+    --sl-openapi-method-border-patch: hsl(var(--sl-openapi-method-hue-patch), 90%, 40%);
+    --sl-openapi-method-border-trace: hsl(var(--sl-openapi-method-hue-trace), 10%, 70%);
+  }
+
+  .method-path {
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: hidden;
+  }
+
+  .method {
+    background-color: var(--sl-openapi-method-bg);
+    border: 1px solid var(--sl-openapi-method-border);
+    color: hsl(0, 0%, 100%);
+    font-weight: 600;
+    padding-inline: 0.5rem;
+  }
+
+  .path {
+    display: flex;
+    flex-grow: 0;
+    flex-shrink: 1;
+    overflow-x: auto;
+  }
+
+  .method.get {
+    --sl-openapi-method-bg: var(--sl-openapi-method-bg-get);
+    --sl-openapi-method-border: var(--sl-openapi-method-border-get);
+  }
+
+  .method.put {
+    --sl-openapi-method-bg: var(--sl-openapi-method-bg-put);
+    --sl-openapi-method-border: var(--sl-openapi-method-border-put);
+  }
+
+  .method.post {
+    --sl-openapi-method-bg: var(--sl-openapi-method-bg-post);
+    --sl-openapi-method-border: var(--sl-openapi-method-border-post);
+  }
+
+  .method.delete {
+    --sl-openapi-method-bg: var(--sl-openapi-method-bg-delete);
+    --sl-openapi-method-border: var(--sl-openapi-method-border-delete);
+  }
+
+  .method.options {
+    --sl-openapi-method-bg: var(--sl-openapi-method-bg-options);
+    --sl-openapi-method-border: var(--sl-openapi-method-border-options);
+  }
+
+  .method.head {
+    --sl-openapi-method-bg: var(--sl-openapi-method-bg-head);
+    --sl-openapi-method-border: var(--sl-openapi-method-border-head);
+  }
+
+  .method.patch {
+    --sl-openapi-method-bg: var(--sl-openapi-method-bg-patch);
+    --sl-openapi-method-border: var(--sl-openapi-method-border-patch);
+  }
+
+  .method.trace {
+    --sl-openapi-method-bg: var(--sl-openapi-method-bg-trace);
+    --sl-openapi-method-border: var(--sl-openapi-method-border-trace);
+  }
+</style>

@@ -103,8 +103,8 @@ export function isPathItemOperation<TMethod extends OperationHttpMethod>(
 export function getOperationURLs(document: Document, { operation, path, pathItem }: PathItemOperation): OperationURL[] {
   const urls: OperationURL[] = []
 
-  if (isOpenAPIV2Document(document)) {
-    let url = document.host ?? ''
+  if (isOpenAPIV2Document(document) && 'host' in document) {
+    let url = document.host
     url += document.basePath ?? ''
     url += path ?? ''
 
@@ -113,7 +113,13 @@ export function getOperationURLs(document: Document, { operation, path, pathItem
     }
   } else {
     const servers =
-      ('servers' in operation ? operation.servers : 'servers' in pathItem ? pathItem.servers : document.servers) ?? []
+      'servers' in operation
+        ? operation.servers
+        : 'servers' in pathItem
+        ? pathItem.servers
+        : 'servers' in document
+        ? document.servers
+        : []
 
     for (const server of servers) {
       let url = server.url
@@ -142,7 +148,7 @@ export interface PathItemOperation {
 }
 
 export type Operation = OpenAPI.Operation
-type OperationHttpMethod = (typeof operationHttpMethods)[number]
+export type OperationHttpMethod = (typeof operationHttpMethods)[number]
 
 interface OperationURL {
   description?: string | undefined

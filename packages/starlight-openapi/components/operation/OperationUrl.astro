@@ -1,27 +1,53 @@
 ---
-import { getOperationURLs, type PathItemOperation } from '../../libs/operation'
-import type { Schema } from '../../libs/schema'
+import type { HTMLAttributes } from 'astro/types'
 
 interface Props {
-  operation: PathItemOperation
-  schema: Schema
+  description: string | undefined
+  url: string
 }
 
-const { operation: pathItemOperation, schema } = Astro.props
-const { method, path } = pathItemOperation
+const { description, url } = Astro.props
 
-const urls = getOperationURLs(schema.document, pathItemOperation)
+const inputAttributes: HTMLAttributes<'input'> = {
+  readonly: true,
+  type: 'text',
+  value: url,
+}
 ---
 
-<div>
-  <div>Method: {method}</div>
-  {path && <div>Path: {path}</div>}
+<li>
   {
-    urls.map(({ description, url }) => (
-      <div>
-        <div>URL: {url}</div>
-        {description && <div>URL description: {description}</div>}
-      </div>
-    ))
+    description && description.length > 0 ? (
+      <label>
+        {description}
+        <input {...inputAttributes} />
+      </label>
+    ) : (
+      <input {...inputAttributes} />
+    )
   }
-</div>
+</li>
+
+<style>
+  label {
+    color: var(--sl-color-gray-2);
+    font-size: var(--sl-text-sm);
+  }
+
+  input {
+    background-color: var(--sl-color-gray-5);
+    border: 1px solid var(--sl-color-gray-4);
+    font-size: var(--sl-text-base);
+    padding: 0.25rem 0.5rem;
+    width: 100%;
+  }
+
+  input::selection {
+    background-color: var(--sl-color-text-accent);
+    color: var(--sl-color-text-invert);
+  }
+
+  label > input {
+    margin-top: 0.25rem;
+  }
+</style>

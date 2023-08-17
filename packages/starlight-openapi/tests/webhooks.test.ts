@@ -12,10 +12,10 @@ test('falls back to the operation ID for title', async ({ docPage }) => {
   await docPage.expectToHaveTitle('newCat')
 })
 
-test('displays the oepration', async ({ docPage }) => {
+test('displays the operation', async ({ docPage }) => {
   await docPage.goto('/v30/animals/webhooks/newanimal/')
 
-  await expect(docPage.getByText('Method: post')).toBeVisible()
-  await expect(docPage.getByText('Path:')).not.toBeVisible()
+  await expect(docPage.getByText('POST')).toBeVisible()
+  await expect(docPage.getContent().getByRole('group')).not.toBeVisible()
   await expect(docPage.getByText('Description: New animal details')).toBeVisible()
 })

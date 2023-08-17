@@ -1,0 +1,103 @@
+---
+import { Icon } from '@astrojs/starlight/components'
+
+import { getOperationURLs, type PathItemOperation } from '../../libs/operation'
+import type { Schema } from '../../libs/schema'
+
+import OperationMethod from './OperationMethod.astro'
+import OperationUrl from './OperationUrl.astro'
+
+interface Props {
+  operation: PathItemOperation
+  schema: Schema
+}
+
+const { operation: pathItemOperation, schema } = Astro.props
+const { method, path } = pathItemOperation
+
+const urls = getOperationURLs(schema.document, pathItemOperation)
+---
+
+<div class="not-content">
+  {
+    path ? (
+      urls.length > 0 ? (
+        <details class="operation-description-urls">
+          <summary>
+            <OperationMethod {method} {path} />
+            <Icon class="caret" name="right-caret" size="1.25rem" />
+          </summary>
+          <ul>
+            {urls.map(({ description, url }) => (
+              <OperationUrl {description} {url} />
+            ))}
+          </ul>
+        </details>
+      ) : (
+        <div class="operation-description">
+          <OperationMethod {method} {path} />
+        </div>
+      )
+    ) : (
+      <OperationMethod {method} />
+    )
+  }
+</div>
+
+<style>
+  .operation-description,
+  .operation-description-urls {
+    background-color: var(--astro-code-color-background);
+    border: 1px solid var(--sl-color-gray-5);
+  }
+
+  summary {
+    justify-content: space-between;
+  }
+
+  summary,
+  .operation-description {
+    align-items: center;
+    display: flex;
+    font-family: var(--__sl-font-mono);
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+  }
+
+  summary {
+    cursor: pointer;
+  }
+
+  summary::marker,
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .caret {
+    flex-shrink: 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .caret {
+      transition: transform 0.2s ease-in-out;
+    }
+  }
+
+  details[open] .caret {
+    transform: rotateZ(90deg);
+  }
+
+  :global([dir='rtl']) .caret {
+    transform: rotateZ(180deg);
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    list-style-type: none;
+    padding-block-start: 0.5rem;
+    padding-block-end: 1rem;
+    padding-inline: 1rem;
+  }
+</style>

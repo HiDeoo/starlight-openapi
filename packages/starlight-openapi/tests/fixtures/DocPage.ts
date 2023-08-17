@@ -11,9 +11,19 @@ export class DocPage {
     return this.page.getByText(...args)
   }
 
+  getContent() {
+    return this.page.locator('main')
+  }
+
   async expectToHaveTitle(title: string) {
     await expect(this.page).toHaveTitle(title)
     await expect(this.page.getByRole('heading', { exact: true, level: 1, name: title })).toBeVisible()
+  }
+
+  getOperation() {
+    return this.getContent()
+      .locator('.operation-description')
+      .or(this.getContent().locator('.operation-description-urls'))
   }
 
   getParameters(location: string) {

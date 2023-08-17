@@ -8,7 +8,7 @@ import RequestBody from '../RequestBody.astro'
 import Responses from '../response/Responses.astro'
 import Security from '../security/Security.astro'
 
-import OperationUrl from './OperationUrl.astro'
+import OperationDescription from './OperationDescription.astro'
 
 interface Props {
   operation: PathItemOperation
@@ -19,11 +19,11 @@ const { operation: pathItemOperation, schema } = Astro.props
 const { operation } = pathItemOperation
 ---
 
+<OperationDescription operation={pathItemOperation} {schema} />
 <Md text={operation.description} />
 
 <div>
   <ExternalDocs docs={operation.externalDocs} />
-  <OperationUrl operation={pathItemOperation} {schema} />
   {operation.deprecated && <div>OPERATION DEPRECATED</div>}
   <Security {operation} {schema} />
   <Parameters operation={pathItemOperation} />
