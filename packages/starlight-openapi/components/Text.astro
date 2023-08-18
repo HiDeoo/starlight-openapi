@@ -1,11 +1,25 @@
 ---
+interface Props {
+  code?: boolean
+  label?: string
+}
+
+const { code, label } = Astro.props
+
 const text: string | undefined = await Astro.slots.render('default')
 ---
 
 {
   text && text.length > 0 && (
     <p>
-      <Fragment set:text={text} />
+      {label && <b>{label}:</b>}
+      {code ? (
+        <code>
+          <Fragment set:html={text} />
+        </code>
+      ) : (
+        <Fragment set:html={text} />
+      )}
     </p>
   )
 }

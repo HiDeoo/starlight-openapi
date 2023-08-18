@@ -4,6 +4,9 @@ import {
   isOpenAPIV3OAuth2SecurityScheme,
   type SecurityDefinitions,
 } from '../../libs/security'
+import { capitalize } from '../../libs/string'
+import Md from '../Md.astro'
+import Text from '../Text.astro'
 
 import SecurityOAuth2Flow from './SecurityOAuth2Flow.astro'
 
@@ -16,29 +19,37 @@ const { definitions } = Astro.props
 
 {
   definitions && (
-    <div>
+    <>
       <h2>Authentication</h2>
-      <ul>
-        {Object.entries(definitions).map(([name, scheme]) => (
-          <li>
-            <div>{name}</div>
-            {scheme.description && <div>Scheme description: {scheme.description}</div>}
-            <div>Scheme type: {scheme.type}</div>
-            {'bearerFormat' in scheme && <div>Bearer Format: {scheme.bearerFormat}</div>}
-            {'openIdConnectUrl' in scheme && <div>OpenID Connect URL: {scheme.openIdConnectUrl}</div>}
-            {scheme.type === 'apiKey' && (
-              <div>
-                {scheme.in} parameter name: {scheme.name}
-              </div>
-            )}
-            {isOpenAPIV2OAuth2SecurityScheme(scheme) ? (
-              <SecurityOAuth2Flow flow={scheme} type={scheme.flow} />
-            ) : isOpenAPIV3OAuth2SecurityScheme(scheme) ? (
-              Object.entries(scheme.flows).map(([type, flow]) => <SecurityOAuth2Flow {flow} type={type} />)
-            ) : null}
-          </li>
-        ))}
-      </ul>
-    </div>
+      {Object.entries(definitions).map(([name, scheme]) => (
+        <section>
+          <h3>{name}</h3>
+          <Md text={scheme.description} />
+          <Text code label="Security scheme type">
+            {scheme.type}
+          </Text>
+          {'bearerFormat' in scheme && (
+            <Text code label="Bearer format">
+              {scheme.bearerFormat}
+            </Text>
+          )}
+          {'openIdConnectUrl' in scheme && (
+            <Text code label="OpenID Connect URL">
+              <a href={scheme.openIdConnectUrl}>{scheme.openIdConnectUrl}</a>
+            </Text>
+          )}
+          {scheme.type === 'apiKey' && (
+            <Text code label={`${capitalize(scheme.in)} parameter name`}>
+              {scheme.name}
+            </Text>
+          )}
+          {isOpenAPIV2OAuth2SecurityScheme(scheme) ? (
+            <SecurityOAuth2Flow flow={scheme} type={scheme.flow} />
+          ) : isOpenAPIV3OAuth2SecurityScheme(scheme) ? (
+            Object.entries(scheme.flows).map(([type, flow]) => <SecurityOAuth2Flow {flow} type={type} />)
+          ) : null}
+        </section>
+      ))}
+    </>
   )
 }

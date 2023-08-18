@@ -1,15 +1,13 @@
 ---
 import { Markdown } from '@astropub/md'
 
+import { capitalize } from '../libs/string'
+
 interface Props {
   text: string | undefined
 }
 
 const { text } = Astro.props
-
-function capitalize(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1)
-}
 ---
 
 {text && text.length > 0 && <Markdown of={capitalize(text)} />}

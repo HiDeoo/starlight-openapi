@@ -1,5 +1,6 @@
 ---
 import type { SecuritySchemeOAuth2Flow } from '../../libs/security'
+import Text from '../Text.astro'
 
 interface Props {
   flow: SecuritySchemeOAuth2Flow
@@ -9,18 +10,41 @@ interface Props {
 const { flow, type } = Astro.props
 ---
 
-<div>Flow type: {type}</div>
-{'authorizationUrl' in flow && <div>Authorization URL: {flow.authorizationUrl}</div>}
-{'tokenUrl' in flow && <div>Token URL: {flow.tokenUrl}</div>}
-{'refreshUrl' in flow && <div>Refresh URL: {flow.refreshUrl}</div>}
+<Text label="Flow type">
+  <code>{type}</code>
+</Text>
+
+{
+  'authorizationUrl' in flow && (
+    <Text code label="Authorization URL">
+      <a href={flow.authorizationUrl}>{flow.authorizationUrl}</a>
+    </Text>
+  )
+}
+{
+  'tokenUrl' in flow && (
+    <Text code label="Token URL">
+      <a href={flow.tokenUrl}>{flow.tokenUrl}</a>
+    </Text>
+  )
+}
+{
+  'refreshUrl' in flow && (
+    <Text code label="Refresh URL">
+      <a href={flow.refreshUrl}>{flow.refreshUrl}</a>
+    </Text>
+  )
+}
 {
   Object.keys(flow.scopes).length > 0 && (
     <>
-      <div>Scopes:</div>
+      <Text>
+        <b>Scopes:</b>
+      </Text>
       <ul>
         {Object.entries(flow.scopes).map(([scope, description]) => (
           <li>
-            {scope} -{description}
+            <code>{scope}</code> - {description}
           </li>
         ))}
       </ul>
