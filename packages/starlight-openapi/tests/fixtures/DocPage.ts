@@ -16,7 +16,7 @@ export class DocPage {
   }
 
   getContent() {
-    return this.page.locator('main')
+    return this.page.getByRole('main')
   }
 
   async expectToHaveTitle(title: string) {
