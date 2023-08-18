@@ -2,6 +2,7 @@
 import { getOpenAPIVersion, getSummary } from '../libs/document'
 import type { Schema } from '../libs/schema'
 import { getSecurityDefinitions } from '../libs/security'
+import { interspece } from '../libs/utils'
 
 import ExternalDocs from './ExternalDocs.astro'
 import Md from './Md.astro'
@@ -34,12 +35,10 @@ const contacts = [document.info.contact?.url, document.info.contact?.email].filt
     contacts.length > 0 && (
       <li>
         {document.info.contact?.name ?? 'Contact'}:{' '}
-        {contacts.map((contact, index) => (
-          <>
-            <a href={index === 1 ? `mailto:${contact}` : contact}>{contact}</a>
-            {index === 0 && contacts.length === 2 ? ' - ' : ' '}
-          </>
-        ))}
+        {interspece(
+          ' - ',
+          contacts.map((contact, index) => <a href={index === 1 ? `mailto:${contact}` : contact}>{contact}</a>),
+        )}
       </li>
     )
   }

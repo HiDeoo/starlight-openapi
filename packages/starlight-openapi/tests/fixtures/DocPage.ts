@@ -55,7 +55,7 @@ export class DocPage {
   }
 
   getAuthorizations() {
-    return this.page.locator('div:has(> h2:first-child:has-text("Authorizations"))')
+    return this.page.locator('section:has(> h2:first-child:has-text("Authorizations"))')
   }
 
   getAuthentication() {

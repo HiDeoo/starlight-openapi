@@ -20,6 +20,6 @@ test('overrides the global authorizations', async ({ docPage }) => {
   const authorizations = docPage.getAuthorizations()
 
   await expect(authorizations.getByText('None')).toBeVisible()
-  await expect(authorizations.getByText('animals_auth (write:animals,read:animals)')).toBeVisible()
+  await expect(authorizations.getByText('animals_auth (write:animals - read:animals)')).toBeVisible()
   await expect(authorizations.getByText('api_key')).toBeVisible()
 })

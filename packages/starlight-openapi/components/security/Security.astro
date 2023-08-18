@@ -2,6 +2,7 @@
 import type { Operation } from '../../libs/operation'
 import type { Schema } from '../../libs/schema'
 import { getSecurityRequirements } from '../../libs/security'
+import { interspece } from '../../libs/utils'
 
 interface Props {
   operation: Operation
@@ -15,26 +16,39 @@ const requirements = getSecurityRequirements(schema, operation)
 
 {
   requirements && requirements.length > 0 ? (
-    <div>
+    <section>
       <h2>Authorizations</h2>
       <ul>
         {requirements.map((requirement) => {
           const schemes = Object.keys(requirement)
 
           if (schemes.length === 0) {
-            return <li>None</li>
+            return (
+              <li>
+                <strong>None</strong>
+              </li>
+            )
           }
 
           return Object.entries(requirement).map(([scheme, scopes]) => {
             return (
               <li>
-                {scheme}
-                {scopes.length > 0 ? `(${scopes.join(',')})` : null}
+                <strong>{scheme}</strong>
+                {scopes.length > 0 ? (
+                  <>
+                    <!-- prettier-ignore-start -->
+                    ({interspece(
+                      ' - ',
+                      scopes.map((scope) => <code>{scope}</code>),
+                    )})
+                    <!-- prettier-ignore-end -->
+                  </>
+                ) : null}
               </li>
             )
           })
         })}
       </ul>
-    </div>
+    </section>
   ) : null
 }
