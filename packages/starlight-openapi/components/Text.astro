@@ -1,0 +1,11 @@
+---
+const text: string | undefined = await Astro.slots.render('default')
+---
+
+{
+  text && text.length > 0 && (
+    <p>
+      <Fragment set:text={text} />
+    </p>
+  )
+}

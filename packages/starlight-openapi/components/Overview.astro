@@ -1,10 +1,12 @@
 ---
-import { getLicenseIdentifier, getOpenAPIVersion, getSummary } from '../libs/document'
+import { getOpenAPIVersion, getSummary } from '../libs/document'
 import type { Schema } from '../libs/schema'
 import { getSecurityDefinitions } from '../libs/security'
 
 import ExternalDocs from './ExternalDocs.astro'
+import Md from './Md.astro'
 import SecurityDefinitions from './security/SecurityDefinitions.astro'
+import Text from './Text.astro'
 
 interface Props {
   schema: Schema
@@ -15,35 +17,52 @@ const {
 } = Astro.props
 
 const summary = getSummary(document)
-const licenseIdentifier = getLicenseIdentifier(document)
 const securityDefinitions = getSecurityDefinitions(document)
+const contacts = [document.info.contact?.url, document.info.contact?.email].filter(
+  (contact): contact is string => !!contact,
+)
 ---
 
-<div>
-  <div>OpenAPI version: {getOpenAPIVersion(document)}</div>
-  <div>Title: {document.info.title}</div>
-  <div>Version: {document.info.version}</div>
-  {summary && <div>Summary: {getSummary(document)}</div>}
-  {document.info.description && <div>Description in MARKDOWN: {document.info.description}</div>}
-  {document.info.termsOfService && <div>TOS: {document.info.termsOfService}</div>}
+<Text>{summary}</Text>
+
+<h2>{document.info.title} ({document.info.version})</h2>
+
+<Md text={document.info.description} />
+<ExternalDocs docs={document.externalDocs} />
+<ul>
   {
-    document.info.contact && (
-      <div>
-        {document.info.contact.name && <div>Contact name: {document.info.contact.name}</div>}
-        {document.info.contact.email && <div>Contact email: {document.info.contact.email}</div>}
-        {document.info.contact.url && <div>Contact URL: {document.info.contact.url}</div>}
-      </div>
+    contacts.length > 0 && (
+      <li>
+        {document.info.contact?.name ?? 'Contact'}:{' '}
+        {contacts.map((contact, index) => (
+          <>
+            <a href={index === 1 ? `mailto:${contact}` : contact}>{contact}</a>
+            {index === 0 && contacts.length === 2 ? ' - ' : ' '}
+          </>
+        ))}
+      </li>
     )
   }
   {
     document.info.license && (
-      <div>
-        <div>License name: {document.info.license.name}</div>
-        {document.info.license.url && <div>License URL: {document.info.license.url}</div>}
-        {licenseIdentifier && <div>License identifier: {licenseIdentifier}</div>}
-      </div>
+      <li>
+        License:{' '}
+        {document.info.license.url ? (
+          <a href={document.info.license.url}>{document.info.license.name}</a>
+        ) : (
+          document.info.license.name
+        )}
+      </li>
     )
   }
-  <ExternalDocs docs={document.externalDocs} />
-  <SecurityDefinitions definitions={securityDefinitions} />
-</div>
+  {
+    document.info.termsOfService && (
+      <li>
+        <a href={document.info.termsOfService}>Terms of Service</a>
+      </li>
+    )
+  }
+  <li>OpenAPI version: {getOpenAPIVersion(document)}</li>
+</ul>
+
+<SecurityDefinitions definitions={securityDefinitions} />

@@ -5,10 +5,12 @@ test('displays a basic overview', async ({ docPage }) => {
 
   await docPage.expectToHaveTitle('Overview')
 
-  await expect(docPage.getByText('OpenAPI version: 3.0.0')).toBeVisible()
-  await expect(docPage.getByText('Title: Swagger Petstore')).toBeVisible()
-  await expect(docPage.getByText('Version: 1.0.0')).toBeVisible()
-  await expect(docPage.getByText('License name: MIT')).toBeVisible()
+  await expect(docPage.getByRole('heading', { level: 2, name: 'Swagger Petstore (1.0.0)' })).toBeVisible()
+
+  const details = docPage.getByRole('listitem')
+
+  await expect(details.getByText('License: MIT')).toBeVisible()
+  await expect(details.getByText('OpenAPI version: 3.0.0')).toBeVisible()
 })
 
 test('displays advanced overviews', async ({ docPage }) => {
@@ -16,19 +18,32 @@ test('displays advanced overviews', async ({ docPage }) => {
 
   await docPage.expectToHaveTitle('Overview')
 
-  await expect(docPage.getByText('OpenAPI version: 3.0.0')).toBeVisible()
-  await expect(docPage.getByText('Title: Swagger Petstore')).toBeVisible()
+  await expect(docPage.getByRole('heading', { level: 2, name: 'Swagger Petstore (1.0.0)' })).toBeVisible()
+
   await expect(
     docPage.getByText(
-      'Description in MARKDOWN: A sample API that uses a petstore as an example to demonstrate features in the OpenAPI 3.0 specification',
+      'A sample API that uses a petstore as an example to demonstrate features in the OpenAPI 3.0 specification',
     ),
   ).toBeVisible()
-  await expect(docPage.getByText('TOS: http://swagger.io/terms/')).toBeVisible()
-  await expect(docPage.getByText('Contact name: Swagger API Team')).toBeVisible()
-  await expect(docPage.getByText('Contact email: apiteam@swagger.io')).toBeVisible()
-  await expect(docPage.getByText('Contact URL: http://swagger.io')).toBeVisible()
-  await expect(docPage.getByText('License name: Apache 2.0')).toBeVisible()
-  await expect(docPage.getByText('License URL: https://www.apache.org/licenses/LICENSE-2.0.html')).toBeVisible()
+
+  const details = docPage.getByRole('list')
+
+  await expect(details.getByText('Swagger API Team')).toBeVisible()
+  expect(await details.getByRole('link', { name: 'http://swagger.io' }).getAttribute('href')).toBe('http://swagger.io')
+  expect(await details.getByRole('link', { name: 'apiteam@swagger.io' }).getAttribute('href')).toBe(
+    'mailto:apiteam@swagger.io',
+  )
+
+  await expect(details.getByText('License: Apache 2.0')).toBeVisible()
+  expect(await details.getByRole('link', { name: 'Apache 2.0' }).getAttribute('href')).toBe(
+    'https://www.apache.org/licenses/LICENSE-2.0.html',
+  )
+
+  expect(await details.getByRole('link', { name: 'Terms of Service' }).getAttribute('href')).toBe(
+    'http://swagger.io/terms/',
+  )
+
+  await expect(details.getByText('OpenAPI version: 3.0.0')).toBeVisible()
 })
 
 test('displays external docs link in the overview', async ({ docPage }) => {
