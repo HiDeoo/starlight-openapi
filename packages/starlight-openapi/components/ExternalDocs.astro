@@ -14,9 +14,8 @@ const { docs } = Astro.props
 
 {
   docs && (
-    <div>
-      <div>External Docs URL: {docs.url}</div>
-      {docs.description && <div>External Docs Description: {docs.description}</div>}
-    </div>
+    <p>
+      <a href={docs.url}>{docs.description ?? 'More information'}</a>
+    </p>
   )
 }

@@ -102,9 +102,9 @@ test('supports schema object `discriminator` property', async ({ docPage }) => {
 test('displays external docs', async ({ docPage }) => {
   await docPage.goto('/v20/animals/operations/addcat/')
 
-  const requestBody = docPage.getRequestBody()
-
-  await expect(requestBody.getByText('External Docs URL')).toBeVisible()
+  const externalDocsLink = docPage.getRequestBody().getByRole('link', { name: 'More information' })
+  await expect(externalDocsLink).toBeVisible()
+  expect(await externalDocsLink.getAttribute('href')).toBe('https://example.com/more-info')
 })
 
 test('displays examples', async ({ docPage }) => {

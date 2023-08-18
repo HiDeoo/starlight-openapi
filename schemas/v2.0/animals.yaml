@@ -110,7 +110,6 @@ paths:
           required: true
           schema:
             externalDocs:
-              description: Find out more about our animals
               url: https://example.com/more-info
             allOf:
               - $ref: '#/definitions/NewAnimal'

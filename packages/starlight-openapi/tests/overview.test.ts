@@ -34,8 +34,9 @@ test('displays advanced overviews', async ({ docPage }) => {
 test('displays external docs link in the overview', async ({ docPage }) => {
   await docPage.goto('/v30/animals/')
 
-  await expect(docPage.getByText('External Docs URL: https://example.com/more-info')).toBeVisible()
-  await expect(docPage.getByText('External Docs Description: Find out more about our animals')).toBeVisible()
+  const externalDocsLink = docPage.getByRole('link', { name: 'Find out more about our animals' })
+  await expect(externalDocsLink).toBeVisible()
+  expect(await externalDocsLink.getAttribute('href')).toBe('https://example.com/more-info')
 })
 
 test('does not display the authentication section if not required', async ({ docPage }) => {

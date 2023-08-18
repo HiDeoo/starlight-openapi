@@ -20,8 +20,10 @@ test('displays basic informations', async ({ docPage }) => {
   await expect(docPage.getByText('GET')).toBeVisible()
   await expect(docPage.getByText('/animals')).toBeVisible()
 
-  await expect(docPage.getByText('External Docs URL: https://example.com/more-info')).toBeVisible()
-  await expect(docPage.getByText('External Docs Description: Find out more about our animals')).toBeVisible()
+  const externalDocsLink = docPage.getByRole('link', { name: 'Find out more about our animals' })
+  await expect(externalDocsLink).toBeVisible()
+  expect(await externalDocsLink.getAttribute('href')).toBe('https://example.com/more-info')
+
   await expect(docPage.getByText('OPERATION DEPRECATED')).toBeVisible()
 })
 

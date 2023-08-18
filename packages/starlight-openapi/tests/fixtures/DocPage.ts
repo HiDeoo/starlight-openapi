@@ -11,6 +11,10 @@ export class DocPage {
     return this.page.getByText(...args)
   }
 
+  getByRole(...args: Parameters<Page['getByRole']>) {
+    return this.page.getByRole(...args)
+  }
+
   getContent() {
     return this.page.locator('main')
   }
