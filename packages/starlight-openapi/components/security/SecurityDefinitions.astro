@@ -6,6 +6,7 @@ import {
 } from '../../libs/security'
 import { capitalize } from '../../libs/utils'
 import Md from '../Md.astro'
+import Section from '../Section.astro'
 import Text from '../Text.astro'
 
 import SecurityOAuth2Flow from './SecurityOAuth2Flow.astro'
@@ -22,8 +23,7 @@ const { definitions } = Astro.props
     <>
       <h2>Authentication</h2>
       {Object.entries(definitions).map(([name, scheme]) => (
-        <section>
-          <h3>{name}</h3>
+        <Section title={name}>
           <Md text={scheme.description} />
           <Text code label="Security scheme type">
             {scheme.type}
@@ -48,7 +48,7 @@ const { definitions } = Astro.props
           ) : isOpenAPIV3OAuth2SecurityScheme(scheme) ? (
             Object.entries(scheme.flows).map(([type, flow]) => <SecurityOAuth2Flow {flow} type={type} />)
           ) : null}
-        </section>
+        </Section>
       ))}
     </>
   )

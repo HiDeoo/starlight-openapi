@@ -1,0 +1,48 @@
+---
+interface Props {
+  level?: 2 | 3
+  title: string
+}
+
+const { level = 3, title } = Astro.props
+
+const Title = level === 2 ? 'h2' : 'h3'
+const sectionClass = level === 2 ? undefined : `panel`
+const contentClass = level === 2 ? `panel` : undefined
+---
+
+<section class={sectionClass}>
+  <Title>{title}</Title>
+  <div class={contentClass}>
+    <slot />
+  </div>
+</section>
+
+<style>
+  .panel {
+    background-color: var(--sl-color-gray-6);
+    border: 1px solid var(--sl-color-gray-5);
+    padding: 1rem;
+  }
+
+  :global(main .content) section h3 {
+    font-size: var(--sl-text-2xl);
+    margin-bottom: 1.5rem;
+  }
+
+  :global(main .content) section :global(p) {
+    margin-top: 0.5rem;
+  }
+
+  :global(:root[data-theme='light']) :global(main .content) section :global(code) {
+    background-color: var(--sl-color-gray-5);
+  }
+
+  :global(main .content) section :global(ul:not(:first-child)) {
+    margin-top: 0.5rem;
+  }
+
+  :global(main .content) section :global(ul:only-child) {
+    padding-inline-start: 1.3rem;
+  }
+</style>

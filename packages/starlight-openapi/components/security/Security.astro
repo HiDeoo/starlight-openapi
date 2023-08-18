@@ -3,6 +3,7 @@ import type { Operation } from '../../libs/operation'
 import type { Schema } from '../../libs/schema'
 import { getSecurityRequirements } from '../../libs/security'
 import { interspece } from '../../libs/utils'
+import Section from '../Section.astro'
 
 interface Props {
   operation: Operation
@@ -16,8 +17,7 @@ const requirements = getSecurityRequirements(schema, operation)
 
 {
   requirements && requirements.length > 0 ? (
-    <section>
-      <h2>Authorizations</h2>
+    <Section level={2} title="Authorizations">
       <ul>
         {requirements.map((requirement) => {
           const schemes = Object.keys(requirement)
@@ -49,6 +49,6 @@ const requirements = getSecurityRequirements(schema, operation)
           })
         })}
       </ul>
-    </section>
+    </Section>
   ) : null
 }

@@ -24,9 +24,9 @@ const { operation } = pathItemOperation
 <OperationDescription operation={pathItemOperation} {schema} />
 <Md text={operation.description} />
 <ExternalDocs docs={operation.externalDocs} />
+<Security {operation} {schema} />
 
 <div>
-  <Security {operation} {schema} />
   <Parameters operation={pathItemOperation} />
   <RequestBody {operation} {schema} />
   <Responses {operation} responses={operation.responses} {schema} />
