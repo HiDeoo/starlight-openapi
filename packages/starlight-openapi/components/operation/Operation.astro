@@ -1,6 +1,7 @@
 ---
 import type { PathItemOperation } from '../../libs/operation'
 import type { Schema } from '../../libs/schema'
+import Deprecated from '../Deprecated.astro'
 import ExternalDocs from '../ExternalDocs.astro'
 import Md from '../Md.astro'
 import Parameters from '../parameter/Parameters.astro'
@@ -19,12 +20,12 @@ const { operation: pathItemOperation, schema } = Astro.props
 const { operation } = pathItemOperation
 ---
 
+<Deprecated deprecated={operation.deprecated} />
 <OperationDescription operation={pathItemOperation} {schema} />
 <Md text={operation.description} />
+<ExternalDocs docs={operation.externalDocs} />
 
 <div>
-  <ExternalDocs docs={operation.externalDocs} />
-  {operation.deprecated && <div>OPERATION DEPRECATED</div>}
   <Security {operation} {schema} />
   <Parameters operation={pathItemOperation} />
   <RequestBody {operation} {schema} />

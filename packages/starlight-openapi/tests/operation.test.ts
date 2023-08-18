@@ -15,16 +15,16 @@ test('falls back to the operation ID for title', async ({ docPage }) => {
 test('displays basic informations', async ({ docPage }) => {
   await docPage.goto('/v30/animals/operations/listanimals/')
 
-  await expect(docPage.getByText('Returns all animals')).toBeVisible()
+  await expect(docPage.getByText('Deprecated', { exact: true })).toBeVisible()
 
   await expect(docPage.getByText('GET')).toBeVisible()
   await expect(docPage.getByText('/animals')).toBeVisible()
 
+  await expect(docPage.getByText('Returns all animals')).toBeVisible()
+
   const externalDocsLink = docPage.getByRole('link', { name: 'Find out more about our animals' })
   await expect(externalDocsLink).toBeVisible()
   expect(await externalDocsLink.getAttribute('href')).toBe('https://example.com/more-info')
-
-  await expect(docPage.getByText('OPERATION DEPRECATED')).toBeVisible()
 })
 
 test('displays the operation URL for a v2.0 schema', async ({ docPage }) => {
