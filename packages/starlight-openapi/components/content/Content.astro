@@ -3,26 +3,26 @@ import type { Content } from '../../libs/content'
 import { isExamples } from '../../libs/example'
 import { isSchemaObject } from '../../libs/schemaObject'
 import Schema from '../schema/Schema.astro'
+import ContentMediaTypes from './ContentMediaTypes.astro'
 
 interface Props {
   content: Content
 }
 
 const { content } = Astro.props
+
+// TODO(HiDeoo) only display the valid media type
 ---
 
+<ContentMediaTypes types={Object.keys(content)} />
 {
-  Object.entries(content).map(([type, media]) => {
+  Object.values(content).map((media) => {
     return (
-      <>
-        TODO(HiDeoo)
-        <div>Media type: {type}</div>
-        <Schema
-          example={media.example}
-          examples={isExamples(media.examples) ? media.examples : undefined}
-          schema={isSchemaObject(media.schema) ? media.schema : undefined}
-        />
-      </>
+      <Schema
+        example={media.example}
+        examples={isExamples(media.examples) ? media.examples : undefined}
+        schema={isSchemaObject(media.schema) ? media.schema : undefined}
+      />
     )
   })
 }
