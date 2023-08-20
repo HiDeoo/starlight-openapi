@@ -17,5 +17,5 @@ test('displays the operation', async ({ docPage }) => {
 
   await expect(docPage.getByText('POST')).toBeVisible()
   await expect(docPage.getContent().getByRole('group')).not.toBeVisible()
-  await expect(docPage.getByText('Description: New animal details')).toBeVisible()
+  await expect(docPage.getByText('New animal details')).toBeVisible()
 })

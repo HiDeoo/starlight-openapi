@@ -8,6 +8,8 @@ import {
 import type { Schema } from '../libs/schema'
 
 import Content from './Content.astro'
+import Md from './Md.astro'
+import Section from './Section.astro'
 import SchemaObject from './schema/SchemaObject.astro'
 
 interface Props {
@@ -30,16 +32,30 @@ const consumes = getOpenAPIV2OperationConsumes(schema, operation)
 
 {
   hasRequestBody && (
-    <div>
-      <h2>Request Body</h2>
-      {consumes && consumes.length > 0 && <div>Consumes: {consumes.join(', ')}</div>}
-      {openAPIV3RequestBody?.required && <div>Required Request Body</div>}
-      {description && <div>Description: {description}</div>}
+    <Section level={2} title="Request Body">
+      {openAPIV3RequestBody?.required && (
+        <sup class="required" slot="post-title">
+          required
+        </sup>
+      )}
+      <Md text={description} slot="pre-panel" />
+      // TODO(HiDeoo)
       {openAPIV2RequestBodyParameter ? (
         <SchemaObject schemaObject={openAPIV2RequestBodyParameter.schema} />
       ) : openAPIV3RequestBody ? (
         <Content content={openAPIV3RequestBody.content} />
       ) : null}
-    </div>
+      // FIXME(HiDeoo)
+      {consumes && consumes.length > 0 && <div>Consumes: {consumes.join(', ')}</div>}
+    </Section>
   )
 }
+
+<style>
+  .required {
+    color: var(--sl-color-red);
+    font-size: var(--sl-text-sm);
+    font-weight: 400;
+    margin-inline-start: 0.3rem;
+  }
+</style>

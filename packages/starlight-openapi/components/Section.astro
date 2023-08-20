@@ -10,7 +10,14 @@ const Title = level === 2 ? 'h2' : 'h3'
 ---
 
 <section>
-  <Title>{title}</Title>
+  <Title>{title}<slot name="post-title" /></Title>
+  {
+    Astro.slots.has('pre-panel') && (
+      <div>
+        <slot name="pre-panel" />
+      </div>
+    )
+  }
   <div class="panel">
     <slot />
   </div>

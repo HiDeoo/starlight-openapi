@@ -13,7 +13,7 @@ test('displays the request body for a v2.0 schema', async ({ docPage }) => {
 
   await expect(requestBody).toBeVisible()
 
-  await expect(requestBody.getByText('Description: Animal to add')).toBeVisible()
+  await expect(requestBody.getByText('Animal to add')).toBeVisible()
 
   await expect(requestBody.getByText('object')).toBeVisible()
 
@@ -37,9 +37,9 @@ test('displays the request body for a v3.0 schema', async ({ docPage }) => {
 
   await expect(requestBody).toBeVisible()
 
-  await expect(requestBody.getByText('Required Request Body')).toBeVisible()
+  await expect(requestBody.getByRole('heading', { level: 2 }).getByText('required')).toBeVisible()
 
-  await expect(requestBody.getByText('Description: Animal to add')).toBeVisible()
+  await expect(requestBody.getByText('Animal to add')).toBeVisible()
 
   await expect(requestBody.getByText('Media type: application/json')).toBeVisible()
   await expect(requestBody.getByText('object')).toBeVisible()
