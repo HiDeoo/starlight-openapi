@@ -1,9 +1,8 @@
 ---
-import type { Content } from '../libs/content'
-import { isExamples } from '../libs/example'
-import { isSchemaObject } from '../libs/schemaObject'
-
-import Schema from './schema/Schema.astro'
+import type { Content } from '../../libs/content'
+import { isExamples } from '../../libs/example'
+import { isSchemaObject } from '../../libs/schemaObject'
+import Schema from '../schema/Schema.astro'
 
 interface Props {
   content: Content
@@ -16,6 +15,7 @@ const { content } = Astro.props
   Object.entries(content).map(([type, media]) => {
     return (
       <>
+        TODO(HiDeoo)
         <div>Media type: {type}</div>
         <Schema
           example={media.example}

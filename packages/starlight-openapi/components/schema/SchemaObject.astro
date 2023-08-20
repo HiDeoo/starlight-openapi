@@ -3,6 +3,7 @@ import { getNullable, getSchemaObjects, isSchemaObjectObject, type SchemaObject 
 import Example from '../example/Example.astro'
 import ExternalDocs from '../ExternalDocs.astro'
 import Items from '../Items.astro'
+import Md from '../Md.astro'
 
 import SchemaObjectObject from './SchemaObjectObject.astro'
 import SchemaObjects from './SchemaObjects.astro'
@@ -22,18 +23,21 @@ const isNegated = schemaObject.not !== undefined
 
 {
   hasMany ? (
+    // TODO(HiDeoo)
     <SchemaObjects discriminator={schemaObject.discriminator} {schemaObjects} />
   ) : isNegated ? (
     <div>
-      NOT Type: <Astro.self schemaObject={schemaObject.not} />{' '}
+      TODO(HiDeoo) NOT Type: <Astro.self schemaObject={schemaObject.not} />{' '}
     </div>
   ) : (
     <>
-      {schemaObject.description && <div>{schemaObject.description}</div>}
+      <Md text={schemaObject.description} />
       <ExternalDocs docs={schemaObject.externalDocs} />
-      <Items items={schemaObject} />
-      {isSchemaObjectObject(schemaObject) && <SchemaObjectObject {schemaObject} />}
-      {getNullable(schemaObject) && <div>NULLABLE</div>}
+      {isSchemaObjectObject(schemaObject) ? (
+        <SchemaObjectObject {schemaObject} />
+      ) : (
+        <Items items={schemaObject} nullable={getNullable(schemaObject)} />
+      )}
       {!hideExample && schemaObject.example && <Example raw={schemaObject.example} />}
     </>
   )

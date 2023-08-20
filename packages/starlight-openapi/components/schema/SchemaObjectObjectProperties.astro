@@ -1,20 +1,21 @@
 ---
 import type { Properties } from '../../libs/schemaObject'
+import Key from '../Key.astro'
 
 import SchemaObject from './SchemaObject.astro'
 
 interface Props {
   properties: Properties
+  required: string[] | undefined
 }
 
-const { properties } = Astro.props
+const { properties, required } = Astro.props
 ---
 
 {
   Object.entries(properties).map(([name, schema]) => (
-    <li>
-      <div>Property Name: {name}</div>
+    <Key name={name} required={required?.includes(name)}>
       <SchemaObject schemaObject={schema} />
-    </li>
+    </Key>
   ))
 }

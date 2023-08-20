@@ -1,0 +1,49 @@
+---
+interface Props {
+  deprecated?: boolean
+  name: string
+  required?: boolean | undefined
+}
+
+const { deprecated, name, required } = Astro.props
+---
+
+<div class="key not-content">
+  <div class="name">
+    <strong>{deprecated ? <s>{name}</s> : name}</strong>
+    {required && <div class="required">required</div>}
+    {deprecated && <div class="deprecated">deprecated</div>}
+  </div>
+  <div>
+    <slot />
+  </div>
+</div>
+
+<style>
+  .key {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .name {
+    max-width: 50%;
+    min-width: 25%;
+    word-break: break-all;
+  }
+
+  .required {
+    color: var(--sl-color-red);
+    font-size: var(--sl-text-sm);
+  }
+
+  .deprecated {
+    --sl-openapi-deprecated-color: hsl(var(--sl-openapi-deprecated-hue), 82%, 63%);
+
+    color: var(--sl-openapi-deprecated-color);
+    font-size: var(--sl-text-sm);
+  }
+
+  :global(:root[data-theme='light']) .deprecated {
+    --sl-openapi-deprecated-color: hsl(var(--sl-openapi-deprecated-hue), 90%, 25%);
+  }
+</style>

@@ -6,12 +6,10 @@ test('displays the responses for a v2.0 schema', async ({ docPage }) => {
   const okResponse = docPage.getResponse('200')
 
   await expect(okResponse.getByText('Description: animal response')).toBeVisible()
-  await expect(okResponse.getByText('object')).toBeVisible()
 
   const defaultResponse = docPage.getResponse('default')
 
   await expect(defaultResponse.getByText('Description: unexpected error')).toBeVisible()
-  await expect(defaultResponse.getByText('object')).toBeVisible()
 })
 
 test('displays the responses for a v3.0 schema', async ({ docPage }) => {
@@ -21,13 +19,11 @@ test('displays the responses for a v3.0 schema', async ({ docPage }) => {
 
   await expect(okResponse.getByText('Description: animal response')).toBeVisible()
   await expect(okResponse.getByText('Media type: application/json')).toBeVisible()
-  await expect(okResponse.getByText('object')).toBeVisible()
 
   const defaultResponse = docPage.getResponse('default')
 
   await expect(defaultResponse.getByText('Description: unexpected error')).toBeVisible()
   await expect(defaultResponse.getByText('Media type: application/json')).toBeVisible()
-  await expect(defaultResponse.getByText('object')).toBeVisible()
 })
 
 test('displays the global `produces` property for a v2.0 schema', async ({ docPage }) => {

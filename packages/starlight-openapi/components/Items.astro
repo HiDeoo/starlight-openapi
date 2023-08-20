@@ -1,16 +1,17 @@
 ---
 import { getBound, isOpenAPIV2Items, type Items } from '../libs/items'
-import Tag from './Tag.astro'
-import Tags from './Tags.astro'
 
 import SchemaObject from './schema/SchemaObject.astro'
+import Tag from './Tag.astro'
+import Tags from './Tags.astro'
 
 interface Props {
   hideExample?: boolean
   items: Items
+  nullable?: boolean | undefined
 }
 
-const { hideExample, items } = Astro.props
+const { hideExample, items, nullable } = Astro.props
 ---
 
 {
@@ -24,6 +25,7 @@ const { hideExample, items } = Astro.props
 <Tags
   tags={[
     items.default && `default: ${items.default}`,
+    nullable && 'nullable',
     getBound(items, 'minimum'),
     getBound(items, 'maximum'),
     items.minLength && `>= ${items.minLength} characters`,

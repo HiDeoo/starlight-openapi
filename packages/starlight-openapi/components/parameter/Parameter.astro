@@ -2,8 +2,9 @@
 import { isOpenAPIV2Items } from '../../libs/items'
 import type { Parameter } from '../../libs/parameter'
 import { isParameterWithSchemaObject } from '../../libs/schemaObject'
-import Content from '../Content.astro'
+import Content from '../content/Content.astro'
 import Items from '../Items.astro'
+import Key from '../Key.astro'
 import Schema from '../schema/Schema.astro'
 
 interface Props {
@@ -13,52 +14,16 @@ interface Props {
 const { parameter } = Astro.props
 ---
 
-<div class="parameter not-content">
-  <div class="name">
-    <strong>{parameter.deprecated ? <s>{parameter.name}</s> : parameter.name}</strong>
-    {parameter.required && <div class="required">required</div>}
-    {parameter.deprecated && <div class="deprecated">deprecated</div>}
-  </div>
-  <div>
-    {
-      isOpenAPIV2Items(parameter) ? (
-        <Items items={parameter} />
-      ) : parameter.content ? (
-        <Content content={parameter.content} />
-      ) : isParameterWithSchemaObject(parameter) ? (
-        <Schema example={parameter.example} examples={parameter.examples} schema={parameter.schema} />
-      ) : null
-    }
-    {parameter.description && <div>{parameter.description}</div>}
-    {parameter.allowEmptyValue ? <div>ALLOW EMPTY VALUE</div> : <div>DO NOT ALLOW EMPTY VALUE</div>}
-  </div>
-</div>
-
-<style>
-  .parameter {
-    display: flex;
-    gap: 1rem;
+<Key deprecated={parameter.deprecated} name={parameter.name} required={parameter.required}>
+  {
+    isOpenAPIV2Items(parameter) ? (
+      <Items items={parameter} />
+    ) : parameter.content ? (
+      <Content content={parameter.content} />
+    ) : isParameterWithSchemaObject(parameter) ? (
+      <Schema example={parameter.example} examples={parameter.examples} schema={parameter.schema} />
+    ) : null
   }
-
-  .name {
-    max-width: 50%;
-    min-width: 25%;
-    word-break: break-all;
-  }
-
-  .required {
-    color: var(--sl-color-red);
-    font-size: var(--sl-text-sm);
-  }
-
-  .deprecated {
-    --sl-openapi-deprecated-color: hsl(var(--sl-openapi-deprecated-hue), 82%, 63%);
-
-    color: var(--sl-openapi-deprecated-color);
-    font-size: var(--sl-text-sm);
-  }
-
-  :global(:root[data-theme='light']) .deprecated {
-    --sl-openapi-deprecated-color: hsl(var(--sl-openapi-deprecated-hue), 90%, 25%);
-  }
-</style>
+  {parameter.description && <div>{parameter.description}</div>}
+  {parameter.allowEmptyValue ? <div>ALLOW EMPTY VALUE</div> : <div>DO NOT ALLOW EMPTY VALUE</div>}
+</Key>

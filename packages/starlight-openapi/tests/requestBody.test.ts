@@ -15,19 +15,21 @@ test('displays the request body for a v2.0 schema', async ({ docPage }) => {
 
   await expect(requestBody.getByText('Animal to add')).toBeVisible()
 
-  await expect(requestBody.getByText('object')).toBeVisible()
-
   await expect(requestBody.getByText('Min Properties: 1')).toBeVisible()
   await expect(requestBody.getByText('Max Properties: 4')).toBeVisible()
 
-  await expect(requestBody.getByText('Property Name: name')).toBeVisible()
-  await expect(requestBody.getByText('string').nth(0)).toBeVisible()
-  await expect(requestBody.getByText('Property Name: tag')).toBeVisible()
-  await expect(requestBody.getByText('string').nth(1)).toBeVisible()
+  const nameParameter = docPage.getRequestBodyParameter('name')
+
+  await expect(nameParameter.getByText('string')).toBeVisible()
+  await expect(nameParameter.getByText('required')).toBeVisible()
+
+  const tagParameter = docPage.getRequestBodyParameter('tag')
+
+  await expect(tagParameter.getByText('string')).toBeVisible()
+  await expect(tagParameter.getByText('required')).not.toBeVisible()
+
   await expect(requestBody.getByText('Additional Properties')).toBeVisible()
   await expect(requestBody.getByText('number')).toBeVisible()
-
-  await expect(requestBody.getByText('Required Properties: name')).toBeVisible()
 })
 
 test('displays the request body for a v3.0 schema', async ({ docPage }) => {
@@ -42,17 +44,16 @@ test('displays the request body for a v3.0 schema', async ({ docPage }) => {
   await expect(requestBody.getByText('Animal to add')).toBeVisible()
 
   await expect(requestBody.getByText('Media type: application/json')).toBeVisible()
-  await expect(requestBody.getByText('object')).toBeVisible()
+
+  // TODO(HiDeoo) check content
 })
 
 test('supports schema object `allOf` property', async ({ docPage }) => {
   await docPage.goto('/v20/animals/operations/addcat/')
 
-  const requestBody = docPage.getRequestBody()
-
-  await expect(requestBody.getByText('Property Name: name')).toBeVisible()
-  await expect(requestBody.getByText('Property Name: tag')).toBeVisible()
-  await expect(requestBody.getByText('Property Name: age')).toBeVisible()
+  await expect(docPage.getRequestBodyParameter('name')).toBeVisible()
+  await expect(docPage.getRequestBodyParameter('tag')).toBeVisible()
+  await expect(docPage.getRequestBodyParameter('age')).toBeVisible()
 })
 
 test('supports schema object `oneOf` property', async ({ docPage }) => {
@@ -64,8 +65,7 @@ test('supports schema object `oneOf` property', async ({ docPage }) => {
 
   await expect(requestBody.getByText('bird name')).toBeVisible()
   expect(await requestBody.getByText('string').count()).toBe(2)
-  await expect(requestBody.getByText('object')).toBeVisible()
-  await expect(requestBody.getByText('Property Name: name')).toBeVisible()
+  await expect(docPage.getRequestBodyParameter('name')).toBeVisible()
 })
 
 test('supports schema object `anyOf` property', async ({ docPage }) => {
@@ -75,10 +75,8 @@ test('supports schema object `anyOf` property', async ({ docPage }) => {
 
   await expect(requestBody.getByText('MULTIPLE TYPE: anyOf')).toBeVisible()
 
-  expect(await requestBody.getByText('object').count()).toBe(2)
-
-  await expect(requestBody.getByText('Property Name: tag')).toBeVisible()
-  await expect(requestBody.getByText('Property Name: age')).toBeVisible()
+  await expect(docPage.getRequestBodyParameter('tag')).toBeVisible()
+  await expect(docPage.getRequestBodyParameter('age')).toBeVisible()
 })
 
 test('supports schema object `not` property', async ({ docPage }) => {
@@ -119,9 +117,7 @@ test('displays examples', async ({ docPage }) => {
 test('displays the global `consumes` property for a v2.0 schema', async ({ docPage }) => {
   await docPage.goto('/v20/petstore-simple/operations/addpet/')
 
-  const requestBody = docPage.getRequestBody()
-
-  await expect(requestBody.getByText('Consumes: application/json')).toBeVisible()
+  await docPage.getRequestBody().getByRole('combobox').selectOption('application/json')
 })
 
 test('overrides the global `consumes` property for a v2.0 schema', async ({ docPage }) => {
@@ -129,5 +125,6 @@ test('overrides the global `consumes` property for a v2.0 schema', async ({ docP
 
   const requestBody = docPage.getRequestBody()
 
-  await expect(requestBody.getByText('Consumes: application/json, application/xml')).toBeVisible()
+  await requestBody.getByRole('combobox').selectOption('application/json')
+  await requestBody.getByRole('combobox').selectOption('application/xml')
 })

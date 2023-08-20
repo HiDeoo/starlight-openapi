@@ -1,0 +1,27 @@
+---
+interface Props {
+  types: string[] | undefined
+}
+
+const { types } = Astro.props
+---
+
+{
+  types && types.length > 0 && (
+    <select>
+      {types.map((type) => (
+        <option value={type}>{type}</option>
+      ))}
+    </select>
+  )
+}
+
+<style>
+  select {
+    background-color: var(--sl-color-gray-5);
+    border: 1px solid var(--sl-color-gray-4);
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    width: 100%;
+  }
+</style>
