@@ -49,13 +49,11 @@ export class DocPage {
   }
 
   getResponseHeaders(status: string) {
-    return this.page
-      .locator(`h3:has-text("Response ${`${status}`}") + div`)
-      .getByRole('heading', { level: 4, name: 'HEADERS' })
+    return this.getResponse(status).getByRole('heading', { level: 4, name: 'Headers' })
   }
 
   getResponseHeader(status: string, name: string) {
-    return this.getResponse(status).getByRole('listitem').filter({ hasText: name })
+    return this.getResponseHeaders(status).locator('+ div > div').filter({ hasText: name })
   }
 
   getAuthorizations() {

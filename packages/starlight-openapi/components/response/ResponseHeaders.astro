@@ -3,6 +3,8 @@ import { type Headers } from '../../libs/header'
 import { isOpenAPIV2Items } from '../../libs/items'
 import { isHeaderParameter } from '../../libs/parameter'
 import Items from '../Items.astro'
+import Key from '../Key.astro'
+import Md from '../Md.astro'
 import Parameter from '../parameter/Parameter.astro'
 import Section from '../Section.astro'
 
@@ -16,23 +18,16 @@ const headers = Object.entries(Astro.props.headers).filter(([key]) => key.toLowe
 {
   headers.length > 0 && (
     <Section level={4} title="Headers">
-      <ul>
-        {headers.map(([name, header]) => (
-          <li>
-            <div>Header name: {name}</div>
-            {isOpenAPIV2Items(header) ? (
-              <>
-                {header.description && <div>Header description: {header.description}</div>}
-                <Items items={header} />
-              </>
-            ) : isHeaderParameter(header) ? (
-              <ul>
-                <Parameter parameter={header} />
-              </ul>
-            ) : null}
-          </li>
-        ))}
-      </ul>
+      {headers.map(([name, header]) =>
+        isOpenAPIV2Items(header) ? (
+          <Key {name}>
+            <Items items={header} />
+            <Md text={header.description} />
+          </Key>
+        ) : isHeaderParameter(header) ? (
+          <Parameter parameter={{ ...header, name }} />
+        ) : null,
+      )}
     </Section>
   )
 }
