@@ -7,13 +7,11 @@ interface Props {
 const { level = 3, title } = Astro.props
 
 const Title = level === 2 ? 'h2' : 'h3'
-const sectionClass = level === 2 ? undefined : `panel`
-const contentClass = level === 2 ? `panel` : undefined
 ---
 
-<section class={sectionClass}>
+<section>
   <Title>{title}</Title>
-  <div class={contentClass}>
+  <div class="panel">
     <slot />
   </div>
 </section>
@@ -25,13 +23,12 @@ const contentClass = level === 2 ? `panel` : undefined
     padding: 1rem;
   }
 
-  :global(main .content) section h3 {
-    font-size: var(--sl-text-2xl);
-    margin-bottom: 1.5rem;
-  }
-
   :global(main .content) section :global(p) {
     margin-top: 0.5rem;
+  }
+
+  :global(main .content) section :global(p:first-child) {
+    margin-top: 0;
   }
 
   :global(:root[data-theme='light']) :global(main .content) section :global(code) {
