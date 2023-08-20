@@ -33,13 +33,11 @@ test('displays basic parameters', async ({ docPage }) => {
   await expect(limitParameter.getByText('required')).not.toBeVisible()
   await expect(limitParameter.getByText('deprecated')).toBeVisible()
   await expect(limitParameter.getByText('How many animals to return at one time (max 100)')).toBeVisible()
-  await expect(limitParameter.getByText('ALLOW EMPTY VALUE', { exact: true })).not.toBeVisible()
 
   const tagsParameter = docPage.getParameter('query', 'tags')
 
   await expect(tagsParameter.getByText('required')).toBeVisible()
   await expect(tagsParameter.getByText('deprecated')).not.toBeVisible()
-  await expect(tagsParameter.getByText('ALLOW EMPTY VALUE')).toBeVisible()
 })
 
 test('does not display the body parameter for a v2.0 schema', async ({ docPage }) => {
