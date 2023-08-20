@@ -1,12 +1,13 @@
 ---
 interface Props {
-  level?: 2 | 3
+  empty?: boolean
+  level?: 2 | 3 | 4
   title: string
 }
 
-const { level = 3, title } = Astro.props
+const { empty, level = 3, title } = Astro.props
 
-const Title = level === 2 ? 'h2' : 'h3'
+const Title = `h${level}`
 ---
 
 <section>
@@ -18,9 +19,20 @@ const Title = level === 2 ? 'h2' : 'h3'
       </div>
     )
   }
-  <div class="panel">
-    <slot />
-  </div>
+  {
+    !empty && (
+      <div class="panel">
+        <slot />
+      </div>
+    )
+  }
+  {
+    Astro.slots.has('post-panel') && (
+      <div>
+        <slot name="post-panel" />
+      </div>
+    )
+  }
 </section>
 
 <style>
@@ -28,6 +40,10 @@ const Title = level === 2 ? 'h2' : 'h3'
     background-color: var(--sl-color-gray-6);
     border: 1px solid var(--sl-color-gray-5);
     padding: 1rem;
+  }
+
+  .panel:empty {
+    background-color: red !important;
   }
 
   :global(main .content) section :global(p) {

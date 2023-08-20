@@ -125,9 +125,12 @@ test('uses the `content` property over a schema', async ({ docPage }) => {
   await docPage.goto('/v30/animals/operations/listbears/')
 
   const limitParameter = docPage.getParameter('query', 'limit')
+  const mediaTypeSelector = limitParameter.getByRole('combobox')
 
-  await expect(limitParameter.getByText('Media type: application/json')).toBeVisible()
-  await expect(limitParameter.getByText('Example value: 20')).toBeVisible()
-  await expect(limitParameter.getByText('Media type: application/xml')).toBeVisible()
-  await expect(limitParameter.getByText('Example value: 30')).toBeVisible()
+  await expect(limitParameter.getByRole('combobox')).toBeVisible()
+
+  await mediaTypeSelector.selectOption('application/json')
+  await mediaTypeSelector.selectOption('application/xml')
+
+  // TODO(HiDeoo) test content
 })

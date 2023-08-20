@@ -45,7 +45,7 @@ export class DocPage {
   }
 
   getResponse(status: string) {
-    return this.page.locator(`h3:has-text("Response ${`${status}`}") + div`)
+    return this.page.locator(`section:has(> h3:first-child:has-text("${status}"))`)
   }
 
   getResponseHeaders(status: string) {

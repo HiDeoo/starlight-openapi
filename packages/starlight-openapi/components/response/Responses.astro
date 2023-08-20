@@ -16,7 +16,7 @@ const { operation, responses, schema } = Astro.props
 
 {
   responses && (
-    <div>
+    <>
       <h2>Responses</h2>
       {Object.entries(responses).map(([name, response]) => {
         if (name === 'default') {
@@ -28,6 +28,6 @@ const { operation, responses, schema } = Astro.props
       {includesDefaultResponse(responses) && (
         <Response name="default" {operation} response={responses['default']} {schema} />
       )}
-    </div>
+    </>
   )
 }

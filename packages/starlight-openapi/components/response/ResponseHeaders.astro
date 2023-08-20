@@ -4,6 +4,7 @@ import { isOpenAPIV2Items } from '../../libs/items'
 import { isHeaderParameter } from '../../libs/parameter'
 import Items from '../Items.astro'
 import Parameter from '../parameter/Parameter.astro'
+import Section from '../Section.astro'
 
 interface Props {
   headers: Headers
@@ -14,8 +15,7 @@ const headers = Object.entries(Astro.props.headers).filter(([key]) => key.toLowe
 
 {
   headers.length > 0 && (
-    <>
-      <h4>HEADERS</h4>
+    <Section level={4} title="Headers">
       <ul>
         {headers.map(([name, header]) => (
           <li>
@@ -33,6 +33,6 @@ const headers = Object.entries(Astro.props.headers).filter(([key]) => key.toLowe
           </li>
         ))}
       </ul>
-    </>
+    </Section>
   )
 }
