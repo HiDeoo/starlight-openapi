@@ -25,21 +25,21 @@ const { definitions } = Astro.props
       {Object.entries(definitions).map(([name, scheme]) => (
         <Section title={name}>
           <Md text={scheme.description} />
-          <Text code label="Security scheme type">
+          <Text label="Security scheme type" tag>
             {scheme.type}
           </Text>
           {'bearerFormat' in scheme && (
-            <Text code label="Bearer format">
+            <Text label="Bearer format" tag>
               {scheme.bearerFormat}
             </Text>
           )}
           {'openIdConnectUrl' in scheme && (
-            <Text code label="OpenID Connect URL">
+            <Text label="OpenID Connect URL">
               <a href={scheme.openIdConnectUrl}>{scheme.openIdConnectUrl}</a>
             </Text>
           )}
           {scheme.type === 'apiKey' && (
-            <Text code label={`${capitalize(scheme.in)} parameter name`}>
+            <Text label={`${capitalize(scheme.in)} parameter name`} tag>
               {scheme.name}
             </Text>
           )}

@@ -12,7 +12,7 @@ const tags = allTags.filter((tag) => typeof tag === 'string')
 
 {
   tags.length > 0 && (
-    <div>
+    <div class="tags">
       {tags.map((tag) => (
         <Tag>{tag}</Tag>
       ))}
@@ -21,7 +21,7 @@ const tags = allTags.filter((tag) => typeof tag === 'string')
 }
 
 <style>
-  div {
+  .tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem;

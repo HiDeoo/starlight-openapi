@@ -2,8 +2,8 @@
 import type { Operation } from '../../libs/operation'
 import type { Schema } from '../../libs/schema'
 import { getSecurityRequirements } from '../../libs/security'
-import { interspece } from '../../libs/utils'
 import Section from '../Section.astro'
+import Tags from '../Tags.astro'
 
 interface Props {
   operation: Operation
@@ -32,18 +32,9 @@ const requirements = getSecurityRequirements(schema, operation)
 
           return Object.entries(requirement).map(([scheme, scopes]) => {
             return (
-              <li>
+              <li class="scheme not-content">
                 <strong>{scheme}</strong>
-                {scopes.length > 0 ? (
-                  <>
-                    <!-- prettier-ignore-start -->
-                    ({interspece(
-                      ' - ',
-                      scopes.map((scope) => <code>{scope}</code>),
-                    )})
-                    <!-- prettier-ignore-end -->
-                  </>
-                ) : null}
+                {scopes.length > 0 ? <Tags tags={[...scopes]} /> : null}
               </li>
             )
           })
@@ -52,3 +43,10 @@ const requirements = getSecurityRequirements(schema, operation)
     </Section>
   ) : null
 }
+
+<style>
+  .scheme > :global(.tags) {
+    display: inline-flex;
+    margin-left: 0.5rem;
+  }
+</style>

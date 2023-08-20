@@ -1,10 +1,12 @@
 ---
+import Tag from './Tag.astro'
+
 interface Props {
-  code?: boolean
   label?: string
+  tag?: boolean
 }
 
-const { code, label } = Astro.props
+const { label, tag } = Astro.props
 
 const text: string | undefined = await Astro.slots.render('default')
 ---
@@ -13,10 +15,10 @@ const text: string | undefined = await Astro.slots.render('default')
   text && text.length > 0 && (
     <p>
       {label && <b>{label}:</b>}
-      {code ? (
-        <code>
+      {tag ? (
+        <Tag>
           <Fragment set:html={text} />
-        </code>
+        </Tag>
       ) : (
         <Fragment set:html={text} />
       )}
