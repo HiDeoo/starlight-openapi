@@ -15,17 +15,17 @@ test('displays the request body for a v2.0 schema', async ({ docPage }) => {
 
   await expect(requestBody.getByText('Description: Animal to add')).toBeVisible()
 
-  await expect(requestBody.getByText('Type: object')).toBeVisible()
+  await expect(requestBody.getByText('object')).toBeVisible()
 
   await expect(requestBody.getByText('Min Properties: 1')).toBeVisible()
   await expect(requestBody.getByText('Max Properties: 4')).toBeVisible()
 
   await expect(requestBody.getByText('Property Name: name')).toBeVisible()
-  await expect(requestBody.getByText('Type: string').nth(0)).toBeVisible()
+  await expect(requestBody.getByText('string').nth(0)).toBeVisible()
   await expect(requestBody.getByText('Property Name: tag')).toBeVisible()
-  await expect(requestBody.getByText('Type: string').nth(1)).toBeVisible()
+  await expect(requestBody.getByText('string').nth(1)).toBeVisible()
   await expect(requestBody.getByText('Additional Properties')).toBeVisible()
-  await expect(requestBody.getByText('Type: number')).toBeVisible()
+  await expect(requestBody.getByText('number')).toBeVisible()
 
   await expect(requestBody.getByText('Required Properties: name')).toBeVisible()
 })
@@ -42,7 +42,7 @@ test('displays the request body for a v3.0 schema', async ({ docPage }) => {
   await expect(requestBody.getByText('Description: Animal to add')).toBeVisible()
 
   await expect(requestBody.getByText('Media type: application/json')).toBeVisible()
-  await expect(requestBody.getByText('Type: object')).toBeVisible()
+  await expect(requestBody.getByText('object')).toBeVisible()
 })
 
 test('supports schema object `allOf` property', async ({ docPage }) => {
@@ -63,8 +63,8 @@ test('supports schema object `oneOf` property', async ({ docPage }) => {
   await expect(requestBody.getByText('MULTIPLE TYPE: oneOf')).toBeVisible()
 
   await expect(requestBody.getByText('bird name')).toBeVisible()
-  expect(await requestBody.getByText('Type: string').count()).toBe(2)
-  await expect(requestBody.getByText('Type: object')).toBeVisible()
+  expect(await requestBody.getByText('string').count()).toBe(2)
+  await expect(requestBody.getByText('object')).toBeVisible()
   await expect(requestBody.getByText('Property Name: name')).toBeVisible()
 })
 
@@ -75,7 +75,7 @@ test('supports schema object `anyOf` property', async ({ docPage }) => {
 
   await expect(requestBody.getByText('MULTIPLE TYPE: anyOf')).toBeVisible()
 
-  expect(await requestBody.getByText('Type: object').count()).toBe(2)
+  expect(await requestBody.getByText('object').count()).toBe(2)
 
   await expect(requestBody.getByText('Property Name: tag')).toBeVisible()
   await expect(requestBody.getByText('Property Name: age')).toBeVisible()

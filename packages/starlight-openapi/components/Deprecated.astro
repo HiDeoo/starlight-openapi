@@ -9,8 +9,11 @@ const { deprecated } = Astro.props
 {deprecated && <div>Deprecated</div>}
 
 <style>
-  div {
+  :root {
     --sl-openapi-deprecated-hue: 50;
+  }
+
+  div {
     --sl-openapi-deprecated-bg: hsl(var(--sl-openapi-deprecated-hue), 82%, 13%);
     --sl-openapi-deprecated-border: hsl(var(--sl-openapi-deprecated-hue), 82%, 63%);
 

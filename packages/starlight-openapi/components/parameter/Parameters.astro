@@ -1,7 +1,7 @@
 ---
 import type { PathItemOperation } from '../../libs/operation'
 import { getParametersByLocation } from '../../libs/parameter'
-
+import Section from '../Section.astro'
 import Parameter from './Parameter.astro'
 
 interface Props {
@@ -15,24 +15,20 @@ const {
 const parametersByLocation = getParametersByLocation(operation.parameters, pathItem.parameters)
 
 // TODO(HiDeoo) Format location
+// TODO(HiDeoo) path parameters should always be first ??
 ---
 
 {
   parametersByLocation.size > 0 && (
     <>
       <h2>Parameters</h2>
-      <div>
-        {[...parametersByLocation.entries()].map(([location, parameters]) => (
-          <>
-            <h3>{location} parameters</h3>
-            <ul>
-              {[...parameters.values()].map((parameter) => (
-                <Parameter {parameter} />
-              ))}
-            </ul>
-          </>
-        ))}
-      </div>
+      {[...parametersByLocation.entries()].map(([location, parameters]) => (
+        <Section title={`${location} parameters`}>
+          {[...parameters.values()].map((parameter) => (
+            <Parameter {parameter} />
+          ))}
+        </Section>
+      ))}
     </>
   )
 }

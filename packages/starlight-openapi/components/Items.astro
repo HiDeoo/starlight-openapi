@@ -1,5 +1,7 @@
 ---
-import { isOpenAPIV2Items, type Items } from '../libs/items'
+import { getBound, isOpenAPIV2Items, type Items } from '../libs/items'
+import Tag from './Tag.astro'
+import Tags from './Tags.astro'
 
 import SchemaObject from './schema/SchemaObject.astro'
 
@@ -11,20 +13,29 @@ interface Props {
 const { hideExample, items } = Astro.props
 ---
 
-{items.type && <div>Type: {Array.isArray(items.type) ? items.type.join(' ') : items.type}</div>}
-{items.format && <div>Format: {items.format}</div>}
-{items.default && <div>Default Value: {items.default}</div>}
-{items.maximum && <div>Maximum: {items.maximum}</div>}
-{items.exclusiveMaximum && <div>Exclusive Maximum</div>}
-{items.minimum && <div>Minimum: {items.minimum}</div>}
-{items.exclusiveMinimum && <div>Exclusive Minimum</div>}
-{items.maxLength && <div>Max Length: {items.maxLength}</div>}
-{items.minLength && <div>Min Length: {items.minLength}</div>}
-{items.pattern && <div>Pattern: {items.pattern}</div>}
-{items.maxItems && <div>Max Items: {items.maxItems}</div>}
-{items.minItems && <div>Min Items: {items.minItems}</div>}
-{items.uniqueItems && <div>ONLY UNIQUE ITEMS</div>}
-{items.multipleOf && <div>Multiple Of: {items.multipleOf}</div>}
+{
+  items.type && (
+    <div>
+      <span class="type">{Array.isArray(items.type) ? items.type.join(' | ') : items.type}</span>
+      {items.format && <Tag>format: {items.format}</Tag>}
+    </div>
+  )
+}
+<Tags
+  tags={[
+    items.default && `default: ${items.default}`,
+    getBound(items, 'minimum'),
+    getBound(items, 'maximum'),
+    items.minLength && `>= ${items.minLength} characters`,
+    items.maxLength && `<= ${items.maxLength} characters`,
+    items.minItems && `>= ${items.minItems} items`,
+    items.maxItems && `<= ${items.maxItems} items`,
+    items.pattern && `/${items.pattern}/`,
+    items.multipleOf && `multiple of ${items.multipleOf}`,
+    items.uniqueItems && 'unique items',
+  ]}
+/>
+
 {items.enum && <div>Enum: {items.enum.join(',')}</div>}
 {
   isOpenAPIV2Items(items.items) ? (
@@ -36,3 +47,11 @@ const { hideExample, items } = Astro.props
     <SchemaObject schemaObject={items.items} {hideExample} />
   ) : null
 }
+
+<style>
+  .type {
+    color: var(--sl-color-text-accent);
+    font-weight: 600;
+    margin-right: 0.3rem;
+  }
+</style>

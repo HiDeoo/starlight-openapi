@@ -1,0 +1,30 @@
+---
+import Tag from './Tag.astro'
+
+interface Props {
+  tags: unknown[]
+}
+
+const { tags: allTags } = Astro.props
+
+const tags = allTags.filter((tag) => typeof tag === 'string')
+---
+
+{
+  tags.length > 0 && (
+    <div>
+      {tags.map((tag) => (
+        <Tag>{tag}</Tag>
+      ))}
+    </div>
+  )
+}
+
+<style>
+  div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-block: 0.5rem;
+  }
+</style>

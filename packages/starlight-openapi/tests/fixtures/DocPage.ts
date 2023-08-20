@@ -29,7 +29,7 @@ export class DocPage {
   }
 
   getParameters(location: string) {
-    return this.page.locator(`h3:has-text("${`${location} parameters`}") + ul`).getByRole('listitem')
+    return this.page.locator(`h3:has-text("${`${location} parameters`}") + div > div`)
   }
 
   getRequestBody() {

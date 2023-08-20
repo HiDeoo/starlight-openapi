@@ -30,16 +30,15 @@ test('displays basic parameters', async ({ docPage }) => {
 
   const limitParameter = docPage.getParameter('query', 'limit')
 
+  await expect(limitParameter.getByText('required')).not.toBeVisible()
+  await expect(limitParameter.getByText('deprecated')).toBeVisible()
   await expect(limitParameter.getByText('How many animals to return at one time (max 100)')).toBeVisible()
-  await expect(limitParameter.getByText('NOT REQUIRED')).toBeVisible()
-  await expect(limitParameter.getByText('DEPRECATED')).toBeVisible()
   await expect(limitParameter.getByText('ALLOW EMPTY VALUE', { exact: true })).not.toBeVisible()
 
   const tagsParameter = docPage.getParameter('query', 'tags')
 
-  await expect(tagsParameter.getByText('REQUIRED')).toBeVisible()
-  await expect(tagsParameter.getByText('NOT REQUIRED')).not.toBeVisible()
-  await expect(tagsParameter.getByText('DEPRECATED')).not.toBeVisible()
+  await expect(tagsParameter.getByText('required')).toBeVisible()
+  await expect(tagsParameter.getByText('deprecated')).not.toBeVisible()
   await expect(tagsParameter.getByText('ALLOW EMPTY VALUE')).toBeVisible()
 })
 
@@ -54,27 +53,25 @@ test('displays type informations for a v2.0 schema', async ({ docPage }) => {
 
   const tagsParameter = docPage.getParameter('query', 'tags')
 
-  await expect(tagsParameter.getByText('Type: array')).toBeVisible()
-  await expect(tagsParameter.getByText('Max Items: 10')).toBeVisible()
-  await expect(tagsParameter.getByText('Min Items: 1')).toBeVisible()
-  await expect(tagsParameter.getByText('ONLY UNIQUE ITEMS')).toBeVisible()
-  await expect(tagsParameter.getByText('Items: Type: string')).toBeVisible()
+  await expect(tagsParameter.getByText('array')).toBeVisible()
+  await expect(tagsParameter.getByText('>= 1 items')).toBeVisible()
+  await expect(tagsParameter.getByText('<= 10 items')).toBeVisible()
+  await expect(tagsParameter.getByText('unique items')).toBeVisible()
+  await expect(tagsParameter.getByText('Items: string')).toBeVisible()
 
   const limitParameter = docPage.getParameter('query', 'limit')
 
-  await expect(limitParameter.getByText('Format: int32')).toBeVisible()
-  await expect(limitParameter.getByText('Default Value: 10')).toBeVisible()
-  await expect(limitParameter.getByText('Maximum: 100')).toBeVisible()
-  await expect(limitParameter.getByText('Exclusive Maximum')).toBeVisible()
-  await expect(limitParameter.getByText('Minimum: 1')).toBeVisible()
-  await expect(limitParameter.getByText('Exclusive Minimum')).not.toBeVisible()
-  await expect(limitParameter.getByText('Multiple Of: 2')).toBeVisible()
+  await expect(limitParameter.getByText('format: int32')).toBeVisible()
+  await expect(limitParameter.getByText('default: 10')).toBeVisible()
+  await expect(limitParameter.getByText('>= 1')).toBeVisible()
+  await expect(limitParameter.getByText('< 100')).toBeVisible()
+  await expect(limitParameter.getByText('multiple of 2')).toBeVisible()
 
   const filterParameter = docPage.getParameter('query', 'filter')
 
-  await expect(filterParameter.getByText('Max Length: 100')).toBeVisible()
-  await expect(filterParameter.getByText('Min Length: 3')).toBeVisible()
-  await expect(filterParameter.getByText('Pattern: ^[a-zA-Z0-9]+$')).toBeVisible()
+  await expect(filterParameter.getByText('>= 3 characters')).toBeVisible()
+  await expect(filterParameter.getByText('<= 100 characters')).toBeVisible()
+  await expect(filterParameter.getByText('/^[a-zA-Z0-9]+$/')).toBeVisible()
 
   const sortParameter = docPage.getParameter('query', 'sort')
 
@@ -92,7 +89,7 @@ test('displays type informations for a v3.0 schema shared with a v2.0 schema', a
 
   const limitParameter = docPage.getParameter('query', 'limit')
 
-  await expect(limitParameter.getByText('Type: integer')).toBeVisible()
+  await expect(limitParameter.getByText('integer')).toBeVisible()
 })
 
 test('displays type informations for a v3.0 schema', async ({ docPage }) => {

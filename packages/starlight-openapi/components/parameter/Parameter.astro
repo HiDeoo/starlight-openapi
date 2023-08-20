@@ -13,19 +13,52 @@ interface Props {
 const { parameter } = Astro.props
 ---
 
-<li>
-  <div>{parameter.name}</div>
-  {parameter.description && <div>{parameter.description}</div>}
-  <div>{parameter.required ? 'REQUIRED' : 'NOT REQUIRED'}</div>
-  {parameter.deprecated && <div>DEPRECATED</div>}
-  {parameter.allowEmptyValue ? <div>ALLOW EMPTY VALUE</div> : <div>DO NOT ALLOW EMPTY VALUE</div>}
-  {
-    isOpenAPIV2Items(parameter) ? (
-      <Items items={parameter} />
-    ) : parameter.content ? (
-      <Content content={parameter.content} />
-    ) : isParameterWithSchemaObject(parameter) ? (
-      <Schema example={parameter.example} examples={parameter.examples} schema={parameter.schema} />
-    ) : null
+<div class="parameter not-content">
+  <div class="name">
+    <strong>{parameter.deprecated ? <s>{parameter.name}</s> : parameter.name}</strong>
+    {parameter.required && <div class="required">required</div>}
+    {parameter.deprecated && <div class="deprecated">deprecated</div>}
+  </div>
+  <div>
+    {
+      isOpenAPIV2Items(parameter) ? (
+        <Items items={parameter} />
+      ) : parameter.content ? (
+        <Content content={parameter.content} />
+      ) : isParameterWithSchemaObject(parameter) ? (
+        <Schema example={parameter.example} examples={parameter.examples} schema={parameter.schema} />
+      ) : null
+    }
+    {parameter.description && <div>{parameter.description}</div>}
+    {parameter.allowEmptyValue ? <div>ALLOW EMPTY VALUE</div> : <div>DO NOT ALLOW EMPTY VALUE</div>}
+  </div>
+</div>
+
+<style>
+  .parameter {
+    display: flex;
+    gap: 1rem;
   }
-</li>
+
+  .name {
+    max-width: 50%;
+    min-width: 25%;
+    word-break: break-all;
+  }
+
+  .required {
+    color: var(--sl-color-red);
+    font-size: var(--sl-text-sm);
+  }
+
+  .deprecated {
+    --sl-openapi-deprecated-color: hsl(var(--sl-openapi-deprecated-hue), 82%, 63%);
+
+    color: var(--sl-openapi-deprecated-color);
+    font-size: var(--sl-text-sm);
+  }
+
+  :global(:root[data-theme='light']) .deprecated {
+    --sl-openapi-deprecated-color: hsl(var(--sl-openapi-deprecated-hue), 90%, 25%);
+  }
+</style>
