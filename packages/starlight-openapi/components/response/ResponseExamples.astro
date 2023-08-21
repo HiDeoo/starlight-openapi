@@ -24,3 +24,13 @@ const examples = Object.entries(Astro.props.examples)
     </Section>
   )
 }
+
+<style>
+  :global(main .content) div[data-openapi-content-type] {
+    margin-top: 0.8rem;
+  }
+
+  :global(main .content) div[data-openapi-content-type] :global(pre) {
+    margin-top: 0rem;
+  }
+</style>

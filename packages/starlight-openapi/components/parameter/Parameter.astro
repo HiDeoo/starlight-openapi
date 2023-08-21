@@ -6,6 +6,7 @@ import Content from '../Content.astro'
 import Items from '../Items.astro'
 import Key from '../Key.astro'
 import Schema from '../schema/Schema.astro'
+import Text from '../Text.astro'
 
 interface Props {
   parameter: Parameter
@@ -17,12 +18,22 @@ const { parameter } = Astro.props
 <Key deprecated={parameter.deprecated} name={parameter.name} required={parameter.required}>
   {
     isOpenAPIV2Items(parameter) ? (
-      <Items items={parameter} />
+      <>
+        <Items items={parameter} />
+        <Text>{parameter.description}</Text>
+      </>
     ) : parameter.content ? (
-      <Content content={parameter.content} />
+      <>
+        <Content content={parameter.content} />
+        <Text>{parameter.description}</Text>
+      </>
     ) : isParameterWithSchemaObject(parameter) ? (
-      <Schema example={parameter.example} examples={parameter.examples} schema={parameter.schema} />
+      <Schema
+        description={parameter.description}
+        example={parameter.example}
+        examples={parameter.examples}
+        schema={parameter.schema}
+      />
     ) : null
   }
-  {parameter.description && <div>{parameter.description}</div>}
 </Key>

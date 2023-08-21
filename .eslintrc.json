@@ -25,7 +25,7 @@
         "react/no-unknown-property": [
           "error",
           {
-            "ignore": ["class", "class:list"]
+            "ignore": ["class", "class:list", "tabindex"]
           }
         ]
       }

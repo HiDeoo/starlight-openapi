@@ -102,8 +102,9 @@ test('overrides a schema example by a parameter example', async ({ docPage }) =>
 
   const limitParameter = docPage.getParameter('query', 'limit')
 
-  await expect(limitParameter.getByText('Example value: 10')).not.toBeVisible()
-  await expect(limitParameter.getByText('Example value: 20')).toBeVisible()
+  await expect(limitParameter.getByText('Example')).toBeVisible()
+  await expect(limitParameter.getByText('10', { exact: true })).not.toBeVisible()
+  await expect(limitParameter.getByText('20', { exact: true })).toBeVisible()
 })
 
 test('displays multiple examples', async ({ docPage }) => {
@@ -111,13 +112,19 @@ test('displays multiple examples', async ({ docPage }) => {
 
   const limitParameter = docPage.getParameter('query', 'limit')
 
-  await expect(limitParameter.getByText('Example name: single')).toBeVisible()
-  await expect(limitParameter.getByText('Example Summary: A single dog')).toBeVisible()
-  await expect(limitParameter.getByText('Example Description IN MARKDOWN: A unique dog')).toBeVisible()
-  await expect(limitParameter.getByText('Example external value (LINK): https://example.com/dogs/1')).toBeVisible()
+  await expect(limitParameter.getByRole('heading', { level: 5, name: 'Examples' })).toBeVisible()
 
-  await expect(limitParameter.getByText('Example name: multiple')).toBeVisible()
-  await expect(limitParameter.getByText('Example value: 30')).toBeVisible()
+  await limitParameter.getByRole('combobox').selectOption('single')
+
+  await expect(limitParameter.getByText('A single dog')).toBeVisible()
+  await expect(limitParameter.getByText('A unique dog')).toBeVisible()
+  expect(await limitParameter.getByRole('link', { name: 'https://example.com/dogs/1' }).getAttribute('href')).toBe(
+    'https://example.com/dogs/1',
+  )
+
+  await limitParameter.getByRole('combobox').selectOption('multiple')
+
+  await expect(limitParameter.getByText('30')).toBeVisible()
 })
 
 test('uses the `content` property over a schema', async ({ docPage }) => {
@@ -134,12 +141,14 @@ test('uses the `content` property over a schema', async ({ docPage }) => {
   await mediaTypeSelector.selectOption('application/json')
   await expect(limitParameter.getByText('integer').first()).toBeVisible()
   await expect(limitParameter.getByText('integer').last()).not.toBeVisible()
-  await expect(limitParameter.getByText('Example value: 20')).toBeVisible()
+  await expect(limitParameter.getByRole('heading', { level: 5, name: 'Example' })).toBeVisible()
+  await expect(limitParameter.getByText('20')).toBeVisible()
 
   await mediaTypeSelector.selectOption('application/xml')
   await expect(limitParameter.getByText('integer').first()).not.toBeVisible()
   await expect(limitParameter.getByText('integer').last()).toBeVisible()
-  await expect(limitParameter.getByText('Example value: 30')).toBeVisible()
+  await expect(limitParameter.getByRole('heading', { level: 5, name: 'Example' })).toBeVisible()
+  await expect(limitParameter.getByText('30')).toBeVisible()
 
   expect(await docPage.getResponse('200').getByRole('combobox').inputValue()).toBe('application/json')
 })

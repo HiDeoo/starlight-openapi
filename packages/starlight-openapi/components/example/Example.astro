@@ -1,5 +1,7 @@
 ---
 import type { ExampleV3 } from '../../libs/example'
+import Md from '../Md.astro'
+import Text from '../Text.astro'
 
 interface Props {
   example?: ExampleV3
@@ -14,11 +16,30 @@ const exampleToRender = raw === undefined ? example : { value: raw }
 {
   exampleToRender && (
     <>
-      TODO(HiDeoo)
-      {exampleToRender.summary && <div>Example Summary: {exampleToRender.summary}</div>}
-      {exampleToRender.description && <div>Example Description IN MARKDOWN: {exampleToRender.description}</div>}
-      {exampleToRender.externalValue && <div>Example external value (LINK): {exampleToRender.externalValue}</div>}
-      {exampleToRender.value && <div>Example value: {JSON.stringify(exampleToRender.value)}</div>}
+      <Text>{exampleToRender.summary}</Text>
+      <Md text={exampleToRender.description} />
+      {exampleToRender.externalValue && (
+        <Text>
+          <a href={exampleToRender.externalValue}>{exampleToRender.externalValue}</a>
+        </Text>
+      )}
+      <!-- prettier-ignore-start -->
+      {exampleToRender.value &&
+        // eslint-disable-next-line astro/jsx-a11y/no-noninteractive-tabindex
+        (<pre tabindex="0"><code>{JSON.stringify(exampleToRender.value, null, 2)}</code></pre>)
+      }
+      <!-- prettier-ignore-end -->
     </>
   )
 }
+
+<style>
+  :global(main .content) pre {
+    background-color: var(--sl-color-gray-5);
+    border: 1px solid var(--sl-color-gray-4);
+    font-size: var(--sl-text-code);
+    margin-top: 0.8rem;
+    padding: 0.5rem;
+    tab-size: 2;
+  }
+</style>

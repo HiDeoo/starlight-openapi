@@ -65,11 +65,15 @@ test('supports schema object `oneOf` property', async ({ docPage }) => {
 
   await expect(requestBody.getByRole('tab')).toContainText(['string', 'object'])
 
-  await expect(requestBody.getByText('Example value: "Aubrey"')).toBeVisible()
+  await expect(requestBody.getByText('"Aubrey"')).toBeVisible()
 
   requestBody.getByRole('tab', { name: 'object' }).click()
 
-  await expect(requestBody.getByText('Example value: {"name":"Harley"}')).toBeVisible()
+  await expect(
+    requestBody.getByText(`{
+  "name": "Harley"
+}`),
+  ).toBeVisible()
 })
 
 test('supports schema object `anyOf` property', async ({ docPage }) => {
@@ -117,7 +121,7 @@ test('displays examples', async ({ docPage }) => {
 
   const requestBody = docPage.getRequestBody()
 
-  await expect(requestBody.getByText('Example value: "Aubrey"')).toBeVisible()
+  await expect(requestBody.getByText('"Aubrey"')).toBeVisible()
 })
 
 test('displays the global `consumes` property for a v2.0 schema', async ({ docPage }) => {
