@@ -6,6 +6,10 @@ export function isOpenAPIV2Items(items: unknown): items is Items {
   )
 }
 
+export function getType(items: Items) {
+  return Array.isArray(items.type) ? items.type.join(' | ') : items.type
+}
+
 export function getBound(items: Items, type: 'maximum' | 'minimum'): string | undefined {
   const exclusive = items[type === 'maximum' ? 'exclusiveMaximum' : 'exclusiveMinimum']
   const sign = type === 'maximum' ? '<' : '>'

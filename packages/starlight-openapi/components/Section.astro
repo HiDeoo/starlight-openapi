@@ -58,7 +58,7 @@ const Title = `h${level}`
     margin-top: 0.5rem;
   }
 
-  :global(main .content) section :global(ul:only-child) {
+  :global(main .content) section :global(ul:only-child:not([role='tablist'])) {
     padding-inline-start: 1.3rem;
   }
 </style>

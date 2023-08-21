@@ -1,5 +1,5 @@
 ---
-import { getBound, isOpenAPIV2Items, type Items } from '../libs/items'
+import { getBound, getType, isOpenAPIV2Items, type Items } from '../libs/items'
 
 import SchemaObject from './schema/SchemaObject.astro'
 import Tag from './Tag.astro'
@@ -17,7 +17,7 @@ const { hideExample, items, nullable } = Astro.props
 {
   items.type && (
     <div>
-      <span class="type">{Array.isArray(items.type) ? items.type.join(' | ') : items.type}</span>
+      <span class="type">{getType(items)}</span>
       {items.format && <Tag>format: {items.format}</Tag>}
     </div>
   )

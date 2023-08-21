@@ -59,11 +59,15 @@ test('supports schema object `oneOf` property', async ({ docPage }) => {
 
   const requestBody = docPage.getRequestBody()
 
-  await expect(requestBody.getByText('MULTIPLE TYPE: oneOf')).toBeVisible()
+  await expect(requestBody.getByText('One of:')).toBeVisible()
 
-  await expect(requestBody.getByText('bird name')).toBeVisible()
-  expect(await requestBody.getByText('string').count()).toBe(2)
-  await expect(docPage.getRequestBodyParameter('name')).toBeVisible()
+  await expect(requestBody.getByRole('tab')).toContainText(['string', 'object'])
+
+  await expect(requestBody.getByText('Example value: "Aubrey"')).toBeVisible()
+
+  requestBody.getByRole('tab', { name: 'object' }).click()
+
+  await expect(requestBody.getByText('Example value: {"name":"Harley"}')).toBeVisible()
 })
 
 test('supports schema object `anyOf` property', async ({ docPage }) => {
@@ -71,10 +75,15 @@ test('supports schema object `anyOf` property', async ({ docPage }) => {
 
   const requestBody = docPage.getRequestBody()
 
-  await expect(requestBody.getByText('MULTIPLE TYPE: anyOf')).toBeVisible()
+  await expect(requestBody.getByText('Any of:')).toBeVisible()
 
-  await expect(docPage.getRequestBodyParameter('tag')).toBeVisible()
-  await expect(docPage.getRequestBodyParameter('age')).toBeVisible()
+  await expect(requestBody.getByRole('tab')).toContainText(['object', 'object'])
+
+  await expect(requestBody.getByText('A representation of an animal')).toBeVisible()
+
+  requestBody.getByRole('tab', { name: 'object' }).nth(1).click()
+
+  await expect(requestBody.getByText('integer format: int32')).toBeVisible()
 })
 
 test('supports schema object `not` property', async ({ docPage }) => {
@@ -92,7 +101,7 @@ test('supports schema object `discriminator` property', async ({ docPage }) => {
 
   const requestBody = docPage.getRequestBody()
 
-  await expect(requestBody.getByText('Discriminator: type')).toBeVisible()
+  await expect(requestBody.getByText('One of: discriminator: type')).toBeVisible()
 })
 
 test('displays external docs', async ({ docPage }) => {
@@ -109,7 +118,6 @@ test('displays examples', async ({ docPage }) => {
   const requestBody = docPage.getRequestBody()
 
   await expect(requestBody.getByText('Example value: "Aubrey"')).toBeVisible()
-  await expect(requestBody.getByText('Example value: {"name":"Harley"}')).toBeVisible()
 })
 
 test('displays the global `consumes` property for a v2.0 schema', async ({ docPage }) => {
