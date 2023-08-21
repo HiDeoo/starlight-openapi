@@ -15,8 +15,8 @@ test('displays the request body for a v2.0 schema', async ({ docPage }) => {
 
   await expect(requestBody.getByText('Animal to add')).toBeVisible()
 
-  await expect(requestBody.getByText('Min Properties: 1')).toBeVisible()
-  await expect(requestBody.getByText('Max Properties: 4')).toBeVisible()
+  await expect(requestBody.getByText('>= 1 properties')).toBeVisible()
+  await expect(requestBody.getByText('<= 4 properties')).toBeVisible()
 
   const nameParameter = docPage.getRequestBodyParameter('name')
 

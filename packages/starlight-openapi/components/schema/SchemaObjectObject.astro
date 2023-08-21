@@ -5,6 +5,7 @@ import {
   isSchemaObject,
   type SchemaObject,
 } from '../../libs/schemaObject'
+import Tags from '../Tags.astro'
 
 import Schema from './SchemaObject.astro'
 import SchemaObjectObjectProperties from './SchemaObjectObjectProperties.astro'
@@ -18,8 +19,12 @@ const { schemaObject } = Astro.props
 const properties = getProperties(schemaObject)
 ---
 
-<!-- // TODO(HiDeoo)  -->{schemaObject.minProperties && <div>Min Properties: {schemaObject.minProperties}</div>}
-{schemaObject.maxProperties && <div>Max Properties: {schemaObject.maxProperties}</div>}
+<Tags
+  tags={[
+    schemaObject.minProperties && `>= ${schemaObject.minProperties} properties`,
+    schemaObject.maxProperties && `<= ${schemaObject.maxProperties} properties`,
+  ]}
+/>
 <SchemaObjectObjectProperties {properties} required={schemaObject.required} />
 {
   schemaObject.allOf &&
