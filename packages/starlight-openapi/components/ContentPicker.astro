@@ -1,0 +1,45 @@
+---
+import Select from './Select.astro'
+
+interface Props {
+  types: string[] | undefined
+}
+
+const { types } = Astro.props
+---
+
+<starlight-openapi-content-picker>
+  <Select options={types} />
+  <slot />
+</starlight-openapi-content-picker>
+
+<script>
+  customElements.define(
+    'starlight-openapi-content-picker',
+    class StarlightOpenAPIContentPicker extends HTMLElement {
+      #panels: HTMLDivElement[]
+
+      constructor() {
+        super()
+
+        const select = this.querySelector<HTMLSelectElement>(':scope > select')
+
+        if (select) {
+          select.addEventListener('change', (event) => {
+            if (event.currentTarget instanceof HTMLSelectElement) {
+              this.#changeContent(event.currentTarget.value)
+            }
+          })
+        }
+
+        this.#panels = [...this.querySelectorAll<HTMLDivElement>(':scope > [role="tabpanel"]')]
+      }
+
+      #changeContent(mediaType: string) {
+        for (const panel of this.#panels) {
+          panel.hidden = panel.dataset['openapiContentType'] !== mediaType
+        }
+      }
+    },
+  )
+</script>

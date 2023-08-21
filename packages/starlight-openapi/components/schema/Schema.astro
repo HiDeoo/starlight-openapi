@@ -12,5 +12,4 @@ const { example, examples, schema } = Astro.props
 ---
 
 {schema && <SchemaObject schemaObject={schema} hideExample={example !== undefined || examples !== undefined} />}
-<!-- // TODO(HiDeoo) -->
 <Examples example={example} examples={examples} />

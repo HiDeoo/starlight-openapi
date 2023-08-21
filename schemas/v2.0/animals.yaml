@@ -70,6 +70,11 @@ paths:
                 name: 'Bessy'
               - id: 2
                 name: 'Hazel'
+            application/xml:
+              - id: 3
+                name: 'Cleo'
+              - id: 4
+                name: 'Daisy'
         default:
           description: 'unexpected error'
           schema:

@@ -7,11 +7,11 @@ import {
 } from '../libs/requestBody'
 import type { Schema } from '../libs/schema'
 
-import Content from './content/Content.astro'
-import ContentMediaTypes from './content/ContentMediaTypes.astro'
+import Content from './Content.astro'
 import Md from './Md.astro'
 import SchemaObject from './schema/SchemaObject.astro'
 import Section from './Section.astro'
+import Select from './Select.astro'
 
 interface Props {
   operation: Operation
@@ -42,7 +42,7 @@ const consumes = getOpenAPIV2OperationConsumes(schema, operation)
       <Md text={description} slot="pre-panel" />
       {openAPIV2RequestBodyParameter ? (
         <>
-          <ContentMediaTypes types={consumes} />
+          <Select options={consumes} />
           <SchemaObject schemaObject={openAPIV2RequestBodyParameter.schema} />
         </>
       ) : openAPIV3RequestBody ? (

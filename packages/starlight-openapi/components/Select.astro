@@ -1,16 +1,16 @@
 ---
 interface Props {
-  types: string[] | undefined
+  options: string[] | undefined
 }
 
-const { types } = Astro.props
+const { options } = Astro.props
 ---
 
 {
-  types && types.length > 0 && (
+  options && options.length > 0 && (
     <select>
-      {types.map((type) => (
-        <option value={type}>{type}</option>
+      {options.map((option) => (
+        <option value={option}>{option}</option>
       ))}
     </select>
   )

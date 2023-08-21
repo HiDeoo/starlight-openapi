@@ -56,6 +56,10 @@ export class DocPage {
     return this.getResponseHeaders(status).locator('+ div > div').filter({ hasText: name })
   }
 
+  getResponseExamples(status: string) {
+    return this.getResponse(status).locator('section:has(> h4:first-child:has-text("Examples"))')
+  }
+
   getAuthorizations() {
     return this.page.locator('section:has(> h2:first-child:has-text("Authorizations"))')
   }

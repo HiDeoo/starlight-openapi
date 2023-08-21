@@ -10,11 +10,11 @@ import {
   type Responses,
 } from '../../libs/response'
 import type { Schema } from '../../libs/schema'
-import Content from '../content/Content.astro'
-import ContentMediaTypes from '../content/ContentMediaTypes.astro'
+import Content from '../Content.astro'
 import Md from '../Md.astro'
 import SchemaObject from '../schema/SchemaObject.astro'
 import Section from '../Section.astro'
+import Select from '../Select.astro'
 
 import ResponseExamples from './ResponseExamples.astro'
 import ResponseHeaders from './ResponseHeaders.astro'
@@ -41,13 +41,13 @@ const isEmpty = !openAPIV2ResponseSchema && !openAPIV3ResponseContent
   {
     openAPIV2ResponseSchema ? (
       <>
-        <ContentMediaTypes types={produces} />
+        <Select options={produces} />
         <SchemaObject schemaObject={openAPIV2ResponseSchema} />
       </>
     ) : openAPIV3ResponseContent ? (
       <Content content={openAPIV3ResponseContent} />
     ) : null
   }
-  {isOpenAPIV2ResponseWithExamples(response) && <ResponseExamples examples={response.examples} />}
   {isResponseWithHeaders(response) && <ResponseHeaders headers={response.headers} slot="post-panel" />}
+  {isOpenAPIV2ResponseWithExamples(response) && <ResponseExamples examples={response.examples} slot="post-panel" />}
 </Section>
