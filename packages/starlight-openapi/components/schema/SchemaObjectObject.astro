@@ -5,6 +5,7 @@ import {
   isSchemaObject,
   type SchemaObject,
 } from '../../libs/schemaObject'
+import Key from '../Key.astro'
 import Tags from '../Tags.astro'
 
 import Schema from './SchemaObject.astro'
@@ -39,13 +40,20 @@ const properties = getProperties(schemaObject)
 }
 {
   schemaObject.additionalProperties && (
-    <li>
-      <div>Additional Properties</div>
+    <Key additional name="key">
       {schemaObject.additionalProperties === true ? (
-        <div>Any additional properties are allowed</div>
+        <div class="any">any</div>
       ) : isAdditionalPropertiesWithSchemaObject(schemaObject.additionalProperties) ? (
         <Schema schemaObject={schemaObject.additionalProperties} />
       ) : null}
-    </li>
+    </Key>
   )
 }
+
+<style>
+  .any {
+    color: var(--sl-color-text-accent);
+    font-weight: 600;
+    margin-inline-end: 0.3rem;
+  }
+</style>

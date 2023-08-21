@@ -28,8 +28,10 @@ test('displays the request body for a v2.0 schema', async ({ docPage }) => {
   await expect(tagParameter.getByText('string')).toBeVisible()
   await expect(tagParameter.getByText('required')).not.toBeVisible()
 
-  await expect(requestBody.getByText('Additional Properties')).toBeVisible()
-  await expect(requestBody.getByText('number')).toBeVisible()
+  const additionalProperties = docPage.getRequestBodyParameter('key')
+
+  await expect(additionalProperties.getByText('number')).toBeVisible()
+  await expect(additionalProperties.getByText('additional properties')).toBeVisible()
 })
 
 test('displays the request body for a v3.0 schema', async ({ docPage }) => {

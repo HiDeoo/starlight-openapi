@@ -1,18 +1,20 @@
 ---
 interface Props {
+  additional?: boolean
   deprecated?: boolean
   name: string
   required?: boolean | undefined
 }
 
-const { deprecated, name, required } = Astro.props
+const { additional, deprecated, name, required } = Astro.props
 ---
 
 <div class="key not-content">
   <div class="name">
-    <strong>{deprecated ? <s>{name}</s> : name}</strong>
+    <strong>{additional ? <em>{name}</em> : deprecated ? <s>{name}</s> : name}</strong>
     {required && <div class="required">required</div>}
     {deprecated && <div class="deprecated">deprecated</div>}
+    {additional && <div class="additional">additional properties</div>}
   </div>
   <div class="description">
     <slot />
@@ -45,6 +47,11 @@ const { deprecated, name, required } = Astro.props
 
   :global(:root[data-theme='light']) .deprecated {
     --sl-openapi-deprecated-color: hsl(var(--sl-openapi-deprecated-hue), 90%, 25%);
+  }
+
+  .additional {
+    color: var(--sl-color-gray-3);
+    font-size: var(--sl-text-sm);
   }
 
   .description {
