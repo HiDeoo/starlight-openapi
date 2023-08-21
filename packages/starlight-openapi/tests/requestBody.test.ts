@@ -44,8 +44,6 @@ test('displays the request body for a v3.0 schema', async ({ docPage }) => {
   await expect(requestBody.getByText('Animal to add')).toBeVisible()
 
   expect(await requestBody.getByRole('combobox').inputValue()).toBe('application/json')
-
-  // TODO(HiDeoo) test content
 })
 
 test('supports schema object `allOf` property', async ({ docPage }) => {

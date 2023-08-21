@@ -225,6 +225,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Animals'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Animal'
           headers:
             X-Rate-Limit-Limit:
               description: The number of allowed requests in the current period

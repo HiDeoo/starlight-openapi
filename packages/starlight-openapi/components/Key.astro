@@ -14,7 +14,7 @@ const { deprecated, name, required } = Astro.props
     {required && <div class="required">required</div>}
     {deprecated && <div class="deprecated">deprecated</div>}
   </div>
-  <div>
+  <div class="description">
     <slot />
   </div>
 </div>
@@ -45,5 +45,9 @@ const { deprecated, name, required } = Astro.props
 
   :global(:root[data-theme='light']) .deprecated {
     --sl-openapi-deprecated-color: hsl(var(--sl-openapi-deprecated-hue), 90%, 25%);
+  }
+
+  .description {
+    flex: 1;
   }
 </style>
