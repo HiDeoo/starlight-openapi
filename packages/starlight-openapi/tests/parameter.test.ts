@@ -51,11 +51,10 @@ test('displays type informations for a v2.0 schema', async ({ docPage }) => {
 
   const tagsParameter = docPage.getParameter('query', 'tags')
 
-  await expect(tagsParameter.getByText('array')).toBeVisible()
+  await expect(tagsParameter.getByText('Array<string>')).toBeVisible()
   await expect(tagsParameter.getByText('>= 1 items')).toBeVisible()
   await expect(tagsParameter.getByText('<= 10 items')).toBeVisible()
   await expect(tagsParameter.getByText('unique items')).toBeVisible()
-  await expect(tagsParameter.getByText('Items: string')).toBeVisible()
 
   const limitParameter = docPage.getParameter('query', 'limit')
 

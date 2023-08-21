@@ -1,5 +1,6 @@
 ---
-import { getBound, getType, isOpenAPIV2Items, type Items } from '../libs/items'
+import { getBound, getType, type Items } from '../libs/items'
+import { isSchemaObjectObject } from '../libs/schemaObject'
 
 import SchemaObject from './schema/SchemaObject.astro'
 import Tag from './Tag.astro'
@@ -43,16 +44,7 @@ const { hideExample, items, negated, nullable } = Astro.props
 />
 
 {items.enum && <div>Enum: {items.enum.join(',')}</div>}
-{
-  isOpenAPIV2Items(items.items) ? (
-    <>
-      <div>Items:</div>
-      <Astro.self items={items.items} />
-    </>
-  ) : items.items ? (
-    <SchemaObject schemaObject={items.items} {hideExample} />
-  ) : null
-}
+{items.items && isSchemaObjectObject(items.items) && <SchemaObject schemaObject={items.items} {hideExample} />}
 
 <style>
   .type {
