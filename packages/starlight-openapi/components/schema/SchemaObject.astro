@@ -10,10 +10,11 @@ import SchemaObjects from './SchemaObjects.astro'
 
 interface Props {
   hideExample?: boolean | undefined
+  negated?: boolean
   schemaObject: SchemaObject
 }
 
-const { hideExample = false, schemaObject } = Astro.props
+const { hideExample = false, negated, schemaObject } = Astro.props
 
 const schemaObjects = getSchemaObjects(schemaObject)
 
@@ -26,9 +27,7 @@ const isNegated = schemaObject.not !== undefined
     // TODO(HiDeoo)
     <SchemaObjects discriminator={schemaObject.discriminator} {schemaObjects} />
   ) : isNegated ? (
-    <div>
-      TODO(HiDeoo) NOT Type: <Astro.self schemaObject={schemaObject.not} />{' '}
-    </div>
+    <Astro.self negated schemaObject={schemaObject.not} />
   ) : (
     <>
       <Md text={schemaObject.description} />
@@ -36,7 +35,7 @@ const isNegated = schemaObject.not !== undefined
       {isSchemaObjectObject(schemaObject) ? (
         <SchemaObjectObject {schemaObject} />
       ) : (
-        <Items items={schemaObject} nullable={getNullable(schemaObject)} />
+        <Items items={schemaObject} {negated} nullable={getNullable(schemaObject)} />
       )}
       {!hideExample && schemaObject.example && <Example raw={schemaObject.example} />}
     </>

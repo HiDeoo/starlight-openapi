@@ -91,9 +91,7 @@ test('supports schema object `not` property', async ({ docPage }) => {
 
   const requestBody = docPage.getRequestBody()
 
-  await expect(requestBody.getByText('NOT Type:')).toBeVisible()
-
-  await expect(requestBody.getByText('Type: string')).toBeVisible()
+  await expect(requestBody.getByText('not string')).toBeVisible()
 })
 
 test('supports schema object `discriminator` property', async ({ docPage }) => {

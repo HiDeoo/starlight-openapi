@@ -8,16 +8,20 @@ import Tags from './Tags.astro'
 interface Props {
   hideExample?: boolean
   items: Items
+  negated?: boolean | undefined
   nullable?: boolean | undefined
 }
 
-const { hideExample, items, nullable } = Astro.props
+const { hideExample, items, negated, nullable } = Astro.props
 ---
 
 {
   items.type && (
     <div>
-      <span class="type">{getType(items)}</span>
+      <span class="type">
+        {negated && 'not '}
+        {getType(items)}
+      </span>
       {items.format && <Tag>format: {items.format}</Tag>}
     </div>
   )
