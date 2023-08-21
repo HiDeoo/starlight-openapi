@@ -72,7 +72,7 @@ test('displays type informations for a v2.0 schema', async ({ docPage }) => {
 
   const sortParameter = docPage.getParameter('query', 'sort')
 
-  await expect(sortParameter.getByText('Enum: asc,desc')).toBeVisible()
+  await expect(sortParameter.getByText('Allowed values: asc desc')).toBeVisible()
 })
 
 test('hides various header parameters', async ({ docPage }) => {
