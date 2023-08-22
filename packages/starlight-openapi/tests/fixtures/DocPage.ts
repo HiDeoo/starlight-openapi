@@ -1,4 +1,4 @@
-import { expect, type Page } from '@playwright/test'
+import { expect, type Locator, type Page } from '@playwright/test'
 
 export class DocPage {
   constructor(public readonly page: Page) {}
@@ -71,4 +71,39 @@ export class DocPage {
   getAuthenticationMethod(name: string) {
     return this.page.locator(`section:has(> h3:first-child:has-text("${name}"))`)
   }
+
+  getTocItems() {
+    return this.#getTocChildrenItems(this.page.getByRole('complementary').locator('starlight-toc > nav > ul'))
+  }
+
+  async #getTocChildrenItems(list: Locator): Promise<TocItem[]> {
+    const items: TocItem[] = []
+
+    for (const item of await list.locator('> li').all()) {
+      const link = await item.locator(`> a`).textContent()
+      const name = link?.trim() ?? null
+
+      if ((await item.locator('> ul').count()) > 0) {
+        items.push({
+          label: name,
+          items: await this.#getTocChildrenItems(item.locator('> ul')),
+        })
+      } else {
+        items.push({ name })
+      }
+    }
+
+    return items
+  }
+}
+
+type TocItem = TocItemGroup | TocItemLink
+
+interface TocItemLink {
+  name: string | null
+}
+
+interface TocItemGroup {
+  items: (TocItemGroup | TocItemLink)[]
+  label: string | null
 }

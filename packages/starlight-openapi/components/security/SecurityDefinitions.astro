@@ -21,7 +21,7 @@ const { definitions } = Astro.props
 {
   definitions && (
     <>
-      <h2>Authentication</h2>
+      <h2 id="authentication">Authentication</h2>
       {Object.entries(definitions).map(([name, scheme]) => (
         <Section title={name}>
           <Md text={scheme.description} />

@@ -1,4 +1,6 @@
 ---
+import { slug } from '../libs/path'
+
 interface Props {
   empty?: boolean
   level?: 2 | 3 | 4
@@ -7,11 +9,11 @@ interface Props {
 
 const { empty, level = 3, title } = Astro.props
 
-const Title = `h${level}`
+const Title = `h${level}` as 'h2' | 'h3' | 'h4'
 ---
 
 <section>
-  <Title>{title}<slot name="post-title" /></Title>
+  <Title id={slug(title)}>{title}<slot name="post-title" /></Title>
   {
     Astro.slots.has('pre-panel') && (
       <div>

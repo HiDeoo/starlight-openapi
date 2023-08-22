@@ -26,7 +26,7 @@ const contacts = [document.info.contact?.url, document.info.contact?.email].filt
 
 <Text>{summary}</Text>
 
-<h2>{document.info.title} ({document.info.version})</h2>
+<h2 id="overview">{document.info.title} ({document.info.version})</h2>
 
 <Md text={document.info.description} />
 <ExternalDocs docs={document.externalDocs} />

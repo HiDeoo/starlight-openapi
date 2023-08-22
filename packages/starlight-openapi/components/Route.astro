@@ -21,6 +21,6 @@ const isOverview = type === 'overview'
 const title = isOverview ? 'Overview' : Astro.props.operation.title
 ---
 
-<Page {...getPageProps(title)}>
+<Page {...getPageProps(title, schema, type)}>
   {isOverview ? <Overview {schema} /> : <Operation {schema} operation={Astro.props.operation} />}
 </Page>
