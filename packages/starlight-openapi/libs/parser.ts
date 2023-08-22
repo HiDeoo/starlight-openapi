@@ -7,7 +7,7 @@ export async function parseSchema(config: StarlightOpenAPISchemaConfig): Promise
   try {
     logInfo(`Parsing OpenAPI schema at '${config.schema}'.`)
 
-    const document = await OpenAPIParser.dereference(config.schema)
+    const document = await OpenAPIParser.bundle(config.schema)
 
     return { config, document }
   } catch (error) {

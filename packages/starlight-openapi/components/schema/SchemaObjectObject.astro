@@ -26,12 +26,13 @@ const properties = getProperties(schemaObject)
     schemaObject.maxProperties && `<= ${schemaObject.maxProperties} properties`,
   ]}
 />
-<SchemaObjectObjectProperties {properties} required={schemaObject.required} />
+<SchemaObjectObjectProperties parent={schemaObject} {properties} required={schemaObject.required} />
 {
   schemaObject.allOf &&
     schemaObject.allOf.map((allOfSchemaObject) =>
       isSchemaObject(allOfSchemaObject) ? (
         <SchemaObjectObjectProperties
+          parent={schemaObject}
           properties={getProperties(allOfSchemaObject)}
           required={allOfSchemaObject.required}
         />
