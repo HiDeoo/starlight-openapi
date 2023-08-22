@@ -17,7 +17,7 @@ test('displays basic informations', async ({ docPage }) => {
 
   await expect(docPage.getByText('Deprecated', { exact: true })).toBeVisible()
 
-  await expect(docPage.getByText('GET')).toBeVisible()
+  await expect(docPage.getByText('GET', { exact: true })).toBeVisible()
   await expect(docPage.getByText('/animals')).toBeVisible()
 
   await expect(docPage.getByText('Returns all animals')).toBeVisible()
