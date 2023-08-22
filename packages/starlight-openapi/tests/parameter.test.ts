@@ -158,7 +158,7 @@ test('displays path parameters first then other parameters', async ({ docPage })
 
   await expect(
     docPage.page.locator(
-      'section:has(> h3:first-child:has-text("path parameters")) + section:has(> h3:first-child:has-text("query parameters"))',
+      'section:has(> h3:first-child:text-is("Path Parameters")) + section:has(> h3:first-child:text-is("Query Parameters"))',
     ),
   ).toBeVisible()
 })

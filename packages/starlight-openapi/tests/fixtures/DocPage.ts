@@ -1,5 +1,7 @@
 import { expect, type Locator, type Page } from '@playwright/test'
 
+import { capitalize } from '../../libs/utils'
+
 export class DocPage {
   constructor(public readonly page: Page) {}
 
@@ -29,11 +31,11 @@ export class DocPage {
   }
 
   getParameters(location: string) {
-    return this.page.locator(`h3:has-text("${`${location} parameters`}") + div > div`)
+    return this.page.locator(`h3:text-is("${`${capitalize(location)} Parameters`}") + div > div`)
   }
 
   getRequestBody() {
-    return this.page.locator('section:has(> h2:first-child:has-text("Request Body"))')
+    return this.page.locator('section:has(> h2:first-child:text-is("Request Body"))')
   }
 
   getRequestBodyParameter(name: string) {
@@ -45,7 +47,7 @@ export class DocPage {
   }
 
   getResponse(status: string) {
-    return this.page.locator(`section:has(> h3:first-child:has-text("${status}"))`)
+    return this.page.locator(`section:has(> h3:first-child:text-is("${status}"))`)
   }
 
   getResponseHeaders(status: string) {
@@ -57,11 +59,11 @@ export class DocPage {
   }
 
   getResponseExamples(status: string) {
-    return this.getResponse(status).locator('section:has(> h4:first-child:has-text("Examples"))')
+    return this.getResponse(status).locator('section:has(> h4:first-child:text-is("Examples"))')
   }
 
   getAuthorizations() {
-    return this.page.locator('section:has(> h2:first-child:has-text("Authorizations"))')
+    return this.page.locator('section:has(> h2:first-child:text-is("Authorizations"))')
   }
 
   getAuthentication() {
@@ -69,7 +71,7 @@ export class DocPage {
   }
 
   getAuthenticationMethod(name: string) {
-    return this.page.locator(`section:has(> h3:first-child:has-text("${name}"))`)
+    return this.page.locator(`section:has(> h3:first-child:text-is("${name}"))`)
   }
 
   getTocItems() {

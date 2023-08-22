@@ -41,7 +41,7 @@ test('displays the toc for an operation', async ({ docPage }) => {
     { name: 'Authorizations' },
     {
       label: 'Parameters',
-      items: [{ name: 'query parameters' }, { name: 'header parameters' }],
+      items: [{ name: 'Query Parameters' }, { name: 'Header Parameters' }],
     },
     {
       label: 'Responses',
@@ -55,7 +55,7 @@ test('displays the toc for an operation', async ({ docPage }) => {
     { name: 'Overview' },
     {
       label: 'Parameters',
-      items: [{ name: 'path parameters' }],
+      items: [{ name: 'Path Parameters' }],
     },
     {
       label: 'Responses',

@@ -7,6 +7,7 @@ import { hasRequestBody } from './requestBody'
 import { includesDefaultResponse } from './response'
 import type { Schema } from './schema'
 import { getSecurityDefinitions, getSecurityRequirements } from './security'
+import { capitalize } from './utils'
 
 const locale = 'en'
 
@@ -71,7 +72,7 @@ function getOperationHeadings(schema: Schema, { operation, pathItem }: PathItemO
     headings.push(makeMarkdownHeading(2, 'Parameters'))
 
     for (const location of parametersByLocation.keys()) {
-      headings.push(makeMarkdownHeading(3, `${location} parameters`))
+      headings.push(makeMarkdownHeading(3, `${capitalize(location)} Parameters`))
     }
   }
 
