@@ -11,6 +11,21 @@ interface Props {
 const { example, raw } = Astro.props
 
 const exampleToRender = raw === undefined ? example : { value: raw }
+
+function getExampleValue(value: unknown): string  {
+  switch (typeof value) {
+    case 'string': {
+      return value
+    }
+    case 'boolean':
+    case 'number': {
+      return value.toString()
+    }
+    default: {
+      return JSON.stringify(value, null, 2)
+    }
+  }
+}
 ---
 
 {
@@ -26,7 +41,7 @@ const exampleToRender = raw === undefined ? example : { value: raw }
       <!-- prettier-ignore-start -->
       {exampleToRender.value &&
         // eslint-disable-next-line astro/jsx-a11y/no-noninteractive-tabindex
-        (<pre tabindex="0"><code>{JSON.stringify(exampleToRender.value, null, 2)}</code></pre>)
+        (<pre tabindex="0"><code>{getExampleValue(exampleToRender.value)}</code></pre>)
       }
       <!-- prettier-ignore-end -->
     </>
