@@ -66,3 +66,24 @@ test('lists webhooks', async ({ sidebarPage }) => {
     },
   ])
 })
+
+test('renders remote schemas', async ({ sidebarPage }) => {
+  await sidebarPage.goto()
+
+  const items = await sidebarPage.getSidebarGroupItems('Link v3.0')
+
+  expect(items).toMatchObject([
+    { name: 'Overview' },
+    {
+      label: 'Operations',
+      items: [
+        { name: 'getUserByName' },
+        { name: 'getRepositoriesByOwner' },
+        { name: 'getRepository' },
+        { name: 'getPullRequestsByRepository' },
+        { name: 'getPullRequestsById' },
+        { name: 'mergePullRequest' },
+      ],
+    },
+  ])
+})

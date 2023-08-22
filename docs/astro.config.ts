@@ -30,6 +30,11 @@ const { openAPISidebarGroups, starlightOpenAPI } = await generateAPI([
     label: 'Animals v2.0',
     schema: '../schemas/v2.0/animals.yaml',
   },
+  {
+    base: 'api/v3.0/link',
+    label: 'Link v3.0',
+    schema: 'https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/examples/v3.0/link-example.yaml',
+  },
 ])
 
 export default defineConfig({

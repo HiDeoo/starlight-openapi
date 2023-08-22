@@ -7,7 +7,6 @@ export async function parseSchema(config: StarlightOpenAPISchemaConfig): Promise
   try {
     logInfo(`Parsing OpenAPI schema at '${config.schema}'.`)
 
-    // TODO(HiDeoo) remote schema
     const document = await OpenAPIParser.dereference(config.schema)
 
     return { config, document }
