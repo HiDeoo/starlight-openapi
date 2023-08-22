@@ -24,7 +24,6 @@ const isNegated = schemaObject.not !== undefined
 
 {
   hasMany ? (
-    // TODO(HiDeoo)
     <SchemaObjects discriminator={schemaObject.discriminator} {schemaObjects} />
   ) : isNegated ? (
     <Astro.self negated schemaObject={schemaObject.not} />

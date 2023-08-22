@@ -5,8 +5,6 @@ import { getBaseLink, stripLeadingAndTrailingSlashes } from './path'
 import { getPathItemSidebarGroups, getWebhooksSidebarGroups } from './pathItem'
 import { makeSidebarGroup, makeSidebarLink, type SidebarGroup } from './starlight'
 
-// TODO(HiDeoo) baseUrl
-
 export const SchemaConfigSchema = z.object({
   // TODO(HiDeoo)
   base: z.string().min(1).transform(stripLeadingAndTrailingSlashes),
