@@ -8,16 +8,20 @@ interface Props {
 
 const { label, tags: allTags } = Astro.props
 
-const tags = allTags.filter((tag) => typeof tag === 'string')
+const tags = allTags.filter((tag): tag is string => typeof tag === 'string')
 ---
 
 {
   tags.length > 0 && (
     <div class="tags">
       {label && <>{label}</>}
-      {tags.map((tag) => (
-        <Tag>{tag}</Tag>
-      ))}
+      {tags.map((tag) => {
+        if (tag.length === 0) {
+          return <Tag>""</Tag>
+        }
+
+        return <Tag>{tag}</Tag>
+      })}
     </div>
   )
 }
