@@ -20,6 +20,10 @@ export function getOpenAPIV3RequestBody(operation: Operation): RequestBody | und
   return operation.requestBody
 }
 
+export function hasRequestBody(operation: Operation): boolean {
+  return getOpenAPIV2RequestBodyParameter(operation) !== undefined || getOpenAPIV3RequestBody(operation) !== undefined
+}
+
 export function getOpenAPIV2OperationConsumes(schema: Schema, operation: Operation): OpenAPIV2.MimeTypes | undefined {
   if ('consumes' in operation) {
     return operation.consumes

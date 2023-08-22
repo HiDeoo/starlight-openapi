@@ -17,7 +17,7 @@ const { operation, responses, schema } = Astro.props
 {
   responses && (
     <>
-      <h2>Responses</h2>
+      <h2 id="responses">Responses</h2>
       {Object.entries(responses).map(([name, response]) => {
         if (name === 'default') {
           return null

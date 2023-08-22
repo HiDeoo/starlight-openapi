@@ -22,7 +22,7 @@ const parametersByLocation = getParametersByLocation(operation.parameters, pathI
 {
   parametersByLocation.size > 0 && (
     <>
-      <h2>Parameters</h2>
+      <h2 id="parameters">Parameters</h2>
       {[...parametersByLocation.entries()].map(([location, parameters]) => (
         <Section title={`${location} parameters`}>
           {[...parameters.values()].map((parameter) => (

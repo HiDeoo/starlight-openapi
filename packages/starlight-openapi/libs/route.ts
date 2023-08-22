@@ -54,7 +54,7 @@ function getWebhooksStaticPaths(schema: Schema): StarlighOpenAPIRoute[] {
   }))
 }
 
-export interface StarlighOpenAPIRoute {
+interface StarlighOpenAPIRoute {
   params: {
     openAPISlug: string
   }

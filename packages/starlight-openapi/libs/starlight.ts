@@ -1,13 +1,18 @@
 import type { MarkdownHeading } from 'astro'
 
+import type { PathItemOperation } from './operation'
+import { getParametersByLocation } from './parameter'
 import { slug } from './path'
-import type { StarlighOpenAPIRoute } from './route'
+import { hasRequestBody } from './requestBody'
+import { includesDefaultResponse } from './response'
 import type { Schema } from './schema'
-import { getSecurityDefinitions } from './security'
+import { getSecurityDefinitions, getSecurityRequirements } from './security'
 
 const locale = 'en'
 
-export function getPageProps(title: string, schema: Schema, type: StarlighOpenAPIRoute['props']['type']) {
+export function getPageProps(title: string, schema: Schema, pathItemOperation?: PathItemOperation) {
+  const isOverview = pathItemOperation === undefined
+
   return {
     entry: {
       data: {
@@ -20,7 +25,7 @@ export function getPageProps(title: string, schema: Schema, type: StarlighOpenAP
     entryMeta: {
       lang: locale,
     },
-    headings: type === 'overview' ? getOverviewHeadings(schema) : getOperationHeadings(),
+    headings: isOverview ? getOverviewHeadings(schema) : getOperationHeadings(schema, pathItemOperation),
     lang: locale,
   }
 }
@@ -35,36 +40,64 @@ export function makeSidebarLink(label: string, link: string): SidebarLink {
 
 function getOverviewHeadings({ document }: Schema): MarkdownHeading[] {
   const headings: MarkdownHeading[] = [
-    {
-      depth: 2,
-      slug: 'overview',
-      text: `${document.info.title} (${document.info.version})`,
-    },
+    makeMarkdownHeading(2, `${document.info.title} (${document.info.version})`, 'overview'),
   ]
 
   const securityDefinitions = getSecurityDefinitions(document)
 
   if (securityDefinitions) {
-    headings.push({
-      depth: 2,
-      slug: 'authentication',
-      text: 'Authentication',
-    })
+    headings.push(makeMarkdownHeading(2, 'Authentication'))
 
     for (const name of Object.keys(securityDefinitions)) {
-      headings.push({
-        depth: 3,
-        slug: slug(name),
-        text: name,
-      })
+      headings.push(makeMarkdownHeading(3, name))
     }
   }
 
   return headings
 }
 
-function getOperationHeadings(): MarkdownHeading[] {
-  return []
+function getOperationHeadings(schema: Schema, { operation, pathItem }: PathItemOperation): MarkdownHeading[] {
+  const headings: MarkdownHeading[] = []
+
+  const securityRequirements = getSecurityRequirements(schema, operation)
+
+  if (securityRequirements && securityRequirements.length > 0) {
+    headings.push(makeMarkdownHeading(2, 'Authorizations'))
+  }
+
+  const parametersByLocation = getParametersByLocation(operation.parameters, pathItem.parameters)
+
+  if (parametersByLocation.size > 0) {
+    headings.push(makeMarkdownHeading(2, 'Parameters'))
+
+    for (const location of parametersByLocation.keys()) {
+      headings.push(makeMarkdownHeading(3, `${location} parameters`))
+    }
+  }
+
+  if (hasRequestBody(operation)) {
+    headings.push(makeMarkdownHeading(2, 'Request Body'))
+  }
+
+  if (operation.responses) {
+    headings.push(makeMarkdownHeading(2, 'Responses'))
+
+    for (const name of Object.keys(operation.responses)) {
+      if (name !== 'default') {
+        headings.push(makeMarkdownHeading(3, name))
+      }
+    }
+
+    if (includesDefaultResponse(operation.responses)) {
+      headings.push(makeMarkdownHeading(3, 'default'))
+    }
+  }
+
+  return headings
+}
+
+function makeMarkdownHeading(depth: number, text: string, customSlug?: string): MarkdownHeading {
+  return { depth, slug: customSlug ?? slug(text), text }
 }
 
 export interface SidebarGroup {
