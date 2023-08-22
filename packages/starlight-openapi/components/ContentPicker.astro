@@ -2,14 +2,15 @@
 import Select from './Select.astro'
 
 interface Props {
+  label: string
   types: string[] | undefined
 }
 
-const { types } = Astro.props
+const { label, types } = Astro.props
 ---
 
 <starlight-openapi-content-picker>
-  <Select options={types} />
+  <Select {label} options={types} />
   <slot />
 </starlight-openapi-content-picker>
 
@@ -22,7 +23,7 @@ const { types } = Astro.props
       constructor() {
         super()
 
-        const select = this.querySelector<HTMLSelectElement>(':scope > select')
+        const select = this.querySelector<HTMLSelectElement>(':scope > label > select')
 
         if (select) {
           select.addEventListener('change', (event) => {

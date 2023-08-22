@@ -13,7 +13,7 @@ interface Props {
 const { content } = Astro.props
 ---
 
-<ContentPicker types={Object.keys(content)}>
+<ContentPicker label="Select media type" types={Object.keys(content)}>
   {
     Object.entries(content).map(([type, media], index) => {
       return (
