@@ -152,3 +152,13 @@ test('uses the `content` property over a schema', async ({ docPage }) => {
 
   expect(await docPage.getResponse('200').getByRole('combobox').inputValue()).toBe('application/json')
 })
+
+test('displays path parameters first then other parameters', async ({ docPage }) => {
+  await docPage.goto('/v30/petstore-expanded/operations/find-pet-by-id/')
+
+  await expect(
+    docPage.page.locator(
+      'section:has(> h3:first-child:has-text("path parameters")) + section:has(> h3:first-child:has-text("query parameters"))',
+    ),
+  ).toBeVisible()
+})

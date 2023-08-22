@@ -23,7 +23,11 @@ export function getParametersByLocation(
     parametersByLocation.set(parameter.in, parametersById)
   }
 
-  return parametersByLocation
+  return new Map(
+    [...parametersByLocation].sort((locationA, locationB) =>
+      locationA[0] === 'path' ? -1 : locationB[0] === 'path' ? 1 : 0,
+    ),
+  )
 }
 
 export function isHeaderParameter(parameter: Header): parameter is Omit<Parameter, 'type'> {

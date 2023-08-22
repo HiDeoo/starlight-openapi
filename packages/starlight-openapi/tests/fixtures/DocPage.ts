@@ -33,7 +33,7 @@ export class DocPage {
   }
 
   getRequestBody() {
-    return this.page.locator(`section:has(> h2:first-child:has-text("Request Body"))`)
+    return this.page.locator('section:has(> h2:first-child:has-text("Request Body"))')
   }
 
   getRequestBodyParameter(name: string) {
