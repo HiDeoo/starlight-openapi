@@ -20,38 +20,51 @@ const { schemaObject } = Astro.props
 const properties = getProperties(schemaObject)
 ---
 
-<Tags
-  tags={[
-    schemaObject.minProperties && `>= ${schemaObject.minProperties} properties`,
-    schemaObject.maxProperties && `<= ${schemaObject.maxProperties} properties`,
-  ]}
-/>
-<SchemaObjectObjectProperties parent={schemaObject} {properties} required={schemaObject.required} />
-{
-  schemaObject.allOf &&
-    schemaObject.allOf.map((allOfSchemaObject) =>
-      isSchemaObject(allOfSchemaObject) ? (
-        <SchemaObjectObjectProperties
-          parent={schemaObject}
-          properties={getProperties(allOfSchemaObject)}
-          required={allOfSchemaObject.required}
-        />
-      ) : null,
+<div class="object">
+  <Tags
+    tags={[
+      schemaObject.minProperties && `>= ${schemaObject.minProperties} properties`,
+      schemaObject.maxProperties && `<= ${schemaObject.maxProperties} properties`,
+    ]}
+  />
+  <SchemaObjectObjectProperties parent={schemaObject} {properties} required={schemaObject.required} />
+  {
+    schemaObject.allOf &&
+      schemaObject.allOf.map((allOfSchemaObject) =>
+        isSchemaObject(allOfSchemaObject) ? (
+          <SchemaObjectObjectProperties
+            parent={schemaObject}
+            properties={getProperties(allOfSchemaObject)}
+            required={allOfSchemaObject.required}
+          />
+        ) : null,
+      )
+  }
+  {
+    schemaObject.additionalProperties && (
+      <Key additional name="key">
+        {schemaObject.additionalProperties === true ? (
+          <div class="any">any</div>
+        ) : isAdditionalPropertiesWithSchemaObject(schemaObject.additionalProperties) ? (
+          <Schema schemaObject={schemaObject.additionalProperties} />
+        ) : null}
+      </Key>
     )
-}
-{
-  schemaObject.additionalProperties && (
-    <Key additional name="key">
-      {schemaObject.additionalProperties === true ? (
-        <div class="any">any</div>
-      ) : isAdditionalPropertiesWithSchemaObject(schemaObject.additionalProperties) ? (
-        <Schema schemaObject={schemaObject.additionalProperties} />
-      ) : null}
-    </Key>
-  )
-}
+  }
+</div>
 
 <style>
+  .object {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .object .object {
+    border-inline-start: 1px solid var(--sl-color-gray-4);
+    padding-inline-start: 0.8rem;
+  }
+
   .any {
     color: var(--sl-color-text-accent);
     font-weight: 600;
