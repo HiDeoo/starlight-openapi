@@ -54,7 +54,13 @@ const urls = getOperationURLs(schema.document, pathItemOperation)
   }
 
   summary {
+    color: var(--sl-color-gray-1);
+    cursor: pointer;
     justify-content: space-between;
+  }
+
+  summary:hover {
+    color: var(--sl-color-gray-2);
   }
 
   summary,
@@ -63,10 +69,6 @@ const urls = getOperationURLs(schema.document, pathItemOperation)
     display: flex;
     font-family: var(--__sl-font-mono);
     padding: 0.8rem 1rem;
-  }
-
-  summary {
-    cursor: pointer;
   }
 
   summary::marker,
