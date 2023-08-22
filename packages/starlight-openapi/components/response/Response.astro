@@ -41,7 +41,7 @@ const isEmpty = !openAPIV2ResponseSchema && !openAPIV3ResponseContent
   {
     openAPIV2ResponseSchema ? (
       <>
-        <Select options={produces} />
+        <Select label="The list of MIME types the operation can produce" options={produces} />
         <SchemaObject schemaObject={openAPIV2ResponseSchema} />
       </>
     ) : openAPIV3ResponseContent ? (
