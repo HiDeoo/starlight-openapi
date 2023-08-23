@@ -23,7 +23,7 @@ const { parent, properties, required } = Astro.props
           <Tag>recursive</Tag>
         </div>
       ) : (
-        <Schema schemaObject={schema} />
+        <Schema nested schemaObject={schema} />
       )}
     </Key>
   ))

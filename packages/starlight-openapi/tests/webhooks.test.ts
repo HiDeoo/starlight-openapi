@@ -16,6 +16,6 @@ test('displays the operation', async ({ docPage }) => {
   await docPage.goto('/v30/animals/webhooks/newanimal/')
 
   await expect(docPage.getByText('POST')).toBeVisible()
-  await expect(docPage.getContent().getByRole('group')).not.toBeVisible()
+  expect(await docPage.getContent().getByRole('group').count()).toBe(1)
   await expect(docPage.getByText('New animal details')).toBeVisible()
 })

@@ -78,3 +78,15 @@ test('display the examples for a v2.0 schema', async ({ docPage }) => {
 ]`),
   ).toBeVisible()
 })
+
+test('displays nested objects collapsed by default', async ({ docPage }) => {
+  await docPage.goto('/v30/animals/operations/listbears/')
+
+  const okResponse = docPage.getResponse('200')
+
+  await expect(okResponse.getByText('integer format: int64').first()).not.toBeVisible()
+
+  await okResponse.getByRole('group').click()
+
+  await expect(okResponse.getByText('integer format: int64').first()).toBeVisible()
+})

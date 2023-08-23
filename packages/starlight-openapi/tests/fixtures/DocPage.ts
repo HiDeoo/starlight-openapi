@@ -27,7 +27,7 @@ export class DocPage {
   }
 
   getOperation() {
-    return this.getContent().getByRole('group')
+    return this.getContent().getByRole('group').first()
   }
 
   getParameters(location: string) {

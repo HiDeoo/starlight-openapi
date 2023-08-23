@@ -1,4 +1,6 @@
 ---
+import { Icon } from '@astrojs/starlight/components'
+
 import {
   getProperties,
   isAdditionalPropertiesWithSchemaObject,
@@ -12,15 +14,20 @@ import Schema from './SchemaObject.astro'
 import SchemaObjectObjectProperties from './SchemaObjectObjectProperties.astro'
 
 interface Props {
+  nested: boolean
   schemaObject: SchemaObject
 }
 
-const { schemaObject } = Astro.props
+const { nested, schemaObject } = Astro.props
 
 const properties = getProperties(schemaObject)
 ---
 
-<div class="object">
+<details class:list={[!nested && 'root']} open={!nested}>
+  <summary>
+    <span class="type">object</span>
+    <Icon class="caret" name="right-caret" size="1.25rem" />
+  </summary>
   <Tags
     tags={[
       schemaObject.minProperties && `>= ${schemaObject.minProperties} properties`,
@@ -51,18 +58,59 @@ const properties = getProperties(schemaObject)
       </Key>
     )
   }
-</div>
+</details>
 
 <style>
-  .object {
+  details {
     display: flex;
     flex-direction: column;
-    gap: 0.3rem;
+    gap: 0.8rem;
   }
 
-  .object .object {
+  details details {
     border-inline-start: 1px solid var(--sl-color-gray-4);
     padding-inline-start: 0.8rem;
+  }
+
+  summary {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    list-style-type: none;
+    user-select: none;
+  }
+
+  summary:hover {
+    color: var(--sl-color-gray-2);
+  }
+
+  details.root > summary {
+    display: none;
+  }
+
+  summary::marker,
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .caret {
+      transition: transform 0.2s ease-in-out;
+    }
+  }
+
+  details[open] > summary > .caret {
+    transform: rotateZ(90deg);
+  }
+
+  :global([dir='rtl']) .caret {
+    transform: rotateZ(180deg);
+  }
+
+  .type {
+    color: var(--sl-color-text-accent);
+    font-weight: 600;
+    margin-inline-end: 0.3rem;
   }
 
   .any {

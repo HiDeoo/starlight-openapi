@@ -44,7 +44,7 @@ const { hideExample, items, negated, nullable } = Astro.props
 />
 
 {items.enum && <Tags label="Allowed values:" tags={items.enum} />}
-{items.items && isSchemaObjectObject(items.items) && <SchemaObject schemaObject={items.items} {hideExample} />}
+{items.items && isSchemaObjectObject(items.items) && <SchemaObject nested schemaObject={items.items} {hideExample} />}
 
 <style>
   .type {
