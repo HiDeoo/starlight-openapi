@@ -1,7 +1,7 @@
 import { expect, test } from './test'
 
 test('hides the authorizations section with no security', async ({ docPage }) => {
-  await docPage.goto('/v30/petstore-expanded/operations/findpets/')
+  await docPage.goto('/v30/petstore/operations/findpets/')
 
   await expect(docPage.getAuthorizations()).not.toBeVisible()
 })

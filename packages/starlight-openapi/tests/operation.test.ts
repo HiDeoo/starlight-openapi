@@ -1,13 +1,13 @@
 import { expect, test } from './test'
 
 test('uses the operation summary for title', async ({ docPage }) => {
-  await docPage.goto('/v30/petstore/operations/listpets/')
+  await docPage.goto('/v30/petstore-simple/operations/listpets/')
 
   await docPage.expectToHaveTitle('List all pets')
 })
 
 test('falls back to the operation ID for title', async ({ docPage }) => {
-  await docPage.goto('/v30/petstore-expanded/operations/findpets/')
+  await docPage.goto('/v30/petstore/operations/findpets/')
 
   await docPage.expectToHaveTitle('findPets')
 })

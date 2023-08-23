@@ -1,7 +1,7 @@
 import { expect, test } from './test'
 
 test('displays the toc for a basic overview', async ({ docPage }) => {
-  await docPage.goto('/v30/petstore/')
+  await docPage.goto('/v30/petstore-simple/')
 
   expect(await docPage.getTocItems()).toMatchObject([
     { name: 'Overview' },
@@ -49,7 +49,7 @@ test('displays the toc for an operation', async ({ docPage }) => {
     },
   ])
 
-  await docPage.goto('/v30/petstore-expanded/operations/deletepet/')
+  await docPage.goto('/v30/petstore/operations/deletepet/')
 
   expect(await docPage.getTocItems()).toMatchObject([
     { name: 'Overview' },

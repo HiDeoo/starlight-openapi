@@ -154,7 +154,7 @@ test('uses the `content` property over a schema', async ({ docPage }) => {
 })
 
 test('displays path parameters first then other parameters', async ({ docPage }) => {
-  await docPage.goto('/v30/petstore-expanded/operations/find-pet-by-id/')
+  await docPage.goto('/v30/petstore/operations/find-pet-by-id/')
 
   await expect(
     docPage.page.locator(

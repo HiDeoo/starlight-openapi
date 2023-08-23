@@ -1,7 +1,7 @@
 import { expect, test } from './test'
 
 test('displays a basic overview', async ({ docPage }) => {
-  await docPage.goto('/v30/petstore/')
+  await docPage.goto('/v30/petstore-simple/')
 
   await docPage.expectToHaveTitle('Overview')
 
@@ -14,7 +14,7 @@ test('displays a basic overview', async ({ docPage }) => {
 })
 
 test('displays advanced overviews', async ({ docPage }) => {
-  await docPage.goto('/v30/petstore-expanded/')
+  await docPage.goto('/v30/petstore/')
 
   await docPage.expectToHaveTitle('Overview')
 
@@ -43,7 +43,7 @@ test('displays advanced overviews', async ({ docPage }) => {
     'http://swagger.io/terms/',
   )
 
-  await expect(details.getByText('OpenAPI version: 3.0.0')).toBeVisible()
+  await expect(details.getByText('OpenAPI version: 3.1.0')).toBeVisible()
 })
 
 test('displays external docs link in the overview', async ({ docPage }) => {

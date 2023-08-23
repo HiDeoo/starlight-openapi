@@ -17,7 +17,7 @@ const tags = allTags.filter((tag): tag is string => typeof tag === 'string')
       {label && <>{label}</>}
       {tags.map((tag) => {
         if (tag.length === 0) {
-          return <Tag>""</Tag>
+          return <Tag>&quot;&quot;</Tag>
         }
 
         return <Tag>{tag}</Tag>
