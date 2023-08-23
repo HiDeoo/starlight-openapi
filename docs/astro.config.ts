@@ -4,38 +4,38 @@ import { generateAPI } from 'starlight-openapi'
 
 const { openAPISidebarGroups, starlightOpenAPI } = await generateAPI([
   {
-    base: 'api/v3.0/petstore',
+    base: 'api/petstore',
     collapsed: false,
     label: 'Petstore',
     schema: '../schemas/v3.0/petstore-expanded.yaml',
   },
   {
-    base: 'api/v3.0/1password',
+    base: 'api/1password',
     label: '1Password Connect',
     schema: 'https://api.apis.guru/v2/specs/1password.local/connect/1.5.7/openapi.yaml',
   },
   {
-    base: 'api/v3.0/giphy',
+    base: 'api/giphy',
     label: 'Giphy',
     schema: 'https://api.apis.guru/v2/specs/giphy.com/1.0/openapi.yaml',
   },
   {
-    base: 'api/v3.0/petstore-simple',
+    base: 'api/v3/petstore-simple',
     label: 'Petstore v3.0 (simple)',
     schema: '../schemas/v3.0/petstore.json',
   },
   {
-    base: 'api/v2.0/petstore-simple',
+    base: 'api/v2/petstore-simple',
     label: 'Petstore v2.0 (simple)',
     schema: '../schemas/v2.0/petstore-simple.yaml',
   },
   {
-    base: 'api/v3.0/animals',
+    base: 'api/v3/animals',
     label: 'Animals v3.0',
     schema: '../schemas/v3.0/animals.yaml',
   },
   {
-    base: 'api/v2.0/animals',
+    base: 'api/v2/animals',
     label: 'Animals v2.0',
     schema: '../schemas/v2.0/animals.yaml',
   },

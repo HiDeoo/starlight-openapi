@@ -1,7 +1,7 @@
 import { expect, test } from './test'
 
 test('displays a basic overview', async ({ docPage }) => {
-  await docPage.goto('/v30/petstore-simple/')
+  await docPage.goto('/v3/petstore-simple/')
 
   await docPage.expectToHaveTitle('Overview')
 
@@ -14,7 +14,7 @@ test('displays a basic overview', async ({ docPage }) => {
 })
 
 test('displays advanced overviews', async ({ docPage }) => {
-  await docPage.goto('/v30/petstore/')
+  await docPage.goto('/petstore/')
 
   await docPage.expectToHaveTitle('Overview')
 
@@ -47,7 +47,7 @@ test('displays advanced overviews', async ({ docPage }) => {
 })
 
 test('displays external docs link in the overview', async ({ docPage }) => {
-  await docPage.goto('/v30/animals/')
+  await docPage.goto('/v3/animals/')
 
   const externalDocsLink = docPage.getByRole('link', { name: 'Find out more about our animals' })
   await expect(externalDocsLink).toBeVisible()
@@ -55,13 +55,13 @@ test('displays external docs link in the overview', async ({ docPage }) => {
 })
 
 test('does not display the authentication section if not required', async ({ docPage }) => {
-  await docPage.goto('/v20/petstore-simple/')
+  await docPage.goto('/v2/petstore-simple/')
 
   await expect(docPage.getAuthentication()).not.toBeVisible()
 })
 
 test('displays the authentication section for a v2.0 schema', async ({ docPage }) => {
-  await docPage.goto('/v20/animals/')
+  await docPage.goto('/v2/animals/')
 
   const basicAuth = docPage.getAuthenticationMethod('basic_auth')
 
@@ -92,7 +92,7 @@ test('displays the authentication section for a v2.0 schema', async ({ docPage }
 })
 
 test('displays the authentication section for a v3.0 schema', async ({ docPage }) => {
-  await docPage.goto('/v30/animals/')
+  await docPage.goto('/v3/animals/')
 
   const basicAuth = docPage.getAuthenticationMethod('basic_auth')
 

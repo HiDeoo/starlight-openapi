@@ -1,13 +1,13 @@
 import { expect, test } from './test'
 
 test('hides the authorizations section with no security', async ({ docPage }) => {
-  await docPage.goto('/v30/petstore/operations/findpets/')
+  await docPage.goto('/petstore/operations/findpets/')
 
   await expect(docPage.getAuthorizations()).not.toBeVisible()
 })
 
 test('displays the global authorizations', async ({ docPage }) => {
-  await docPage.goto('/v30/animals/operations/listanimals/')
+  await docPage.goto('/v3/animals/operations/listanimals/')
 
   const authorizations = docPage.getAuthorizations()
 
@@ -16,7 +16,7 @@ test('displays the global authorizations', async ({ docPage }) => {
 })
 
 test('overrides the global authorizations', async ({ docPage }) => {
-  await docPage.goto('/v30/animals/operations/addanimal/')
+  await docPage.goto('/v3/animals/operations/addanimal/')
 
   const authorizations = docPage.getAuthorizations()
 

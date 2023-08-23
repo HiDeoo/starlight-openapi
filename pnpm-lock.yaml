@@ -1688,6 +1688,7 @@ packages:
   /astro@2.10.1(@types/node@18.17.3):
     resolution: {integrity: sha512-t3y9laRaOZTAu6omVpI5x/wE80t2yTCWO/UTCPJYAYy2Aoi+snupwk8ZFBLgVd0lwO7KhjRKA0pUScfkn3bnXw==}
     engines: {node: '>=16.12.0', npm: '>=6.14.0'}
+    hasBin: true
     peerDependencies:
       sharp: '>=0.31.0'
     peerDependenciesMeta:
@@ -1766,6 +1767,7 @@ packages:
   /astro@2.10.12(sharp@0.32.4):
     resolution: {integrity: sha512-JbD+hLCbXhpDofuzWQxojmjXwoqD0bR2BGqIByZ7B5Cj6dKQXHIr1HsrDdWcmjM+O4NXKV2TCfeXv1ZTtjqX3Q==}
     engines: {node: '>=16.12.0', npm: '>=6.14.0'}
+    hasBin: true
     peerDependencies:
       sharp: '>=0.31.0'
     peerDependenciesMeta:
@@ -2512,6 +2514,7 @@ packages:
 
   /eslint-config-prettier@8.8.0(eslint@8.46.0):
     resolution: {integrity: sha512-wLbQiFre3tdGgpDv67NQKnJuTlcUVYHas3k+DZCc2U2BadthoEY4B7hLPvAxaqdyOGCzuLfii2fqGph10va7oA==}
+    hasBin: true
     peerDependencies:
       eslint: '>=7.0.0'
     dependencies:
@@ -5874,6 +5877,7 @@ packages:
 
   /update-browserslist-db@1.0.11(browserslist@4.21.10):
     resolution: {integrity: sha512-dCwEFf0/oT85M1fHBg4F0jtLwJrutGoHSQXCh7u4o2t1drG+c0a9Flnqww6XUKSfQMPpJBRjU8d4RXB09qtvaA==}
+    hasBin: true
     peerDependencies:
       browserslist: '>= 4.21.0'
     dependencies:
@@ -5928,6 +5932,7 @@ packages:
   /vite@4.4.9(@types/node@18.17.3):
     resolution: {integrity: sha512-2mbUn2LlUmNASWwSCNSJ/EG2HuSRTnVNaydp6vMCm5VIqJsjMfbIWtbH2kDuwUVW5mMUKKZvGPX/rqeqVvv1XA==}
     engines: {node: ^14.18.0 || >=16.0.0}
+    hasBin: true
     peerDependencies:
       '@types/node': '>= 14'
       less: '*'

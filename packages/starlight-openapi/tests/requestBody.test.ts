@@ -1,13 +1,13 @@
 import { expect, test } from './test'
 
 test('hides the request body section with no request body', async ({ docPage }) => {
-  await docPage.goto('/v20/animals/operations/findanimals/')
+  await docPage.goto('/v2/animals/operations/findanimals/')
 
   await expect(docPage.getRequestBody()).not.toBeVisible()
 })
 
 test('displays the request body for a v2.0 schema', async ({ docPage }) => {
-  await docPage.goto('/v20/animals/operations/addanimal/')
+  await docPage.goto('/v2/animals/operations/addanimal/')
 
   const requestBody = docPage.getRequestBody()
 
@@ -35,7 +35,7 @@ test('displays the request body for a v2.0 schema', async ({ docPage }) => {
 })
 
 test('displays the request body for a v3.0 schema', async ({ docPage }) => {
-  await docPage.goto('/v30/animals/operations/addanimal/')
+  await docPage.goto('/v3/animals/operations/addanimal/')
 
   const requestBody = docPage.getRequestBody()
 
@@ -49,7 +49,7 @@ test('displays the request body for a v3.0 schema', async ({ docPage }) => {
 })
 
 test('supports schema object `allOf` property', async ({ docPage }) => {
-  await docPage.goto('/v20/animals/operations/addcat/')
+  await docPage.goto('/v2/animals/operations/addcat/')
 
   await expect(docPage.getRequestBodyParameter('name')).toBeVisible()
   await expect(docPage.getRequestBodyParameter('tag')).toBeVisible()
@@ -57,7 +57,7 @@ test('supports schema object `allOf` property', async ({ docPage }) => {
 })
 
 test('supports schema object `oneOf` property', async ({ docPage }) => {
-  await docPage.goto('/v20/animals/operations/addbird/')
+  await docPage.goto('/v2/animals/operations/addbird/')
 
   const requestBody = docPage.getRequestBody()
 
@@ -77,7 +77,7 @@ test('supports schema object `oneOf` property', async ({ docPage }) => {
 })
 
 test('supports schema object `anyOf` property', async ({ docPage }) => {
-  await docPage.goto('/v20/animals/operations/adddog/')
+  await docPage.goto('/v2/animals/operations/adddog/')
 
   const requestBody = docPage.getRequestBody()
 
@@ -93,7 +93,7 @@ test('supports schema object `anyOf` property', async ({ docPage }) => {
 })
 
 test('supports schema object `not` property', async ({ docPage }) => {
-  await docPage.goto('/v20/animals/operations/addwolf/')
+  await docPage.goto('/v2/animals/operations/addwolf/')
 
   const requestBody = docPage.getRequestBody()
 
@@ -101,7 +101,7 @@ test('supports schema object `not` property', async ({ docPage }) => {
 })
 
 test('supports schema object `discriminator` property', async ({ docPage }) => {
-  await docPage.goto('/v20/animals/operations/addbear/')
+  await docPage.goto('/v2/animals/operations/addbear/')
 
   const requestBody = docPage.getRequestBody()
 
@@ -109,7 +109,7 @@ test('supports schema object `discriminator` property', async ({ docPage }) => {
 })
 
 test('displays external docs', async ({ docPage }) => {
-  await docPage.goto('/v20/animals/operations/addcat/')
+  await docPage.goto('/v2/animals/operations/addcat/')
 
   const externalDocsLink = docPage.getRequestBody().getByRole('link', { name: 'More information' })
   await expect(externalDocsLink).toBeVisible()
@@ -117,7 +117,7 @@ test('displays external docs', async ({ docPage }) => {
 })
 
 test('displays examples', async ({ docPage }) => {
-  await docPage.goto('/v20/animals/operations/addbird/')
+  await docPage.goto('/v2/animals/operations/addbird/')
 
   const requestBody = docPage.getRequestBody()
 
@@ -125,13 +125,13 @@ test('displays examples', async ({ docPage }) => {
 })
 
 test('displays the global `consumes` property for a v2.0 schema', async ({ docPage }) => {
-  await docPage.goto('/v20/petstore-simple/operations/addpet/')
+  await docPage.goto('/v2/petstore-simple/operations/addpet/')
 
   await docPage.getRequestBody().getByRole('combobox').selectOption('application/json')
 })
 
 test('overrides the global `consumes` property for a v2.0 schema', async ({ docPage }) => {
-  await docPage.goto('/v20/animals/operations/addanimal/')
+  await docPage.goto('/v2/animals/operations/addanimal/')
 
   const requestBody = docPage.getRequestBody()
 

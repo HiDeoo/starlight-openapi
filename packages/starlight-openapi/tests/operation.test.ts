@@ -1,19 +1,19 @@
 import { expect, test } from './test'
 
 test('uses the operation summary for title', async ({ docPage }) => {
-  await docPage.goto('/v30/petstore-simple/operations/listpets/')
+  await docPage.goto('/v3/petstore-simple/operations/listpets/')
 
   await docPage.expectToHaveTitle('List all pets')
 })
 
 test('falls back to the operation ID for title', async ({ docPage }) => {
-  await docPage.goto('/v30/petstore/operations/findpets/')
+  await docPage.goto('/petstore/operations/findpets/')
 
   await docPage.expectToHaveTitle('findPets')
 })
 
 test('displays basic informations', async ({ docPage }) => {
-  await docPage.goto('/v30/animals/operations/listanimals/')
+  await docPage.goto('/v3/animals/operations/listanimals/')
 
   await expect(docPage.getByText('Deprecated', { exact: true })).toBeVisible()
 
@@ -28,7 +28,7 @@ test('displays basic informations', async ({ docPage }) => {
 })
 
 test('displays the operation URL for a v2.0 schema', async ({ docPage }) => {
-  await docPage.goto('/v20/animals/operations/findanimals/')
+  await docPage.goto('/v2/animals/operations/findanimals/')
 
   await docPage.getOperation().click()
 
@@ -36,7 +36,7 @@ test('displays the operation URL for a v2.0 schema', async ({ docPage }) => {
 })
 
 test('displays the operation URLs for a v3.0 schema', async ({ docPage }) => {
-  await docPage.goto('/v30/animals/operations/listdogs/')
+  await docPage.goto('/v3/animals/operations/listdogs/')
 
   await docPage.getOperation().click()
 
@@ -47,7 +47,7 @@ test('displays the operation URLs for a v3.0 schema', async ({ docPage }) => {
 })
 
 test('displays overriden operation URLs for a v3.0 schema', async ({ docPage }) => {
-  await docPage.goto('/v30/animals/operations/listbears/')
+  await docPage.goto('/v3/animals/operations/listbears/')
 
   await docPage.getOperation().click()
 

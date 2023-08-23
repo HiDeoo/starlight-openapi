@@ -1,7 +1,7 @@
 import { expect, test } from './test'
 
 test('displays the responses for a v2.0 schema', async ({ docPage }) => {
-  await docPage.goto('/v20/animals/operations/adddog/')
+  await docPage.goto('/v2/animals/operations/adddog/')
 
   const okResponse = docPage.getResponse('200')
 
@@ -13,7 +13,7 @@ test('displays the responses for a v2.0 schema', async ({ docPage }) => {
 })
 
 test('displays the responses for a v3.0 schema', async ({ docPage }) => {
-  await docPage.goto('/v30/animals/operations/addanimal/')
+  await docPage.goto('/v3/animals/operations/addanimal/')
 
   const okResponse = docPage.getResponse('200')
 
@@ -29,13 +29,13 @@ test('displays the responses for a v3.0 schema', async ({ docPage }) => {
 })
 
 test('displays the global `produces` property for a v2.0 schema', async ({ docPage }) => {
-  await docPage.goto('/v20/petstore-simple/operations/addpet/')
+  await docPage.goto('/v2/petstore-simple/operations/addpet/')
 
   await docPage.getResponse('200').getByRole('combobox').selectOption('application/json')
 })
 
 test('overrides the global `produces` property for a v2.0 schema', async ({ docPage }) => {
-  await docPage.goto('/v20/animals/operations/addanimal/')
+  await docPage.goto('/v2/animals/operations/addanimal/')
 
   const okResponse = docPage.getResponse('200')
 
@@ -44,7 +44,7 @@ test('overrides the global `produces` property for a v2.0 schema', async ({ docP
 })
 
 test('display the examples for a v2.0 schema', async ({ docPage }) => {
-  await docPage.goto('/v20/animals/operations/findanimals/')
+  await docPage.goto('/v2/animals/operations/findanimals/')
 
   const examples = docPage.getResponseExamples('200')
 
@@ -80,7 +80,7 @@ test('display the examples for a v2.0 schema', async ({ docPage }) => {
 })
 
 test('displays nested objects collapsed by default', async ({ docPage }) => {
-  await docPage.goto('/v30/animals/operations/listbears/')
+  await docPage.goto('/v3/animals/operations/listbears/')
 
   const okResponse = docPage.getResponse('200')
 

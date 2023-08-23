@@ -1,13 +1,13 @@
 import { expect, test } from './test'
 
 test('hides the parameters section with no parameters', async ({ docPage }) => {
-  await docPage.goto('/v30/animals/operations/listcats/')
+  await docPage.goto('/v3/animals/operations/listcats/')
 
   await expect(docPage.page.getByRole('heading', { level: 2, name: 'Parameters' })).not.toBeVisible()
 })
 
 test('displays all parameters grouped by location', async ({ docPage }) => {
-  await docPage.goto('/v30/animals/operations/listanimals/')
+  await docPage.goto('/v3/animals/operations/listanimals/')
 
   await expect(docPage.getParameters('query')).toHaveCount(2)
   await expect(docPage.getParameters('query')).toContainText(['limit', 'tags'])
@@ -17,7 +17,7 @@ test('displays all parameters grouped by location', async ({ docPage }) => {
 })
 
 test('overrides path item level parameters', async ({ docPage }) => {
-  await docPage.goto('/v30/animals/operations/listanimals/')
+  await docPage.goto('/v3/animals/operations/listanimals/')
 
   await expect(docPage.getParameters('query').getByText('The path item level limit parameter')).not.toBeVisible()
   await expect(
@@ -26,7 +26,7 @@ test('overrides path item level parameters', async ({ docPage }) => {
 })
 
 test('displays basic parameters', async ({ docPage }) => {
-  await docPage.goto('/v30/animals/operations/listanimals/')
+  await docPage.goto('/v3/animals/operations/listanimals/')
 
   const limitParameter = docPage.getParameter('query', 'limit')
 
@@ -41,13 +41,13 @@ test('displays basic parameters', async ({ docPage }) => {
 })
 
 test('does not display the body parameter for a v2.0 schema', async ({ docPage }) => {
-  await docPage.goto('/v20/petstore-simple/operations/addpet/')
+  await docPage.goto('/v2/petstore-simple/operations/addpet/')
 
   await expect(docPage.getParameters('body')).not.toBeVisible()
 })
 
 test('displays type informations for a v2.0 schema', async ({ docPage }) => {
-  await docPage.goto('/v20/animals/operations/findanimals/')
+  await docPage.goto('/v2/animals/operations/findanimals/')
 
   const tagsParameter = docPage.getParameter('query', 'tags')
 
@@ -76,13 +76,13 @@ test('displays type informations for a v2.0 schema', async ({ docPage }) => {
 })
 
 test('hides various header parameters', async ({ docPage }) => {
-  await docPage.goto('/v30/animals/operations/addanimal/')
+  await docPage.goto('/v3/animals/operations/addanimal/')
 
   await expect(docPage.getParameters('header')).not.toBeVisible()
 })
 
 test('displays type informations for a v3.0 schema shared with a v2.0 schema', async ({ docPage }) => {
-  await docPage.goto('/v30/animals/operations/addanimal/')
+  await docPage.goto('/v3/animals/operations/addanimal/')
 
   const limitParameter = docPage.getParameter('query', 'limit')
 
@@ -90,7 +90,7 @@ test('displays type informations for a v3.0 schema shared with a v2.0 schema', a
 })
 
 test('displays type informations for a v3.0 schema', async ({ docPage }) => {
-  await docPage.goto('/v30/animals/operations/listanimals/')
+  await docPage.goto('/v3/animals/operations/listanimals/')
 
   const limitParameter = docPage.getParameter('query', 'limit')
 
@@ -98,7 +98,7 @@ test('displays type informations for a v3.0 schema', async ({ docPage }) => {
 })
 
 test('overrides a schema example by a parameter example', async ({ docPage }) => {
-  await docPage.goto('/v30/animals/operations/listbirds/')
+  await docPage.goto('/v3/animals/operations/listbirds/')
 
   const limitParameter = docPage.getParameter('query', 'limit')
 
@@ -108,7 +108,7 @@ test('overrides a schema example by a parameter example', async ({ docPage }) =>
 })
 
 test('displays multiple examples', async ({ docPage }) => {
-  await docPage.goto('/v30/animals/operations/listdogs/')
+  await docPage.goto('/v3/animals/operations/listdogs/')
 
   const limitParameter = docPage.getParameter('query', 'limit')
 
@@ -128,7 +128,7 @@ test('displays multiple examples', async ({ docPage }) => {
 })
 
 test('uses the `content` property over a schema', async ({ docPage }) => {
-  await docPage.goto('/v30/animals/operations/listbears/')
+  await docPage.goto('/v3/animals/operations/listbears/')
 
   const limitParameter = docPage.getParameter('query', 'limit')
   const mediaTypeSelector = limitParameter.getByRole('combobox')
@@ -154,7 +154,7 @@ test('uses the `content` property over a schema', async ({ docPage }) => {
 })
 
 test('displays path parameters first then other parameters', async ({ docPage }) => {
-  await docPage.goto('/v30/petstore/operations/find-pet-by-id/')
+  await docPage.goto('/petstore/operations/find-pet-by-id/')
 
   await expect(
     docPage.page.locator(
