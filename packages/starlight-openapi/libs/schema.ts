@@ -9,6 +9,8 @@ export const SchemaConfigSchema = z.object({
   // TODO(HiDeoo)
   base: z.string().min(1).transform(stripLeadingAndTrailingSlashes),
   // TODO(HiDeoo)
+  collapsed: z.boolean().default(true),
+  // TODO(HiDeoo)
   label: z.string().optional(),
   // TODO(HiDeoo)
   schema: z.string().min(1),
@@ -17,11 +19,15 @@ export const SchemaConfigSchema = z.object({
 export function getSchemaSidebarGroups(schema: Schema): SidebarGroup {
   const { config, document } = schema
 
-  return makeSidebarGroup(config.label ?? document.info.title, [
-    makeSidebarLink('Overview', getBaseLink(config)),
-    ...getPathItemSidebarGroups(schema),
-    ...getWebhooksSidebarGroups(schema),
-  ])
+  return makeSidebarGroup(
+    config.label ?? document.info.title,
+    [
+      makeSidebarLink('Overview', getBaseLink(config)),
+      ...getPathItemSidebarGroups(schema),
+      ...getWebhooksSidebarGroups(schema),
+    ],
+    config.collapsed,
+  )
 }
 
 export type StarlightOpenAPISchemaConfig = z.infer<typeof SchemaConfigSchema>

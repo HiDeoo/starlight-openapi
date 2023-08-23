@@ -31,8 +31,8 @@ export function getPageProps(title: string, schema: Schema, pathItemOperation?: 
   }
 }
 
-export function makeSidebarGroup(label: string, items: SidebarGroup['items']): SidebarGroup {
-  return { items, label }
+export function makeSidebarGroup(label: string, items: SidebarGroup['items'], collapsed: boolean): SidebarGroup {
+  return { collapsed, items, label }
 }
 
 export function makeSidebarLink(label: string, link: string): SidebarLink {
@@ -102,6 +102,7 @@ function makeMarkdownHeading(depth: number, text: string, customSlug?: string): 
 }
 
 export interface SidebarGroup {
+  collapsed: boolean
   items: (SidebarLink | SidebarGroup)[]
   label: string
 }

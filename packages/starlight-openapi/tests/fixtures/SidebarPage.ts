@@ -30,7 +30,9 @@ export class SidebarPage {
 
         items.push({ name: name ? name.trim() : null })
       } else {
+        await this.page.pause()
         items.push({
+          collapsed: (await item.getAttribute('open')) === null,
           label: await item.locator(`> summary > h2`).textContent(),
           items: await this.#getSidebarChildrenItems(item.locator('> ul')),
         })
@@ -48,6 +50,7 @@ interface SidebarItemLink {
 }
 
 interface SidebarItemGroup {
+  collapsed: boolean
   items: (SidebarItemGroup | SidebarItemLink)[]
   label: string | null
 }

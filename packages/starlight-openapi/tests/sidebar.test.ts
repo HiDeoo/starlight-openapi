@@ -8,6 +8,7 @@ test('lists operations grouped by tag', async ({ sidebarPage }) => {
   expect(items).toMatchObject([
     { name: 'Overview' },
     {
+      collapsed: true,
       label: 'gifs',
       items: [
         { name: 'Get GIFs by ID' },
@@ -19,6 +20,7 @@ test('lists operations grouped by tag', async ({ sidebarPage }) => {
       ],
     },
     {
+      collapsed: true,
       label: 'stickers',
       items: [
         { name: 'Random Sticker' },
@@ -38,10 +40,12 @@ test('uses a fallback group for untagged operations', async ({ sidebarPage }) =>
   expect(items).toMatchObject([
     { name: 'Overview' },
     {
+      collapsed: false,
       label: 'Operations',
       items: [{ name: 'findPets' }, { name: 'addPet' }, { name: 'find pet by id' }, { name: 'deletePet' }],
     },
     {
+      collapsed: false,
       label: 'Webhooks',
       items: [{ name: 'newPet' }],
     },
@@ -55,11 +59,11 @@ test('respects tags order', async ({ sidebarPage }) => {
 
   expect(items).toMatchObject([
     { name: 'Overview' },
-    { label: 'Items' },
-    { label: 'Vaults' },
-    { label: 'Activity' },
-    { label: 'Health' },
-    { label: 'Metrics' },
-    { label: 'Files' },
+    { collapsed: true, label: 'Items' },
+    { collapsed: true, label: 'Vaults' },
+    { collapsed: true, label: 'Activity' },
+    { collapsed: true, label: 'Health' },
+    { collapsed: true, label: 'Metrics' },
+    { collapsed: true, label: 'Files' },
   ])
 })

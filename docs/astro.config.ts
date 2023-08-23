@@ -5,6 +5,7 @@ import { generateAPI } from 'starlight-openapi'
 const { openAPISidebarGroups, starlightOpenAPI } = await generateAPI([
   {
     base: 'api/v3.0/petstore',
+    collapsed: false,
     label: 'Petstore',
     schema: '../schemas/v3.0/petstore-expanded.yaml',
   },

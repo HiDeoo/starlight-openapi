@@ -11,6 +11,7 @@ export function getPathItemSidebarGroups({ config, document }: Schema): SidebarG
     makeSidebarGroup(
       tag,
       operations.map(({ slug, title }) => makeSidebarLink(title, baseLink + slug)),
+      config.collapsed,
     ),
   )
 }
@@ -27,6 +28,7 @@ export function getWebhooksSidebarGroups({ config, document }: Schema): SidebarG
     makeSidebarGroup(
       'Webhooks',
       operations.map(({ slug, title }) => makeSidebarLink(title, baseLink + slug)),
+      config.collapsed,
     ),
   ]
 }
