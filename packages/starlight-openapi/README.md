@@ -26,7 +26,7 @@ Want to get started immediately? Check out the [getting started guide](https://s
 
 An [Astro](https://astro.build) _integration<sup>\*</sup>_ for [Starlight](https://starlight.astro.build) to generate documentation from OpenAPI/Swagger specifications.
 
-- Support for Swagger 2.0, OpenAPI 3.0 and OpenAPI 3.1 specifications.
+- Support for [Swagger 2.0](https://swagger.io/specification/v2/), [OpenAPI 3.0](https://swagger.io/specification/v3/) and [OpenAPI 3.1](https://swagger.io/specification/) specifications.
 - Support for local and remote schemas.
 - Configurable sidebar label and sidebar group collapsing.
 

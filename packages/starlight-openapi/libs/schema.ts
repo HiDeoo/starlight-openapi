@@ -6,13 +6,23 @@ import { getPathItemSidebarGroups, getWebhooksSidebarGroups } from './pathItem'
 import { makeSidebarGroup, makeSidebarLink, type SidebarGroup } from './starlight'
 
 export const SchemaConfigSchema = z.object({
-  // TODO(HiDeoo)
+  /**
+   * The base path containing the generated documentation.
+   * @example 'api/petstore'
+   */
   base: z.string().min(1).transform(stripLeadingAndTrailingSlashes),
-  // TODO(HiDeoo)
+  /**
+   * Wheter the generated documentation sidebar group should be collapsed by default.
+   * @default true
+   */
   collapsed: z.boolean().default(true),
-  // TODO(HiDeoo)
+  /**
+   * The generated documentation sidebar group label.
+   */
   label: z.string().optional(),
-  // TODO(HiDeoo)
+  /**
+   * The OpenAPI/Swagger schema path or URL.
+   */
   schema: z.string().min(1),
 })
 

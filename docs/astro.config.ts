@@ -44,22 +44,27 @@ const { openAPISidebarGroups, starlightOpenAPI } = await generateAPI([
 export default defineConfig({
   integrations: [
     starlight({
-      title: '// TODO(HiDeoo)',
-      // TODO(HiDeoo)
-      social: {
-        github: 'https://github.com/withastro/starlight',
+      customCss: ['./src/styles/custom.css'],
+      editLink: {
+        baseUrl: 'https://github.com/HiDeoo/starlight-openapi/edit/main/docs/',
       },
       sidebar: [
         {
           label: 'Guides',
-          // TODO(HiDeoo)
-          items: [{ label: 'Example Guide', link: '/guides/getting-started/' }],
+          items: [
+            { label: 'Getting Started', link: '/guides/getting-started/' },
+            { label: 'Configuration', link: '/guides/configuration/' },
+          ],
         },
         {
           label: 'Examples',
           items: openAPISidebarGroups.slice(0, 3),
         },
       ],
+      social: {
+        github: 'https://github.com/HiDeoo/starlight-openapi',
+      },
+      title: 'Starlight OpenAPI',
     }),
     starlightOpenAPI(),
   ],

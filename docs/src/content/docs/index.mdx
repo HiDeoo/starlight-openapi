@@ -1,19 +1,30 @@
 ---
-title: // TODO(HiDeoo)
-description: // TODO(HiDeoo)
+title: Starlight OpenAPI
+description: Astro integration for Starlight to generate documentation from OpenAPI/Swagger specifications.
 template: splash
 hero:
-  tagline: // TODO(HiDeoo)
+  tagline: Astro integration for Starlight to generate documentation from OpenAPI/Swagger specifications.
   image:
-    file: ../../assets/houston.webp
+    html: '🧭'
   actions:
-    - text: // TODO(HiDeoo)
-      link: /guides/getting-started/
+    - text: Check Demo
+      link: /api/petstore/operations/addpet/
       icon: right-arrow
       variant: primary
-    - text: // TODO(HiDeoo)
-      link: https://starlight.astro.build
-      icon: external
+    - text: Getting Started
+      link: /guides/getting-started/
+      icon: rocket
 ---
 
-// TODO(HiDeoo)
+import { Card, CardGrid } from '@astrojs/starlight/components'
+
+## Next steps
+
+<CardGrid stagger>
+  <Card title="Configure the integration" icon="setting">
+    Edit your config in `astro.config.mjs`.
+  </Card>
+  <Card title="Read the docs" icon="open-book">
+    Learn more in [the Starlight OpenAPI Docs](/guides/getting-started/).
+  </Card>
+</CardGrid>

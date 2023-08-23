@@ -24,4 +24,5 @@ ${Object.entries(errors.fieldErrors)
   return config.data
 }
 
-export type StarlightOpenAPIConfig = z.infer<typeof configSchema>
+export type StarlightOpenAPIUserConfig = z.input<typeof configSchema>
+export type StarlightOpenAPIConfig = z.output<typeof configSchema>
