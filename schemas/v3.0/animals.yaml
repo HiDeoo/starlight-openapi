@@ -1,0 +1,366 @@
+openapi: '3.1.0'
+info:
+  version: 1.0.0
+  title: Animals
+  license:
+    name: MIT
+security:
+  - animals_auth:
+      - 'read:animals'
+externalDocs:
+  description: Find out more about our animals
+  url: https://example.com/more-info
+servers:
+  - url: //example.com/api
+    description: Default server
+  - url: //sandbox.example.com/api
+    description: Sandbox server
+tags:
+  - name: places
+  - name: animals
+paths:
+  /animals:
+    parameters:
+      - name: limit
+        in: query
+        description: The path item level limit parameter
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          format: int32
+      - name: tags
+        in: query
+        description: tags to filter by
+        required: true
+        style: form
+        schema:
+          type: array
+          items:
+            type: string
+    get:
+      summary: List all animals
+      operationId: listAnimals
+      description: |
+        returns _all_ animals
+      deprecated: true
+      externalDocs:
+        description: Find out more about our animals
+        url: https://example.com/more-info
+      tags:
+        - animals
+      parameters:
+        - name: limit
+          in: query
+          description: How many animals to return at one time (max 100)
+          deprecated: true
+          schema:
+            type: integer
+            maximum: 50
+            format: int32
+            nullable: true
+        - name: offset
+          in: header
+          description: The number of animals to skip before starting to collect the result set
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: A paged array of animals
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Animals'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create an animal
+      description: Creates a new animal
+      operationId: addAnimal
+      tags:
+        - animals
+      parameters:
+        - name: authorization
+          in: header
+          description: The authorization token
+          required: true
+      requestBody:
+        description: Animal to add
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Animal'
+      security:
+        - {}
+        - animals_auth:
+            - 'write:animals'
+            - 'read:animals'
+        - api_key: []
+      responses:
+        '200':
+          description: animal response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Animal'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /cats:
+    get:
+      summary: List all cats
+      operationId: listCats
+      tags:
+        - animals
+      responses:
+        '200':
+          description: A paged array of cats
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Animals'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /birds:
+    get:
+      summary: List all birds
+      operationId: listBirds
+      tags:
+        - animals
+      parameters:
+        - name: limit
+          in: query
+          description: How many birds to return at one time (max 100)
+          schema:
+            type: integer
+            example: 10
+          example: 20
+      responses:
+        '200':
+          description: A paged array of cats
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Animals'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /dogs:
+    get:
+      summary: List all dogs
+      operationId: listDogs
+      tags:
+        - animals
+      parameters:
+        - name: limit
+          in: query
+          description: How many birds to return at one time (max 100)
+          schema:
+            type: integer
+          example: 20
+          examples:
+            single:
+              summary: A single dog
+              description: A unique dog
+              value: 1
+              externalValue: 'https://example.com/dogs/1'
+            multiple:
+              value: 30
+      responses:
+        '200':
+          description: A paged array of cats
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Animals'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /bears:
+    get:
+      summary: List all bears
+      operationId: listBears
+      tags:
+        - animals
+      servers:
+        - url: //custom.example.com/api
+          description: Custom server
+      parameters:
+        - name: limit
+          in: query
+          description: How many birds to return at one time (max 100)
+          content:
+            application/json:
+              schema:
+                type: integer
+              example: 20
+            application/xml:
+              schema:
+                type: integer
+              example: 30
+      responses:
+        '200':
+          description: A paged array of cats
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Animals'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Animal'
+          headers:
+            X-Rate-Limit-Limit:
+              description: The number of allowed requests in the current period
+              schema:
+                type: integer
+            X-Rate-Limit-Reset:
+              description: The number of seconds left in the current period
+              schema:
+                type: integer
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /shelters:
+    get:
+      summary: List all shelters
+      operationId: listShelters
+      tags:
+        - places
+      responses:
+        '200':
+          description: An array of shelters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Places'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+webhooks:
+  newAnimal:
+    post:
+      summary: New animal
+      operationId: newAnimal
+      requestBody:
+        description: New animal details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Animal'
+      responses:
+        '200':
+          description: Return a 200 status to indicate that the data was received successfully
+  newCat:
+    post:
+      operationId: newCat
+      requestBody:
+        description: New cat details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Animal'
+      responses:
+        '200':
+          description: Return a 200 status to indicate that the data was received successfully
+components:
+  schemas:
+    Animal:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        tag:
+          type: string
+    Animals:
+      type: array
+      maxItems: 100
+      items:
+        $ref: '#/components/schemas/Animal'
+    Places:
+      type: array
+      maxItems: 100
+      items:
+        $ref: '#/components/schemas/Place'
+    Place:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+  securitySchemes:
+    basic_auth:
+      type: http
+      scheme: basic
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    api_key:
+      type: apiKey
+      name: api_key
+      in: cookie
+    mutual_tls_auth:
+      type: mutualTLS
+    animals_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://example.com/api/oauth/dialog
+          tokenUrl: https://example.com/api/oauth/token
+          refreshUrl: https://example.com/api/oauth/refresh
+          scopes:
+            'read:animals': read animals
+            'write:animals': write animals
+    openIdConnect:
+      type: openIdConnect
+      openIdConnectUrl: https://example.com/.well-known/openid-configuration

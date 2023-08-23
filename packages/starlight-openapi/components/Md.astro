@@ -1,0 +1,13 @@
+---
+import { Markdown } from '@astropub/md'
+
+import { capitalize } from '../libs/utils'
+
+interface Props {
+  text: string | undefined
+}
+
+const { text } = Astro.props
+---
+
+{text && text.length > 0 && <Markdown of={capitalize(text)} />}

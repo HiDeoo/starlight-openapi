@@ -1,0 +1,50 @@
+---
+title: Configuration
+---
+
+To generate the documentation from your OpenAPI/Swagger specification, you need to configure the Starlight OpenAPI integration in your [Astro configuration](https://docs.astro.build/en/guides/configuring-astro/#supported-config-file-types).
+
+```ts
+// Generate the documentation.
+const { openAPISidebarGroups, starlightOpenAPI } = await generateAPI([
+  {
+    base: 'api',
+    schema: '../schemas/api-schema.yaml',
+    label: 'My API',
+    collapsed: false,
+  },
+])
+```
+
+## Options
+
+The `generateAPI` function returns groups of [`SidebarItem`](https://starlight.astro.build/reference/configuration/#sidebaritem) containing the generated documentation sidebar navigation items and an Astro integration that should both be used in your configuration as seen in the [getting started](/guides/getting-started/) guide.
+
+The function accepts an array of objects with the following properties:
+
+| Name        | Description                                                                      | Required |
+| ----------- | -------------------------------------------------------------------------------- | :------: |
+| `base`      | The base path containing the generated documentation, e.g. `'api/petstore'`.     |    ✅    |
+| `schema`    | The OpenAPI/Swagger schema path or URL.                                          |    ✅    |
+| `label`     | The generated documentation sidebar group label.                                 |          |
+| `collapsed` | Wheter the generated documentation sidebar group should be collapsed by default. |          |
+
+## Multiple schemas
+
+You can generate documentation for multiple OpenAPI/Swagger schemas by passing multiple objects to the `generateAPI` function.
+
+```ts
+// Generate the documentation for multiple schemas.
+const { openAPISidebarGroups, starlightOpenAPI } = await generateAPI([
+  {
+    base: 'api/petstore',
+    label: 'My API',
+    schema: '../schemas/api-schema.yaml',
+  },
+  {
+    base: 'api/1password',
+    label: '1Password Connect',
+    schema: 'https://api.apis.guru/v2/specs/1password.local/connect/1.5.7/openapi.yaml',
+  },
+])
+```

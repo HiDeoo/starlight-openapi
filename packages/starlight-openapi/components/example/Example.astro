@@ -1,0 +1,66 @@
+---
+import type { ExampleV3 } from '../../libs/example'
+import Md from '../Md.astro'
+import Text from '../Text.astro'
+
+interface Props {
+  example?: ExampleV3
+  raw?: ExampleV3['value']
+}
+
+const { example, raw } = Astro.props
+
+const exampleToRender = raw === undefined ? example : { value: raw }
+
+function getExampleValue(value: unknown): string  {
+  switch (typeof value) {
+    case 'string': {
+      return value
+    }
+    case 'boolean':
+    case 'number': {
+      return value.toString()
+    }
+    default: {
+      return JSON.stringify(value, null, 2)
+    }
+  }
+}
+---
+
+{
+  exampleToRender && (
+    <>
+      <Text>{exampleToRender.summary}</Text>
+      <Md text={exampleToRender.description} />
+      {exampleToRender.externalValue && (
+        <Text>
+          <a href={exampleToRender.externalValue}>{exampleToRender.externalValue}</a>
+        </Text>
+      )}
+      <!-- prettier-ignore-start -->
+      {exampleToRender.value &&
+        // eslint-disable-next-line astro/jsx-a11y/no-noninteractive-tabindex
+        (<pre tabindex="0"><code>{getExampleValue(exampleToRender.value)}</code></pre>)
+      }
+      <!-- prettier-ignore-end -->
+    </>
+  )
+}
+
+<style>
+  :global(main .content) pre {
+    background-color: var(--sl-color-gray-5);
+    border: 1px solid var(--sl-color-gray-4);
+    font-size: var(--sl-text-code);
+    margin-top: 0.8rem;
+    overflow-x: auto;
+    padding: 0.5rem;
+    tab-size: 2;
+  }
+
+  code {
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+</style>

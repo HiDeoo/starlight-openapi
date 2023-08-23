@@ -1,0 +1,29 @@
+---
+import OpenAPIParser from '@readme/openapi-parser'
+import type { InferGetStaticPropsType } from 'astro'
+
+import { getSchemaStaticPaths } from '../libs/route'
+import { getPageProps } from '../libs/starlight'
+
+import Operation from './operation/Operation.astro'
+import Page from './overrides/Page.astro'
+import Overview from './Overview.astro'
+
+export function getStaticPaths() {
+  return getSchemaStaticPaths()
+}
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>
+
+const { schema, type } = Astro.props
+
+schema.document = await OpenAPIParser.dereference(schema.document)
+
+const isOverview = type === 'overview'
+
+const title = isOverview ? 'Overview' : Astro.props.operation.title
+---
+
+<Page {...getPageProps(title, schema, isOverview ? undefined : Astro.props.operation)}>
+  {isOverview ? <Overview {schema} /> : <Operation {schema} operation={Astro.props.operation} />}
+</Page>

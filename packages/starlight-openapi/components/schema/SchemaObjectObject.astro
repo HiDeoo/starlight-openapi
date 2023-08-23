@@ -1,0 +1,121 @@
+---
+import { Icon } from '@astrojs/starlight/components'
+
+import {
+  getProperties,
+  isAdditionalPropertiesWithSchemaObject,
+  isSchemaObject,
+  type SchemaObject,
+} from '../../libs/schemaObject'
+import Key from '../Key.astro'
+import Tags from '../Tags.astro'
+
+import Schema from './SchemaObject.astro'
+import SchemaObjectObjectProperties from './SchemaObjectObjectProperties.astro'
+
+interface Props {
+  nested: boolean
+  schemaObject: SchemaObject
+}
+
+const { nested, schemaObject } = Astro.props
+
+const properties = getProperties(schemaObject)
+---
+
+<details class:list={[!nested && 'root']} open={!nested}>
+  <summary>
+    <span class="type">object</span>
+    <Icon class="caret" name="right-caret" size="1.25rem" />
+  </summary>
+  <Tags
+    tags={[
+      schemaObject.minProperties && `>= ${schemaObject.minProperties} properties`,
+      schemaObject.maxProperties && `<= ${schemaObject.maxProperties} properties`,
+    ]}
+  />
+  <SchemaObjectObjectProperties parent={schemaObject} {properties} required={schemaObject.required} />
+  {
+    schemaObject.allOf &&
+      schemaObject.allOf.map((allOfSchemaObject) =>
+        isSchemaObject(allOfSchemaObject) ? (
+          <SchemaObjectObjectProperties
+            parent={schemaObject}
+            properties={getProperties(allOfSchemaObject)}
+            required={allOfSchemaObject.required}
+          />
+        ) : null,
+      )
+  }
+  {
+    schemaObject.additionalProperties && (
+      <Key additional name="key">
+        {schemaObject.additionalProperties === true ? (
+          <div class="any">any</div>
+        ) : isAdditionalPropertiesWithSchemaObject(schemaObject.additionalProperties) ? (
+          <Schema schemaObject={schemaObject.additionalProperties} />
+        ) : null}
+      </Key>
+    )
+  }
+</details>
+
+<style>
+  details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  details details {
+    border-inline-start: 1px solid var(--sl-color-gray-4);
+    padding-inline-start: 0.8rem;
+  }
+
+  summary {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    list-style-type: none;
+    user-select: none;
+  }
+
+  summary:hover {
+    color: var(--sl-color-gray-2);
+  }
+
+  details.root > summary {
+    display: none;
+  }
+
+  summary::marker,
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .caret {
+      transition: transform 0.2s ease-in-out;
+    }
+  }
+
+  details[open] > summary > .caret {
+    transform: rotateZ(90deg);
+  }
+
+  :global([dir='rtl']) .caret {
+    transform: rotateZ(180deg);
+  }
+
+  .type {
+    color: var(--sl-color-text-accent);
+    font-weight: 600;
+    margin-inline-end: 0.3rem;
+  }
+
+  .any {
+    color: var(--sl-color-text-accent);
+    font-weight: 600;
+    margin-inline-end: 0.3rem;
+  }
+</style>

@@ -1,0 +1,18 @@
+---
+import type { SchemaObject as SchemaObjectType } from '../../libs/schemaObject'
+import Examples, { type Props as ExamplesProps } from '../example/Examples.astro'
+import Text from '../Text.astro'
+
+import SchemaObject from './SchemaObject.astro'
+
+interface Props extends ExamplesProps {
+  description?: string | undefined
+  schema: SchemaObjectType | undefined
+}
+
+const { description, example, examples, schema } = Astro.props
+---
+
+{schema && <SchemaObject schemaObject={schema} hideExample={example !== undefined || examples !== undefined} />}
+<Text>{description}</Text>
+<Examples example={example} examples={examples} />

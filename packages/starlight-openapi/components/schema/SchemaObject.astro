@@ -1,0 +1,43 @@
+---
+import { getNullable, getSchemaObjects, isSchemaObjectObject, type SchemaObject } from '../../libs/schemaObject'
+import Example from '../example/Example.astro'
+import ExternalDocs from '../ExternalDocs.astro'
+import Items from '../Items.astro'
+import Md from '../Md.astro'
+
+import SchemaObjectObject from './SchemaObjectObject.astro'
+import SchemaObjects from './SchemaObjects.astro'
+
+interface Props {
+  hideExample?: boolean | undefined
+  negated?: boolean
+  nested?: boolean
+  schemaObject: SchemaObject
+}
+
+const { hideExample = false, negated, nested = false, schemaObject } = Astro.props
+
+const schemaObjects = getSchemaObjects(schemaObject)
+
+const hasMany = schemaObjects !== undefined
+const isNegated = schemaObject.not !== undefined
+---
+
+{
+  hasMany ? (
+    <SchemaObjects discriminator={schemaObject.discriminator} {nested} {schemaObjects} />
+  ) : isNegated ? (
+    <Astro.self negated schemaObject={schemaObject.not} />
+  ) : (
+    <>
+      <Md text={schemaObject.description} />
+      <ExternalDocs docs={schemaObject.externalDocs} />
+      {isSchemaObjectObject(schemaObject) ? (
+        <SchemaObjectObject {nested} {schemaObject} />
+      ) : (
+        <Items items={schemaObject} {negated} nullable={getNullable(schemaObject)} />
+      )}
+      {!hideExample && schemaObject.example && <Example raw={schemaObject.example} />}
+    </>
+  )
+}

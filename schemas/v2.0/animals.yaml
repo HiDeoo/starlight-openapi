@@ -1,0 +1,325 @@
+---
+swagger: '2.0'
+info:
+  version: '1.0.0'
+  title: 'Animals'
+  license:
+    name: 'MIT'
+host: 'example.com'
+basePath: '/api'
+consumes:
+  - 'application/json'
+produces:
+  - 'application/json'
+paths:
+  /animals:
+    get:
+      description: 'Returns all animals'
+      operationId: 'findAnimals'
+      produces:
+        - 'application/json'
+        - 'application/xml'
+        - 'text/xml'
+        - 'text/html'
+      parameters:
+        - name: 'tags'
+          in: 'query'
+          description: 'tags to filter by'
+          required: false
+          type: 'array'
+          items:
+            type: 'string'
+          maxItems: 10
+          minItems: 1
+          uniqueItems: true
+        - name: 'sort'
+          in: 'query'
+          description: 'sort order'
+          required: false
+          type: 'string'
+          enum: ['asc', 'desc']
+        - name: 'limit'
+          in: 'query'
+          description: 'maximum number of animals to return'
+          default: 10
+          maximum: 100
+          exclusiveMaximum: true
+          minimum: 1
+          multipleOf: 2
+          required: false
+          type: 'integer'
+          format: 'int32'
+        - name: 'filter'
+          in: 'query'
+          description: 'specify a filter query'
+          required: false
+          type: 'string'
+          maxLength: 100
+          minLength: 3
+          pattern: '^[a-zA-Z0-9]+$'
+      responses:
+        '200':
+          description: 'animal response'
+          schema:
+            type: 'array'
+            items:
+              $ref: '#/definitions/Animal'
+          examples:
+            application/json:
+              - id: 1
+                name: 'Bessy'
+              - id: 2
+                name: 'Hazel'
+            application/xml:
+              - id: 3
+                name: 'Cleo'
+              - id: 4
+                name: 'Daisy'
+        default:
+          description: 'unexpected error'
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      description: 'Creates a new animal'
+      operationId: 'addAnimal'
+      consumes:
+        - 'application/json'
+        - 'application/xml'
+      produces:
+        - 'application/json'
+        - 'application/xml'
+      parameters:
+        - name: 'animal'
+          in: 'body'
+          description: 'Animal to add'
+          required: true
+          schema:
+            $ref: '#/definitions/NewAnimal'
+      responses:
+        '200':
+          description: 'animal response'
+          schema:
+            $ref: '#/definitions/Animal'
+        default:
+          description: 'unexpected error'
+          schema:
+            $ref: '#/definitions/Error'
+  /cats:
+    post:
+      description: 'Creates a new cat'
+      operationId: 'addCat'
+      parameters:
+        - name: 'cat'
+          in: 'body'
+          description: 'Cat to add'
+          required: true
+          schema:
+            externalDocs:
+              url: https://example.com/more-info
+            allOf:
+              - $ref: '#/definitions/NewAnimal'
+              - type: 'object'
+                required:
+                  - 'age'
+                properties:
+                  age:
+                    type: 'integer'
+                    format: 'int32'
+      responses:
+        '200':
+          description: 'animal response'
+          schema:
+            $ref: '#/definitions/Animal'
+        default:
+          description: 'unexpected error'
+          schema:
+            $ref: '#/definitions/Error'
+  /birds:
+    post:
+      description: 'Creates a new bird'
+      operationId: 'addBird'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'bird'
+          in: 'body'
+          description: 'Bird to add'
+          required: true
+          schema:
+            oneOf:
+              - type: 'string'
+                description: 'bird name'
+                example: 'Aubrey'
+              - type: 'object'
+                properties:
+                  name:
+                    type: 'string'
+                example:
+                  name: 'Harley'
+      responses:
+        '200':
+          description: 'animal response'
+          schema:
+            $ref: '#/definitions/Animal'
+        default:
+          description: 'unexpected error'
+          schema:
+            $ref: '#/definitions/Error'
+  /dogs:
+    post:
+      description: 'Creates a new dog'
+      operationId: 'addDog'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'dog'
+          in: 'body'
+          description: 'Dog to add'
+          required: true
+          schema:
+            anyOf:
+              - $ref: '#/definitions/NewAnimal'
+              - type: 'object'
+                properties:
+                  name:
+                    type: 'string'
+                  age:
+                    type: 'integer'
+                    format: 'int32'
+      responses:
+        '200':
+          description: 'animal response'
+          schema:
+            $ref: '#/definitions/Animal'
+        default:
+          description: 'unexpected error'
+          schema:
+            $ref: '#/definitions/Error'
+  /wolves:
+    post:
+      description: 'Creates a new wolf'
+      operationId: 'addWolf'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'wolf'
+          in: 'body'
+          description: 'Wolf to add'
+          required: true
+          schema:
+            type: 'object'
+            properties:
+              name:
+                not:
+                  type: 'string'
+      responses:
+        '200':
+          description: 'animal response'
+          schema:
+            $ref: '#/definitions/Animal'
+          headers:
+            'Content-Type':
+              type: 'string'
+        default:
+          description: 'unexpected error'
+          schema:
+            $ref: '#/definitions/Error'
+  /bears:
+    post:
+      description: 'Creates a new bear'
+      operationId: 'addBear'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'bear'
+          in: 'body'
+          description: 'Bear to add'
+          required: true
+          schema:
+            discriminator: 'type'
+            oneOf:
+              - type: object
+                title: 'white bear'
+                properties:
+                  name:
+                    type: string
+                  type:
+                    type: string
+              - type: object
+                title: 'brown bear'
+                properties:
+                  name:
+                    type: string
+                  type:
+                    type: string
+      responses:
+        '200':
+          description: 'animal response'
+          headers:
+            X-Rate-Limit-Limit:
+              description: 'The number of allowed requests in the current period'
+              type: integer
+              format: int32
+            X-Rate-Limit-Reset:
+              description: 'The number of seconds left in the current period'
+              type: integer
+              format: int32
+          schema:
+            $ref: '#/definitions/Animal'
+        default:
+          description: 'unexpected error'
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  Animal:
+    type: 'object'
+    allOf:
+      - $ref: '#/definitions/NewAnimal'
+      - required:
+          - 'id'
+        properties:
+          id:
+            type: 'integer'
+            format: 'int64'
+  NewAnimal:
+    type: 'object'
+    description: 'A representation of an animal'
+    required:
+      - 'name'
+    properties:
+      name:
+        type: 'string'
+      tag:
+        type: 'string'
+    minProperties: 1
+    maxProperties: 4
+    additionalProperties:
+      type: number
+  Error:
+    type: 'object'
+    required:
+      - 'code'
+      - 'message'
+    properties:
+      code:
+        type: 'integer'
+        format: 'int32'
+      message:
+        type: 'string'
+securityDefinitions:
+  basic_auth:
+    type: basic
+    description: 'HTTP Basic Authentication'
+  api_key:
+    type: apiKey
+    description: 'API Key Authentication'
+    name: api_key
+    in: header
+  animals_auth:
+    type: oauth2
+    authorizationUrl: https://example.com/api/oauth/dialog
+    tokenUrl: https://example.com/api/oauth/token
+    flow: implicit
+    scopes:
+      write:animals: write animals
+      read:animals: read animals

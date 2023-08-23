@@ -1,1 +1,1 @@
-# starlight-openapi
+packages/starlight-openapi/README.md

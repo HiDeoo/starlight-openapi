@@ -1,0 +1,55 @@
+---
+import { getBound, getType, type Items } from '../libs/items'
+import { isSchemaObjectObject } from '../libs/schemaObject'
+
+import SchemaObject from './schema/SchemaObject.astro'
+import Tag from './Tag.astro'
+import Tags from './Tags.astro'
+
+interface Props {
+  hideExample?: boolean
+  items: Items
+  negated?: boolean | undefined
+  nullable?: boolean | undefined
+}
+
+const { hideExample, items, negated, nullable } = Astro.props
+---
+
+{
+  items.type && (
+    <div>
+      <span class="type">
+        {negated && 'not '}
+        {getType(items)}
+      </span>
+      {items.format && <Tag>format: {items.format}</Tag>}
+    </div>
+  )
+}
+<Tags
+  tags={[
+    items.default && `default: ${items.default}`,
+    nullable && 'nullable',
+    getBound(items, 'minimum'),
+    getBound(items, 'maximum'),
+    items.minLength && `>= ${items.minLength} characters`,
+    items.maxLength && `<= ${items.maxLength} characters`,
+    items.minItems && `>= ${items.minItems} items`,
+    items.maxItems && `<= ${items.maxItems} items`,
+    items.pattern && `/${items.pattern}/`,
+    items.multipleOf && `multiple of ${items.multipleOf}`,
+    items.uniqueItems && 'unique items',
+  ]}
+/>
+
+{items.enum && <Tags label="Allowed values:" tags={items.enum} />}
+{items.items && isSchemaObjectObject(items.items) && <SchemaObject nested schemaObject={items.items} {hideExample} />}
+
+<style>
+  .type {
+    color: var(--sl-color-text-accent);
+    font-weight: 600;
+    margin-inline-end: 0.3rem;
+  }
+</style>

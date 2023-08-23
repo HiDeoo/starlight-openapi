@@ -1,0 +1,13 @@
+.astro
+.github/blocks
+.next
+.vercel
+.vscode-test
+.vscode-test-web
+build
+coverage
+dist
+dist-ssr
+out
+pnpm-lock.yaml
+src/content/docs/api

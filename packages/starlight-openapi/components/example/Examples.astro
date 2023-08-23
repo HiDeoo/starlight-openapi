@@ -1,0 +1,41 @@
+---
+import type { ExamplesV3 } from '../../libs/example'
+import ContentPicker from '../ContentPicker.astro'
+
+import Example from './Example.astro'
+
+export interface Props {
+  example: unknown | undefined
+  examples: ExamplesV3 | undefined
+}
+
+const { example, examples } = Astro.props
+---
+
+{
+  example || examples ? (
+    examples ? (
+      <>
+        <h5>Examples</h5>
+        <ContentPicker label="Select example" types={Object.keys(examples)}>
+          {Object.entries(examples).map(([type, data], index) => (
+            <div data-openapi-content-type={type} hidden={index > 0} role="tabpanel">
+              <Example example={data} />
+            </div>
+          ))}
+        </ContentPicker>
+      </>
+    ) : (
+      <>
+        <h5>Example</h5>
+        <Example raw={example} />
+      </>
+    )
+  ) : null
+}
+
+<style>
+  h5 {
+    margin-block: 0.8rem;
+  }
+</style>

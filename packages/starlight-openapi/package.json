@@ -1,0 +1,54 @@
+{
+  "name": "starlight-openapi",
+  "version": "0.0.1",
+  "license": "MIT",
+  "description": "Astro integration for Starlight to generate documentation from OpenAPI/Swagger specifications.",
+  "author": "HiDeoo <github@hideoo.dev> (https://hideoo.dev)",
+  "type": "module",
+  "exports": {
+    ".": "./index.ts",
+    "./route": "./components/Route.astro",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "test": "playwright test",
+    "lint": "prettier -c --cache . && eslint . --cache --max-warnings=0 && tsc --noEmit"
+  },
+  "dependencies": {
+    "@astropub/md": "0.2.0",
+    "@readme/openapi-parser": "2.5.0",
+    "github-slugger": "2.0.0",
+    "kleur": "4.1.5"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.36.2",
+    "@types/node": "18.17.3",
+    "astro": "2.10.12",
+    "openapi-types": "12.1.3"
+  },
+  "peerDependencies": {
+    "@astrojs/starlight": ">=0.5.0",
+    "astro": ">=2.5.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "pnpm@8.6.12",
+  "publishConfig": {
+    "access": "public"
+  },
+  "sideEffects": false,
+  "keywords": [
+    "starlight",
+    "openapi",
+    "swagger",
+    "documentation",
+    "astro"
+  ],
+  "homepage": "https://github.com/HiDeoo/starlight-openapi",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HiDeoo/starlight-openapi.git"
+  },
+  "bugs": "https://github.com/HiDeoo/starlight-openapi/issues"
+}
