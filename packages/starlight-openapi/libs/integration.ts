@@ -1,11 +1,10 @@
-import markdownIntegration from '@astropub/md'
 import type { AstroIntegration, AstroUserConfig } from 'astro'
 
 import type { Schema } from './schema'
 import { vitePluginStarlightOpenAPIComponents, vitePluginStarlightOpenAPISchemas } from './vite'
 
 export function createStarlightOpenAPIIntegration(schemas: Schema[]) {
-  return function starlightOpenAPIIntegration(): AstroIntegration[] {
+  return function starlightOpenAPIIntegration(): AstroIntegration {
     const starlightOpenAPI: AstroIntegration = {
       name: 'starlight-openapi',
       hooks: {
@@ -26,6 +25,6 @@ export function createStarlightOpenAPIIntegration(schemas: Schema[]) {
       },
     }
 
-    return [starlightOpenAPI, markdownIntegration()]
+    return starlightOpenAPI
   }
 }

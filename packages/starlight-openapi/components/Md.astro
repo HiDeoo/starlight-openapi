@@ -1,5 +1,5 @@
 ---
-import { Markdown } from '@astropub/md'
+import { Markdown } from 'astro-remote'
 
 import { capitalize } from '../libs/utils'
 
@@ -10,4 +10,4 @@ interface Props {
 const { text } = Astro.props
 ---
 
-{text && text.length > 0 && <Markdown of={capitalize(text)} />}
+{text && text.length > 0 && <Markdown content={capitalize(text)} />}

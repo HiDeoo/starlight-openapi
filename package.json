@@ -14,7 +14,7 @@
     "@hideoo/eslint-config": "1.5.1",
     "@hideoo/prettier-config": "2.0.0",
     "@hideoo/tsconfig": "2.0.1",
-    "astro": "2.10.12",
+    "astro": "3.1.1",
     "eslint": "8.46.0",
     "eslint-plugin-astro": "0.28.0",
     "husky": "8.0.3",
@@ -24,7 +24,7 @@
     "typescript": "5.1.6"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=18.14.1"
   },
   "packageManager": "pnpm@8.6.12",
   "private": true,
