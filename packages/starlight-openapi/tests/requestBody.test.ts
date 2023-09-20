@@ -67,7 +67,7 @@ test('supports schema object `oneOf` property', async ({ docPage }) => {
 
   await expect(requestBody.getByText('Aubrey')).toBeVisible()
 
-  requestBody.getByRole('tab', { name: 'object' }).click()
+  await requestBody.getByRole('tab', { name: 'object' }).click()
 
   await expect(
     requestBody.getByText(`{
@@ -87,7 +87,7 @@ test('supports schema object `anyOf` property', async ({ docPage }) => {
 
   await expect(requestBody.getByText('A representation of an animal')).toBeVisible()
 
-  requestBody.getByRole('tab', { name: 'object' }).nth(1).click()
+  await requestBody.getByRole('tab', { name: 'object' }).nth(1).click()
 
   await expect(requestBody.getByText('integer format: int32')).toBeVisible()
 })
