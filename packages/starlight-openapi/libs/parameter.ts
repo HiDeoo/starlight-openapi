@@ -16,7 +16,7 @@ export function getParametersByLocation(
     }
 
     const id = getParameterId(parameter)
-    const parametersById: Parameters = parametersByLocation.get(parameter.in) ?? new Map()
+    const parametersById: Parameters = parametersByLocation.get(parameter.in) ?? new Map<ParameterId, Parameter>()
 
     parametersById.set(id, parameter)
 

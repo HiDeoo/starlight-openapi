@@ -11,27 +11,28 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "test": "playwright test",
+    "test": "playwright install --with-deps chromium && playwright test",
     "lint": "prettier -c --cache . && eslint . --cache --max-warnings=0 && tsc --noEmit"
   },
   "dependencies": {
-    "@astropub/md": "0.2.0",
     "@readme/openapi-parser": "2.5.0",
+    "astro-remote": "0.2.4",
     "github-slugger": "2.0.0",
     "kleur": "4.1.5"
   },
   "devDependencies": {
+    "@astrojs/starlight": "0.10.0",
     "@playwright/test": "1.36.2",
     "@types/node": "18.17.3",
-    "astro": "2.10.12",
+    "astro": "3.1.1",
     "openapi-types": "12.1.3"
   },
   "peerDependencies": {
-    "@astrojs/starlight": ">=0.5.0",
-    "astro": ">=2.5.0"
+    "@astrojs/starlight": ">=0.9.0",
+    "astro": ">=3.0.0"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=18.14.1"
   },
   "packageManager": "pnpm@8.6.12",
   "publishConfig": {
