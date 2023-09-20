@@ -22,6 +22,7 @@ export function getPageProps(title: string, schema: Schema, pathItemOperation?: 
         tableOfContents: { minHeadingLevel: 2, maxHeadingLevel: 3 },
         title,
       },
+      slug: slug(title),
     },
     entryMeta: {
       lang: locale,
