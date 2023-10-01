@@ -1,16 +1,12 @@
 ---
 import { Icon } from '@astrojs/starlight/components'
 
-import {
-  getProperties,
-  isAdditionalPropertiesWithSchemaObject,
-  isSchemaObject,
-  type SchemaObject,
-} from '../../libs/schemaObject'
+import { getProperties, isAdditionalPropertiesWithSchemaObject, type SchemaObject } from '../../libs/schemaObject'
 import Key from '../Key.astro'
 import Tags from '../Tags.astro'
 
 import Schema from './SchemaObject.astro'
+import SchemaObjectAllOf from './SchemaObjectAllOf.astro'
 import SchemaObjectObjectProperties from './SchemaObjectObjectProperties.astro'
 
 interface Props {
@@ -35,18 +31,7 @@ const properties = getProperties(schemaObject)
     ]}
   />
   <SchemaObjectObjectProperties parent={schemaObject} {properties} required={schemaObject.required} />
-  {
-    schemaObject.allOf &&
-      schemaObject.allOf.map((allOfSchemaObject) =>
-        isSchemaObject(allOfSchemaObject) ? (
-          <SchemaObjectObjectProperties
-            parent={schemaObject}
-            properties={getProperties(allOfSchemaObject)}
-            required={allOfSchemaObject.required}
-          />
-        ) : null,
-      )
-  }
+  <SchemaObjectAllOf {schemaObject} />
   {
     schemaObject.additionalProperties && (
       <Key additional name="key">

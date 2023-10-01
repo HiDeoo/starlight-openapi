@@ -48,12 +48,23 @@ test('displays the request body for a v3.0 schema', async ({ docPage }) => {
   expect(await requestBody.getByRole('combobox').inputValue()).toBe('application/json')
 })
 
-test('supports schema object `allOf` property', async ({ docPage }) => {
+test('supports schema object `allOf` property for objects', async ({ docPage }) => {
   await docPage.goto('/v2/animals/operations/addcat/')
 
   await expect(docPage.getRequestBodyParameter('name')).toBeVisible()
   await expect(docPage.getRequestBodyParameter('tag')).toBeVisible()
   await expect(docPage.getRequestBodyParameter('age')).toBeVisible()
+})
+
+test('supports schema object `allOf` property for non-objects', async ({ docPage }) => {
+  await docPage.goto('/v2/animals/operations/addpig/')
+
+  await expect(docPage.getRequestBodyParameter('name')).toBeVisible()
+
+  const typeParameter = docPage.getRequestBodyParameter('type')
+
+  await expect(typeParameter).toBeVisible()
+  await expect(typeParameter.getByText('Allowed values: berkshire tamworth')).toBeVisible()
 })
 
 test('supports schema object `oneOf` property', async ({ docPage }) => {
