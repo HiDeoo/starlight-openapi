@@ -270,6 +270,36 @@ paths:
           description: 'unexpected error'
           schema:
             $ref: '#/definitions/Error'
+  /pigs:
+    post:
+      description: 'Creates a new pig'
+      operationId: 'addPig'
+      parameters:
+        - name: 'pig'
+          in: 'body'
+          description: 'Pig to add'
+          required: true
+          schema:
+            type: 'object'
+            properties:
+              name:
+                type: 'string'
+              type:
+                description: 'The type of pig to add'
+                allOf:
+                  - $ref: '#/definitions/NewPig'
+      responses:
+        '200':
+          description: 'animal response'
+          schema:
+            $ref: '#/definitions/Animal'
+          headers:
+            'Content-Type':
+              type: 'string'
+        default:
+          description: 'unexpected error'
+          schema:
+            $ref: '#/definitions/Error'
 definitions:
   Animal:
     type: 'object'
@@ -295,6 +325,9 @@ definitions:
     maxProperties: 4
     additionalProperties:
       type: number
+  NewPig:
+    type: 'string'
+    enum: ['berkshire', 'tamworth']
   Error:
     type: 'object'
     required:

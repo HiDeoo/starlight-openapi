@@ -11,6 +11,13 @@ export function isParameterWithSchemaObject(parameter: Parameter): parameter is 
 }
 
 export function isSchemaObjectObject(schemaObject: SchemaObject): schemaObject is SchemaObject {
+  return (
+    schemaObject.type === 'object' ||
+    ('allOf' in schemaObject && (schemaObject.allOf as SchemaObject[]).every(isSchemaObjectObject))
+  )
+}
+
+export function isSchemaObjectAllOf(schemaObject: SchemaObject): schemaObject is SchemaObject {
   return schemaObject.type === 'object' || 'allOf' in schemaObject
 }
 

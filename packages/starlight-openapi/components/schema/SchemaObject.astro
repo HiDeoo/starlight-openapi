@@ -1,10 +1,17 @@
 ---
-import { getNullable, getSchemaObjects, isSchemaObjectObject, type SchemaObject } from '../../libs/schemaObject'
+import {
+  getNullable,
+  getSchemaObjects,
+  isSchemaObjectAllOf,
+  isSchemaObjectObject,
+  type SchemaObject,
+} from '../../libs/schemaObject'
 import Example from '../example/Example.astro'
 import ExternalDocs from '../ExternalDocs.astro'
 import Items from '../Items.astro'
 import Md from '../Md.astro'
 
+import SchemaObjectAllOf from './SchemaObjectAllOf.astro'
 import SchemaObjectObject from './SchemaObjectObject.astro'
 import SchemaObjects from './SchemaObjects.astro'
 
@@ -34,6 +41,8 @@ const isNegated = schemaObject.not !== undefined
       <ExternalDocs docs={schemaObject.externalDocs} />
       {isSchemaObjectObject(schemaObject) ? (
         <SchemaObjectObject {nested} {schemaObject} />
+      ) : isSchemaObjectAllOf(schemaObject) ? (
+        <SchemaObjectAllOf {schemaObject} />
       ) : (
         <Items items={schemaObject} {negated} nullable={getNullable(schemaObject)} />
       )}

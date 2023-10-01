@@ -1,0 +1,37 @@
+---
+import {
+  getNullable,
+  getProperties,
+  isSchemaObject,
+  isSchemaObjectObject,
+  type SchemaObject,
+} from '../../libs/schemaObject'
+import Items from '../Items.astro'
+
+import SchemaObjectObjectProperties from './SchemaObjectObjectProperties.astro'
+
+interface Props {
+  schemaObject: SchemaObject
+}
+
+const { schemaObject } = Astro.props
+---
+
+{
+  schemaObject.allOf &&
+    schemaObject.allOf.map((allOfSchemaObject) =>
+      isSchemaObjectObject(schemaObject) && isSchemaObject(allOfSchemaObject) ? (
+        <SchemaObjectObjectProperties
+          parent={schemaObject}
+          properties={getProperties(allOfSchemaObject)}
+          required={allOfSchemaObject.required}
+        />
+      ) : isSchemaObject(allOfSchemaObject) ? (
+        <Items
+          items={allOfSchemaObject}
+          negated={allOfSchemaObject.not !== undefined}
+          nullable={getNullable(allOfSchemaObject)}
+        />
+      ) : null,
+    )
+}
