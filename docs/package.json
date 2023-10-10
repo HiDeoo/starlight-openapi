@@ -1,6 +1,6 @@
 {
   "name": "starlight-openapi-docs",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "license": "MIT",
   "description": "Astro integration for Starlight to generate documentation from OpenAPI/Swagger specifications.",
   "author": "HiDeoo <github@hideoo.dev> (https://hideoo.dev)",
