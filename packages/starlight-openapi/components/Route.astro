@@ -1,12 +1,13 @@
 ---
+import StarlightPage from '@astrojs/starlight/components/Page.astro'
 import OpenAPIParser from '@readme/openapi-parser'
 import type { InferGetStaticPropsType } from 'astro'
+import starlightConfig from 'virtual:starlight/user-config'
 
 import { getSchemaStaticPaths } from '../libs/route'
 import { getPageProps } from '../libs/starlight'
 
 import Operation from './operation/Operation.astro'
-import Page from './overrides/Page.astro'
 import Overview from './Overview.astro'
 
 export function getStaticPaths() {
@@ -24,6 +25,6 @@ const isOverview = type === 'overview'
 const title = isOverview ? 'Overview' : Astro.props.operation.title
 ---
 
-<Page {...getPageProps(title, schema, isOverview ? undefined : Astro.props.operation)}>
+<StarlightPage {...getPageProps(starlightConfig, title, schema, isOverview ? undefined : Astro.props.operation)}>
   {isOverview ? <Overview {schema} /> : <Operation {schema} operation={Astro.props.operation} />}
-</Page>
+</StarlightPage>
