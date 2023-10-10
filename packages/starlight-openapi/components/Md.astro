@@ -1,5 +1,6 @@
 ---
-import { Markdown } from 'astro-remote'
+// @ts-expect-error - types not found due to the use of gitpkg until v0.3.0 is published
+import { Markdown } from '@astropub/md'
 
 import { capitalize } from '../libs/utils'
 
@@ -10,4 +11,4 @@ interface Props {
 const { text } = Astro.props
 ---
 
-{text && text.length > 0 && <Markdown content={capitalize(text)} />}
+{text && text.length > 0 && <Markdown of={capitalize(text)} />}
