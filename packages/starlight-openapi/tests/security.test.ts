@@ -26,3 +26,17 @@ test('overrides the global authorizations', async ({ docPage }) => {
   await expect(authorizations.getByText('read:animals')).toBeVisible()
   await expect(authorizations.getByText('api_key')).toBeVisible()
 })
+
+test('links to overview authentications', async ({ docPage }) => {
+  await docPage.goto('/v3/animals/operations/addanimal/')
+
+  const authorizations = docPage.getAuthorizations()
+
+  const animalsAuthLink = authorizations.getByRole('link', { name: 'animals_auth' })
+  await expect(animalsAuthLink).toBeVisible()
+  expect(await animalsAuthLink.getAttribute('href')).toBe('../../#animals_auth')
+
+  const apiKeyLink = authorizations.getByRole('link', { name: 'api_key' })
+  await expect(apiKeyLink).toBeVisible()
+  expect(await apiKeyLink.getAttribute('href')).toBe('../../#api_key')
+})

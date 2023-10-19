@@ -1,5 +1,6 @@
 ---
 import type { Operation } from '../../libs/operation'
+import { slug } from '../../libs/path'
 import type { Schema } from '../../libs/schema'
 import { getSecurityRequirements } from '../../libs/security'
 import Section from '../Section.astro'
@@ -33,7 +34,9 @@ const requirements = getSecurityRequirements(schema, operation)
           return Object.entries(requirement).map(([scheme, scopes]) => {
             return (
               <li class="scheme not-content">
-                <strong>{scheme}</strong>
+                <strong>
+                  <a href={`../../#${slug(scheme)}`}>{scheme}</a>
+                </strong>
                 {scopes.length > 0 ? <Tags tags={[...scopes]} /> : null}
               </li>
             )
@@ -45,6 +48,14 @@ const requirements = getSecurityRequirements(schema, operation)
 }
 
 <style>
+  .scheme a {
+    color: var(--sl-color-text-accent);
+  }
+
+  .scheme a:hover {
+    color: var(--sl-color-white);
+  }
+
   .scheme > :global(.tags) {
     display: inline-flex;
     margin-left: 0.5rem;
