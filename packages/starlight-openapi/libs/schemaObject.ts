@@ -39,18 +39,41 @@ export function isSchemaObject(
 
 export function getSchemaObjects(schemaObject: SchemaObject): SchemaObjects | undefined {
   if (schemaObject.oneOf && schemaObject.oneOf.length > 0) {
+    const { oneOf, ...otherProperties } = schemaObject
+
     return {
-      schemaObjects: schemaObject.oneOf as SchemaObject[],
+      schemaObjects: sanitizeSchemaObjects(oneOf as SchemaObject[], otherProperties),
       type: 'oneOf',
     }
   } else if (schemaObject.anyOf && schemaObject.anyOf.length > 0) {
+    const { anyOf, ...otherProperties } = schemaObject
+
     return {
-      schemaObjects: schemaObject.anyOf as SchemaObject[],
+      schemaObjects: sanitizeSchemaObjects(anyOf as SchemaObject[], otherProperties),
       type: 'anyOf',
     }
   }
 
   return
+}
+
+function sanitizeSchemaObjects(schemaObjects: SchemaObject[], parentProperties: SchemaObject) {
+  if (schemaObjects.some((schemaObjectsObject) => schemaObjectsObject.type !== undefined)) {
+    return schemaObjects
+  }
+
+  return schemaObjects.map((schemaObjectsObject) => {
+    const sanitizeSchemaObject = {
+      ...parentProperties,
+      ...schemaObjectsObject,
+    } as SchemaObject
+
+    if (!sanitizeSchemaObject.type && sanitizeSchemaObject.properties) {
+      sanitizeSchemaObject.type = 'object'
+    }
+
+    return sanitizeSchemaObject
+  })
 }
 
 export type SchemaObject = OpenAPIV2.SchemaObject | OpenAPIV3.NonArraySchemaObject | OpenAPIV3_1.NonArraySchemaObject
