@@ -103,6 +103,34 @@ test('supports schema object `anyOf` property', async ({ docPage }) => {
   await expect(requestBody.getByText('integer format: int32')).toBeVisible()
 })
 
+test('supports array using the `oneOf` or `anyOf` property', async ({ docPage }) => {
+  await docPage.goto('/v2/animals/operations/addfish/')
+
+  const requestBody = docPage.getRequestBody()
+
+  await expect(requestBody.getByText('One of:')).toBeVisible()
+
+  await expect(requestBody.getByRole('tab')).toContainText(['object', 'object'])
+})
+
+test('sanitizes schema object used with the `oneOf` or `anyOf` property', async ({ docPage }) => {
+  await docPage.goto('/v2/animals/operations/addhorse/')
+
+  const requestBody = docPage.getRequestBody()
+
+  await expect(requestBody.getByText('One of:')).toBeVisible()
+
+  await expect(requestBody.getByRole('tab')).toContainText(['object', 'object'])
+
+  await expect(requestBody.getByText('name')).toBeVisible()
+  await expect(requestBody.getByText('age')).not.toBeVisible()
+
+  await requestBody.getByRole('tab', { name: 'object' }).nth(1).click()
+
+  await expect(requestBody.getByText('name')).not.toBeVisible()
+  await expect(requestBody.getByText('age')).toBeVisible()
+})
+
 test('supports schema object `not` property', async ({ docPage }) => {
   await docPage.goto('/v2/animals/operations/addwolf/')
 

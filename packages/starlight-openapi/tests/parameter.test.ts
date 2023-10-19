@@ -38,6 +38,7 @@ test('displays basic parameters', async ({ docPage }) => {
 
   await expect(tagsParameter.getByText('required')).toBeVisible()
   await expect(tagsParameter.getByText('deprecated')).not.toBeVisible()
+  await expect(tagsParameter.getByText('Allowed values: fish horse')).toBeVisible()
 })
 
 test('does not display the body parameter for a v2.0 schema', async ({ docPage }) => {

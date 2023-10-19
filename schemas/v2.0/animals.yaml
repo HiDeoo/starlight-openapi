@@ -165,6 +165,69 @@ paths:
           description: 'unexpected error'
           schema:
             $ref: '#/definitions/Error'
+  /horses:
+    post:
+      description: 'Creates a new horse'
+      operationId: 'addHorse'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'horse'
+          in: 'body'
+          description: 'Horse to add'
+          required: true
+          schema:
+            type: 'object'
+            oneOf:
+              - properties:
+                  name:
+                    type: 'string'
+              - properties:
+                  age:
+                    type: integer
+                    format: int32
+      responses:
+        '200':
+          description: 'animal response'
+          schema:
+            $ref: '#/definitions/Animal'
+        default:
+          description: 'unexpected error'
+          schema:
+            $ref: '#/definitions/Error'
+  /fish:
+    post:
+      description: 'Creates a new fish'
+      operationId: 'addFish'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'fish'
+          in: 'body'
+          description: 'Fish to add'
+          required: true
+          schema:
+            type: 'array'
+            items:
+              oneOf:
+                - type: object
+                  properties:
+                    name:
+                      type: 'string'
+                - type: object
+                  properties:
+                    age:
+                      type: integer
+                      format: int32
+      responses:
+        '200':
+          description: 'animal response'
+          schema:
+            $ref: '#/definitions/Animal'
+        default:
+          description: 'unexpected error'
+          schema:
+            $ref: '#/definitions/Error'
   /dogs:
     post:
       description: 'Creates a new dog'
