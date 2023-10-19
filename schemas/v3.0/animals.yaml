@@ -38,6 +38,9 @@ paths:
           type: array
           items:
             type: string
+            enum:
+              - fish
+              - horse
     get:
       summary: List all animals
       operationId: listAnimals
