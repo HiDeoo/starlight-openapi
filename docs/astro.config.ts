@@ -12,12 +12,14 @@ const { openAPISidebarGroups, starlightOpenAPI } = await generateAPI([
   {
     base: 'api/1password',
     label: '1Password Connect',
-    schema: 'https://api.apis.guru/v2/specs/1password.local/connect/1.5.7/openapi.yaml',
+    schema:
+      'https://raw.githubusercontent.com/APIs-guru/openapi-directory/gh-pages/v2/specs/1password.local/connect/1.5.7/openapi.yaml',
   },
   {
     base: 'api/giphy',
     label: 'Giphy',
-    schema: 'https://api.apis.guru/v2/specs/giphy.com/1.0/openapi.yaml',
+    schema:
+      'https://raw.githubusercontent.com/APIs-guru/openapi-directory/gh-pages/v2/specs/giphy.com/1.0/openapi.yaml',
   },
   {
     base: 'api/v3/petstore-simple',

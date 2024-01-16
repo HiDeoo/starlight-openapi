@@ -22,6 +22,10 @@
 
 Want to get started immediately? Check out the [getting started guide](https://starlight-openapi.vercel.app/guides/getting-started/) or a [live demo](https://starlight-openapi.vercel.app/api/petstore/operations/addpet/).
 
+> **Warning**
+>
+> The Starlight OpenAPI integration is not compatible with Starlight 0.14.0 and above due to an upstream issue. Please follow [this PR](https://github.com/withastro/starlight/pull/1175) to track the progress regarding this issue.
+
 ## Features
 
 An [Astro](https://astro.build) _integration<sup>\*</sup>_ for [Starlight](https://starlight.astro.build) to generate documentation from OpenAPI/Swagger specifications.
