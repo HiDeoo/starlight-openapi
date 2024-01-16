@@ -15,7 +15,7 @@
     "lint": "prettier -c --cache . && eslint . --cache --max-warnings=0"
   },
   "dependencies": {
-    "@astropub/md": "https://gitpkg.now.sh/astro-community/md/packages/md?124d0f2f4301836d94dfcd5ae77c8f03bbb20c1c",
+    "@astropub/md": "0.3.0",
     "@readme/openapi-parser": "2.5.0",
     "github-slugger": "2.0.0",
     "kleur": "4.1.5"
