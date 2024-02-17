@@ -12,11 +12,11 @@ export class SidebarPage {
   }
 
   get #sidebar() {
-    return this.page.getByRole('navigation', { name: 'Main' }).locator('div.sidebar')
+    return this.page.getByRole('navigation', { name: 'Main' }).locator('div.sidebar-content')
   }
 
   #getSidebarRootDetails(label: string) {
-    return this.#sidebar.getByRole('listitem').locator(`details:has(summary > h2:text-is("${label}"))`).last()
+    return this.#sidebar.getByRole('listitem').locator(`details:has(summary > div > span:text-is("${label}"))`).last()
   }
 
   async #getSidebarChildrenItems(list: Locator): Promise<SidebarItem[]> {
@@ -30,10 +30,9 @@ export class SidebarPage {
 
         items.push({ name: name ? name.trim() : null })
       } else {
-        await this.page.pause()
         items.push({
           collapsed: (await item.getAttribute('open')) === null,
-          label: await item.locator(`> summary > h2`).textContent(),
+          label: await item.locator(`> summary > div > span`).textContent(),
           items: await this.#getSidebarChildrenItems(item.locator('> ul')),
         })
       }

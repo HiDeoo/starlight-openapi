@@ -1,6 +1,6 @@
 import { expect, test } from './test'
 
-test.fixme('lists operations grouped by tag', async ({ sidebarPage }) => {
+test('lists operations grouped by tag', async ({ sidebarPage }) => {
   await sidebarPage.goto()
 
   const items = await sidebarPage.getSidebarGroupItems('Giphy')
@@ -32,7 +32,7 @@ test.fixme('lists operations grouped by tag', async ({ sidebarPage }) => {
   ])
 })
 
-test.fixme('uses a fallback group for untagged operations', async ({ sidebarPage }) => {
+test('uses a fallback group for untagged operations', async ({ sidebarPage }) => {
   await sidebarPage.goto()
 
   const items = await sidebarPage.getSidebarGroupItems('Petstore')
@@ -52,7 +52,7 @@ test.fixme('uses a fallback group for untagged operations', async ({ sidebarPage
   ])
 })
 
-test.fixme('respects tags order', async ({ sidebarPage }) => {
+test('respects tags order', async ({ sidebarPage }) => {
   await sidebarPage.goto()
 
   const items = await sidebarPage.getSidebarGroupItems('1Password Connect')
