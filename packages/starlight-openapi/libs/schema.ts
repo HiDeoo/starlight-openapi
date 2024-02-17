@@ -3,7 +3,7 @@ import type { OpenAPI } from 'openapi-types'
 
 import { getBaseLink, stripLeadingAndTrailingSlashes } from './path'
 import { getPathItemSidebarGroups, getWebhooksSidebarGroups } from './pathItem'
-import { makeSidebarGroup, makeSidebarLink, type SidebarGroup } from './starlight'
+import { makeSidebarGroup, makeSidebarLink, type SidebarManualGroup } from './starlight'
 
 export const SchemaConfigSchema = z.object({
   /**
@@ -26,7 +26,7 @@ export const SchemaConfigSchema = z.object({
   schema: z.string().min(1),
 })
 
-export function getSchemaSidebarGroups(schema: Schema): SidebarGroup {
+export function getSchemaSidebarGroups(schema: Schema): SidebarManualGroup {
   const { config, document } = schema
 
   return makeSidebarGroup(

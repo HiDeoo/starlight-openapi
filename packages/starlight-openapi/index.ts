@@ -1,14 +1,26 @@
+import type { StarlightPlugin } from '@astrojs/starlight/types'
+
 import { validateConfig, type StarlightOpenAPIUserConfig } from './libs/config'
-import { createStarlightOpenAPIIntegration } from './libs/integration'
+import { starlightOpenAPIIntegration } from './libs/integration'
 import { parseSchema } from './libs/parser'
-import { getSchemaSidebarGroups } from './libs/schema'
+import { getSidebarFromSchemas, getSidebarGroupsPlaceholder } from './libs/starlight'
 
-export async function generateAPI(userConfig: StarlightOpenAPIUserConfig) {
-  const config = validateConfig(userConfig)
-  const schemas = await Promise.all(config.map(parseSchema))
+export const openAPISidebarGroups = getSidebarGroupsPlaceholder()
 
+export default function starlightOpenAPIPlugin(userConfig: StarlightOpenAPIUserConfig): StarlightPlugin {
   return {
-    openAPISidebarGroups: schemas.map((schema) => getSchemaSidebarGroups(schema)),
-    starlightOpenAPI: createStarlightOpenAPIIntegration(schemas),
+    name: 'starlight-openapi-plugin',
+    hooks: {
+      setup: async ({ addIntegration, config: starlightConfig, logger, updateConfig }) => {
+        const config = validateConfig(logger, userConfig)
+        const schemas = await Promise.all(config.map((schemaConfig) => parseSchema(logger, schemaConfig)))
+
+        addIntegration(starlightOpenAPIIntegration(schemas))
+
+        const sidebar = getSidebarFromSchemas(starlightConfig.sidebar, schemas)
+
+        updateConfig({ sidebar })
+      },
+    },
   }
 }

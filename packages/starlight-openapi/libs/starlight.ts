@@ -1,5 +1,4 @@
-import type { Props } from '@astrojs/starlight/props'
-import type { StarlightConfig } from '@astrojs/starlight/types'
+import type { StarlightUserConfig } from '@astrojs/starlight/types'
 import type { MarkdownHeading } from 'astro'
 
 import type { PathItemOperation } from './operation'
@@ -7,51 +6,70 @@ import { getParametersByLocation } from './parameter'
 import { slug } from './path'
 import { hasRequestBody } from './requestBody'
 import { includesDefaultResponse } from './response'
-import type { Schema } from './schema'
+import { getSchemaSidebarGroups, type Schema } from './schema'
 import { getSecurityDefinitions, getSecurityRequirements } from './security'
 import { capitalize } from './utils'
 
-export function getPageProps(
-  starlightConfig: StarlightConfig,
-  title: string,
-  schema: Schema,
-  pathItemOperation?: PathItemOperation,
-): Props {
+const starlightOpenAPISidebarGroupsLabel = Symbol('StarlightOpenAPISidebarGroupsLabel')
+
+export function getSidebarGroupsPlaceholder(): SidebarGroup[] {
+  return [
+    {
+      collapsed: false,
+      items: [],
+      label: starlightOpenAPISidebarGroupsLabel.toString(),
+    },
+  ]
+}
+
+export function getPageProps(title: string, schema: Schema, pathItemOperation?: PathItemOperation): StarlightPageProps {
   const isOverview = pathItemOperation === undefined
-  const entryMeta = getEntryMeta(starlightConfig)
-  const pageSlug = slug(title)
 
   return {
-    ...entryMeta,
-    editUrl: undefined,
-    entry: {
-      data: {
-        head: [],
-        pagefind: false,
-        title,
-      },
-      slug: pageSlug,
+    frontmatter: {
+      title,
     },
-    entryMeta,
-    hasSidebar: false,
-    headings: [],
-    id: pageSlug,
-    lastUpdated: undefined,
-    pagination: {
-      next: undefined,
-      prev: undefined,
-    },
-    sidebar: [],
-    slug: pageSlug,
-    toc: {
-      items: isOverview ? getOverviewTocItems(schema) : getOperationTocItems(schema, pathItemOperation),
-      minHeadingLevel: 2,
-      maxHeadingLevel: 3,
-    },
+    headings: isOverview ? getOverviewHeadings(schema) : getOperationHeadings(schema, pathItemOperation),
   }
 }
 
-export function makeSidebarGroup(label: string, items: SidebarGroup['items'], collapsed: boolean): SidebarGroup {
+export function getSidebarFromSchemas(
+  sidebar: StarlightUserConfigSidebar,
+  schemas: Schema[],
+): StarlightUserConfigSidebar {
+  if (!sidebar || sidebar.length === 0) {
+    return sidebar
+  }
+
+  const sidebarGroups = schemas.map((schema) => getSchemaSidebarGroups(schema))
+
+  function replaceSidebarGroupsPlaceholder(group: SidebarManualGroup): SidebarManualGroup | SidebarManualGroup[] {
+    if (group.label === starlightOpenAPISidebarGroupsLabel.toString()) {
+      return sidebarGroups
+    }
+
+    if (isSidebarManualGroup(group)) {
+      return {
+        ...group,
+        items: group.items.flatMap((item) => {
+          return isSidebarManualGroup(item) ? replaceSidebarGroupsPlaceholder(item) : item
+        }),
+      }
+    }
+
+    return group
+  }
+
+  return sidebar.flatMap((item) => {
+    return isSidebarManualGroup(item) ? replaceSidebarGroupsPlaceholder(item) : item
+  })
+}
+
+export function makeSidebarGroup(
+  label: string,
+  items: SidebarManualGroup['items'],
+  collapsed: boolean,
+): SidebarManualGroup {
   return { collapsed, items, label }
 }
 
@@ -59,90 +77,87 @@ export function makeSidebarLink(label: string, link: string): SidebarLink {
   return { label, link }
 }
 
-function getOverviewTocItems({ document }: Schema): TocItem[] {
-  const items: TocItem[] = [makeTocItem(2, `${document.info.title} (${document.info.version})`, [], 'overview')]
+function isSidebarManualGroup(item: NonNullable<StarlightUserConfigSidebar>[number]): item is SidebarManualGroup {
+  return 'items' in item
+}
+
+function getOverviewHeadings({ document }: Schema): MarkdownHeading[] {
+  const items: MarkdownHeading[] = [makeHeading(2, `${document.info.title} (${document.info.version})`, 'overview')]
 
   const securityDefinitions = getSecurityDefinitions(document)
 
   if (securityDefinitions) {
     items.push(
-      makeTocItem(
-        2,
-        'Authentication',
-        Object.keys(securityDefinitions).map((name) => makeTocItem(3, name)),
-      ),
+      makeHeading(2, 'Authentication'),
+      ...Object.keys(securityDefinitions).map((name) => makeHeading(3, name)),
     )
   }
 
-  return makeToc(items)
+  return makeHeadings(items)
 }
 
-function getOperationTocItems(schema: Schema, { operation, pathItem }: PathItemOperation): TocItem[] {
-  const items: TocItem[] = []
+function getOperationHeadings(schema: Schema, { operation, pathItem }: PathItemOperation): MarkdownHeading[] {
+  const items: MarkdownHeading[] = []
 
   const securityRequirements = getSecurityRequirements(schema, operation)
 
   if (securityRequirements && securityRequirements.length > 0) {
-    items.push(makeTocItem(2, 'Authorizations'))
+    items.push(makeHeading(2, 'Authorizations'))
   }
 
   const parametersByLocation = getParametersByLocation(operation.parameters, pathItem.parameters)
 
   if (parametersByLocation.size > 0) {
     items.push(
-      makeTocItem(
-        2,
-        'Parameters',
-        [...parametersByLocation.keys()].map((location) => makeTocItem(3, `${capitalize(location)} Parameters`)),
-      ),
+      makeHeading(2, 'Parameters'),
+      ...[...parametersByLocation.keys()].map((location) => makeHeading(3, `${capitalize(location)} Parameters`)),
     )
   }
 
   if (hasRequestBody(operation)) {
-    items.push(makeTocItem(2, 'Request Body'))
+    items.push(makeHeading(2, 'Request Body'))
   }
 
   if (operation.responses) {
-    const responseItems: TocItem[] = []
+    const responseItems: MarkdownHeading[] = []
 
     for (const name of Object.keys(operation.responses)) {
       if (name !== 'default') {
-        responseItems.push(makeTocItem(3, name))
+        responseItems.push(makeHeading(3, name))
       }
     }
 
     if (includesDefaultResponse(operation.responses)) {
-      responseItems.push(makeTocItem(3, 'default'))
+      responseItems.push(makeHeading(3, 'default'))
     }
 
-    items.push(makeTocItem(2, 'Responses', responseItems))
+    items.push(makeHeading(2, 'Responses'), ...responseItems)
   }
 
-  return makeToc(items)
+  return makeHeadings(items)
 }
 
-function makeToc(items: TocItem[]): TocItem[] {
-  return [makeTocItem(1, 'Overview', [], '_top'), ...items]
+function makeHeadings(items: MarkdownHeading[]): MarkdownHeading[] {
+  return [makeHeading(1, 'Overview', '_top'), ...items]
 }
 
-function makeTocItem(depth: number, text: string, children: TocItem[] = [], customSlug?: string): TocItem {
-  return { children, depth, slug: customSlug ?? slug(text), text }
+function makeHeading(depth: number, text: string, customSlug?: string): MarkdownHeading {
+  return { depth, slug: customSlug ?? slug(text), text }
 }
 
-function getEntryMeta(starlightConfig: StarlightConfig) {
-  const dir = starlightConfig.defaultLocale.dir
-  const lang = starlightConfig.defaultLocale.lang ?? 'en'
-  let locale = starlightConfig.defaultLocale.locale
+type SidebarGroup =
+  | SidebarManualGroup
+  | {
+      autogenerate: {
+        collapsed?: boolean
+        directory: string
+      }
+      collapsed?: boolean
+      label: string
+    }
 
-  if (locale === 'root') {
-    locale = undefined
-  }
-
-  return { dir, lang, locale }
-}
-
-export interface SidebarGroup {
-  collapsed: boolean
+export interface SidebarManualGroup {
+  collapsed?: boolean
   items: (SidebarLink | SidebarGroup)[]
   label: string
 }
@@ -152,6 +167,11 @@ interface SidebarLink {
   link: string
 }
 
-export interface TocItem extends MarkdownHeading {
-  children: TocItem[]
+interface StarlightPageProps {
+  frontmatter: {
+    title: string
+  }
+  headings: MarkdownHeading[]
 }
+
+type StarlightUserConfigSidebar = StarlightUserConfig['sidebar']
