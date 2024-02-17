@@ -20,12 +20,6 @@ Install the Starlight OpenAPI integration using your favorite package manager:
 
 <PackageManagers pkg="starlight-openapi" />
 
-:::note
-When using a [strict package manager](https://pnpm.io/pnpm-vs-npm#npms-flat-tree) like pnpm, you will also need to install the [Shiki](https://shiki.matsu.io/) syntax highlighter so it can be found during builds:
-
-<PackageManagers pkg="shiki" pkgManagers={['pnpm']} />
-:::
-
 Update your [Astro configuration](https://docs.astro.build/en/guides/configuring-astro/#supported-config-file-types) to generate documentation from your OpenAPI/Swagger specification:
 
 ```ts

@@ -17,7 +17,7 @@ const examples = Object.entries(Astro.props.examples)
       <ContentPicker label="Select response example" types={Object.keys(Astro.props.examples)}>
         {examples.map(([type, data], index) => (
           <div data-openapi-content-type={type} hidden={index > 0} role="tabpanel">
-            <Example raw={data} />
+            <Example raw={data} {type} />
           </div>
         ))}
       </ContentPicker>
