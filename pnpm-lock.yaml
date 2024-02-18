@@ -18,8 +18,8 @@ importers:
         specifier: 2.0.1
         version: 2.0.1
       astro:
-        specifier: 4.2.7
-        version: 4.2.7(@types/node@18.17.3)(typescript@5.1.6)
+        specifier: 4.4.0
+        version: 4.4.0(@types/node@18.17.3)(typescript@5.1.6)
       eslint:
         specifier: 8.56.0
         version: 8.56.0
@@ -43,10 +43,10 @@ importers:
     dependencies:
       '@astrojs/starlight':
         specifier: 0.19.0
-        version: 0.19.0(astro@4.2.7)
+        version: 0.19.0(astro@4.4.0)
       astro:
-        specifier: 4.2.7
-        version: 4.2.7(@types/node@18.17.3)(typescript@5.1.6)
+        specifier: 4.4.0
+        version: 4.4.0(@types/node@18.17.3)(typescript@5.1.6)
       sharp:
         specifier: 0.33.2
         version: 0.33.2
@@ -55,7 +55,7 @@ importers:
         version: link:../packages/starlight-openapi
       starlight-package-managers:
         specifier: 0.3.0
-        version: 0.3.0(@astrojs/starlight@0.19.0)(astro@4.2.7)
+        version: 0.3.0(@astrojs/starlight@0.19.0)(astro@4.4.0)
 
   packages/starlight-openapi:
     dependencies:
@@ -71,7 +71,7 @@ importers:
     devDependencies:
       '@astrojs/starlight':
         specifier: 0.19.0
-        version: 0.19.0(astro@4.2.7)
+        version: 0.19.0(astro@4.4.0)
       '@playwright/test':
         specifier: 1.36.2
         version: 1.36.2
@@ -79,8 +79,8 @@ importers:
         specifier: 18.17.3
         version: 18.17.3
       astro:
-        specifier: 4.2.7
-        version: 4.2.7(@types/node@18.17.3)(typescript@5.1.6)
+        specifier: 4.4.0
+        version: 4.4.0(@types/node@18.17.3)(typescript@5.1.6)
       openapi-types:
         specifier: 12.1.3
         version: 12.1.3
@@ -138,7 +138,7 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /@astrojs/mdx@2.1.1(astro@4.2.7):
+  /@astrojs/mdx@2.1.1(astro@4.4.0):
     resolution: {integrity: sha512-AgGFdE7HOGmoFooGvMSatkA9FiSKwyVW7ImHot/bXJ6uAbFfu6iG2ht18Cf1pT22Hda/6iSCGWusFvBv0/EnKQ==}
     engines: {node: '>=18.14.1'}
     peerDependencies:
@@ -147,7 +147,7 @@ packages:
       '@astrojs/markdown-remark': 4.2.1
       '@mdx-js/mdx': 3.0.1
       acorn: 8.11.3
-      astro: 4.2.7(@types/node@18.17.3)(typescript@5.1.6)
+      astro: 4.4.0(@types/node@18.17.3)(typescript@5.1.6)
       es-module-lexer: 1.4.1
       estree-util-visit: 2.0.0
       github-slugger: 2.0.0
@@ -175,18 +175,18 @@ packages:
       sitemap: 7.1.1
       zod: 3.22.4
 
-  /@astrojs/starlight@0.19.0(astro@4.2.7):
+  /@astrojs/starlight@0.19.0(astro@4.4.0):
     resolution: {integrity: sha512-izNZLs99d4AAoN5eV6Ek71SVKEAs8N/GjT+n9J0Q8q1Zgtk/qcv3KzuPXBZmiAbPl/9E2+BG8f4dpdoc+F4U3g==}
     peerDependencies:
       astro: ^4.2.7
     dependencies:
-      '@astrojs/mdx': 2.1.1(astro@4.2.7)
+      '@astrojs/mdx': 2.1.1(astro@4.4.0)
       '@astrojs/sitemap': 3.0.5
       '@pagefind/default-ui': 1.0.3
       '@types/hast': 3.0.3
       '@types/mdast': 4.0.3
-      astro: 4.2.7(@types/node@18.17.3)(typescript@5.1.6)
-      astro-expressive-code: 0.32.4(astro@4.2.7)
+      astro: 4.4.0(@types/node@18.17.3)(typescript@5.1.6)
+      astro-expressive-code: 0.32.4(astro@4.4.0)
       bcp-47: 2.1.0
       hast-util-select: 6.0.2
       hastscript: 8.0.0
@@ -393,19 +393,11 @@ packages:
       '@babel/plugin-syntax-jsx': 7.22.5(@babel/core@7.23.9)
       '@babel/types': 7.23.9
 
-  /@babel/runtime@7.22.15:
-    resolution: {integrity: sha512-T0O+aa+4w0u06iNmapipJXMV4HoUir03hpx3/YqXXhu9xim3w+dVphjFWl1OH8NbZHw5Lbm9k45drDkgq2VNNA==}
-    engines: {node: '>=6.9.0'}
-    dependencies:
-      regenerator-runtime: 0.14.0
-    dev: false
-
   /@babel/runtime@7.23.9:
     resolution: {integrity: sha512-0CX6F+BI2s9dkUqr08KFrAIZgNFj75rdBU/DjCyYLIaV/quFjkk6T+EJ2LkZHyZTbEV4L5p97mNkUsHl2wLFAw==}
     engines: {node: '>=6.9.0'}
     dependencies:
       regenerator-runtime: 0.14.0
-    dev: true
 
   /@babel/template@7.23.9:
     resolution: {integrity: sha512-+xrD2BWLpvHKNmX2QbpdpsBaWnRxahMwJjO+KZk2JOElj5nSmKezyS1B4u+QbHMTX69t4ukm6hh9lsYQ7GHCKA==}
@@ -1012,6 +1004,9 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
+  /@medv/finder@3.1.0:
+    resolution: {integrity: sha512-ojkXjR3K0Zz3jnCR80tqPL+0yvbZk/lEodb6RIVjLz7W8RVA2wrw8ym/CzCpXO9SYVUIKHFUpc7jvf8UKfIM3w==}
+
   /@nodelib/fs.scandir@2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
     engines: {node: '>= 8'}
@@ -1091,7 +1086,7 @@ packages:
       ajv: 4.11.8 - 8
     dependencies:
       '@babel/code-frame': 7.23.5
-      '@babel/runtime': 7.22.15
+      '@babel/runtime': 7.23.9
       '@humanwhocodes/momoa': 2.0.4
       ajv: 8.12.0
       chalk: 4.1.2
@@ -1669,17 +1664,17 @@ packages:
       - supports-color
     dev: true
 
-  /astro-expressive-code@0.32.4(astro@4.2.7):
+  /astro-expressive-code@0.32.4(astro@4.4.0):
     resolution: {integrity: sha512-/Kq8wLMz0X2gbLWGmPryqEdFV/om/GROsoLtPFqLrLCRD5CpwxXAW185BIGZKf4iYsyJim1vvcpQm5Y9hV5B1g==}
     peerDependencies:
       astro: ^3.3.0 || ^4.0.0-beta
     dependencies:
-      astro: 4.2.7(@types/node@18.17.3)(typescript@5.1.6)
+      astro: 4.4.0(@types/node@18.17.3)(typescript@5.1.6)
       hast-util-to-html: 8.0.4
       remark-expressive-code: 0.32.4
 
-  /astro@4.2.7(@types/node@18.17.3)(typescript@5.1.6):
-    resolution: {integrity: sha512-m2zGL6JVwcxAV9IwwAXMHAchd8sJukW/hmskYSkIO5D4gVE9oh1SG7HA71BBxl1lJfI1j+RPAgjXQsSuGjLUjA==}
+  /astro@4.4.0(@types/node@18.17.3)(typescript@5.1.6):
+    resolution: {integrity: sha512-JAsMrm1Z6W4Iqg9Q7LW/6lCXrqa4jndEOlR/yu7NGNP0BrPwSM8i4+yzya6hxgsNvyyVK8ywthaNhFmqd8Z+cg==}
     engines: {node: '>=18.14.1', npm: '>=6.14.0'}
     hasBin: true
     dependencies:
@@ -1693,6 +1688,7 @@ packages:
       '@babel/plugin-transform-react-jsx': 7.22.5(@babel/core@7.23.9)
       '@babel/traverse': 7.23.9
       '@babel/types': 7.23.9
+      '@medv/finder': 3.1.0
       '@types/babel__core': 7.20.5
       acorn: 8.11.3
       aria-query: 5.3.0
@@ -1730,13 +1726,13 @@ packages:
       p-queue: 8.0.1
       path-to-regexp: 6.2.1
       preferred-pm: 3.1.2
-      probe-image-size: 7.2.3
       prompts: 2.4.2
       rehype: 13.0.1
       resolve: 1.22.6
       semver: 7.5.4
       server-destroy: 1.0.1
       shikiji: 0.9.19
+      shikiji-core: 0.9.19
       string-width: 7.1.0
       strip-ansi: 7.1.0
       tsconfck: 3.0.2(typescript@5.1.6)
@@ -2122,16 +2118,6 @@ packages:
     resolution: {integrity: sha512-sdQSFB7+llfUcQHUQO3+B8ERRj0Oa4w9POWMI/puGtuf7gFywGmkaLCElnudfTiKZV+NvHqL0ifzdrI8Ro7ESA==}
     dev: true
 
-  /debug@2.6.9:
-    resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
-    peerDependencies:
-      supports-color: '*'
-    peerDependenciesMeta:
-      supports-color:
-        optional: true
-    dependencies:
-      ms: 2.0.0
-
   /debug@3.2.7:
     resolution: {integrity: sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==}
     peerDependencies:
@@ -2141,6 +2127,7 @@ packages:
         optional: true
     dependencies:
       ms: 2.1.3
+    dev: true
 
   /debug@4.3.4:
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
@@ -2950,12 +2937,8 @@ packages:
     requiresBuild: true
     optional: true
 
-  /function-bind@1.1.1:
-    resolution: {integrity: sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==}
-
   /function-bind@1.1.2:
     resolution: {integrity: sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA==}
-    dev: true
 
   /function.prototype.name@1.1.6:
     resolution: {integrity: sha512-Z5kx79swU5P27WEayXM1tBi5Ze/lbIyiNgU3qyXUOf9b2rgXYyF9Dy9Cx+IQv/Lc8WCG6L82zwUPpSS9hGehIg==}
@@ -3146,7 +3129,7 @@ packages:
     resolution: {integrity: sha512-f2dvO0VU6Oej7RkWJGrehjbzMAjFp5/VKPp5tTpWIV4JHHZK1/BxbFRtf/siA2SWTe09caDmVtYYzWEIbBS4zw==}
     engines: {node: '>= 0.4.0'}
     dependencies:
-      function-bind: 1.1.1
+      function-bind: 1.1.2
 
   /hasown@2.0.1:
     resolution: {integrity: sha512-1/th4MHjnwncwXsIW6QMzlvYL9kG5e/CpVvLRZe4XPa8TOUNbCELqmvhDmnkNsAjwaG4+I8gJJL0JBvTTLO9qA==}
@@ -3411,12 +3394,6 @@ packages:
     engines: {node: '>=14'}
     hasBin: true
     dev: true
-
-  /iconv-lite@0.4.24:
-    resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
-    engines: {node: '>=0.10.0'}
-    dependencies:
-      safer-buffer: 2.1.2
 
   /ieee754@1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
@@ -3939,6 +3916,7 @@ packages:
 
   /lodash.merge@4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
+    dev: true
 
   /log-symbols@5.1.0:
     resolution: {integrity: sha512-l0x2DvrW294C9uDCoQe1VSU4gf529FkSZ6leBl4TiqZH/e+0R7hSfHQBNut2mNygDgHwvYHfFLn6Oxb3VWj2rA==}
@@ -4584,14 +4562,12 @@ packages:
       ufo: 1.4.0
     dev: true
 
-  /ms@2.0.0:
-    resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==}
-
   /ms@2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
 
   /ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
+    dev: true
 
   /nanoid@3.3.7:
     resolution: {integrity: sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==}
@@ -4606,17 +4582,6 @@ packages:
   /natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
     dev: true
-
-  /needle@2.9.1:
-    resolution: {integrity: sha512-6R9fqJ5Zcmf+uYaFgdIHmLwNldn5HbK8L5ybn7Uz+ylX/rnOsSp1AHcvQSrCaFN+qNM1wpymHqD7mVasEOlHGQ==}
-    engines: {node: '>= 4.4.x'}
-    hasBin: true
-    dependencies:
-      debug: 3.2.7
-      iconv-lite: 0.4.24
-      sax: 1.2.4
-    transitivePeerDependencies:
-      - supports-color
 
   /nlcst-to-string@3.1.1:
     resolution: {integrity: sha512-63mVyqaqt0cmn2VcI2aH6kxe1rLAmSROqHMA0i4qqg1tidkfExgpb0FGMikMCn86mw5dFtBtEANfmSSK7TjNHw==}
@@ -5052,15 +5017,6 @@ packages:
     resolution: {integrity: sha512-Kx/1w86q/epKcmte75LNrEoT+lX8pBpavuAbvJWRXar7Hz8jrtF+e3vY751p0R8H9HdArwaCTNDDzHg/ScJK1Q==}
     engines: {node: '>=6'}
 
-  /probe-image-size@7.2.3:
-    resolution: {integrity: sha512-HubhG4Rb2UH8YtV4ba0Vp5bQ7L78RTONYu/ujmCu5nBI8wGv24s4E9xSKBi0N1MowRpxk76pFCpJtW0KPzOK0w==}
-    dependencies:
-      lodash.merge: 4.6.2
-      needle: 2.9.1
-      stream-parser: 0.3.1
-    transitivePeerDependencies:
-      - supports-color
-
   /prompts@2.4.2:
     resolution: {integrity: sha512-NxNv/kLguCA7p3jE8oL2aEBsrJWgAakBpgmgK6lpPWV+WuOmY6r2/zbAVnP+T8bQlA0nzHXSJSJW0Hq7ylaD2Q==}
     engines: {node: '>= 6'}
@@ -5422,9 +5378,6 @@ packages:
       is-regex: 1.1.4
     dev: true
 
-  /safer-buffer@2.1.2:
-    resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
-
   /sass-formatter@0.7.8:
     resolution: {integrity: sha512-7fI2a8THglflhhYis7k06eUf92VQuJoXzEs2KRP0r1bluFxKFvLx0Ns7c478oYGM0fPfrr846ZRWVi2MAgHt9Q==}
     dependencies:
@@ -5648,15 +5601,15 @@ packages:
   /sprintf-js@1.0.3:
     resolution: {integrity: sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==}
 
-  /starlight-package-managers@0.3.0(@astrojs/starlight@0.19.0)(astro@4.2.7):
+  /starlight-package-managers@0.3.0(@astrojs/starlight@0.19.0)(astro@4.4.0):
     resolution: {integrity: sha512-s2mQNYyWlDlKJ/2qgU4CAqmcEzewhF2WbPwagfe4LF7VxecX4hlnF5uO/XAj9FREK1pSty5rYhuF2MfOQ99hng==}
     engines: {node: '>=18.14.1'}
     peerDependencies:
       '@astrojs/starlight': '>=0.17.0'
       astro: '>=4.0.0'
     dependencies:
-      '@astrojs/starlight': 0.19.0(astro@4.2.7)
-      astro: 4.2.7(@types/node@18.17.3)(typescript@5.1.6)
+      '@astrojs/starlight': 0.19.0(astro@4.4.0)
+      astro: 4.4.0(@types/node@18.17.3)(typescript@5.1.6)
     dev: false
 
   /stdin-discarder@0.1.0:
@@ -5664,13 +5617,6 @@ packages:
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dependencies:
       bl: 5.1.0
-
-  /stream-parser@0.3.1:
-    resolution: {integrity: sha512-bJ/HgKq41nlKvlhccD5kaCr/P+Hu0wPNKPJOH7en+YrJu/9EgqUF+88w5Jb6KNcjOFMhfX4B2asfeAtIGuHObQ==}
-    dependencies:
-      debug: 2.6.9
-    transitivePeerDependencies:
-      - supports-color
 
   /streamx@2.15.1:
     resolution: {integrity: sha512-fQMzy2O/Q47rgwErk/eGeLu/roaFWV0jVsogDmrszM9uIw8L5OA+t+V93MgYlufNptfjmYR1tOMWhei/Eh7TQA==}
