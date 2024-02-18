@@ -58,18 +58,14 @@ function getExampleLang(type: string | undefined) {
 }
 
 <style>
-  :global(main .content) pre {
+  :global(div.expressive-code .frame pre) {
     background-color: var(--sl-color-gray-5);
     border: 1px solid var(--sl-color-gray-4);
-    font-size: var(--sl-text-code);
-    margin-top: 0.8rem;
-    overflow-x: auto;
-    padding: 0.5rem;
-    tab-size: 2;
+    margin-block: 0.5rem;
   }
 
-  code {
-    white-space: pre-wrap;
+  :global(div.expressive-code pre > code) {
+    text-wrap: wrap;
     word-break: break-all;
   }
 </style>
