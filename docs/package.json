@@ -2,7 +2,7 @@
   "name": "starlight-openapi-docs",
   "version": "0.4.0",
   "license": "MIT",
-  "description": "Astro integration for Starlight to generate documentation from OpenAPI/Swagger specifications.",
+  "description": "Starlight plugin to generate documentation from OpenAPI/Swagger specifications.",
   "author": "HiDeoo <github@hideoo.dev> (https://hideoo.dev)",
   "type": "module",
   "scripts": {
@@ -14,12 +14,11 @@
     "lint": "prettier -c --cache . && eslint . --cache --max-warnings=0"
   },
   "dependencies": {
-    "@astrojs/starlight": "0.11.0",
-    "astro": "3.2.3",
+    "@astrojs/starlight": "0.19.0",
+    "astro": "4.4.0",
     "sharp": "0.33.2",
-    "shiki": "0.14.4",
     "starlight-openapi": "workspace:*",
-    "starlight-package-managers": "0.1.0"
+    "starlight-package-managers": "0.3.0"
   },
   "engines": {
     "node": ">=18.14.1"
@@ -29,6 +28,7 @@
   "sideEffects": false,
   "keywords": [
     "starlight",
+    "plugin",
     "openapi",
     "swagger",
     "documentation",

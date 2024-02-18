@@ -1,0 +1,127 @@
+---
+title: Configuration
+description: An overview of all the configuration options supported by the Starlight OpenAPI plugin.
+---
+
+The Starlight OpenAPI plugin can be configured inside the `astro.config.mjs` configuration file of your project:
+
+```js {11}
+// astro.config.mjs
+import starlight from '@astrojs/starlight'
+import { defineConfig } from 'astro/config'
+import starlightOpenAPI, { openAPISidebarGroups } from 'starlight-openapi'
+
+export default defineConfig({
+  integrations: [
+    starlight({
+      plugins: [
+        starlightOpenAPI([
+          // Configuration options go here.
+        ]),
+      ],
+      title: 'My Docs',
+    }),
+  ],
+})
+```
+
+## Plugin configuration
+
+The Starlight OpenAPI plugin accepts an array of objects where each object represents a configuration for a specific OpenAPI/Swagger schema.
+
+A configuration object can have the following properties:
+
+### `base` (required)
+
+**Type:** `string`
+
+The base path containing the generated documentation, e.g. `'api/petstore'`.
+
+### `schema` (required)
+
+**Type:** `string`
+
+The OpenAPI/Swagger schema path or URL.
+
+### `label`
+
+**Type:** `string`
+
+The generated documentation sidebar group label.
+
+### `collapsed`
+
+**Type:** `boolean`
+
+Wheter the generated documentation sidebar group should be collapsed by default or not.
+
+## Multiple schemas
+
+You can generate documentation for multiple OpenAPI/Swagger schemas by passing multiple objects to the plugin configuration.
+
+```js {11-21}
+// astro.config.mjs
+import starlight from '@astrojs/starlight'
+import { defineConfig } from 'astro/config'
+import starlightOpenAPI, { openAPISidebarGroups } from 'starlight-openapi'
+
+export default defineConfig({
+  integrations: [
+    starlight({
+      plugins: [
+        starlightOpenAPI([
+          {
+            base: 'api/petstore',
+            label: 'My API',
+            schema: '../schemas/api-schema.yaml',
+          },
+          {
+            base: 'api/1password',
+            label: '1Password Connect',
+            schema:
+              'https://raw.githubusercontent.com/APIs-guru/openapi-directory/gh-pages/v2/specs/1password.local/connect/1.5.7/openapi.yaml',
+          },
+        ]),
+      ],
+      title: 'My Docs',
+    }),
+  ],
+})
+```
+
+## Sidebar groups
+
+The `openAPISidebarGroups` export can be used in your Starlight [sidebar configuration](https://starlight.astro.build/reference/configuration/#sidebar) to add the generated documentation sidebar group to the sidebar.
+
+```js {24-25} "{ openAPISidebarGroups }"
+// astro.config.mjs
+import starlight from '@astrojs/starlight'
+import { defineConfig } from 'astro/config'
+import starlightOpenAPI, { openAPISidebarGroups } from 'starlight-openapi'
+
+export default defineConfig({
+  integrations: [
+    starlight({
+      plugins: [
+        // Generate the OpenAPI documentation pages.
+        starlightOpenAPI([
+          {
+            base: 'api',
+            label: 'My API',
+            schema: '../schemas/api-schema.yaml',
+          },
+        ]),
+      ],
+      sidebar: [
+        {
+          label: 'Guides',
+          items: [{ label: 'Example Guide', link: '/guides/example/' }],
+        },
+        // Add the generated sidebar group to the sidebar.
+        ...openAPISidebarGroups,
+      ],
+      title: 'My Docs',
+    }),
+  ],
+})
+```

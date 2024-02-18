@@ -1,4 +1,6 @@
 ---
+import { Code } from '@astrojs/starlight/components'
+
 import type { ExampleV3 } from '../../libs/example'
 import Md from '../Md.astro'
 import Text from '../Text.astro'
@@ -6,13 +8,14 @@ import Text from '../Text.astro'
 interface Props {
   example?: ExampleV3
   raw?: ExampleV3['value']
+  type?: string
 }
 
-const { example, raw } = Astro.props
+const { example, raw, type } = Astro.props
 
 const exampleToRender = raw === undefined ? example : { value: raw }
 
-function getExampleValue(value: unknown): string  {
+function getExampleValue(value: unknown): string {
   switch (typeof value) {
     case 'string': {
       return value
@@ -23,6 +26,17 @@ function getExampleValue(value: unknown): string  {
     }
     default: {
       return JSON.stringify(value, null, 2)
+    }
+  }
+}
+
+function getExampleLang(type: string | undefined) {
+  switch (type) {
+    case 'application/json': {
+      return 'json'
+    }
+    default: {
+      return 'plaintext'
     }
   }
 }
@@ -38,29 +52,20 @@ function getExampleValue(value: unknown): string  {
           <a href={exampleToRender.externalValue}>{exampleToRender.externalValue}</a>
         </Text>
       )}
-      <!-- prettier-ignore-start -->
-      {exampleToRender.value &&
-        // eslint-disable-next-line astro/jsx-a11y/no-noninteractive-tabindex
-        (<pre tabindex="0"><code>{getExampleValue(exampleToRender.value)}</code></pre>)
-      }
-      <!-- prettier-ignore-end -->
+      {exampleToRender.value && <Code code={getExampleValue(exampleToRender.value)} lang={getExampleLang(type)} />}
     </>
   )
 }
 
 <style>
-  :global(main .content) pre {
+  :global(div.expressive-code .frame pre) {
     background-color: var(--sl-color-gray-5);
     border: 1px solid var(--sl-color-gray-4);
-    font-size: var(--sl-text-code);
-    margin-top: 0.8rem;
-    overflow-x: auto;
-    padding: 0.5rem;
-    tab-size: 2;
+    margin-block: 0.5rem;
   }
 
-  code {
-    white-space: pre-wrap;
+  :global(div.expressive-code pre > code) {
+    text-wrap: wrap;
     word-break: break-all;
   }
 </style>

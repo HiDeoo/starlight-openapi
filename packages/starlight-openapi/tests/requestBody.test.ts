@@ -80,11 +80,7 @@ test('supports schema object `oneOf` property', async ({ docPage }) => {
 
   await requestBody.getByRole('tab', { name: 'object' }).click()
 
-  await expect(
-    requestBody.getByText(`{
-  "name": "Harley"
-}`),
-  ).toBeVisible()
+  await expect(requestBody.getByText(`{ "name": "Harley"}`)).toBeVisible()
 })
 
 test('supports schema object `anyOf` property', async ({ docPage }) => {

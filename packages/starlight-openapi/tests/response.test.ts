@@ -50,33 +50,11 @@ test('display the examples for a v2.0 schema', async ({ docPage }) => {
 
   await examples.getByRole('combobox').selectOption('application/json')
 
-  await expect(
-    examples.getByText(`[
-  {
-    "id": 1,
-    "name": "Bessy"
-  },
-  {
-    "id": 2,
-    "name": "Hazel"
-  }
-]`),
-  ).toBeVisible()
+  await expect(examples.getByText(`[ { "id": 1, "name": "Bessy" }, { "id": 2, "name": "Hazel" }]`)).toBeVisible()
 
   await examples.getByRole('combobox').selectOption('application/xml')
 
-  await expect(
-    examples.getByText(`[
-  {
-    "id": 3,
-    "name": "Cleo"
-  },
-  {
-    "id": 4,
-    "name": "Daisy"
-  }
-]`),
-  ).toBeVisible()
+  await expect(examples.getByText(`[ { "id": 3, "name": "Cleo" }, { "id": 4, "name": "Daisy" }]`)).toBeVisible()
 })
 
 test('displays nested objects collapsed by default', async ({ docPage }) => {

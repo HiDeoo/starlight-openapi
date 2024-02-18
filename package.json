@@ -2,7 +2,7 @@
   "name": "starlight-openapi-monorepo",
   "version": "0.4.0",
   "license": "MIT",
-  "description": "Astro integration for Starlight to generate documentation from OpenAPI/Swagger specifications.",
+  "description": "Starlight plugin to generate documentation from OpenAPI/Swagger specifications.",
   "author": "HiDeoo <github@hideoo.dev> (https://hideoo.dev)",
   "type": "module",
   "scripts": {
@@ -11,11 +11,11 @@
     "prepare": "husky install"
   },
   "devDependencies": {
-    "@hideoo/eslint-config": "2.0.1",
+    "@hideoo/eslint-config": "3.0.0",
     "@hideoo/prettier-config": "2.0.0",
     "@hideoo/tsconfig": "2.0.1",
-    "astro": "3.2.3",
-    "eslint": "8.49.0",
+    "astro": "4.4.0",
+    "eslint": "8.56.0",
     "husky": "8.0.3",
     "lint-staged": "14.0.1",
     "prettier": "3.0.3",
@@ -30,6 +30,7 @@
   "sideEffects": false,
   "keywords": [
     "starlight",
+    "plugin",
     "openapi",
     "swagger",
     "documentation",
@@ -42,7 +43,9 @@
   },
   "bugs": "https://github.com/HiDeoo/starlight-openapi/issues",
   "lint-staged": {
-    "**/*": "prettier -w -u --cache",
-    "**/*.{js,jsx,ts,tsx,cjs,mjs}": "eslint --cache --max-warnings=0"
+    "*": [
+      "prettier -w -u --cache",
+      "eslint --cache --no-warn-ignored --max-warnings=0"
+    ]
   }
 }

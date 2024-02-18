@@ -1,18 +1,21 @@
 import OpenAPIParser from '@readme/openapi-parser'
+import type { AstroIntegrationLogger } from 'astro'
 
-import { logError, logInfo } from './logger'
 import type { Schema, StarlightOpenAPISchemaConfig } from './schema'
 
-export async function parseSchema(config: StarlightOpenAPISchemaConfig): Promise<Schema> {
+export async function parseSchema(
+  logger: AstroIntegrationLogger,
+  config: StarlightOpenAPISchemaConfig,
+): Promise<Schema> {
   try {
-    logInfo(`Parsing OpenAPI schema at '${config.schema}'.`)
+    logger.info(`Parsing OpenAPI schema at '${config.schema}'.`)
 
     const document = await OpenAPIParser.bundle(config.schema)
 
     return { config, document }
   } catch (error) {
     if (error instanceof Error) {
-      logError(error.message)
+      logger.error(error.message)
     }
 
     throw error

@@ -1,0 +1,63 @@
+---
+title: Getting Started
+description: Learn how to generate documentation from OpenAPI/Swagger specifications using the Starlight OpenAPI plugin.
+---
+
+import PackageManagers from '../../components/PackageManagers.astro'
+
+A [Starlight](https://starlight.astro.build) plugin to generate documentation from OpenAPI/Swagger specifications.
+
+- Support for [Swagger 2.0](https://swagger.io/specification/v2/), [OpenAPI 3.0](https://swagger.io/specification/v3/) and [OpenAPI 3.1](https://swagger.io/specification/) specifications.
+- Support for local and remote schemas.
+- Configurable sidebar label and sidebar group collapsing.
+
+## Prerequisites
+
+You will need to have a Starlight website set up.
+If you don't have one yet, you can follow the ["Getting Started"](https://starlight.astro.build/getting-started) guide in the Starlight docs to create one.
+
+## Install the plugin
+
+Starlight OpenAPI is a Starlight [plugin](https://starlight.astro.build/reference/plugins/).
+Install it using your favorite package manager:
+
+<PackageManagers pkg="starlight-openapi" />
+
+## Configure the plugin
+
+The Starlight OpenAPI plugin can be configured in your Starlight [configuration](https://starlight.astro.build/reference/configuration/#plugins) in the `astro.config.mjs` file.
+
+```diff lang="js"
+// astro.config.mjs
+import starlight from '@astrojs/starlight'
+import { defineConfig } from 'astro/config'
++import starlightOpenAPI, { openAPISidebarGroups } from 'starlight-openapi'
+
+export default defineConfig({
+  integrations: [
+    starlight({
++      plugins: [
++        // Generate the OpenAPI documentation pages.
++        starlightOpenAPI([
++          {
++           base: 'api',
++           label: 'My API',
++           schema: '../schemas/api-schema.yaml',
++          },
++        ]),
++      ],
+      sidebar: [
+        {
+          label: 'Guides',
+          items: [{ label: 'Example Guide', link: '/guides/example/' }],
+        },
++        // Add the generated sidebar group to the sidebar.
++        ...openAPISidebarGroups,
+      ],
+      title: 'My Docs',
+    }),
+  ],
+})
+```
+
+The Starlight OpenAPI plugin behavior can be tweaked using various [configuration options](/configuration).
