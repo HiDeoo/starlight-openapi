@@ -2,8 +2,8 @@
   <h1>starlight-openapi 🧭</h1>
   <p>Starlight plugin to generate documentation from OpenAPI/Swagger specifications.</p>
   <p>
-    <a href="https://github.com/HiDeoo/vercel-env-push/assets/494699/1f9d2a3f-33c2-4476-8427-62573b493259" title="Screenshot of starlight-openapi">
-      <img alt="Screenshot of starlight-openapi" src="https://github.com/HiDeoo/vercel-env-push/assets/494699/1f9d2a3f-33c2-4476-8427-62573b493259" width="520" />
+    <a href="https://i.imgur.com/pbOqvMT.png" title="Screenshot of starlight-openapi">
+      <img alt="Screenshot of starlight-openapi" src="https://i.imgur.com/pbOqvMT.png" width="520" />
     </a>
   </p>
 </div>
