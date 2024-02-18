@@ -1,6 +1,6 @@
 <div align="center">
   <h1>starlight-openapi 🧭</h1>
-  <p>Astro integration for Starlight to generate documentation from OpenAPI/Swagger specifications.</p>
+  <p>Starlight plugin to generate documentation from OpenAPI/Swagger specifications.</p>
 </div>
 
 <div align="center">
