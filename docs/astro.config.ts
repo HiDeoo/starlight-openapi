@@ -2,6 +2,8 @@ import starlight from '@astrojs/starlight'
 import { defineConfig } from 'astro/config'
 import starlightOpenAPI, { openAPISidebarGroups } from 'starlight-openapi'
 
+import { starlightOpenAPIDocsExampleFilter } from './src/libs/sidebar'
+
 export default defineConfig({
   integrations: [
     starlight({
@@ -50,6 +52,7 @@ export default defineConfig({
             schema: '../schemas/v2.0/animals.yaml',
           },
         ]),
+        starlightOpenAPIDocsExampleFilter(),
       ],
       sidebar: [
         {

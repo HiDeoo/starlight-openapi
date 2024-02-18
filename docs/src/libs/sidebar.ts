@@ -1,0 +1,29 @@
+import type { StarlightPlugin } from '@astrojs/starlight/types'
+
+export function starlightOpenAPIDocsExampleFilter(): StarlightPlugin {
+  return {
+    name: 'starlight-openapi-docs-example-filter-plugin',
+    hooks: {
+      setup: ({ config, updateConfig }) => {
+        updateConfig({
+          sidebar: config.sidebar?.map((item) => {
+            if (isSidebarGroup(item) && item.label === 'Examples') {
+              return { ...item, items: item.items.slice(0, 3) }
+            }
+
+            return item
+          }),
+        })
+      },
+    },
+  }
+}
+
+function isSidebarGroup(item: unknown): item is SidebarGroup {
+  return 'items' in (item as SidebarGroup)
+}
+
+export interface SidebarGroup {
+  items: unknown[]
+  label: string
+}
