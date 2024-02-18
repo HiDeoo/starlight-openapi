@@ -4,7 +4,7 @@ export class SidebarPage {
   constructor(public readonly page: Page) {}
 
   goto() {
-    return this.page.goto('/guides/getting-started/')
+    return this.page.goto('/getting-started/')
   }
 
   getSidebarGroupItems(label: string) {
