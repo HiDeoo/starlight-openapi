@@ -11,7 +11,11 @@ export default function starlightOpenAPIPlugin(userConfig: StarlightOpenAPIUserC
   return {
     name: 'starlight-openapi-plugin',
     hooks: {
-      setup: async ({ addIntegration, config: starlightConfig, logger, updateConfig }) => {
+      setup: async ({ addIntegration, command, config: starlightConfig, logger, updateConfig }) => {
+        if (command !== 'build' && command !== 'dev') {
+          return
+        }
+
         const config = validateConfig(logger, userConfig)
         const schemas = await Promise.all(config.map((schemaConfig) => parseSchema(logger, schemaConfig)))
 
