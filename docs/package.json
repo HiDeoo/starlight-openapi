@@ -18,7 +18,7 @@
     "astro": "4.2.7",
     "sharp": "0.33.2",
     "starlight-openapi": "workspace:*",
-    "starlight-package-managers": "0.1.0"
+    "starlight-package-managers": "0.3.0"
   },
   "engines": {
     "node": ">=18.14.1"

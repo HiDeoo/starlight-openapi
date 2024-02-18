@@ -2,7 +2,7 @@ import starlight from '@astrojs/starlight'
 import { defineConfig } from 'astro/config'
 import starlightOpenAPI, { openAPISidebarGroups } from 'starlight-openapi'
 
-import { starlightOpenAPIDocsExampleFilter } from './src/libs/sidebar'
+import { starlightOpenAPIDocsDemoPlugin } from './src/libs/sidebar'
 
 export default defineConfig({
   integrations: [
@@ -52,18 +52,18 @@ export default defineConfig({
             schema: '../schemas/v2.0/animals.yaml',
           },
         ]),
-        starlightOpenAPIDocsExampleFilter(),
+        starlightOpenAPIDocsDemoPlugin(),
       ],
       sidebar: [
         {
-          label: 'Guides',
+          label: 'Start Here',
           items: [
-            { label: 'Getting Started', link: '/guides/getting-started/' },
-            { label: 'Configuration', link: '/guides/configuration/' },
+            { label: 'Getting Started', link: '/getting-started/' },
+            { label: 'Configuration', link: '/configuration/' },
           ],
         },
         {
-          label: 'Examples',
+          label: 'Demo',
           items: openAPISidebarGroups,
         },
       ],

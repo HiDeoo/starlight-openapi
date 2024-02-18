@@ -1,13 +1,13 @@
 import type { StarlightPlugin } from '@astrojs/starlight/types'
 
-export function starlightOpenAPIDocsExampleFilter(): StarlightPlugin {
+export function starlightOpenAPIDocsDemoPlugin(): StarlightPlugin {
   return {
-    name: 'starlight-openapi-docs-example-filter-plugin',
+    name: 'starlight-openapi-docs-demo-plugin',
     hooks: {
       setup: ({ config, updateConfig }) => {
         updateConfig({
           sidebar: config.sidebar?.map((item) => {
-            if (isSidebarGroup(item) && item.label === 'Examples') {
+            if (isSidebarGroup(item) && item.label === 'Demo') {
               return { ...item, items: item.items.slice(0, 3) }
             }
 
