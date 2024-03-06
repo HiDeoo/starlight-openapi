@@ -1,8 +1,8 @@
 {
-  "name": "starlight-openapi-docs",
-  "version": "0.5.0",
+  "name": "starlight-openapi-rapidoc-docs",
+  "version": "0.1.0",
   "license": "MIT",
-  "description": "Starlight plugin to generate documentation from OpenAPI/Swagger specifications.",
+  "description": "Starlight plugin to generate documentation from OpenAPI/Swagger specifications + RapiDoc.",
   "author": "HiDeoo <github@hideoo.dev> (https://hideoo.dev)",
   "type": "module",
   "scripts": {
@@ -14,11 +14,12 @@
     "lint": "prettier -c --cache . && eslint . --cache --max-warnings=0"
   },
   "dependencies": {
-    "@astrojs/starlight": "0.19.0",
-    "astro": "4.4.0",
+    "@astrojs/starlight": "0.21.1",
+    "@astrojs/vercel": "^7.3.5",
+    "astro": "4.4.11",
     "sharp": "0.33.2",
-    "starlight-openapi": "workspace:*",
-    "starlight-package-managers": "0.3.0"
+    "starlight-openapi-rapidoc": "workspace:*",
+    "starlight-package-managers": "0.4.0"
   },
   "engines": {
     "node": ">=18.14.1"
@@ -34,10 +35,10 @@
     "documentation",
     "astro"
   ],
-  "homepage": "https://github.com/HiDeoo/starlight-openapi",
+  "homepage": "https://github.com/jeffdrumgod/starlight-openapi-rapidoc",
   "repository": {
     "type": "git",
-    "url": "https://github.com/HiDeoo/starlight-openapi.git"
+    "url": "https://github.com/jeffdrumgod/starlight-openapi-rapidoc.git"
   },
-  "bugs": "https://github.com/HiDeoo/starlight-openapi/issues"
+  "bugs": "https://github.com/jeffdrumgod/starlight-openapi-rapidoc/issues"
 }

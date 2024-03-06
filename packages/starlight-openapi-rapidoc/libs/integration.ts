@@ -5,11 +5,11 @@ import { vitePluginStarlightOpenAPISchemas } from './vite'
 
 export function starlightOpenAPIIntegration(schemas: Schema[]): AstroIntegration {
   const starlightOpenAPI: AstroIntegration = {
-    name: 'starlight-openapi',
+    name: 'starlight-openapi-rapidoc',
     hooks: {
       'astro:config:setup': ({ injectRoute, updateConfig }) => {
         injectRoute({
-          entrypoint: 'starlight-openapi/route',
+          entrypoint: 'starlight-openapi-rapidoc/route',
           pattern: `[...openAPISlug]`,
           prerender: true,
         })

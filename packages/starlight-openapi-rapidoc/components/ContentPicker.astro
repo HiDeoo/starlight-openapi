@@ -9,14 +9,14 @@ interface Props {
 const { label, types } = Astro.props
 ---
 
-<starlight-openapi-content-picker>
+<starlight-openapi-rapidoc-content-picker>
   <Select {label} options={types} />
   <slot />
-</starlight-openapi-content-picker>
+</starlight-openapi-rapidoc-content-picker>
 
 <script>
   customElements.define(
-    'starlight-openapi-content-picker',
+    'starlight-openapi-rapidoc-content-picker',
     class StarlightOpenAPIContentPicker extends HTMLElement {
       #panels: HTMLDivElement[]
 

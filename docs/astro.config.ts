@@ -9,7 +9,11 @@ export default defineConfig({
     starlight({
       customCss: ['./src/styles/custom.css'],
       editLink: {
-        baseUrl: 'https://github.com/HiDeoo/starlight-openapi/edit/main/docs/',
+        baseUrl: 'https://github.com/jeffdrumgod/starlight-openapi-rapidoc/edit/main/docs/',
+      },
+      components: {
+        ThemeProvider: './src/components/Empty.astro',
+        ThemeSelect: './src/components/Empty.astro',
       },
       plugins: [
         starlightOpenAPI([
@@ -68,9 +72,9 @@ export default defineConfig({
         },
       ],
       social: {
-        github: 'https://github.com/HiDeoo/starlight-openapi',
+        github: 'https://github.com/jeffdrumgod/starlight-openapi-rapidoc',
       },
-      title: 'Starlight OpenAPI',
+      title: 'Starlight OpenAPI with Rapidoc',
     }),
   ],
   image: { service: { entrypoint: 'astro/assets/services/sharp' } },

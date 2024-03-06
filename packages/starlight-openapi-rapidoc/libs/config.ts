@@ -12,7 +12,7 @@ export function validateConfig(logger: AstroIntegrationLogger, userConfig: unkno
   if (!config.success) {
     const errors = config.error.flatten()
 
-    logger.error('Invalid starlight-openapi configuration.')
+    logger.error('Invalid starlight-openapi-rapidoc configuration.')
 
     throw new AstroError(
       `
@@ -21,7 +21,7 @@ ${Object.entries(errors.fieldErrors)
   .map(([fieldName, fieldErrors]) => ` - ${fieldName}: ${(fieldErrors ?? []).join(' - ')}`)
   .join('\n')}
   `,
-      `See the error report above for more informations.\n\nIf you believe this is a bug, please file an issue at https://github.com/HiDeoo/starlight-openapi/issues/new/choose`,
+      `See the error report above for more informations.\n\nIf you believe this is a bug, please file an issue at https://github.com/jeffdrumgod/starlight-openapi-rapidoc/issues/new/choose`,
     )
   }
 

@@ -9,7 +9,7 @@ export const openAPISidebarGroups = getSidebarGroupsPlaceholder()
 
 export default function starlightOpenAPIPlugin(userConfig: StarlightOpenAPIUserConfig): StarlightPlugin {
   return {
-    name: 'starlight-openapi-plugin',
+    name: 'starlight-openapi-rapidoc-plugin',
     hooks: {
       setup: async ({ addIntegration, command, config: starlightConfig, logger, updateConfig }) => {
         if (command !== 'build' && command !== 'dev') {

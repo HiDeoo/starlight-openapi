@@ -1,4 +1,4 @@
-import schemas from 'virtual:starlight-openapi-schemas'
+import schemas from 'virtual:starlight-openapi-rapidoc-schemas'
 
 import { getOperationsByTag, getWebhooksOperations, type PathItemOperation } from './operation'
 import { getBaseLink, stripLeadingAndTrailingSlashes } from './path'
