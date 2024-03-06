@@ -1,8 +1,8 @@
 {
-  "name": "starlight-openapi-monorepo",
-  "version": "0.5.0",
+  "name": "starlight-openapi-rapidoc-monorepo",
+  "version": "0.1.0",
   "license": "MIT",
-  "description": "Starlight plugin to generate documentation from OpenAPI/Swagger specifications.",
+  "description": "Starlight plugin to generate documentation from OpenAPI/Swagger specifications + RapiDoc.",
   "author": "HiDeoo <github@hideoo.dev> (https://hideoo.dev)",
   "type": "module",
   "scripts": {
@@ -36,12 +36,12 @@
     "documentation",
     "astro"
   ],
-  "homepage": "https://github.com/HiDeoo/starlight-openapi",
+  "homepage": "https://github.com/jeffdrumgod/starlight-openapi-rapidoc",
   "repository": {
     "type": "git",
-    "url": "https://github.com/HiDeoo/starlight-openapi.git"
+    "url": "https://github.com/jeffdrumgod/starlight-openapi-rapidoc.git"
   },
-  "bugs": "https://github.com/HiDeoo/starlight-openapi/issues",
+  "bugs": "https://github.com/jeffdrumgod/starlight-openapi-rapidoc/issues",
   "lint-staged": {
     "*": [
       "prettier -w -u --cache",

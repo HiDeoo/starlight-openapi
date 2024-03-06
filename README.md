@@ -1,1 +1,1 @@
-packages/starlight-openapi/README.md
+./packages/starlight-openapi-rapidoc/README.md

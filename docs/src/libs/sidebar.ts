@@ -2,7 +2,7 @@ import type { StarlightPlugin } from '@astrojs/starlight/types'
 
 export function starlightOpenAPIDocsDemoPlugin(): StarlightPlugin {
   return {
-    name: 'starlight-openapi-docs-demo-plugin',
+    name: 'starlight-openapi-rapidoc-docs-demo-plugin',
     hooks: {
       setup: ({ config, updateConfig }) => {
         updateConfig({
