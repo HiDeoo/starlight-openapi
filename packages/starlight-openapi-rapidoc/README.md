@@ -20,7 +20,7 @@
 
 ## Getting Started
 
-Want to get started immediately? Check out the [getting started guide](https://starlight-openapi-rapidoc.vercel.app/guides/getting-started/) or a [live demo](https://starlight-openapi-rapidoc.vercel.app/api/petstore/operations/addpet/).
+Want to get started immediately? Check out the [getting started guide](https://starlight-openapi-rapidoc.vercel.app/getting-started/) or a [live demo](https://starlight-openapi-rapidoc.vercel.app/api/petstore/operations/addpet).
 
 ## Features
 
