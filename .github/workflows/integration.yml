@@ -35,7 +35,7 @@ jobs:
         run: |
           PLAYWRIGHT_VERSION=$(pnpm playwright --version | sed 's/Version //')
           echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> $GITHUB_ENV
-        working-directory: packages/starlight-openapi
+        working-directory: packages/starlight-openapi-rapidoc
 
       - name: Setup Playwright cache
         id: cache-playwright

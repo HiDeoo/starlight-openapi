@@ -41,7 +41,7 @@ jobs:
 
       - name: Publish
         run: pnpm publish --no-git-checks
-        working-directory: packages/starlight-openapi
+        working-directory: packages/starlight-openapi-rapidoc
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
