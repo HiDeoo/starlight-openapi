@@ -5,3 +5,37 @@
   justify-content: center;
   line-height: var(--size);
 }
+
+/* starlight-openapi-rapidoc */
+.sord-operation-link {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  align-content: center;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  font-size: 0.8em;
+}
+.sord-operation-link > * {
+  order: 1;
+}
+.sord-operation-link .sl-badge {
+  order: 0;
+  padding: 2px 4px 1px;
+  border-radius: 3px;
+  font-size: 9px;
+  max-width: 43px;
+  width: 100%;
+  text-align: center;
+}
+
+main:has(.component-api-doc) .content-panel .sl-container {
+  text-align: left;
+  max-width: 100%;
+  margin: 0;
+}
+
+.content-panel + .content-panel:has(.component-api-doc) {
+  padding: 0;
+}

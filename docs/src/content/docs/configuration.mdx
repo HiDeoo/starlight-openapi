@@ -9,7 +9,7 @@ The Starlight OpenAPI plugin can be configured inside the `astro.config.mjs` con
 // astro.config.mjs
 import starlight from '@astrojs/starlight'
 import { defineConfig } from 'astro/config'
-import starlightOpenAPI, { openAPISidebarGroups } from 'starlight-openapi'
+import starlightOpenAPI, { openAPISidebarGroups } from 'starlight-openapi-rapidoc'
 
 export default defineConfig({
   integrations: [
@@ -23,6 +23,20 @@ export default defineConfig({
     }),
   ],
 })
+```
+
+You can also add custom styles to the generated documentation by adding a `styles/custom.css` file in the same directory as the `astro.config.mjs` file and adding the following CSS:
+
+```css
+main:has(.component-api-doc) .content-panel .sl-container {
+  text-align: left;
+  max-width: 100%;
+  margin: 0;
+}
+
+.content-panel + .content-panel:has(.component-api-doc) {
+  padding: 0;
+}
 ```
 
 ## Plugin configuration
@@ -55,6 +69,72 @@ The generated documentation sidebar group label.
 
 Wheter the generated documentation sidebar group should be collapsed by default or not.
 
+### `rapidocAttrs`
+
+**Type:** `object` // `Record<String, any>`
+
+Additional attributes to pass to the Rapidoc component. Can you be used to customize the generated documentation.
+
+Details about the available attributes can be found in the [Rapidoc documentation](https://mrin9.github.io/RapiDoc/api.html).
+
+The default value is:
+
+```js
+{
+  'api-key-name': 'Authorization',
+  'api-key-location': 'header',
+  'allow-server-selection': 'false',
+  'persist-auth': 'true',
+  'class': 'component-api-doc',
+  'layout': 'column',
+  'render-style': 'focused',
+  'show-header': 'false',
+  'show-side-nav': 'false',
+  'default-schema-tab': 'schema',
+  'fill-request-fields-with-example': 'true',
+  'theme': 'dark',
+  'show-info': 'false',
+  'schema-style': 'table',
+  'schema-description-expanded': 'true',
+  'use-path-in-nav-bar': 'false',
+  'allow-spec-file-download': 'false',
+}
+```
+
+### `showMethodBadgeSidebar`
+
+**Type:** `boolean`
+
+Whether to show the method badge in the sidebar or not.
+
+Additional styles can be added in `styles/custom.css` file in the same directory as the `astro.config.mjs` file and adding the following CSS:
+
+```css
+/* starlight-openapi-rapidoc */
+.sord-operation-link {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  align-content: center;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  font-size: 0.8em;
+}
+.sord-operation-link > * {
+  order: 1;
+}
+.sord-operation-link .sl-badge {
+  order: 0;
+  padding: 2px 4px 1px;
+  border-radius: 3px;
+  font-size: 9px;
+  max-width: 43px;
+  width: 100%;
+  text-align: center;
+}
+```
+
 ## Multiple schemas
 
 You can generate documentation for multiple OpenAPI/Swagger schemas by passing multiple objects to the plugin configuration.
@@ -63,7 +143,7 @@ You can generate documentation for multiple OpenAPI/Swagger schemas by passing m
 // astro.config.mjs
 import starlight from '@astrojs/starlight'
 import { defineConfig } from 'astro/config'
-import starlightOpenAPI, { openAPISidebarGroups } from 'starlight-openapi'
+import starlightOpenAPI, { openAPISidebarGroups } from 'starlight-openapi-rapidoc'
 
 export default defineConfig({
   integrations: [
@@ -97,7 +177,7 @@ The `openAPISidebarGroups` export can be used in your Starlight [sidebar configu
 // astro.config.mjs
 import starlight from '@astrojs/starlight'
 import { defineConfig } from 'astro/config'
-import starlightOpenAPI, { openAPISidebarGroups } from 'starlight-openapi'
+import starlightOpenAPI, { openAPISidebarGroups } from 'starlight-openapi-rapidoc'
 
 export default defineConfig({
   integrations: [

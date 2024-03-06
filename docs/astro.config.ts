@@ -1,10 +1,13 @@
 import starlight from '@astrojs/starlight'
+import vercelStatic from '@astrojs/vercel/static'
 import { defineConfig } from 'astro/config'
-import starlightOpenAPI, { openAPISidebarGroups } from 'starlight-openapi'
+import starlightOpenAPI, { openAPISidebarGroups } from 'starlight-openapi-rapidoc'
 
 import { starlightOpenAPIDocsDemoPlugin } from './src/libs/sidebar'
 
 export default defineConfig({
+  output: 'static',
+  adapter: vercelStatic(),
   integrations: [
     starlight({
       customCss: ['./src/styles/custom.css'],
@@ -22,6 +25,10 @@ export default defineConfig({
             collapsed: false,
             label: 'Petstore',
             schema: '../schemas/v3.0/petstore-expanded.yaml',
+            showMethodBadgeSidebar: true,
+            rapidocAttrs: {
+              theme: 'dark',
+            },
           },
           {
             base: 'api/1password',

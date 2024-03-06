@@ -5,7 +5,7 @@ description: Learn how to generate documentation from OpenAPI/Swagger specificat
 
 import PackageManagers from '../../components/PackageManagers.astro'
 
-A [Starlight](https://starlight.astro.build) plugin to generate documentation from OpenAPI/Swagger specifications.
+A [Starlight](https://starlight.astro.build) plugin to generate documentation from OpenAPI/Swagger specifications with [RapiDoc](https://rapidocweb.com/).
 
 - Support for [Swagger 2.0](https://swagger.io/specification/v2/), [OpenAPI 3.0](https://swagger.io/specification/v3/) and [OpenAPI 3.1](https://swagger.io/specification/) specifications.
 - Support for local and remote schemas.
@@ -21,7 +21,7 @@ If you don't have one yet, you can follow the ["Getting Started"](https://starli
 Starlight OpenAPI is a Starlight [plugin](https://starlight.astro.build/reference/plugins/).
 Install it using your favorite package manager:
 
-<PackageManagers pkg="starlight-openapi" />
+<PackageManagers pkg="starlight-openapi-rapidoc" />
 
 ## Configure the plugin
 
@@ -31,7 +31,7 @@ The Starlight OpenAPI plugin can be configured in your Starlight [configuration]
 // astro.config.mjs
 import starlight from '@astrojs/starlight'
 import { defineConfig } from 'astro/config'
-+import starlightOpenAPI, { openAPISidebarGroups } from 'starlight-openapi'
++import starlightOpenAPI, { openAPISidebarGroups } from 'starlight-openapi-rapidoc'
 
 export default defineConfig({
   integrations: [
@@ -43,6 +43,7 @@ export default defineConfig({
 +           base: 'api',
 +           label: 'My API',
 +           schema: '../schemas/api-schema.yaml',
++            showMethodBadgeSidebar: true,
 +          },
 +        ]),
 +      ],
