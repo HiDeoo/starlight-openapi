@@ -32,7 +32,7 @@ export class SidebarPage {
       } else {
         items.push({
           collapsed: (await item.getAttribute('open')) === null,
-          label: await item.locator(`> summary > div > span`).textContent(),
+          label: await item.locator(`> summary > div > span`).first().textContent(),
           items: await this.#getSidebarChildrenItems(item.locator('> ul')),
         })
       }
