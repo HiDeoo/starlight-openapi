@@ -2,6 +2,10 @@ export function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
+export function generateRandomIdentifier(name: string) {
+  return Symbol.for(`${name}-${Math.random().toString(36).slice(7)}`)
+}
+
 export function interspece<TSeparator, TElement>(
   separator: TSeparator,
   elements: TElement[],

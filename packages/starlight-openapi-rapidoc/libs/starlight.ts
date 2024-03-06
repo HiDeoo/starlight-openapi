@@ -9,7 +9,7 @@ import { hasRequestBody } from './requestBody'
 import { includesDefaultResponse } from './response'
 import { getSchemaSidebarGroups, type Schema } from './schema'
 import { getSecurityDefinitions, getSecurityRequirements } from './security'
-import { capitalize } from './utils'
+import { capitalize, generateRandomIdentifier } from './utils'
 
 const starlightOpenAPISidebarGroupsLabel = Symbol('StarlightOpenAPISidebarGroupsLabel')
 
@@ -21,6 +21,29 @@ export function getSidebarGroupsPlaceholder(): SidebarGroup[] {
       label: starlightOpenAPISidebarGroupsLabel.toString(),
     },
   ]
+}
+
+export function generateSidebarGroupIdentifier(identifier: string): {
+  id: symbol
+  items: SidebarGroup[]
+} {
+  // validate if identifier is a symbol
+  if (!identifier) {
+    throw new Error('Identifier is required')
+  }
+
+  const id = generateRandomIdentifier(identifier)
+
+  return {
+    id,
+    items: [
+      {
+        collapsed: false,
+        items: [],
+        label: id.toString(),
+      },
+    ],
+  }
 }
 
 export function getPageProps(
@@ -58,9 +81,25 @@ export function getSidebarFromSchemas(
 
   const sidebarGroups = schemas.map((schema) => getSchemaSidebarGroups(schema))
 
+  const sidebarGroupsByGroupIdentifier = new Map<symbol, SidebarManualGroup>()
+
+  for (const sidebarGroup of sidebarGroups) {
+    if (sidebarGroup.group) {
+      sidebarGroupsByGroupIdentifier.set(sidebarGroup.group, sidebarGroup)
+    }
+  }
+
+  const groups = [...sidebarGroupsByGroupIdentifier]
+
   function replaceSidebarGroupsPlaceholder(group: SidebarManualGroup): SidebarManualGroup | SidebarManualGroup[] {
     if (group.label === starlightOpenAPISidebarGroupsLabel.toString()) {
       return sidebarGroups
+    }
+
+    const groupToReplace = groups.find(([identifier]) => identifier.toString() === group.label)
+    if (groupToReplace) {
+      const [, sidebarGroup] = groupToReplace
+      return sidebarGroup
     }
 
     if (isSidebarManualGroup(group)) {
@@ -84,8 +123,9 @@ export function makeSidebarGroup(
   label: string,
   items: SidebarManualGroup['items'],
   collapsed: boolean,
+  group?: SidebarManualGroup['group'],
 ): SidebarManualGroup {
-  return { collapsed, items, label }
+  return { collapsed, items, label, group }
 }
 
 export const chooseBadgeVariant = (method: string) => {
@@ -223,6 +263,7 @@ export interface SidebarManualGroup {
   collapsed?: boolean
   items: (SidebarLink | SidebarGroup)[]
   label: string
+  group?: symbol | undefined
 }
 
 interface SidebarLink {

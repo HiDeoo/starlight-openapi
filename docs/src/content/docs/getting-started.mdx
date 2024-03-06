@@ -23,7 +23,7 @@ Install it using your favorite package manager:
 
 <PackageManagers pkg="starlight-openapi-rapidoc" />
 
-## Configure the plugin
+## Configure the plugin (Default)
 
 The Starlight OpenAPI plugin can be configured in your Starlight [configuration](https://starlight.astro.build/reference/configuration/#plugins) in the `astro.config.mjs` file.
 
@@ -42,7 +42,7 @@ export default defineConfig({
 +          {
 +           base: 'api',
 +           label: 'My API',
-+           schema: '../schemas/api-schema.yaml',
++           schema: '../schemas/api-schema.yaml', // or your json generated from swagger
 +            showMethodBadgeSidebar: true,
 +          },
 +        ]),
@@ -62,3 +62,74 @@ export default defineConfig({
 ```
 
 The Starlight OpenAPI plugin behavior can be tweaked using various [configuration options](/configuration).
+
+## Configure the plugin (Advanced)
+
+Additionally, you can configure the plugin using the `group` attribute for each schema.
+
+This configuration allows you to group multiple schemas into separate locations in the navigation menu.
+
+You can use this approach instead of the previous one:
+
+```diff lang="js"
+// astro.config.mjs
+import starlight from '@astrojs/starlight'
+import { defineConfig } from 'astro/config'
++import starlightOpenAPI, { generateSidebarGroupIdentifier } from 'starlight-openapi-rapidoc'
+
++const adminGroup = generateSidebarGroupIdentifier('Admin API');
++const publicGroup = generateSidebarGroupIdentifier('Public API');
+
+export default defineConfig({
+  integrations: [
+    starlight({
++      plugins: [
++        // Generate the OpenAPI documentation pages.
++        starlightOpenAPI([
++          {
++           base: 'api',
++           label: 'My API public',
++           schema: '../schemas/api-public-schema.yaml', // or your json generated from swagger
++            showMethodBadgeSidebar: true,
++            group: publicGroup.id,
++          },
++          {
++           base: 'api',
++           label: 'My API Admin',
++           schema: '../schemas/api-admin-schema.yaml', // or your json generated from swagger
++           showMethodBadgeSidebar: true,
++           group: adminGroup.id,
++          },
++        ]),
++      ],
+      sidebar: [
+        {
+          label: 'Guides',
+          items: [{ label: 'Example Guide', link: '/guides/example/' }],
+        },
+        {
+          label: 'API Public',
+          items: [
+            {
+              label: 'Example Guide Public API',
+              link: '/api/public/example/'
+            },
++           ...publicGroup.items,
+          ],
+        },
+        {
+          label: 'API Admin',
+          items: [
+            {
+              label: 'Example Guide Admin API',
+              link: '/api/admin/example/'
+            },
++           ...adminGroup.items,
+          ],
+        },
+      ],
+      title: 'My Docs',
+    }),
+  ],
+})
+```

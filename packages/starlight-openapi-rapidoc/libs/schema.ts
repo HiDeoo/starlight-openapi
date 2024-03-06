@@ -34,6 +34,11 @@ export const SchemaConfigSchema = z.object({
    * Rapidoc props
    */
   rapidocAttrs: z.record(z.unknown()).optional(),
+
+  /**
+   * group identifier to be used in the sidebar
+   */
+  group: z.symbol().optional(),
 })
 
 export function getSchemaSidebarGroups(schema: Schema): SidebarManualGroup {
@@ -47,6 +52,7 @@ export function getSchemaSidebarGroups(schema: Schema): SidebarManualGroup {
       ...getWebhooksSidebarGroups(schema),
     ],
     config.collapsed,
+    config.group,
   )
 }
 

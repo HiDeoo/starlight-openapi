@@ -4,6 +4,7 @@ import { validateConfig, type StarlightOpenAPIUserConfig } from './libs/config'
 import { starlightOpenAPIIntegration } from './libs/integration'
 import { parseSchema } from './libs/parser'
 import { getSidebarFromSchemas, getSidebarGroupsPlaceholder } from './libs/starlight'
+export { generateSidebarGroupIdentifier } from './libs/starlight'
 
 export const openAPISidebarGroups = getSidebarGroupsPlaceholder()
 
