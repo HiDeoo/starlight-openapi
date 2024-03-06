@@ -81,11 +81,17 @@ export function getSidebarFromSchemas(
 
   const sidebarGroups = schemas.map((schema) => getSchemaSidebarGroups(schema))
 
-  const sidebarGroupsByGroupIdentifier = new Map<symbol, SidebarManualGroup>()
+  const sidebarGroupsByGroupIdentifier = new Map<symbol, SidebarManualGroup[]>()
 
   for (const sidebarGroup of sidebarGroups) {
     if (sidebarGroup.group) {
-      sidebarGroupsByGroupIdentifier.set(sidebarGroup.group, sidebarGroup)
+      if (!sidebarGroupsByGroupIdentifier.has(sidebarGroup.group)) {
+        sidebarGroupsByGroupIdentifier.set(sidebarGroup.group, [])
+      }
+      sidebarGroupsByGroupIdentifier.set(sidebarGroup.group, [
+        ...(sidebarGroupsByGroupIdentifier.get(sidebarGroup.group) ?? []),
+        sidebarGroup,
+      ])
     }
   }
 
