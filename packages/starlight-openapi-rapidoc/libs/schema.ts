@@ -24,6 +24,16 @@ export const SchemaConfigSchema = z.object({
    * The OpenAPI/Swagger schema path or URL.
    */
   schema: z.string().min(1),
+
+  /**
+   * show badge on sidebar
+   */
+  showMethodBadgeSidebar: z.boolean().default(false).optional(),
+
+  /**
+   * Rapidoc props
+   */
+  rapidocAttrs: z.record(z.unknown()).optional(),
 })
 
 export function getSchemaSidebarGroups(schema: Schema): SidebarManualGroup {

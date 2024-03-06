@@ -24,8 +24,13 @@ schema.document = await OpenAPIParser.dereference(schema.document)
 const isOverview = type === 'overview'
 
 const title = isOverview ? 'Overview' : Astro.props.operation.title
+
+const frontmatter = {
+  ...Astro.props?.frontmatter,
+  title,
+}
 ---
 
-<StarlightPage {...getPageProps(title, schema, isOverview ? undefined : Astro.props.operation)}>
+<StarlightPage {...getPageProps(frontmatter, schema, isOverview ? undefined : Astro.props.operation)}>
   {isOverview ? <Overview {schema} /> : <Operation {schema} operation={Astro.props.operation} />}
 </StarlightPage>

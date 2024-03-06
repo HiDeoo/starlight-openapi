@@ -1,15 +1,6 @@
 ---
 import type { PathItemOperation } from '../../libs/operation'
 import type { Schema } from '../../libs/schema'
-import Deprecated from '../Deprecated.astro'
-import ExternalDocs from '../ExternalDocs.astro'
-import Md from '../Md.astro'
-import Parameters from '../parameter/Parameters.astro'
-import RequestBody from '../RequestBody.astro'
-import Responses from '../response/Responses.astro'
-import Security from '../security/Security.astro'
-
-import OperationDescription from './OperationDescription.astro'
 
 interface Props {
   operation: PathItemOperation
@@ -17,14 +8,56 @@ interface Props {
 }
 
 const { operation: pathItemOperation, schema } = Astro.props
-const { operation } = pathItemOperation
+const { rapidocAttrs } = schema.config || {}
+
+const schemaFiltred = {
+  ...schema.document,
+  paths:
+    pathItemOperation.path && pathItemOperation.method
+      ? {
+          [`${pathItemOperation.path}`]: schema?.document?.paths?.[`${pathItemOperation.path}`],
+        }
+      : {},
+}
+
+const rapidocProps: Record<string, any> = {
+  'api-key-name': 'Authorization',
+  'api-key-location': 'header',
+  'allow-server-selection': 'false',
+  'persist-auth': 'true',
+  class: 'component-api-doc',
+  layout: 'column',
+  'render-style': 'focused',
+  'show-header': 'false',
+  'show-side-nav': 'false',
+  'default-schema-tab': 'schema',
+  'fill-request-fields-with-example': 'true',
+  theme: 'dark',
+  'show-info': 'false',
+  'schema-style': 'table',
+  'schema-description-expanded': 'true',
+  'use-path-in-nav-bar': 'false',
+  'allow-spec-file-download': 'false',
+  ...rapidocAttrs,
+}
 ---
 
-<Deprecated deprecated={operation.deprecated} />
-<OperationDescription operation={pathItemOperation} {schema} />
-<Md text={operation.description} />
-<ExternalDocs docs={operation.externalDocs} />
-<Security {operation} {schema} />
-<Parameters operation={pathItemOperation} />
-<RequestBody {operation} {schema} />
-<Responses {operation} responses={operation.responses} {schema} />
+<script is:inline define:vars={{ schemaFiltred, schema }}>
+  document.addEventListener('DOMContentLoaded', async () => {
+    const docEl = document.querySelector('#starlight-openapi-rapidoc')
+    if (!docEl) {
+      console.error('RapiDoc element not found')
+      return
+    }
+    await docEl?.loadSpec(schemaFiltred)
+    window.console.debug('schema.document loaded', { schemaFiltred, schema })
+  })
+</script>
+
+<rapi-doc id="starlight-openapi-rapidoc" {...rapidocProps}></rapi-doc>
+<script is:inline src="https://unpkg.com/rapidoc/dist/rapidoc-min.js"></script>
+<style is:inline>
+  #starlight-openapi-rapidoc {
+    background-color: transparent !important;
+  }
+</style>

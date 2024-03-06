@@ -42,7 +42,12 @@ test('uses a fallback group for untagged operations', async ({ sidebarPage }) =>
     {
       collapsed: false,
       label: 'Operations',
-      items: [{ name: 'findPets' }, { name: 'addPet' }, { name: 'find pet by id' }, { name: 'deletePet' }],
+      items: [
+        { name: 'findPets  GET' },
+        { name: 'addPet  POST' },
+        { name: 'find pet by id  GET' },
+        { name: 'deletePet  DELETE' },
+      ],
     },
     {
       collapsed: false,

@@ -1,3 +1,4 @@
+import type { StarlightPageProps } from '@astrojs/starlight/props'
 import schemas from 'virtual:starlight-openapi-rapidoc-schemas'
 
 import { getOperationsByTag, getWebhooksOperations, type PathItemOperation } from './operation'
@@ -64,10 +65,12 @@ interface StarlighOpenAPIRoute {
 interface StarlighOpenAPIRouteOverviewProps {
   schema: Schema
   type: 'overview'
+  frontmatter?: StarlightPageProps['frontmatter']
 }
 
 interface StarlighOpenAPIRouteOperationProps {
   operation: PathItemOperation
   schema: Schema
   type: 'operation'
+  frontmatter?: StarlightPageProps['frontmatter']
 }

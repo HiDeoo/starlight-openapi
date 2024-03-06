@@ -1,3 +1,4 @@
+import type { StarlightPageProps } from '@astrojs/starlight/props'
 import type { StarlightUserConfig } from '@astrojs/starlight/types'
 import type { MarkdownHeading } from 'astro'
 
@@ -22,13 +23,27 @@ export function getSidebarGroupsPlaceholder(): SidebarGroup[] {
   ]
 }
 
-export function getPageProps(title: string, schema: Schema, pathItemOperation?: PathItemOperation): StarlightPageProps {
+export function getPageProps(
+  frontmatterProps: StarlightPageProps['frontmatter'] | null,
+  schema: Schema,
+  pathItemOperation?: PathItemOperation,
+): StarlightPageProps {
   const isOverview = pathItemOperation === undefined
 
+  let frontmatter: StarlightPageProps['frontmatter'] = {
+    tableOfContents: false,
+    title: '',
+  }
+
+  if (frontmatterProps) {
+    frontmatter = {
+      ...frontmatter,
+      ...(frontmatterProps as Record<string, unknown>),
+    }
+  }
+
   return {
-    frontmatter: {
-      title,
-    },
+    frontmatter,
     headings: isOverview ? getOverviewHeadings(schema) : getOperationHeadings(schema, pathItemOperation),
   }
 }
@@ -73,8 +88,49 @@ export function makeSidebarGroup(
   return { collapsed, items, label }
 }
 
+export const chooseBadgeVariant = (method: string) => {
+  switch (method) {
+    case 'get': {
+      return 'note'
+    }
+    case 'post': {
+      return 'success'
+    }
+    case 'put':
+    case 'patch': {
+      return 'caution'
+    }
+    case 'delete': {
+      return 'danger'
+    }
+    default: {
+      return 'tip'
+    }
+  }
+}
+
 export function makeSidebarLink(label: string, link: string): SidebarLink {
   return { label, link }
+}
+
+export function makeSidebarLinkFromPathOperation(
+  operation: PathItemOperation,
+  config: { baseLink: string; showMethodBadgeSidebar: boolean | undefined },
+): SidebarLink {
+  const { slug, title, method } = operation
+  const { baseLink = '', showMethodBadgeSidebar = false } = config
+
+  return {
+    label: title,
+    link: baseLink + slug,
+    attrs: { class: `sord-operation-link method-${method}` },
+    badge: showMethodBadgeSidebar
+      ? {
+          text: method.toUpperCase(),
+          variant: chooseBadgeVariant(method),
+        }
+      : undefined,
+  }
 }
 
 function isSidebarManualGroup(item: NonNullable<StarlightUserConfigSidebar>[number]): item is SidebarManualGroup {
@@ -154,6 +210,13 @@ type SidebarGroup =
       }
       collapsed?: boolean
       label: string
+
+      badge?:
+        | string
+        | {
+            text: string
+            variant?: 'note' | 'danger' | 'success' | 'caution' | 'tip' | 'default' | undefined
+          }
     }
 
 export interface SidebarManualGroup {
@@ -165,13 +228,15 @@ export interface SidebarManualGroup {
 interface SidebarLink {
   label: string
   link: string
-}
-
-interface StarlightPageProps {
-  frontmatter: {
-    title: string
-  }
-  headings: MarkdownHeading[]
+  translations?: Record<string, string> | undefined
+  attrs?: Record<string, string> | undefined
+  badge?:
+    | undefined
+    | string
+    | {
+        text: string
+        variant?: 'note' | 'danger' | 'success' | 'caution' | 'tip' | 'default' | undefined
+      }
 }
 
 type StarlightUserConfigSidebar = StarlightUserConfig['sidebar']

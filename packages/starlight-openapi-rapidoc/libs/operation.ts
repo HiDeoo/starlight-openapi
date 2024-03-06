@@ -10,8 +10,9 @@ const operationHttpMethods = ['get', 'put', 'post', 'delete', 'options', 'head',
 
 export function getOperationsByTag(document: Schema['document']) {
   const operationsByTag = new Map<string, PathItemOperation[]>()
+  const { paths, tags: documentTags = [] } = document
 
-  for (const [pathItemPath, pathItem] of Object.entries(document.paths ?? {})) {
+  for (const [pathItemPath, pathItem] of Object.entries(paths ?? {})) {
     if (!isPathItem(pathItem)) {
       continue
     }
@@ -22,9 +23,9 @@ export function getOperationsByTag(document: Schema['document']) {
       }
 
       const operation = pathItem[method]
-      const operationId = operation.operationId ?? pathItemPath
+      const { operationId = pathItemPath, tags, summary, description } = operation
 
-      for (const tag of operation.tags ?? [defaultOperationTag]) {
+      for (const tag of tags ?? [defaultOperationTag]) {
         const operations = operationsByTag.get(tag) ?? []
 
         operations.push({
@@ -33,7 +34,7 @@ export function getOperationsByTag(document: Schema['document']) {
           path: pathItemPath,
           pathItem,
           slug: `operations/${slug(operationId)}`,
-          title: operation.summary ?? operationId,
+          title: (summary ?? operationId) || pathItemPath || `${description}`.slice(100) || '',
         })
 
         operationsByTag.set(tag, operations)
@@ -41,8 +42,8 @@ export function getOperationsByTag(document: Schema['document']) {
     }
   }
 
-  if (document.tags) {
-    const orderedTags = new Map(document.tags.map((tag, index) => [tag.name, index]))
+  if (documentTags.length > 0) {
+    const orderedTags = new Map(documentTags.map((tag, index) => [tag.name, index]))
     const operationsByTagArray = [...operationsByTag.entries()].sort(([tagA], [tagB]) => {
       const orderA = orderedTags.get(tagA) ?? Number.POSITIVE_INFINITY
       const orderB = orderedTags.get(tagB) ?? Number.POSITIVE_INFINITY

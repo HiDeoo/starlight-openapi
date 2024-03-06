@@ -1,16 +1,22 @@
 import { getOperationsByTag, getWebhooksOperations } from './operation'
 import { getBaseLink } from './path'
 import type { Schema } from './schema'
-import { makeSidebarGroup, makeSidebarLink, type SidebarManualGroup } from './starlight'
+import {
+  makeSidebarGroup,
+  makeSidebarLink,
+  makeSidebarLinkFromPathOperation,
+  type SidebarManualGroup,
+} from './starlight'
 
 export function getPathItemSidebarGroups({ config, document }: Schema): SidebarManualGroup['items'] {
   const baseLink = getBaseLink(config)
+  const { showMethodBadgeSidebar } = config
   const operations = getOperationsByTag(document)
 
   return [...operations.entries()].map(([tag, operations]) =>
     makeSidebarGroup(
       tag,
-      operations.map(({ slug, title }) => makeSidebarLink(title, baseLink + slug)),
+      operations.map((operation) => makeSidebarLinkFromPathOperation(operation, { baseLink, showMethodBadgeSidebar })),
       config.collapsed,
     ),
   )
