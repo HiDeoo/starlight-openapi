@@ -22,7 +22,7 @@ export class DocPage {
   }
 
   async expectToHaveTitle(title: string) {
-    await expect(this.page).toHaveTitle(`${title} | Starlight OpenAPI`)
+    await expect(this.page).toHaveTitle(`${title} | Starlight OpenAPI with Rapidoc`)
     await expect(this.page.getByRole('heading', { exact: true, level: 1, name: title })).toBeVisible()
   }
 
