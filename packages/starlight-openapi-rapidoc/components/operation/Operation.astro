@@ -1,6 +1,15 @@
 ---
 import type { PathItemOperation } from '../../libs/operation'
 import type { Schema } from '../../libs/schema'
+import Deprecated from '../Deprecated.astro'
+import ExternalDocs from '../ExternalDocs.astro'
+import Md from '../Md.astro'
+import Parameters from '../parameter/Parameters.astro'
+import RequestBody from '../RequestBody.astro'
+import Responses from '../response/Responses.astro'
+import Security from '../security/Security.astro'
+
+import OperationDescription from './OperationDescription.astro'
 
 interface Props {
   operation: PathItemOperation
@@ -40,6 +49,8 @@ const rapidocProps: Record<string, any> = {
   'allow-spec-file-download': 'false',
   ...rapidocAttrs,
 }
+
+const { operation } = pathItemOperation
 ---
 
 <script is:inline define:vars={{ schemaFiltred, schema }}>
@@ -55,6 +66,19 @@ const rapidocProps: Record<string, any> = {
 </script>
 
 <rapi-doc id="starlight-openapi-rapidoc" {...rapidocProps}></rapi-doc>
+
+<div style="display: none;">
+  <!-- Only to use in search -->
+  <Deprecated deprecated={operation.deprecated} />
+  <OperationDescription operation={pathItemOperation} {schema} />
+  <Md text={operation.description} />
+  <ExternalDocs docs={operation.externalDocs} />
+  <Security {operation} {schema} />
+  <Parameters operation={pathItemOperation} />
+  <RequestBody {operation} {schema} />
+  <Responses {operation} responses={operation.responses} {schema} />
+</div>
+
 <script is:inline src="https://unpkg.com/rapidoc/dist/rapidoc-min.js"></script>
 <style is:inline>
   #starlight-openapi-rapidoc {
