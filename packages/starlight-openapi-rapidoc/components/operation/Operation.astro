@@ -67,11 +67,22 @@ const { operation } = pathItemOperation
 
 <rapi-doc id="starlight-openapi-rapidoc" {...rapidocProps}></rapi-doc>
 
-<div style="display: none;">
+<div style={process.env.NODE_ENV === 'development' ? '' : 'display: none;'} id="starlight-openapi-operation-content">
+  {
+    process.env.NODE_ENV === 'development' ? (
+      <span style="border: 1px solid red; padding: 10px; text-align: center; display: block;">
+        All content bellow only show in DEV MODE
+      </span>
+    ) : (
+      ''
+    )
+  }
   <!-- Only to use in search -->
   <Deprecated deprecated={operation.deprecated} />
   <OperationDescription operation={pathItemOperation} {schema} />
-  <Md text={operation.description} />
+  <div class="operation-description">
+    <Md text={operation.description} />
+  </div>
   <ExternalDocs docs={operation.externalDocs} />
   <Security {operation} {schema} />
   <Parameters operation={pathItemOperation} />

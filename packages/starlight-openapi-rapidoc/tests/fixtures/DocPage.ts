@@ -13,6 +13,10 @@ export class DocPage {
     return this.page.getByText(...args)
   }
 
+  getBySelector(selector: string) {
+    return this.page.locator(selector)
+  }
+
   getByRole(...args: Parameters<Page['getByRole']>) {
     return this.page.getByRole(...args)
   }
