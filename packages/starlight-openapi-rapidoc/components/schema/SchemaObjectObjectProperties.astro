@@ -16,7 +16,7 @@ const { parent, properties, required } = Astro.props
 
 {
   Object.entries(properties).map(([name, schema]) => (
-    <Key name={name} required={required?.includes(name)}>
+    <Key name={name} required={required?.includes?.(name)}>
       {schema === parent ? (
         <div>
           <span class="type">object</span>
