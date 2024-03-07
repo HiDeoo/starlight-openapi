@@ -1,6 +1,6 @@
 <div align="center">
   <h1>starlight-openapi-rapidoc 🧭</h1>
-  <p>Starlight plugin to generate documentation from OpenAPI/Swagger specifications + RapiDoc.</p>
+  <p>Starlight plugin to generate documentation from OpenAPI/Swagger specifications with RapiDoc.</p>
   <p>
     <a href="https://starlight-openapi-rapidoc.vercel.app/api/petstore/operations/addpet" title="Screenshot of starlight-openapi-rapidoc">
       <img alt="Screenshot of starlight-openapi-rapidoc" src="https://raw.githubusercontent.com/jeffdrumgod/starlight-openapi-rapidoc/main/screenshot.png" width="520" />
@@ -32,6 +32,10 @@ A [Starlight](https://starlight.astro.build) plugin to generate documentation fr
 
 ## License
 
-Licensed under the MIT License, Copyright © HiDeoo.
+Licensed under the MIT License, Copyright © jeff_drumgod.
 
 See [LICENSE](https://github.com/jeffdrumgod/starlight-openapi-rapidoc/blob/main/LICENSE) for more information.
+
+## Thanks
+
+This plugin is based on the [starlight-openapi](https://github.com/HiDeoo/starlight-openapi) plugin by HiDeoo. Thanks to the original author for the inspiration and the hard work.
