@@ -2,7 +2,7 @@
   <h1>starlight-openapi-rapidoc 🧭</h1>
   <p>Starlight plugin to generate documentation from OpenAPI/Swagger specifications + RapiDoc.</p>
   <p>
-    <a href="https://i.imgur.com/pbOqvMT.png" title="Screenshot of starlight-openapi-rapidoc">
+    <a href="https://starlight-openapi-rapidoc.vercel.app/api/petstore/operations/addpet" title="Screenshot of starlight-openapi-rapidoc">
       <img alt="Screenshot of starlight-openapi-rapidoc" src="https://raw.githubusercontent.com/jeffdrumgod/starlight-openapi-rapidoc/main/screenshot.png" width="520" />
     </a>
   </p>
