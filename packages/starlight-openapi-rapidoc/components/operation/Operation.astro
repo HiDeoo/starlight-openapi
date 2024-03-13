@@ -84,7 +84,10 @@ const { operation } = pathItemOperation
 </script>
 
 <rapi-doc id="starlight-openapi-rapidoc" {...rapidocProps}>
-  <div slot={`${pathItemOperation.method}-${pathItemOperation.path}`} id="starlight-openapi-rapidoc-servers">
+  <div
+    slot={`${pathItemOperation.method}-${pathItemOperation.path.replaceAll('{', '-').replaceAll('}', '-')}`}
+    id="starlight-openapi-rapidoc-servers"
+  >
     <label for="starlight-openapi-rapidoc-servers-select">Server</label>
     <select id="starlight-openapi-rapidoc-servers-select">
       {
