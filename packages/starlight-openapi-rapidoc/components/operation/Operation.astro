@@ -69,13 +69,39 @@ const { operation } = pathItemOperation
         window.localStorage.setItem('starlight-openapi-rapidoc-servers-select', serverUrl)
         docEl.setApiServer(serverUrl)
       })
+
       docEl.addEventListener('spec-loaded', () => {
         const storage = window.localStorage.getItem('starlight-openapi-rapidoc-servers-select')
         if (storage) {
           serversSelector.value = storage
         }
-        docEl.setApiServer(serversSelector.value)
+
+        // debugger;
+        if (docEl.selectedServer?.url !== serversSelector.value) {
+          docEl.setApiServer(serversSelector.value)
+        }
       })
+
+      /**
+       * Reload the spec with possible modifications
+       *
+       * @param {Function} fnModifier
+       */
+      docEl.reloadSpec = async (fnModifier) => {
+        if (typeof fnModifier !== 'function') {
+          return docEl.loadSpec(fnModifier(schemaFiltred))
+        }
+
+        // prevent to change the order of the servers, causing loop after event spec-loaded
+        schemaFiltred.servers = schemaFiltred.servers.sort((a) => {
+          if (a.url === serversSelector.value) {
+            return -1
+          }
+          return 1
+        })
+
+        return docEl.loadSpec(schemaFiltred)
+      }
     }
 
     await docEl?.loadSpec(schemaFiltred)
