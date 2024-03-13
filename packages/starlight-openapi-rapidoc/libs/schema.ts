@@ -1,5 +1,5 @@
 import { z } from 'astro/zod'
-import type { OpenAPI } from 'openapi-types'
+import type { OpenAPIV3 } from 'openapi-types'
 
 import { getBaseLink, stripLeadingAndTrailingSlashes } from './path'
 import { getPathItemSidebarGroups, getWebhooksSidebarGroups } from './pathItem'
@@ -60,5 +60,5 @@ export type StarlightOpenAPISchemaConfig = z.infer<typeof SchemaConfigSchema>
 
 export interface Schema {
   config: StarlightOpenAPISchemaConfig
-  document: OpenAPI.Document
+  document: OpenAPIV3.Document
 }

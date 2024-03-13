@@ -18,6 +18,7 @@ interface Props {
 
 const { operation: pathItemOperation, schema } = Astro.props
 const { rapidocAttrs } = schema.config || {}
+const { servers } = schema.document || {}
 
 const schemaFiltred = {
   ...schema.document,
@@ -32,11 +33,11 @@ const schemaFiltred = {
 const rapidocProps: Record<string, any> = {
   'api-key-name': 'Authorization',
   'api-key-location': 'header',
-  'allow-server-selection': 'false',
+  'allow-server-selection': 'true',
   'persist-auth': 'true',
   class: 'component-api-doc',
   layout: 'column',
-  'render-style': 'focused',
+  // 'render-style': 'focused',
   'show-header': 'false',
   'show-side-nav': 'false',
   'default-schema-tab': 'schema',
@@ -60,16 +61,46 @@ const { operation } = pathItemOperation
       console.error('RapiDoc element not found')
       return
     }
+
+    const serversSelector = document.querySelector('#starlight-openapi-rapidoc-servers-select')
+    if (serversSelector) {
+      serversSelector.addEventListener('change', (e) => {
+        const serverUrl = e.target.value
+        window.localStorage.setItem('starlight-openapi-rapidoc-servers-select', serverUrl)
+        docEl.setApiServer(serverUrl)
+      })
+      docEl.addEventListener('spec-loaded', () => {
+        const storage = window.localStorage.getItem('starlight-openapi-rapidoc-servers-select')
+        if (storage) {
+          serversSelector.value = storage
+        }
+        docEl.setApiServer(serversSelector.value)
+      })
+    }
+
     await docEl?.loadSpec(schemaFiltred)
     window.console.debug('schema.document loaded', { schemaFiltred, schema })
   })
 </script>
 
-<rapi-doc id="starlight-openapi-rapidoc" {...rapidocProps}></rapi-doc>
+<rapi-doc id="starlight-openapi-rapidoc" {...rapidocProps}>
+  <div slot={`${pathItemOperation.method}-${pathItemOperation.path}`} id="starlight-openapi-rapidoc-servers">
+    <label for="starlight-openapi-rapidoc-servers-select">Server</label>
+    <select id="starlight-openapi-rapidoc-servers-select">
+      {
+        servers?.map(({ url, description }: any) => (
+          <option value={url}>
+            {description} - {url}
+          </option>
+        ))
+      }
+    </select>
+  </div>
+</rapi-doc>
 
-<div style={process.env.NODE_ENV === 'development' ? '' : 'display: none;'} id="starlight-openapi-operation-content">
+<div style={process.env['NODE_ENV'] === 'development' ? '' : 'display: none;'} id="starlight-openapi-operation-content">
   {
-    process.env.NODE_ENV === 'development' ? (
+    process.env['NODE_ENV'] === 'development' ? (
       <span style="border: 1px solid red; padding: 10px; text-align: center; display: block;">
         All content bellow only show in DEV MODE
       </span>
@@ -94,5 +125,14 @@ const { operation } = pathItemOperation
 <style is:inline>
   #starlight-openapi-rapidoc {
     background-color: transparent !important;
+  }
+  #starlight-openapi-rapidoc-servers {
+    border: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: baseline;
+    gap: 10px;
   }
 </style>
