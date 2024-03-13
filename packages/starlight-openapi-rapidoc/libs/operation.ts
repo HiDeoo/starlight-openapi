@@ -12,7 +12,7 @@ export function getOperationsByTag(document: Schema['document']) {
   const operationsByTag = new Map<string, PathItemOperation[]>()
   const { paths, tags: documentTags = [] } = document
 
-  for (const [pathItemPath, pathItem] of Object.entries(paths ?? {})) {
+  for (const [pathItemPath, pathItem] of Object.entries(paths)) {
     if (!isPathItem(pathItem)) {
       continue
     }
