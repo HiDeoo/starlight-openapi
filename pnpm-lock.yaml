@@ -83,7 +83,7 @@ importers:
         version: 20.11.24
       astro:
         specifier: 4.4.11
-        version: 4.4.11(@types/node@20.11.24)(typescript@5.1.6)
+        version: 4.4.11(@types/node@20.11.24)
       openapi-types:
         specifier: 12.1.3
         version: 12.1.3
@@ -129,10 +129,10 @@ packages:
 
   /@astrojs/compiler@2.6.0:
     resolution: {integrity: sha512-c74k8iGHL3DzkosSJ0tGcHIEBEiIfBhr7eadSaPyvWlVKaieDVzVs8OW1tnRSQyBsfMc8DZQ4RcN2KAcESD8UQ==}
-    dev: true
 
   /@astrojs/compiler@2.7.0:
     resolution: {integrity: sha512-XpC8MAaWjD1ff6/IfkRq/5k1EFj6zhCNqXRd5J43SVJEBj/Bsmizkm8N0xOYscGcDFQkRgEw6/eKnI5x/1l6aA==}
+    dev: false
 
   /@astrojs/internal-helpers@0.2.1:
     resolution: {integrity: sha512-06DD2ZnItMwUnH81LBLco3tWjcZ1lGU9rLCCBaeUCGYe9cI0wKyY2W3kDyoW1I6GmcWgt1fu+D1CTvz+FIKf8A==}
@@ -166,7 +166,7 @@ packages:
       '@astrojs/markdown-remark': 4.2.1
       '@mdx-js/mdx': 3.0.1
       acorn: 8.11.3
-      astro: 4.4.11(typescript@5.1.6)
+      astro: 4.4.11(@types/node@20.11.24)
       es-module-lexer: 1.4.1
       estree-util-visit: 2.0.0
       github-slugger: 2.0.0
@@ -204,7 +204,7 @@ packages:
       '@pagefind/default-ui': 1.0.4
       '@types/hast': 3.0.4
       '@types/mdast': 4.0.3
-      astro: 4.4.11(typescript@5.1.6)
+      astro: 4.4.11(@types/node@20.11.24)
       astro-expressive-code: 0.33.4(astro@4.4.11)
       bcp-47: 2.1.0
       hast-util-from-html: 2.0.1
@@ -1961,7 +1961,7 @@ packages:
     peerDependencies:
       astro: ^3.3.0 || ^4.0.0-beta
     dependencies:
-      astro: 4.4.11(typescript@5.1.6)
+      astro: 4.4.11(@types/node@20.11.24)
       hast-util-to-html: 8.0.4
       remark-expressive-code: 0.33.4
 
@@ -2049,7 +2049,7 @@ packages:
       - typescript
     dev: true
 
-  /astro@4.4.11(@types/node@20.11.24)(typescript@5.1.6):
+  /astro@4.4.11(@types/node@20.11.24):
     resolution: {integrity: sha512-mJ1k67xzAJO1vTTpATe76uSWhOgiEj3Id7narE6X2rMMOBjR8vJM+9Cmv/Wbpot6uMwFo780skUowlMptK96fQ==}
     engines: {node: '>=18.14.1', npm: '>=6.14.0'}
     hasBin: true
@@ -2110,7 +2110,7 @@ packages:
       shikiji-core: 0.9.19
       string-width: 7.1.0
       strip-ansi: 7.1.0
-      tsconfck: 3.0.2(typescript@5.1.6)
+      tsconfck: 3.0.2
       unist-util-visit: 5.0.0
       vfile: 6.0.1
       vite: 5.1.5(@types/node@20.11.24)
@@ -2130,7 +2130,6 @@ packages:
       - supports-color
       - terser
       - typescript
-    dev: true
 
   /astro@4.4.11(typescript@5.1.6):
     resolution: {integrity: sha512-mJ1k67xzAJO1vTTpATe76uSWhOgiEj3Id7narE6X2rMMOBjR8vJM+9Cmv/Wbpot6uMwFo780skUowlMptK96fQ==}
@@ -2213,6 +2212,7 @@ packages:
       - supports-color
       - terser
       - typescript
+    dev: false
 
   /astrojs-compiler-sync@0.3.5(@astrojs/compiler@2.5.3):
     resolution: {integrity: sha512-y420rhIIJ2HHDkYeqKArBHSdJNIIGMztLH90KGIX3zjcJyt/cr9Z2wYA8CP5J1w6KE7xqMh0DAkhfjhNDpQb2Q==}
@@ -6609,6 +6609,16 @@ packages:
     dependencies:
       typescript: 5.1.6
     dev: true
+
+  /tsconfck@3.0.2:
+    resolution: {integrity: sha512-6lWtFjwuhS3XI4HsX4Zg0izOI3FU/AI9EGVlPEUMDIhvLPMD4wkiof0WCoDgW7qY+Dy198g4d9miAqUHWHFH6Q==}
+    engines: {node: ^18 || >=20}
+    hasBin: true
+    peerDependencies:
+      typescript: ^5.0.0
+    peerDependenciesMeta:
+      typescript:
+        optional: true
 
   /tsconfck@3.0.2(typescript@5.1.6):
     resolution: {integrity: sha512-6lWtFjwuhS3XI4HsX4Zg0izOI3FU/AI9EGVlPEUMDIhvLPMD4wkiof0WCoDgW7qY+Dy198g4d9miAqUHWHFH6Q==}

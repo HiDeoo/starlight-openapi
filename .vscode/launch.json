@@ -1,0 +1,12 @@
+{
+  "configurations": [
+    {
+      "command": "pnpm dev",
+      "name": "doc",
+      "request": "launch",
+      "type": "node-terminal",
+      "cwd": "${workspaceFolder}/docs/"
+    }
+  ],
+  "version": "0.2.0"
+}

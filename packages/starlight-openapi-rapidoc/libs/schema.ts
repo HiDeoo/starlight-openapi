@@ -39,6 +39,11 @@ export const SchemaConfigSchema = z.object({
    * group identifier to be used in the sidebar
    */
   group: z.symbol().optional(),
+
+  /**
+   * Number of times to repeat the circular reference in the content
+   */
+  numberOfRepeatCircular: z.number().optional(),
 })
 
 export function getSchemaSidebarGroups(schema: Schema): SidebarManualGroup {
@@ -61,4 +66,5 @@ export type StarlightOpenAPISchemaConfig = z.infer<typeof SchemaConfigSchema>
 export interface Schema {
   config: StarlightOpenAPISchemaConfig
   document: OpenAPIV3.Document
+  documentDereferenced?: boolean
 }

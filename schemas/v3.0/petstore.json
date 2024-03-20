@@ -139,6 +139,9 @@
           },
           "tag": {
             "type": "string"
+          },
+          "children": {
+            "$ref": "#/components/schemas/Pet"
           }
         }
       },

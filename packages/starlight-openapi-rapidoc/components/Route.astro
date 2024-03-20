@@ -19,7 +19,47 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>
 
 const { schema, type } = Astro.props
 
-schema.document = await OpenAPIParser.dereference(schema.document)
+const NUMBER_OF_REPEAT_CIRCULAR = schema.config?.numberOfRepeatCircular ?? 1
+
+function removeCircularReferences(obj: any, props: { nested?: number; ancestors?: Map<any, any> } = {}) {
+  const { ancestors = new Map(), nested = 0 } = props || {}
+  if (nested > NUMBER_OF_REPEAT_CIRCULAR) {
+    return obj
+  }
+  if (obj !== null && typeof obj === 'object') {
+    if (ancestors.has(obj)) {
+      if (nested < NUMBER_OF_REPEAT_CIRCULAR) {
+        return removeCircularReferences(structuredClone(obj), { nested: nested + 1 })
+      }
+
+      return {
+        type: 'circular of parent',
+        description: 'circular of parent',
+      }
+    }
+
+    ancestors.set(obj, null)
+
+    for (const key of Object.keys(obj)) {
+      const value = obj[key]
+      if (typeof value === 'object' && value !== null) {
+        obj[key] = removeCircularReferences(value, {
+          ancestors: new Map(ancestors),
+          nested: nested,
+        })
+      }
+    }
+
+    ancestors.delete(obj)
+  }
+
+  return obj
+}
+
+if (schema.documentDereferenced !== true) {
+  schema.document = removeCircularReferences(await OpenAPIParser.dereference(schema.document))
+  schema.documentDereferenced = true
+}
 
 const isOverview = type === 'overview'
 

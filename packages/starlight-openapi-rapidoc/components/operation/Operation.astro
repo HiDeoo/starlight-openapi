@@ -17,17 +17,17 @@ interface Props {
 }
 
 const { operation: pathItemOperation, schema } = Astro.props
+
 const { rapidocAttrs } = schema.config || {}
 const { servers } = schema.document || {}
 
 const schemaFiltred = {
   ...schema.document,
-  paths:
-    pathItemOperation.path && pathItemOperation.method
-      ? {
-          [`${pathItemOperation.path}`]: schema?.document?.paths?.[`${pathItemOperation.path}`],
-        }
-      : {},
+  paths: {
+    [`${pathItemOperation.path}`]: {
+      [`${pathItemOperation.method}`]: pathItemOperation.operation,
+    },
+  },
 }
 
 const rapidocProps: Record<string, any> = {
@@ -54,7 +54,7 @@ const rapidocProps: Record<string, any> = {
 const { operation } = pathItemOperation
 ---
 
-<script is:inline define:vars={{ schemaFiltred, schema }}>
+<script is:inline define:vars={{ schemaFiltred }}>
   document.addEventListener('DOMContentLoaded', async () => {
     const docEl = document.querySelector('#starlight-openapi-rapidoc')
     if (!docEl) {
@@ -76,7 +76,6 @@ const { operation } = pathItemOperation
           serversSelector.value = storage
         }
 
-        // debugger;
         if (docEl.selectedServer?.url !== serversSelector.value) {
           docEl.setApiServer(serversSelector.value)
         }
@@ -105,7 +104,7 @@ const { operation } = pathItemOperation
     }
 
     await docEl?.loadSpec(schemaFiltred)
-    window.console.debug('schema.document loaded', { schemaFiltred, schema })
+    window.console.debug('schema loaded', { schemaFiltred })
   })
 </script>
 

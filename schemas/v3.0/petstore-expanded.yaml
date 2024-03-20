@@ -163,7 +163,38 @@ components:
           type: string
         tag:
           type: string
-
+        test:
+          type: object
+          properties:
+            test2:
+              type: object
+              properties:
+                children:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Pet'
+                test3:
+                  type: object
+                  properties:
+                    finish:
+                      type: string
+        test2:
+          type: array
+          items:
+            type: object
+            properties:
+              test2:
+                type: object
+                properties:
+                  test3:
+                    type: object
+                    properties:
+                      finish:
+                        type: string
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pet'
     Error:
       type: object
       required:

@@ -1,30 +1,22 @@
 ---
 import type { Properties, SchemaObject } from '../../libs/schemaObject'
 import Key from '../Key.astro'
-import Tag from '../Tag.astro'
 
 import Schema from './SchemaObject.astro'
 
 interface Props {
-  parent: SchemaObject
+  parent?: SchemaObject
   properties: Properties
   required: string[] | undefined
 }
 
-const { parent, properties, required } = Astro.props
+const { properties, required } = Astro.props
 ---
 
 {
   Object.entries(properties).map(([name, schema]) => (
     <Key name={name} required={required?.includes?.(name)}>
-      {schema === parent ? (
-        <div>
-          <span class="type">object</span>
-          <Tag>recursive</Tag>
-        </div>
-      ) : (
-        <Schema nested schemaObject={schema} />
-      )}
+      <Schema nested schemaObject={schema} />
     </Key>
   ))
 }
