@@ -1,18 +1,153 @@
 ---
 import type { SchemaObject as SchemaObjectType } from '../../libs/schemaObject'
-import Examples, { type Props as ExamplesProps } from '../example/Examples.astro'
-import Text from '../Text.astro'
-
-import SchemaObject from './SchemaObject.astro'
+import type { Props as ExamplesProps } from '../example/Examples.astro'
 
 interface Props extends ExamplesProps {
   description?: string | undefined
   schema: SchemaObjectType | undefined
 }
 
-const { description, example, examples, schema } = Astro.props
+const { description, schema } = Astro.props
+
+function generateHtml(jsonObject: any, info: { isChild?: boolean; index?: number } = {}): string {
+  const { isChild = false, index = 0 } = info
+  let html = jsonObject?.item
+    ? `<div style="padding-left: ${index * 10}px;">${jsonObject?.item} ${
+        jsonObject?.children?.of
+          ? `<strong>of</strong> ${jsonObject?.children?.of?.item?.split('|')?.[0]?.replace('type: ', '')}`
+          : ''
+      }</div>`
+    : ''
+
+  if (jsonObject?.children) {
+    if (jsonObject?.children?.of) {
+      html += generateHtml(jsonObject.children.of)
+    } else {
+      if (!isChild) {
+        html += `<div style="padding-left: ${index * 10}px;"><strong>Properties:</strong> </div>`
+      }
+      for (const key in jsonObject.children) {
+        html += `<span style="padding-left: ${index * 10 + 5}px;"><strong>${key}:</strong> </span>`
+        html += generateHtml(jsonObject.children[key], { isChild: true, index: index + 1 })
+      }
+    }
+  } else {
+    // html += JSON.stringify(jsonObject, null, 2);
+  }
+
+  return html
+}
+
+function generateOutputHtml(schema: SchemaObjectType | undefined): string {
+  function generateObject(jsonObject: any, parentKey = '', level = 0) {
+    const result = []
+    const children: Record<string, any> = {}
+    const description = jsonObject?.description ?? ''
+    if (typeof jsonObject !== 'object' && !!jsonObject) {
+      result.push(jsonObject)
+    } else if (Array.isArray(jsonObject)) {
+      const hasObject = jsonObject.some((item) => typeof item === 'object')
+      if (hasObject) {
+        for (const item of jsonObject) {
+          if (typeof item === 'object') {
+            if (Array.isArray(item)) {
+              children['(with list of ➝)'] = item.map((item: any) => generateObject(item, parentKey, level + 1))
+            } else {
+              children[parentKey] = generateObject(item, parentKey, level + 1)
+            }
+          } else {
+            result.push(item.join(', '))
+          }
+        }
+      } else {
+        result.push(jsonObject.join(' | '))
+      }
+    } else if (typeof jsonObject === 'object') {
+      const { type, default: defaultValue, ...rest } = jsonObject || {}
+      const keys = Object.keys(rest)
+
+      if (type) {
+        result.push(`type: ${type}`)
+      }
+      if (defaultValue) {
+        result.push(`default: ${defaultValue}`)
+      }
+
+      if (keys.length > 0) {
+        const hasObject = keys.some((key) => typeof rest[key] === 'object')
+        if (hasObject) {
+          for (const key in rest) {
+            if (typeof rest[key] === 'object') {
+              if (Array.isArray(rest[key])) {
+                const hasObject = rest[key].some((item: any) => typeof item === 'object')
+                if (hasObject) {
+                  children[`${key} (with list of ➝)`] = rest[key].map((item: any) =>
+                    generateObject(item, key, level + 1),
+                  )
+                } else {
+                  if (key === 'enum') {
+                    result.push(`Allowed values: ${rest[key].join(', ')}`)
+                  } else if (key === 'required') {
+                    result.push(`required properties: ${rest[key].join(', ')}`)
+                  } else {
+                    children[`${key} (with list of ➝ ...)`] = rest[key].join(', ')
+                  }
+                }
+              } else {
+                if (key === 'items') {
+                  children['of'] = generateObject(rest[key], key, level + 1)
+                } else if (key === 'properties') {
+                  for (const propKey in rest[key]) {
+                    children[propKey] = generateObject(rest[key][propKey], propKey, level + 1)
+                  }
+                } else {
+                  children[key] = generateObject(rest[key], key, level + 1)
+                }
+              }
+            } else {
+              result.push(`${key}: ${rest[key]}`)
+            }
+          }
+        } else {
+          for (const key in rest) {
+            result.push(`${key}: ${rest[key]}`)
+          }
+        }
+      }
+    } else {
+      // nothing;
+    }
+
+    const resultObj: Record<string, any> = {}
+    if (description) {
+      resultObj['description'] = description
+    }
+    if (result.length > 0) {
+      resultObj['item'] = result
+        .sort((a, b) => {
+          if (a.includes('type')) {
+            return 1
+          } else if (b.includes('default')) {
+            return -1
+          } else {
+            return 0
+          }
+        })
+        .join(' | ')
+        .replaceAll('"', '')
+    }
+    if (Object.keys(children).length > 0) {
+      resultObj['children'] = children
+    }
+    return resultObj
+  }
+
+  const newObj = generateObject(schema)
+
+  return generateHtml(newObj)
+}
+const htmlSchema = generateOutputHtml(schema)
 ---
 
-{schema && <SchemaObject schemaObject={schema} hideExample={example !== undefined || examples !== undefined} />}
-<Text>{description}</Text>
-<Examples example={example} examples={examples} />
+{description ? <Fragment set:html={`<strong>Descritivo</strong>: ${description}`} /> : null}
+{htmlSchema ? <Fragment set:html={`${htmlSchema}`} /> : null}
