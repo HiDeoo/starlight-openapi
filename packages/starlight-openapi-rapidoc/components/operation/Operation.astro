@@ -52,6 +52,9 @@ const rapidocProps: Record<string, any> = {
 }
 
 const { operation } = pathItemOperation
+const slotName = `${pathItemOperation.method}-${
+  pathItemOperation?.path?.replaceAll('{', '-')?.replaceAll('}', '-') ?? ''
+}`
 ---
 
 <script is:inline define:vars={{ schemaFiltred }}>
@@ -109,10 +112,7 @@ const { operation } = pathItemOperation
 </script>
 
 <rapi-doc id="starlight-openapi-rapidoc" {...rapidocProps}>
-  <div
-    slot={`${pathItemOperation.method}-${pathItemOperation?.path?.replaceAll('{', '-')?.replaceAll('}', '-') ?? ''}`}
-    id="starlight-openapi-rapidoc-servers"
-  >
+  <div slot={slotName} id="starlight-openapi-rapidoc-servers">
     <label for="starlight-openapi-rapidoc-servers-select">Server</label>
     <select id="starlight-openapi-rapidoc-servers-select">
       {
@@ -150,7 +150,7 @@ const { operation } = pathItemOperation
 </div>
 
 <script is:inline src="https://unpkg.com/rapidoc/dist/rapidoc-min.js"></script>
-<style is:inline>
+<style is:inline define:vars={{ slotName: `'${slotName}'` }}>
   #starlight-openapi-rapidoc {
     background-color: transparent !important;
   }
@@ -162,5 +162,24 @@ const { operation } = pathItemOperation
     justify-content: flex-start;
     align-items: baseline;
     gap: 10px;
+    order: -4;
+  }
+  #starlight-openapi-rapidoc::part(section-operation) {
+    display: flex;
+    flex-direction: column;
+  }
+  #starlight-openapi-rapidoc::part(section-operation-summary) {
+    margin-top: 0;
+    order: -2;
+  }
+  #starlight-openapi-rapidoc::part(section-operation-webhook-method) {
+    order: -3;
+  }
+  #starlight-openapi-rapidoc::part(var(--slotName)) {
+    order: 3;
+  }
+
+  #starlight-openapi-rapidoc::part(section-operation-tag) {
+    display: none;
   }
 </style>
