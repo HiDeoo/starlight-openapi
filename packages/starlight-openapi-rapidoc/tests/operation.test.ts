@@ -3,13 +3,13 @@ import { expect, test } from './test'
 test('uses the operation summary for title', async ({ docPage }) => {
   await docPage.goto('/v3/petstore-simple/operations/listpets/')
 
-  await docPage.expectToHaveTitle('Petstore v3.0 (simple) - List all pets')
+  await docPage.expectToHaveTitle('Petstore v3.0 (simple) / pets / List all pets')
 })
 
 test('falls back to the operation ID for title', async ({ docPage }) => {
   await docPage.goto('/petstore/operations/findpets/')
 
-  await docPage.expectToHaveTitle('Petstore - findPets')
+  await docPage.expectToHaveTitle('Petstore / Operations / findPets')
 })
 
 test('displays basic informations', async ({ docPage }) => {

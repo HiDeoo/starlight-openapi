@@ -3,7 +3,7 @@ import { expect, test } from './test'
 test('displays a basic overview', async ({ docPage }) => {
   await docPage.goto('/v3/petstore-simple/')
 
-  await docPage.expectToHaveTitle('Petstore v3.0 (simple) - Overview')
+  await docPage.expectToHaveTitle('Petstore v3.0 (simple) / Overview')
 
   await expect(docPage.getByRole('heading', { level: 2, name: 'Swagger Petstore (1.0.0)' })).toBeVisible()
 
@@ -16,7 +16,7 @@ test('displays a basic overview', async ({ docPage }) => {
 test('displays advanced overviews', async ({ docPage }) => {
   await docPage.goto('/petstore/')
 
-  await docPage.expectToHaveTitle('Petstore - Overview')
+  await docPage.expectToHaveTitle('Petstore / Overview')
 
   await expect(docPage.getByRole('heading', { level: 2, name: 'Swagger Petstore (1.0.0)' })).toBeVisible()
 
