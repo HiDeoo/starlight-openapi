@@ -1,6 +1,6 @@
 {
   "name": "starlight-openapi-rapidoc-docs",
-  "version": "0.7.0",
+  "version": "0.8.0-beta",
   "license": "MIT",
   "description": "Starlight plugin to generate documentation from OpenAPI/Swagger specifications + RapiDoc.",
   "author": "HiDeoo <github@hideoo.dev> (https://hideoo.dev)",
