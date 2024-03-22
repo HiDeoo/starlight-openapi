@@ -62,8 +62,17 @@ if (schema.documentDereferenced !== true) {
 }
 
 const isOverview = type === 'overview'
+const SEPARATOR = '/'
+let title = `${schema.config.label}`
 
-const title = `${schema.config.label} - ${isOverview ? 'Overview' : Astro.props.operation.title}`
+if (isOverview) {
+  title = `${title} ${SEPARATOR} Overview`
+} else {
+  if (Astro.props.operation?.tag) {
+    title = `${title} ${SEPARATOR} ${Astro.props.operation.tag}`
+  }
+  title = `${title} ${SEPARATOR} ${Astro.props.operation.title}`
+}
 
 const frontmatter = {
   ...Astro.props?.frontmatter,

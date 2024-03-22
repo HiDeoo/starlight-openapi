@@ -35,6 +35,7 @@ export function getOperationsByTag(document: Schema['document']) {
           pathItem,
           slug: `operations/${slug(operationId)}`,
           title: (summary ?? operationId) || pathItemPath || `${description}`.slice(100) || '',
+          tag,
         })
 
         operationsByTag.set(tag, operations)
@@ -146,6 +147,7 @@ export interface PathItemOperation {
   pathItem: PathItem
   slug: string
   title: string
+  tag?: string
 }
 
 export type Operation = OpenAPI.Operation
