@@ -34,9 +34,9 @@ test('links to overview authentications', async ({ docPage }) => {
 
   const animalsAuthLink = authorizations.getByRole('link', { name: 'animals_auth' })
   await expect(animalsAuthLink).toBeVisible()
-  expect(await animalsAuthLink.getAttribute('href')).toBe('../../#animals_auth')
+  expect(await animalsAuthLink.getAttribute('href')).toBe('/api/v3/animals/#animals_auth')
 
   const apiKeyLink = authorizations.getByRole('link', { name: 'api_key' })
   await expect(apiKeyLink).toBeVisible()
-  expect(await apiKeyLink.getAttribute('href')).toBe('../../#api_key')
+  expect(await apiKeyLink.getAttribute('href')).toBe('/api/v3/animals/#api_key')
 })

@@ -1,5 +1,5 @@
 ---
-import type { SchemaObject as SchemaObjectType } from '../../libs/schemaObject'
+import { isSchemaObjectObject, type SchemaObject as SchemaObjectType } from '../../libs/schemaObject'
 import Examples, { type Props as ExamplesProps } from '../example/Examples.astro'
 import Text from '../Text.astro'
 
@@ -11,8 +11,12 @@ interface Props extends ExamplesProps {
 }
 
 const { description, example, examples, schema } = Astro.props
+
+// For objects, we want to show the description before the object itself.
+const isObject = schema && isSchemaObjectObject(schema)
 ---
 
+{isObject && <Text>{description}</Text>}
 {schema && <SchemaObject schemaObject={schema} hideExample={example !== undefined || examples !== undefined} />}
-<Text>{description}</Text>
+{!isObject && <Text>{description}</Text>}
 <Examples example={example} examples={examples} />

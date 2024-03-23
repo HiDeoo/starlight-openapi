@@ -134,9 +134,6 @@ test('uses the `content` property over a schema', async ({ docPage }) => {
   const limitParameter = docPage.getParameter('query', 'limit')
   const mediaTypeSelector = limitParameter.getByRole('combobox')
 
-  await limitParameter.highlight()
-  await docPage.page.pause()
-
   await expect(mediaTypeSelector).toBeVisible()
 
   await mediaTypeSelector.selectOption('application/json')
@@ -162,4 +159,26 @@ test('displays path parameters first then other parameters', async ({ docPage })
       'section:has(> h3:first-child:text-is("Path Parameters")) + section:has(> h3:first-child:text-is("Query Parameters"))',
     ),
   ).toBeVisible()
+})
+
+test('displays the description of an object before its properties', async ({ docPage }) => {
+  await docPage.goto('/v3/petstore-simple/operations/listpets/')
+
+  const limitParameter = docPage.getParameter('query', 'limit')
+  const limitText = await limitParameter.textContent()
+  const limitTypeIndex = limitText?.indexOf('integer')
+  const limitDescriptionIndex = limitText?.indexOf('How many items to return at one time (max 100)')
+
+  expect(limitTypeIndex).toBeGreaterThan(-1)
+  expect(limitDescriptionIndex).toBeGreaterThan(-1)
+  expect(limitTypeIndex).toBeLessThan(limitDescriptionIndex ?? -1)
+
+  const filtersParameter = docPage.getParameter('query', 'filters')
+  const filtersText = await filtersParameter.textContent()
+  const filtersDescriptionIndex = filtersText?.indexOf('A list of filters')
+  const filtersfirstParameterIndex = filtersText?.indexOf('name')
+
+  expect(filtersDescriptionIndex).toBeGreaterThan(-1)
+  expect(filtersfirstParameterIndex).toBeGreaterThan(-1)
+  expect(filtersDescriptionIndex).toBeLessThan(filtersfirstParameterIndex ?? -1)
 })
