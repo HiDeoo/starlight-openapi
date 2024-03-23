@@ -40,6 +40,8 @@ function getExampleLang(type: string | undefined) {
     }
   }
 }
+
+const code = exampleToRender ? getExampleValue(exampleToRender.value).trim() : ''
 ---
 
 {
@@ -52,7 +54,7 @@ function getExampleLang(type: string | undefined) {
           <a href={exampleToRender.externalValue}>{exampleToRender.externalValue}</a>
         </Text>
       )}
-      {exampleToRender.value && <Code code={getExampleValue(exampleToRender.value)} lang={getExampleLang(type)} />}
+      {code.length > 0 && <Code {code} lang={getExampleLang(type)} />}
     </>
   )
 }
