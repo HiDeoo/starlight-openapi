@@ -29,6 +29,23 @@
               "maximum": 100,
               "format": "int32"
             }
+          },
+          {
+            "name": "filters",
+            "in": "query",
+            "description": "A list of filters",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "tag": {
+                  "type": "string"
+                }
+              }
+            }
           }
         ],
         "responses": {
