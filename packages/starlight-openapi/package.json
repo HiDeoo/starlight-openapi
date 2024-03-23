@@ -15,7 +15,6 @@
     "lint": "prettier -c --cache . && eslint . --cache --max-warnings=0"
   },
   "dependencies": {
-    "@astropub/md": "0.4.0",
     "@readme/openapi-parser": "2.5.0",
     "github-slugger": "2.0.0"
   },
@@ -27,6 +26,7 @@
     "openapi-types": "12.1.3"
   },
   "peerDependencies": {
+    "@astrojs/markdown-remark": ">=4.2.0",
     "@astrojs/starlight": ">=0.19.0",
     "astro": ">=4.2.7"
   },
