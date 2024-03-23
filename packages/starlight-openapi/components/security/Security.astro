@@ -1,6 +1,6 @@
 ---
 import type { Operation } from '../../libs/operation'
-import { slug } from '../../libs/path'
+import { getBaseLink, slug } from '../../libs/path'
 import type { Schema } from '../../libs/schema'
 import { getSecurityRequirements } from '../../libs/security'
 import Section from '../Section.astro'
@@ -35,7 +35,7 @@ const requirements = getSecurityRequirements(schema, operation)
             return (
               <li class="scheme not-content">
                 <strong>
-                  <a href={`../../#${slug(scheme)}`}>{scheme}</a>
+                  <a href={`${getBaseLink(schema.config)}#${slug(scheme)}`}>{scheme}</a>
                 </strong>
                 {scopes.length > 0 ? <Tags tags={[...scopes]} /> : null}
               </li>
