@@ -16,13 +16,20 @@ export function getOperationsByTag(document: Schema['document']) {
       continue
     }
 
-    for (const method of operationHttpMethods) {
-      if (!isPathItemOperation(pathItem, method)) {
+    const allOperationIds = operationHttpMethods.map((method) => {
+      return isPathItemOperation(pathItem, method) ? pathItem[method].operationId ?? pathItemPath : undefined
+    })
+
+    for (const [index, method] of operationHttpMethods.entries()) {
+      const operationId = allOperationIds[index]
+
+      if (!operationId || !isPathItemOperation(pathItem, method)) {
         continue
       }
 
       const operation = pathItem[method]
-      const operationId = operation.operationId ?? pathItemPath
+      const isDuplicateOperationId = allOperationIds.filter((id) => id === operationId).length > 1
+      const operationIdSlug = slug(operationId)
 
       for (const tag of operation.tags ?? [defaultOperationTag]) {
         const operations = operationsByTag.get(tag) ?? []
@@ -32,8 +39,11 @@ export function getOperationsByTag(document: Schema['document']) {
           operation,
           path: pathItemPath,
           pathItem,
-          slug: `operations/${slug(operationId)}`,
-          title: operation.summary ?? operationId,
+          slug: isDuplicateOperationId
+            ? `operations/${operationIdSlug}/${slug(method)}`
+            : `operations/${operationIdSlug}`,
+          title:
+            operation.summary ?? (isDuplicateOperationId ? `${operationId} (${method.toUpperCase()})` : operationId),
         })
 
         operationsByTag.set(tag, operations)

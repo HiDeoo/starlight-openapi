@@ -267,6 +267,50 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /turtles:
+    get:
+      summary: List all turtles
+      description: |
+        returns _all_ turtles
+      tags:
+        - animals
+      responses:
+        '200':
+          description: A paged array of turtles
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Animals'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      description: Creates a new turtle
+      tags:
+        - animals
+      requestBody:
+        description: Turtle to add
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Animal'
+      responses:
+        '200':
+          description: animal response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Animal'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 webhooks:
   newAnimal:
     post:

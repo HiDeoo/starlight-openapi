@@ -54,3 +54,13 @@ test('displays overriden operation URLs for a v3.0 schema', async ({ docPage }) 
   await expect(docPage.getOperation().getByText('Custom server')).toBeVisible()
   expect(await docPage.getOperation().getByRole('textbox').inputValue()).toBe('custom.example.com/api/bears')
 })
+
+test('generates multiple pages for operations with identical IDs but different methods', async ({ docPage }) => {
+  await docPage.goto('/v3/animals/operations/turtles/get')
+
+  await docPage.expectToHaveTitle('List all turtles')
+
+  await docPage.goto('/v3/animals/operations/turtles/post')
+
+  await docPage.expectToHaveTitle('/turtles (POST)')
+})
