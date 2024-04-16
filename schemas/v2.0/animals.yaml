@@ -363,6 +363,24 @@ paths:
           description: 'unexpected error'
           schema:
             $ref: '#/definitions/Error'
+  /turtles:
+    post:
+      description: 'Creates a new turtle'
+      operationId: 'addTurtle'
+      parameters:
+        - name: 'turtle'
+          in: 'body'
+          description: 'Turtle to add'
+          required: true
+          schema:
+            allOf:
+              - $ref: '#/definitions/NewAnimal'
+              - required:
+                  - 'age'
+                properties:
+                  age:
+                    type: 'integer'
+                    format: 'int32'
 definitions:
   Animal:
     type: 'object'

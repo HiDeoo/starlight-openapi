@@ -48,8 +48,16 @@ test('displays the request body for a v3.0 schema', async ({ docPage }) => {
   expect(await requestBody.getByRole('combobox').inputValue()).toBe('application/json')
 })
 
-test('supports schema object `allOf` property for objects', async ({ docPage }) => {
+test('supports schema object `allOf` property for explicit objects', async ({ docPage }) => {
   await docPage.goto('/v2/animals/operations/addcat/')
+
+  await expect(docPage.getRequestBodyParameter('name')).toBeVisible()
+  await expect(docPage.getRequestBodyParameter('tag')).toBeVisible()
+  await expect(docPage.getRequestBodyParameter('age')).toBeVisible()
+})
+
+test('supports schema object `allOf` property for implicit objects', async ({ docPage }) => {
+  await docPage.goto('/v2/animals/operations/addturtle/')
 
   await expect(docPage.getRequestBodyParameter('name')).toBeVisible()
   await expect(docPage.getRequestBodyParameter('tag')).toBeVisible()
