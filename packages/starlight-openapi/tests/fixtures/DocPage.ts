@@ -18,7 +18,7 @@ export class DocPage {
   }
 
   getContent() {
-    return this.page.getByRole('main')
+    return this.page.locator('.sl-markdown-content')
   }
 
   async expectToHaveTitle(title: string) {
