@@ -5,8 +5,8 @@ import { isParameterWithSchemaObject } from '../../libs/schemaObject'
 import Content from '../Content.astro'
 import Items from '../Items.astro'
 import Key from '../Key.astro'
+import Md from '../Md.astro'
 import Schema from '../schema/Schema.astro'
-import Text from '../Text.astro'
 
 interface Props {
   parameter: Parameter
@@ -20,12 +20,12 @@ const { parameter } = Astro.props
     isOpenAPIV2Items(parameter) ? (
       <>
         <Items items={parameter} />
-        <Text>{parameter.description}</Text>
+        <Md text={parameter.description} />
       </>
     ) : parameter.content ? (
       <>
         <Content content={parameter.content} />
-        <Text>{parameter.description}</Text>
+        <Md text={parameter.description} />
       </>
     ) : isParameterWithSchemaObject(parameter) ? (
       <Schema

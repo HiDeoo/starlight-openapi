@@ -1,7 +1,7 @@
 ---
 import { isSchemaObjectObject, type SchemaObject as SchemaObjectType } from '../../libs/schemaObject'
 import Examples, { type Props as ExamplesProps } from '../example/Examples.astro'
-import Text from '../Text.astro'
+import Md from '../Md.astro'
 
 import SchemaObject from './SchemaObject.astro'
 
@@ -16,7 +16,7 @@ const { description, example, examples, schema } = Astro.props
 const isObject = schema && isSchemaObjectObject(schema)
 ---
 
-{isObject && <Text>{description}</Text>}
+{isObject && <Md text={description} />}
 {schema && <SchemaObject schemaObject={schema} hideExample={example !== undefined || examples !== undefined} />}
-{!isObject && <Text>{description}</Text>}
+{!isObject && <Md text={description} />}
 <Examples example={example} examples={examples} />
