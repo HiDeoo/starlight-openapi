@@ -63,6 +63,10 @@ export default defineConfig({
           ],
         },
         {
+          label: 'Resources',
+          items: [{ label: 'Plugins and Tools', link: '/resources/starlight/' }],
+        },
+        {
           label: 'Demo',
           items: openAPISidebarGroups,
         },
