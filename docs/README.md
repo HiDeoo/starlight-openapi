@@ -15,7 +15,7 @@
 
 ## Docs
 
-Run the docs locally using your favorite package manager, e.g. with [pnpm](https://pnpm.io):
+Run the docs locally using [pnpm](https://pnpm.io):
 
 ```shell
 pnpm run dev
