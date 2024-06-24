@@ -1,0 +1,52 @@
+---
+title: Showcase
+description: Discover Starlight project using the Starlight OpenAPI plugin.
+---
+
+import { ShowcaseIntro, Showcase } from '@hideoo/starlight-plugins-docs-components'
+
+<ShowcaseIntro
+  cta="Have you built a documentation using Starlight OpenAPI?"
+  href="https://github.com/HiDeoo/starlight-openapi/edit/main/docs/src/content/docs/resources/showcase.mdx"
+/>
+
+## Sites
+
+Starlight OpenAPI is already being used in production. These are some of the sites around the web:
+
+<Showcase
+  entries={[
+    {
+      thumbnail: import('../../../assets/showcase/openpayments.dev.png'),
+      href: 'https://openpayments.dev/',
+      title: 'Open Payments',
+    },
+    {
+      thumbnail: import('../../../assets/showcase/classchartsapi.github.io.png'),
+      href: 'https://classchartsapi.github.io/api-docs/',
+      title: 'ClassCharts API',
+    },
+    {
+      thumbnail: import('../../../assets/showcase/openpodcastapi.org.png'),
+      href: 'https://openpodcastapi.org/',
+      title: 'Open Podcast API',
+    },
+    {
+      thumbnail: import('../../../assets/showcase/docs.garajonai.com.png'),
+      href: 'https://docs.garajonai.com/',
+      title: 'GarajonAI',
+    },
+    {
+      thumbnail: import('../../../assets/showcase/fxhu.kripod.dev.png'),
+      href: 'https://fxhu.kripod.dev/',
+      title: 'FXHU',
+    },
+    {
+      thumbnail: import('../../../assets/showcase/docs.taiko.xyz.png'),
+      href: 'https://docs.taiko.xyz/start-here/getting-started',
+      title: 'Taiko',
+    },
+  ]}
+/>
+
+See all the [public project repos using Starlight on GitHub](https://github.com/hideoo/starlight-openapi/network/dependents).
