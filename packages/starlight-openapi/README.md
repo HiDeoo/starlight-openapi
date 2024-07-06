@@ -20,7 +20,7 @@
 
 ## Getting Started
 
-Want to get started immediately? Check out the [getting started guide](https://starlight-openapi.vercel.app/guides/getting-started/) or check out the [demo](https://starlight-openapi.vercel.app/api/petstore/operations/addpet/) to see the plugin in action.
+Want to get started immediately? Check out the [getting started guide](https://starlight-openapi.vercel.app/getting-started/) or check out the [demo](https://starlight-openapi.vercel.app/api/petstore/operations/addpet/) to see the plugin in action.
 
 ## Features
 
