@@ -20,7 +20,7 @@ export function starlightOpenAPIDocsDemoPlugin(): StarlightPlugin {
 }
 
 function isSidebarGroup(item: unknown): item is SidebarGroup {
-  return 'items' in (item as SidebarGroup)
+  return typeof item !== 'string' && 'items' in (item as SidebarGroup)
 }
 
 export interface SidebarGroup {

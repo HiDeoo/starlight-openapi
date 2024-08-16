@@ -78,7 +78,7 @@ export function makeSidebarLink(label: string, link: string): SidebarLink {
 }
 
 function isSidebarManualGroup(item: NonNullable<StarlightUserConfigSidebar>[number]): item is SidebarManualGroup {
-  return 'items' in item
+  return typeof item !== 'string' && 'items' in item
 }
 
 function getOverviewHeadings({ document }: Schema): MarkdownHeading[] {
