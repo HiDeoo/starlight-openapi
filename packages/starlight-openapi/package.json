@@ -19,7 +19,7 @@
     "github-slugger": "2.0.0"
   },
   "devDependencies": {
-    "@astrojs/starlight": "0.24.4",
+    "@astrojs/starlight": "0.26.0",
     "@playwright/test": "1.36.2",
     "@types/node": "18.17.3",
     "astro": "4.11.1",
@@ -27,8 +27,8 @@
   },
   "peerDependencies": {
     "@astrojs/markdown-remark": ">=4.2.0",
-    "@astrojs/starlight": ">=0.19.0",
-    "astro": ">=4.2.7"
+    "@astrojs/starlight": ">=0.26.0",
+    "astro": ">=4.8.6"
   },
   "engines": {
     "node": ">=18.14.1"

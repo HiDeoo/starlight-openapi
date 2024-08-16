@@ -14,7 +14,7 @@
     "lint": "prettier -c --cache . && eslint . --cache --max-warnings=0"
   },
   "dependencies": {
-    "@astrojs/starlight": "0.24.4",
+    "@astrojs/starlight": "0.26.0",
     "@hideoo/starlight-plugins-docs-components": "^0.2.2",
     "astro": "4.11.1",
     "sharp": "0.32.6",
