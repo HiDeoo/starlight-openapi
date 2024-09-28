@@ -11,9 +11,10 @@ interface Props {
   items: Items
   negated?: boolean | undefined
   nullable?: boolean | undefined
+  parents?: SchemaObject[]
 }
 
-const { hideExample, items, negated, nullable } = Astro.props
+const { hideExample, items, negated, nullable, parents = [] } = Astro.props
 
 const enumItems = items.enum ?? items.items?.enum
 ---
@@ -46,7 +47,7 @@ const enumItems = items.enum ?? items.items?.enum
 />
 
 {enumItems && <Tags label="Allowed values:" tags={enumItems} />}
-{items.items && isSchemaObjectObject(items.items) && <SchemaObject nested schemaObject={items.items} {hideExample} />}
+{items.items && isSchemaObjectObject(items.items) && <SchemaObject {parents} nested schemaObject={items.items} {hideExample} />}
 
 <style>
   .type {

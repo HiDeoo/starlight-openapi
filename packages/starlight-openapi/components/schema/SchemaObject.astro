@@ -19,10 +19,11 @@ interface Props {
   hideExample?: boolean | undefined
   negated?: boolean
   nested?: boolean
+  parents?: SchemaObject[]
   schemaObject: SchemaObject
 }
 
-const { hideExample = false, negated, nested = false, schemaObject } = Astro.props
+const { hideExample = false, negated, nested = false, parents = [], schemaObject } = Astro.props
 
 const schemaObjects = getSchemaObjects(schemaObject)
 
@@ -32,7 +33,7 @@ const isNegated = schemaObject.not !== undefined
 
 {
   hasMany ? (
-    <SchemaObjects discriminator={schemaObject.discriminator} {nested} {schemaObjects} />
+    <SchemaObjects {parents} discriminator={schemaObject.discriminator} {nested} {schemaObjects} />
   ) : isNegated ? (
     <Astro.self negated schemaObject={schemaObject.not} />
   ) : (
@@ -40,11 +41,11 @@ const isNegated = schemaObject.not !== undefined
       <Md text={schemaObject.description} />
       <ExternalDocs docs={schemaObject.externalDocs} />
       {isSchemaObjectObject(schemaObject) ? (
-        <SchemaObjectObject {nested} {schemaObject} />
+        <SchemaObjectObject {parents} {nested} {schemaObject} />
       ) : isSchemaObjectAllOf(schemaObject) ? (
-        <SchemaObjectAllOf {schemaObject} />
+        <SchemaObjectAllOf {parents} {schemaObject} />
       ) : (
-        <Items items={schemaObject} {negated} nullable={getNullable(schemaObject)} />
+        <Items {parents} items={schemaObject} {negated} nullable={getNullable(schemaObject)} />
       )}
       {!hideExample && schemaObject.example && <Example raw={schemaObject.example} />}
     </>

@@ -11,10 +11,11 @@ import SchemaObjectObjectProperties from './SchemaObjectObjectProperties.astro'
 
 interface Props {
   nested: boolean
+  parents?: SchemaObject[]
   schemaObject: SchemaObject
 }
 
-const { nested, schemaObject } = Astro.props
+const { nested, parents = [], schemaObject } = Astro.props
 
 const properties = getProperties(schemaObject)
 ---
@@ -30,15 +31,15 @@ const properties = getProperties(schemaObject)
       schemaObject.maxProperties && `<= ${schemaObject.maxProperties} properties`,
     ]}
   />
-  <SchemaObjectObjectProperties parent={schemaObject} {properties} required={schemaObject.required} />
-  <SchemaObjectAllOf {schemaObject} />
+  <SchemaObjectObjectProperties parents={[...parents, schemaObject]} {properties} required={schemaObject.required} />
+  <SchemaObjectAllOf {parents} {schemaObject} />
   {
     schemaObject.additionalProperties && (
       <Key additional name="key">
         {schemaObject.additionalProperties === true ? (
           <div class="any">any</div>
         ) : isAdditionalPropertiesWithSchemaObject(schemaObject.additionalProperties) ? (
-          <Schema schemaObject={schemaObject.additionalProperties} />
+          <Schema parents={[...parents, schemaObject]} schemaObject={schemaObject.additionalProperties} />
         ) : null}
       </Key>
     )
