@@ -1,6 +1,4 @@
 ---
-import { Icon } from '@astrojs/starlight/components'
-
 import { getProperties, isAdditionalPropertiesWithSchemaObject, type SchemaObject } from '../../libs/schemaObject'
 import Key from '../Key.astro'
 import Tags from '../Tags.astro'
@@ -23,7 +21,6 @@ const properties = getProperties(schemaObject)
 <details class:list={[!nested && 'root']} open={!nested}>
   <summary>
     <span class="type">object</span>
-    <Icon class="caret" name="right-caret" size="1.25rem" />
   </summary>
   <Tags
     tags={[
@@ -77,20 +74,6 @@ const properties = getProperties(schemaObject)
   summary::marker,
   summary::-webkit-details-marker {
     display: none;
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .caret {
-      transition: transform 0.2s ease-in-out;
-    }
-  }
-
-  details[open] > summary > .caret {
-    transform: rotateZ(90deg);
-  }
-
-  :global([dir='rtl']) .caret {
-    transform: rotateZ(180deg);
   }
 
   .type {
