@@ -11,10 +11,11 @@ import Items from '../Items.astro'
 import SchemaObjectObjectProperties from './SchemaObjectObjectProperties.astro'
 
 interface Props {
+  parents?: SchemaObject[]
   schemaObject: SchemaObject
 }
 
-const { schemaObject } = Astro.props
+const { schemaObject, parents = [] } = Astro.props
 ---
 
 {
@@ -22,7 +23,7 @@ const { schemaObject } = Astro.props
     schemaObject.allOf.map((allOfSchemaObject) =>
       isSchemaObjectObject(schemaObject) && isSchemaObject(allOfSchemaObject) ? (
         <SchemaObjectObjectProperties
-          parent={schemaObject}
+          parents={[...parents, schemaObject]}
           properties={getProperties(allOfSchemaObject)}
           required={allOfSchemaObject.required}
         />
@@ -31,6 +32,7 @@ const { schemaObject } = Astro.props
           items={allOfSchemaObject}
           negated={allOfSchemaObject.not !== undefined}
           nullable={getNullable(allOfSchemaObject)}
+          parents={[...parents, schemaObject]}
         />
       ) : null,
     )

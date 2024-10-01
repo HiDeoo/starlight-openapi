@@ -10,12 +10,14 @@ import SchemaObject from './SchemaObject.astro'
 interface Props {
   discriminator: Discriminator
   nested: boolean
+  parents?: SchemaObject[]
   schemaObjects: SchemaObjects
 }
 
 const {
   discriminator,
   nested,
+  parents = [],
   schemaObjects: { schemaObjects, type },
 } = Astro.props
 
@@ -40,7 +42,7 @@ const humanReadableType: Record<SchemaObjects['type'], string> = {
   {
     schemaObjects.map((schemaObject) => (
       <TabItem label={schemaObject.title ?? getType(schemaObject) ?? 'unknown'}>
-        <SchemaObject {nested} schemaObject={schemaObject} />
+        <SchemaObject {parents} {nested} schemaObject={schemaObject} />
       </TabItem>
     ))
   }

@@ -1,0 +1,72 @@
+openapi: 3.1.0
+info:
+  title: Test Simple Recursion
+  description: Example of the simple recursion issue.
+  version: 1.0.0
+servers:
+  - url: 'http://localhost'
+paths:
+  /categories:
+    get:
+      summary: List all categories
+      operationId: listCategories
+      parameters:
+        - name: limit
+          in: query
+          description: How many categories to return at one time (max 100)
+          schema:
+            type: integer
+            maximum: 50
+            format: int32
+            nullable: true
+        - name: offset
+          in: query
+          description: The number of categories to skip before starting to collect the result set
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: A paged array of categories
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Categories'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Category:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        parent:
+          $ref: '#/components/schemas/Category'
+    Categories:
+      type: array
+      maxItems: 100
+      items:
+        $ref: '#/components/schemas/Category'
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string

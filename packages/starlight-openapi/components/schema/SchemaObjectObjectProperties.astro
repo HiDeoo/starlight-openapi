@@ -6,24 +6,24 @@ import Tag from '../Tag.astro'
 import Schema from './SchemaObject.astro'
 
 interface Props {
-  parent: SchemaObject
+  parents: SchemaObject[]
   properties: Properties
   required: string[] | undefined
 }
 
-const { parent, properties, required } = Astro.props
+const { parents, properties, required } = Astro.props
 ---
 
 {
   Object.entries(properties).map(([name, schema]) => (
     <Key name={name} required={required?.includes(name)}>
-      {schema === parent ? (
+      {parents?.indexOf(schema) >= 0 ? (
         <div>
           <span class="type">object</span>
           <Tag>recursive</Tag>
         </div>
       ) : (
-        <Schema nested schemaObject={schema} />
+        <Schema {parents} nested schemaObject={schema} />
       )}
     </Key>
   ))

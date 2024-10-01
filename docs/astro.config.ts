@@ -51,6 +51,16 @@ export default defineConfig({
             label: 'Animals v2.0',
             schema: '../schemas/v2.0/animals.yaml',
           },
+          {
+            base: 'api/v3/recursive',
+            label: 'Recursion v3.0',
+            schema: '../schemas/v3.0/recursive.yaml',
+          },
+          {
+            base: 'api/v3/recursive-simple',
+            label: 'Simple Recursion v3.0',
+            schema: '../schemas/v3.0/recursive-simple.yaml',
+          },
         ]),
         starlightOpenAPIDocsDemoPlugin(),
       ],
