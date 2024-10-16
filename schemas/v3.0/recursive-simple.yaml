@@ -54,6 +54,11 @@ components:
           type: string
         parent:
           $ref: '#/components/schemas/Category'
+        children:
+          description: Sub categories
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
     Categories:
       type: array
       maxItems: 100
