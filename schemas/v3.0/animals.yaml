@@ -336,6 +336,53 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /okapi:
+    post:
+      summary: Creates a new okapi
+      tags:
+        - animals
+      requestBody:
+        description: Okapi to add
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - type: object
+                  properties:
+                    id:
+                      type: integer
+                      format: int64
+                - type: object
+                  properties:
+                    name:
+                      type: string
+                - anyOf:
+                    - type: object
+                      title: 'basic details'
+                      properties:
+                        color:
+                          type: string
+                    - type: object
+                      title: 'advanced details'
+                      properties:
+                        color:
+                          type: string
+                        age:
+                          type: integer
+      responses:
+        '200':
+          description: animal response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Animal'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 webhooks:
   newAnimal:
     post:
