@@ -43,7 +43,7 @@ const isNegated = schemaObject.not !== undefined
       {isSchemaObjectObject(schemaObject) ? (
         <SchemaObjectObject {parents} {nested} {schemaObject} />
       ) : isSchemaObjectAllOf(schemaObject) ? (
-        <SchemaObjectAllOf {parents} {schemaObject} />
+        <SchemaObjectAllOf {nested} {parents} {schemaObject} />
       ) : (
         <Items {parents} items={schemaObject} {negated} nullable={getNullable(schemaObject)} />
       )}

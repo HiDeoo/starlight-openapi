@@ -29,7 +29,7 @@ const properties = getProperties(schemaObject)
     ]}
   />
   <SchemaObjectObjectProperties parents={[...parents, schemaObject]} {properties} required={schemaObject.required} />
-  <SchemaObjectAllOf {parents} {schemaObject} />
+  <SchemaObjectAllOf {nested} {parents} {schemaObject} />
   {
     schemaObject.additionalProperties && (
       <Key additional name="key">

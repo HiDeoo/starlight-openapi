@@ -82,6 +82,20 @@ test('supports schema object `allOf` property for non-objects', async ({ docPage
   await expect(typeParameter.getByText('Allowed values: berkshire tamworth')).toBeVisible()
 })
 
+test('supports schema object `allOf` property with nested schema objects like `anyOf`', async ({ docPage }) => {
+  await docPage.goto('/v3/animals/operations/okapi/')
+
+  const requestBody = docPage.getRequestBody()
+
+  await expect(requestBody.getByText('Any of:')).toBeVisible()
+
+  await expect(requestBody.getByRole('tab')).toContainText(['basic details', 'advanced details'])
+
+  await requestBody.getByRole('tab', { name: 'advanced details' }).click()
+
+  await expect(requestBody.getByText('age')).toBeVisible()
+})
+
 test('supports schema object `oneOf` property', async ({ docPage }) => {
   await docPage.goto('/v2/animals/operations/addbird/')
 
