@@ -14,6 +14,7 @@ interface Props {
 const { operation, schema } = Astro.props
 
 const requirements = getSecurityRequirements(schema, operation)
+const baseURL = (import.meta.env.BASE_URL || '').replace(/\/$/, '')
 ---
 
 {
@@ -35,7 +36,7 @@ const requirements = getSecurityRequirements(schema, operation)
             return (
               <li class="scheme not-content">
                 <strong>
-                  <a href={`${getBaseLink(schema.config)}#${slug(scheme)}`}>{scheme}</a>
+                  <a href={`${baseURL}${getBaseLink(schema.config)}#${slug(scheme)}`}>{scheme}</a>
                 </strong>
                 {scopes.length > 0 ? <Tags tags={[...scopes]} /> : null}
               </li>
