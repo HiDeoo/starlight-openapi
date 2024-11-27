@@ -1,10 +1,10 @@
 import { getOperationsByTag, getWebhooksOperations } from './operation'
-import { getBaseLink } from './path'
+import { getBasePath } from './path'
 import type { Schema } from './schema'
 import { makeSidebarGroup, makeSidebarLink, type SidebarManualGroup } from './starlight'
 
 export function getPathItemSidebarGroups({ config, document }: Schema): SidebarManualGroup['items'] {
-  const baseLink = getBaseLink(config)
+  const baseLink = getBasePath(config)
   const operations = getOperationsByTag(document)
 
   return [...operations.entries()].map(([tag, operations]) =>
@@ -17,7 +17,7 @@ export function getPathItemSidebarGroups({ config, document }: Schema): SidebarM
 }
 
 export function getWebhooksSidebarGroups({ config, document }: Schema): SidebarManualGroup['items'] {
-  const baseLink = getBaseLink(config)
+  const baseLink = getBasePath(config)
   const operations = getWebhooksOperations(document)
 
   if (operations.length === 0) {

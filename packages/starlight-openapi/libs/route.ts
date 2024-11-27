@@ -1,14 +1,14 @@
 import schemas from 'virtual:starlight-openapi-schemas'
 
 import { getOperationsByTag, getWebhooksOperations, type PathItemOperation } from './operation'
-import { getBaseLink, stripLeadingAndTrailingSlashes } from './path'
+import { getBasePath, stripLeadingAndTrailingSlashes } from './path'
 import type { Schema } from './schema'
 
 export function getSchemaStaticPaths(): StarlighOpenAPIRoute[] {
   return Object.values(schemas).flatMap((schema) => [
     {
       params: {
-        openAPISlug: stripLeadingAndTrailingSlashes(getBaseLink(schema.config)),
+        openAPISlug: stripLeadingAndTrailingSlashes(getBasePath(schema.config)),
       },
       props: {
         schema,
@@ -21,7 +21,7 @@ export function getSchemaStaticPaths(): StarlighOpenAPIRoute[] {
 }
 
 function getPathItemStaticPaths(schema: Schema): StarlighOpenAPIRoute[] {
-  const baseLink = getBaseLink(schema.config)
+  const baseLink = getBasePath(schema.config)
   const operations = getOperationsByTag(schema.document)
 
   return [...operations.entries()].flatMap(([, operations]) =>
@@ -39,7 +39,7 @@ function getPathItemStaticPaths(schema: Schema): StarlighOpenAPIRoute[] {
 }
 
 function getWebhooksStaticPaths(schema: Schema): StarlighOpenAPIRoute[] {
-  const baseLink = getBaseLink(schema.config)
+  const baseLink = getBasePath(schema.config)
   const operations = getWebhooksOperations(schema.document)
 
   return operations.map((operation) => ({
