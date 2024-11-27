@@ -4,13 +4,29 @@ import type { StarlightOpenAPISchemaConfig } from './schema'
 
 export { slug } from 'github-slugger'
 
-export function getBaseLink(config: StarlightOpenAPISchemaConfig) {
+const base = stripTrailingSlash(import.meta.env.BASE_URL)
+
+/**
+ * Does not take the Astro `base` configuration option into account.
+ * @see {@link getBaseLink} for a link that does.
+ */
+export function getBasePath(config: StarlightOpenAPISchemaConfig) {
   const path = config.base
     .split('/')
     .map((part) => slug(part))
     .join('/')
 
   return `/${path}/`
+}
+
+/**
+ * Takes the Astro `base` configuration option into account.
+ * @see {@link getBasePath} for a slug that does not.
+ */
+export function getBaseLink(config: StarlightOpenAPISchemaConfig) {
+  const path = stripLeadingSlash(getBasePath(config))
+
+  return path ? `${base}/${path}` : `${base}/`
 }
 
 export function stripLeadingAndTrailingSlashes(path: string): string {

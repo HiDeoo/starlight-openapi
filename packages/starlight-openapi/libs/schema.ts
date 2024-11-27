@@ -1,7 +1,7 @@
 import { z } from 'astro/zod'
 import type { OpenAPI } from 'openapi-types'
 
-import { getBaseLink, stripLeadingAndTrailingSlashes } from './path'
+import { getBasePath, stripLeadingAndTrailingSlashes } from './path'
 import { getPathItemSidebarGroups, getWebhooksSidebarGroups } from './pathItem'
 import { makeSidebarGroup, makeSidebarLink, type SidebarManualGroup } from './starlight'
 
@@ -32,7 +32,7 @@ export function getSchemaSidebarGroups(schema: Schema): SidebarManualGroup {
   return makeSidebarGroup(
     config.label ?? document.info.title,
     [
-      makeSidebarLink('Overview', getBaseLink(config)),
+      makeSidebarLink('Overview', getBasePath(config)),
       ...getPathItemSidebarGroups(schema),
       ...getWebhooksSidebarGroups(schema),
     ],
