@@ -8,7 +8,7 @@
   "scripts": {
     "test": "pnpm --stream -r test",
     "lint": "pnpm -r lint",
-    "prepare": "husky install"
+    "format": "pnpm -r format"
   },
   "devDependencies": {
     "@hideoo/eslint-config": "3.0.0",
@@ -16,8 +16,6 @@
     "@hideoo/tsconfig": "2.0.1",
     "astro": "4.11.1",
     "eslint": "8.56.0",
-    "husky": "8.0.3",
-    "lint-staged": "14.0.1",
     "prettier": "3.0.3",
     "prettier-plugin-astro": "0.12.0",
     "typescript": "5.1.6"
@@ -41,11 +39,5 @@
     "type": "git",
     "url": "https://github.com/HiDeoo/starlight-openapi.git"
   },
-  "bugs": "https://github.com/HiDeoo/starlight-openapi/issues",
-  "lint-staged": {
-    "*": [
-      "prettier -w -u --cache",
-      "eslint --cache --no-warn-ignored --max-warnings=0"
-    ]
-  }
+  "bugs": "https://github.com/HiDeoo/starlight-openapi/issues"
 }
