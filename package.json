@@ -8,7 +8,8 @@
   "scripts": {
     "test": "pnpm --stream -r test",
     "lint": "pnpm -r lint",
-    "format": "pnpm -r format"
+    "format": "pnpm -r format",
+    "version": "pnpm changeset version && pnpm i --no-frozen-lockfile"
   },
   "devDependencies": {
     "@changesets/changelog-github": "0.5.0",
