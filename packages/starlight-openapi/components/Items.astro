@@ -1,6 +1,6 @@
 ---
 import { getBound, getType, type Items } from '../libs/items'
-import { isSchemaObjectObject } from '../libs/schemaObject'
+import { isSchemaObjectObject, type SchemaObject as SchemaObjectType } from '../libs/schemaObject'
 
 import SchemaObject from './schema/SchemaObject.astro'
 import Tag from './Tag.astro'
@@ -11,7 +11,7 @@ interface Props {
   items: Items
   negated?: boolean | undefined
   nullable?: boolean | undefined
-  parents?: SchemaObject[]
+  parents?: SchemaObjectType[]
 }
 
 const { hideExample, items, negated, nullable, parents = [] } = Astro.props
@@ -47,7 +47,11 @@ const enumItems = items.enum ?? items.items?.enum
 />
 
 {enumItems && <Tags label="Allowed values:" tags={enumItems} />}
-{items.items && isSchemaObjectObject(items.items) && <SchemaObject {parents} nested schemaObject={items.items} {hideExample} />}
+{
+  items.items && isSchemaObjectObject(items.items) && (
+    <SchemaObject {parents} nested schemaObject={items.items} {hideExample} />
+  )
+}
 
 <style>
   .type {

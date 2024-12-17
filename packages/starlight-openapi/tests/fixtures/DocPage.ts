@@ -31,7 +31,7 @@ export class DocPage {
   }
 
   getParameters(location: string) {
-    return this.page.locator(`h3:text-is("${`${capitalize(location)} Parameters`}") + div > div`)
+    return this.page.locator(`h3:text-is("${capitalize(location)} Parameters") + div > div`)
   }
 
   getRequestBody() {
