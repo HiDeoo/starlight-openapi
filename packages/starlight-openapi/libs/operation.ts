@@ -17,7 +17,7 @@ export function getOperationsByTag(document: Schema['document']) {
     }
 
     const allOperationIds = operationHttpMethods.map((method) => {
-      return isPathItemOperation(pathItem, method) ? pathItem[method].operationId ?? pathItemPath : undefined
+      return isPathItemOperation(pathItem, method) ? (pathItem[method].operationId ?? pathItemPath) : undefined
     })
 
     for (const [index, method] of operationHttpMethods.entries()) {
@@ -106,7 +106,7 @@ export function getWebhooksOperations(document: Schema['document']): PathItemOpe
 export function isPathItemOperation<TMethod extends OperationHttpMethod>(
   pathItem: PathItem,
   method: TMethod,
-): pathItem is { [key in TMethod]: Operation } {
+): pathItem is Record<TMethod, Operation> {
   return method in pathItem
 }
 
@@ -126,10 +126,10 @@ export function getOperationURLs(document: Document, { operation, path, pathItem
       'servers' in operation
         ? operation.servers
         : 'servers' in pathItem
-        ? pathItem.servers
-        : 'servers' in document
-        ? document.servers
-        : []
+          ? pathItem.servers
+          : 'servers' in document
+            ? document.servers
+            : []
 
     for (const server of servers) {
       let url = server.url

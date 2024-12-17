@@ -2,6 +2,7 @@
 import {
   getNullable,
   getSchemaObjects,
+  isSchemaObject,
   isSchemaObjectAllOf,
   isSchemaObjectObject,
   type SchemaObject,
@@ -28,13 +29,12 @@ const { hideExample = false, negated, nested = false, parents = [], schemaObject
 const schemaObjects = getSchemaObjects(schemaObject)
 
 const hasMany = schemaObjects !== undefined
-const isNegated = schemaObject.not !== undefined
 ---
 
 {
   hasMany ? (
     <SchemaObjects {parents} discriminator={schemaObject.discriminator} {nested} {schemaObjects} />
-  ) : isNegated ? (
+  ) : isSchemaObject(schemaObject.not) ? (
     <Astro.self negated schemaObject={schemaObject.not} />
   ) : (
     <>

@@ -2,7 +2,7 @@
 import { Tabs, TabItem } from '@astrojs/starlight/components'
 
 import { getType } from '../../libs/items'
-import type { Discriminator, SchemaObjects } from '../../libs/schemaObject'
+import type { Discriminator, SchemaObjects, SchemaObject as SchemaObjectType } from '../../libs/schemaObject'
 import Tag from '../Tag.astro'
 
 import SchemaObject from './SchemaObject.astro'
@@ -10,7 +10,7 @@ import SchemaObject from './SchemaObject.astro'
 interface Props {
   discriminator: Discriminator
   nested: boolean
-  parents?: SchemaObject[]
+  parents?: SchemaObjectType[]
   schemaObjects: SchemaObjects
 }
 
@@ -25,8 +25,8 @@ const discriminatorPropertyName =
   typeof discriminator === 'string'
     ? discriminator
     : typeof discriminator === 'object'
-    ? discriminator.propertyName
-    : undefined
+      ? discriminator.propertyName
+      : undefined
 
 const humanReadableType: Record<SchemaObjects['type'], string> = {
   anyOf: 'Any of',
