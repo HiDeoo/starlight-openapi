@@ -9,7 +9,7 @@ const defaultOperationTag = 'Operations'
 const operationHttpMethods = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'] as const
 
 export function getOperationsByTag(document: Schema['document']) {
-  const operationsByTag = new Map<string, PathItemOperation[]>()
+  const operationsByTag = new Map<string, { entries: PathItemOperation[]; tag: OperationTag }>()
 
   for (const [pathItemPath, pathItem] of Object.entries(document.paths ?? {})) {
     if (!isPathItem(pathItem)) {
@@ -32,9 +32,9 @@ export function getOperationsByTag(document: Schema['document']) {
       const operationIdSlug = slug(operationId)
 
       for (const tag of operation.tags ?? [defaultOperationTag]) {
-        const operations = operationsByTag.get(tag) ?? []
+        const operations = operationsByTag.get(tag) ?? { entries: [], tag: { name: tag } }
 
-        operations.push({
+        operations.entries.push({
           method,
           operation,
           path: pathItemPath,
@@ -52,10 +52,10 @@ export function getOperationsByTag(document: Schema['document']) {
   }
 
   if (document.tags) {
-    const orderedTags = new Map(document.tags.map((tag, index) => [tag.name, index]))
+    const orderedTags = new Map(document.tags.map((tag, index) => [tag.name, { index, tag }]))
     const operationsByTagArray = [...operationsByTag.entries()].sort(([tagA], [tagB]) => {
-      const orderA = orderedTags.get(tagA) ?? Number.POSITIVE_INFINITY
-      const orderB = orderedTags.get(tagB) ?? Number.POSITIVE_INFINITY
+      const orderA = orderedTags.get(tagA)?.index ?? Number.POSITIVE_INFINITY
+      const orderB = orderedTags.get(tagB)?.index ?? Number.POSITIVE_INFINITY
 
       return orderA - orderB
     })
@@ -63,7 +63,7 @@ export function getOperationsByTag(document: Schema['document']) {
     operationsByTag.clear()
 
     for (const [tag, operations] of operationsByTagArray) {
-      operationsByTag.set(tag, operations)
+      operationsByTag.set(tag, { ...operations, tag: orderedTags.get(tag)?.tag ?? operations.tag })
     }
   }
 
@@ -108,6 +108,10 @@ export function isPathItemOperation<TMethod extends OperationHttpMethod>(
   method: TMethod,
 ): pathItem is Record<TMethod, Operation> {
   return method in pathItem
+}
+
+export function isMinimalOperationTag(tag: OperationTag): boolean {
+  return (tag.description === undefined || tag.description.length === 0) && tag.externalDocs === undefined
 }
 
 export function getOperationURLs(document: Document, { operation, path, pathItem }: PathItemOperation): OperationURL[] {
@@ -159,6 +163,7 @@ export interface PathItemOperation {
 
 export type Operation = OpenAPI.Operation
 export type OperationHttpMethod = (typeof operationHttpMethods)[number]
+export type OperationTag = NonNullable<Document['tags']>[number]
 
 interface OperationURL {
   description?: string | undefined

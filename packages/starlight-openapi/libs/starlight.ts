@@ -1,7 +1,7 @@
 import type { StarlightUserConfig } from '@astrojs/starlight/types'
 import type { MarkdownHeading } from 'astro'
 
-import type { PathItemOperation } from './operation'
+import type { OperationTag, PathItemOperation } from './operation'
 import { getParametersByLocation } from './parameter'
 import { slug } from './path'
 import { hasRequestBody } from './requestBody'
@@ -22,14 +22,24 @@ export function getSidebarGroupsPlaceholder(): SidebarGroup[] {
   ]
 }
 
-export function getPageProps(title: string, schema: Schema, pathItemOperation?: PathItemOperation): StarlightPageProps {
+export function getPageProps(
+  title: string,
+  schema: Schema,
+  pathItemOperation?: PathItemOperation,
+  tag?: OperationTag,
+): StarlightPageProps {
   const isOverview = pathItemOperation === undefined
+  const isOperationTag = tag !== undefined
 
   return {
     frontmatter: {
       title,
     },
-    headings: isOverview ? getOverviewHeadings(schema) : getOperationHeadings(schema, pathItemOperation),
+    headings: isOperationTag
+      ? getOperationTagHeadings(tag)
+      : isOverview
+        ? getOverviewHeadings(schema)
+        : getOperationHeadings(schema, pathItemOperation),
   }
 }
 
@@ -94,6 +104,10 @@ function getOverviewHeadings({ document }: Schema): MarkdownHeading[] {
   }
 
   return makeHeadings(items)
+}
+
+function getOperationTagHeadings(tag: OperationTag): MarkdownHeading[] {
+  return [makeHeading(2, tag.name, 'overview')]
 }
 
 function getOperationHeadings(schema: Schema, { operation, pathItem }: PathItemOperation): MarkdownHeading[] {
