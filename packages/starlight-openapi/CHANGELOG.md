@@ -1,5 +1,11 @@
 # starlight-openapi
 
+## 0.10.0
+
+### Minor Changes
+
+- [#63](https://github.com/HiDeoo/starlight-openapi/pull/63) [`b19e249`](https://github.com/HiDeoo/starlight-openapi/commit/b19e24982ee893d49d117ca933fd8900db1d7522) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Adds overview pages for operations grouped by tags defined with a `description` or `externalDocs` fields displaying the tag's information.
+
 ## 0.9.0
 
 ### Minor Changes
