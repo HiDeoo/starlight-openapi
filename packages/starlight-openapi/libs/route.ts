@@ -1,7 +1,13 @@
 import schemas from 'virtual:starlight-openapi-schemas'
 
-import { getOperationsByTag, getWebhooksOperations, type PathItemOperation } from './operation'
-import { getBasePath, stripLeadingAndTrailingSlashes } from './path'
+import {
+  getOperationsByTag,
+  getWebhooksOperations,
+  isMinimalOperationTag,
+  type OperationTag,
+  type PathItemOperation,
+} from './operation'
+import { getBasePath, slug, stripLeadingAndTrailingSlashes } from './path'
 import type { Schema } from './schema'
 
 export function getSchemaStaticPaths(): StarlighOpenAPIRoute[] {
@@ -24,18 +30,35 @@ function getPathItemStaticPaths(schema: Schema): StarlighOpenAPIRoute[] {
   const baseLink = getBasePath(schema.config)
   const operations = getOperationsByTag(schema.document)
 
-  return [...operations.entries()].flatMap(([, operations]) =>
-    operations.map((operation) => ({
-      params: {
-        openAPISlug: stripLeadingAndTrailingSlashes(baseLink + operation.slug),
-      },
-      props: {
-        operation,
-        schema,
-        type: 'operation',
-      },
-    })),
-  )
+  return [...operations.entries()].flatMap(([, operations]) => {
+    const paths: StarlighOpenAPIRoute[] = operations.entries.map((operation) => {
+      return {
+        params: {
+          openAPISlug: stripLeadingAndTrailingSlashes(baseLink + operation.slug),
+        },
+        props: {
+          operation,
+          schema,
+          type: 'operation',
+        },
+      }
+    })
+
+    if (!isMinimalOperationTag(operations.tag)) {
+      paths.unshift({
+        params: {
+          openAPISlug: stripLeadingAndTrailingSlashes(`${baseLink}operations/tags/${slug(operations.tag.name)}`),
+        },
+        props: {
+          schema,
+          tag: operations.tag,
+          type: 'operation-tag',
+        },
+      })
+    }
+
+    return paths
+  })
 }
 
 function getWebhooksStaticPaths(schema: Schema): StarlighOpenAPIRoute[] {
@@ -58,7 +81,7 @@ interface StarlighOpenAPIRoute {
   params: {
     openAPISlug: string
   }
-  props: StarlighOpenAPIRouteOverviewProps | StarlighOpenAPIRouteOperationProps
+  props: StarlighOpenAPIRouteOverviewProps | StarlighOpenAPIRouteOperationProps | StarlighOpenAPIRouteOperationTagProps
 }
 
 interface StarlighOpenAPIRouteOverviewProps {
@@ -70,4 +93,10 @@ interface StarlighOpenAPIRouteOperationProps {
   operation: PathItemOperation
   schema: Schema
   type: 'operation'
+}
+
+interface StarlighOpenAPIRouteOperationTagProps {
+  schema: Schema
+  tag: OperationTag
+  type: 'operation-tag'
 }

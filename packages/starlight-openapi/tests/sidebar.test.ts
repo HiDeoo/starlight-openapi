@@ -67,3 +67,15 @@ test('respects tags order', async ({ sidebarPage }) => {
     { collapsed: true, label: 'Files' },
   ])
 })
+
+test('create operation tag overview page for non-minimal tags', async ({ sidebarPage }) => {
+  await sidebarPage.goto()
+
+  const items = await sidebarPage.getSidebarGroupItems('1Password Connect')
+
+  expect(items[2]).toMatchObject({
+    collapsed: true,
+    label: 'Vaults',
+    items: [{ name: 'Overview' }, { name: 'Get all Vaults' }, { name: 'Get Vault details and metadata' }],
+  })
+})
