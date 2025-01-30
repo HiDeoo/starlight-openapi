@@ -24,6 +24,11 @@ export const SchemaConfigSchema = z.object({
    * The OpenAPI/Swagger schema path or URL.
    */
   schema: z.string().min(1),
+  /**
+   * Defines if the sidebar should display badges next to operation links with the associated HTTP method.
+   * @default false
+   */
+  sidebarMethodBadges: z.boolean().default(false),
 })
 
 export function getSchemaSidebarGroups(schema: Schema): SidebarManualGroup {

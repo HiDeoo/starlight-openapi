@@ -23,7 +23,7 @@ export default function starlightOpenAPIPlugin(userConfig: StarlightOpenAPIUserC
 
         const sidebar = getSidebarFromSchemas(starlightConfig.sidebar, schemas)
 
-        updateConfig({ sidebar })
+        updateConfig({ customCss: [...(starlightConfig.customCss ?? []), 'starlight-openapi/styles'], sidebar })
       },
     },
   }
