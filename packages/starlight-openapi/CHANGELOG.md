@@ -1,5 +1,11 @@
 # starlight-openapi
 
+## 0.11.0
+
+### Minor Changes
+
+- [#67](https://github.com/HiDeoo/starlight-openapi/pull/67) [`194dfe7`](https://github.com/HiDeoo/starlight-openapi/commit/194dfe771958a33883da251503495f49cf140b54) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Adds a new [`sidebarMethodBadges`](https://starlight-openapi.vercel.app/configuration/#sidebarmethodbadges) schema configuration option to display badges next to sidebar operation links with the associated HTTP method.
+
 ## 0.10.0
 
 ### Minor Changes
