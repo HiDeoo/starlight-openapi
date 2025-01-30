@@ -1,14 +1,16 @@
 import { getOperationsByTag, getWebhooksOperations, isMinimalOperationTag } from './operation'
 import { getBasePath, slug } from './path'
 import type { Schema } from './schema'
-import { makeSidebarGroup, makeSidebarLink, type SidebarManualGroup } from './starlight'
+import { getMethodSidebarBadge, makeSidebarGroup, makeSidebarLink, type SidebarManualGroup } from './starlight'
 
 export function getPathItemSidebarGroups({ config, document }: Schema): SidebarManualGroup['items'] {
   const baseLink = getBasePath(config)
   const operations = getOperationsByTag(document)
 
   return [...operations.entries()].map(([tag, operations]) => {
-    const items = operations.entries.map(({ slug, title }) => makeSidebarLink(title, baseLink + slug))
+    const items = operations.entries.map(({ method, slug, title }) =>
+      makeSidebarLink(title, baseLink + slug, config.sidebarMethodBadges ? getMethodSidebarBadge(method) : undefined),
+    )
 
     if (!isMinimalOperationTag(operations.tag)) {
       items.unshift(makeSidebarLink('Overview', `${baseLink}operations/tags/${slug(operations.tag.name)}`))
@@ -29,7 +31,9 @@ export function getWebhooksSidebarGroups({ config, document }: Schema): SidebarM
   return [
     makeSidebarGroup(
       'Webhooks',
-      operations.map(({ slug, title }) => makeSidebarLink(title, baseLink + slug)),
+      operations.map(({ method, slug, title }) =>
+        makeSidebarLink(title, baseLink + slug, config.sidebarMethodBadges ? getMethodSidebarBadge(method) : undefined),
+      ),
       config.collapsed,
     ),
   ]

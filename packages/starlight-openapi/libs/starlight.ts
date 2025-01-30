@@ -1,7 +1,7 @@
 import type { StarlightUserConfig } from '@astrojs/starlight/types'
 import type { MarkdownHeading } from 'astro'
 
-import type { OperationTag, PathItemOperation } from './operation'
+import type { OperationHttpMethod, OperationTag, PathItemOperation } from './operation'
 import { getParametersByLocation } from './parameter'
 import { slug } from './path'
 import { hasRequestBody } from './requestBody'
@@ -83,8 +83,12 @@ export function makeSidebarGroup(
   return { collapsed, items, label }
 }
 
-export function makeSidebarLink(label: string, link: string): SidebarLink {
-  return { label, link }
+export function makeSidebarLink(label: string, link: string, badge?: StarlightUserConfigSidebarBadge): SidebarLink {
+  return { label, link, badge }
+}
+
+export function getMethodSidebarBadge(method: OperationHttpMethod): StarlightUserConfigSidebarBadge {
+  return { class: `sl-openapi-method-${method}`, text: method.toUpperCase(), variant: 'caution' }
 }
 
 function isSidebarManualGroup(item: NonNullable<StarlightUserConfigSidebar>[number]): item is SidebarManualGroup {
@@ -177,6 +181,7 @@ export interface SidebarManualGroup {
 }
 
 interface SidebarLink {
+  badge?: StarlightUserConfigSidebarBadge | undefined
   label: string
   link: string
 }
@@ -189,3 +194,7 @@ interface StarlightPageProps {
 }
 
 type StarlightUserConfigSidebar = StarlightUserConfig['sidebar']
+type StarlightUserConfigSidebarBadge = Exclude<
+  NonNullable<Exclude<NonNullable<StarlightUserConfigSidebar>[number], string>['badge']>,
+  string
+>
