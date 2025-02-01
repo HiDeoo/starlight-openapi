@@ -1,5 +1,11 @@
 # starlight-openapi
 
+## 0.12.0
+
+### Minor Changes
+
+- [#70](https://github.com/HiDeoo/starlight-openapi/pull/70) [`b6679d7`](https://github.com/HiDeoo/starlight-openapi/commit/b6679d762e9a07ca5e5df73242783a9e5f81169d) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Improves formatting of query parameter examples based on the [`style` and `explode` property values](https://swagger.io/specification/#fixed-fields-for-use-with-schema) and the [RFC 6570 URI template specification](https://datatracker.ietf.org/doc/html/rfc6570).
+
 ## 0.11.0
 
 ### Minor Changes
