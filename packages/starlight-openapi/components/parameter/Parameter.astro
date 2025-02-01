@@ -32,6 +32,7 @@ const { parameter } = Astro.props
         description={parameter.description}
         example={parameter.example}
         examples={parameter.examples}
+        {parameter}
         schema={parameter.schema}
       />
     ) : null

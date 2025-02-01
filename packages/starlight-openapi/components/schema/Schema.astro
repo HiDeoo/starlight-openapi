@@ -10,7 +10,7 @@ interface Props extends ExamplesProps {
   schema: SchemaObjectType | undefined
 }
 
-const { description, example, examples, schema } = Astro.props
+const { description, example, examples, parameter, schema } = Astro.props
 
 // For objects, we want to show the description before the object itself.
 const isObject = schema && isSchemaObjectObject(schema)
@@ -19,4 +19,4 @@ const isObject = schema && isSchemaObjectObject(schema)
 {isObject && <Md text={description} />}
 {schema && <SchemaObject schemaObject={schema} hideExample={example !== undefined || examples !== undefined} />}
 {!isObject && <Md text={description} />}
-<Examples example={example} examples={examples} />
+<Examples example={example} examples={examples} parameter={parameter} />

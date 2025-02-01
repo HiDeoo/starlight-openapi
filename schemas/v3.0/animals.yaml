@@ -383,6 +383,73 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /jaguar:
+    get:
+      summary: Get a jaguar
+      parameters:
+        - name: age
+          in: query
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: false
+          example: [1, 2, 3]
+        - name: weight
+          in: query
+          schema:
+            type: array
+            items:
+              type: integer
+          style: form
+          explode: true
+          example: [100, 200, 300]
+        - name: name
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+          example: ['Mona', 'Lisa']
+        - name: surname
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: false
+          example: ['Butch', 'Cassidy']
+        - name: limit
+          in: query
+          schema:
+            type: object
+            properties:
+              limit:
+                type: integer
+              offset:
+                type: integer
+          style: deepObject
+          explode: true
+          example:
+            limit: 50
+            offset: 100
+      responses:
+        '200':
+          description: animal response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Animal'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 webhooks:
   newAnimal:
     post:
