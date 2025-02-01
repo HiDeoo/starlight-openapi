@@ -182,3 +182,45 @@ test('displays the description of an object before its properties', async ({ doc
   expect(filtersfirstParameterIndex).toBeGreaterThan(-1)
   expect(filtersDescriptionIndex).toBeLessThan(filtersfirstParameterIndex ?? -1)
 })
+
+test.describe('formats query parameter values', () => {
+  test('exploded form style', async ({ docPage }) => {
+    await docPage.goto('/v3/animals/operations/jaguar/')
+
+    const ageParameter = docPage.getParameter('query', 'weight')
+
+    await expect(ageParameter.getByText('?weight=100&weight=200&weight=300', { exact: true })).toBeVisible()
+  })
+
+  test('non-exploded form style', async ({ docPage }) => {
+    await docPage.goto('/v3/animals/operations/jaguar/')
+
+    const ageParameter = docPage.getParameter('query', 'age')
+
+    await expect(ageParameter.getByText('?age=1,2,3', { exact: true })).toBeVisible()
+  })
+
+  test('exploded space-delimited form style', async ({ docPage }) => {
+    await docPage.goto('/v3/animals/operations/jaguar/')
+
+    const ageParameter = docPage.getParameter('query', 'name')
+
+    await expect(ageParameter.getByText('?name=Mona&name=Lisa', { exact: true })).toBeVisible()
+  })
+
+  test('non-exploded space-delimited form style', async ({ docPage }) => {
+    await docPage.goto('/v3/animals/operations/jaguar/')
+
+    const ageParameter = docPage.getParameter('query', 'surname')
+
+    await expect(ageParameter.getByText('?surname=Butch,Cassidy', { exact: true })).toBeVisible()
+  })
+
+  test('exploded deep-object form style', async ({ docPage }) => {
+    await docPage.goto('/v3/animals/operations/jaguar/')
+
+    const ageParameter = docPage.getParameter('query', 'limit')
+
+    await expect(ageParameter.getByText('?limit[limit]=50&limit[offset]=100', { exact: true })).toBeVisible()
+  })
+})

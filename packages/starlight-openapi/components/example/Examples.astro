@@ -1,5 +1,6 @@
 ---
 import type { ExamplesV3 } from '../../libs/example'
+import type { Parameter } from '../../libs/parameter'
 import ContentPicker from '../ContentPicker.astro'
 
 import Example from './Example.astro'
@@ -7,9 +8,10 @@ import Example from './Example.astro'
 export interface Props {
   example: unknown | undefined
   examples: ExamplesV3 | undefined
+  parameter?: Parameter | undefined
 }
 
-const { example, examples } = Astro.props
+const { example, examples, parameter } = Astro.props
 ---
 
 {
@@ -28,7 +30,7 @@ const { example, examples } = Astro.props
     ) : (
       <>
         <h5>Example</h5>
-        <Example raw={example} />
+        <Example raw={example} {parameter} />
       </>
     )
   ) : null
