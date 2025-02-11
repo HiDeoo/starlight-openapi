@@ -27,7 +27,8 @@
   },
   "peerDependencies": {
     "@astrojs/markdown-remark": ">=6.0.0",
-    "@astrojs/starlight": ">=0.30.0"
+    "@astrojs/starlight": ">=0.30.0",
+    "astro": ">=5.0.0"
   },
   "engines": {
     "node": ">=18.17.1"
