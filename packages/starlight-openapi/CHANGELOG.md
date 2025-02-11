@@ -1,5 +1,11 @@
 # starlight-openapi
 
+## 0.12.1
+
+### Patch Changes
+
+- [#73](https://github.com/HiDeoo/starlight-openapi/pull/73) [`beeb586`](https://github.com/HiDeoo/starlight-openapi/commit/beeb586577d2b88923bc1909995031ce41e90ce9) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Adds `astro` as a peer dependency to prevent potential build errors in monorepos with hoisting disabled.
+
 ## 0.12.0
 
 ### Minor Changes
