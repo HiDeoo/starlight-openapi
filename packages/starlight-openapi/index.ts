@@ -11,7 +11,7 @@ export default function starlightOpenAPIPlugin(userConfig: StarlightOpenAPIUserC
   return {
     name: 'starlight-openapi-plugin',
     hooks: {
-      setup: async ({ addIntegration, command, config: starlightConfig, logger, updateConfig }) => {
+      'config:setup': async ({ addIntegration, command, config: starlightConfig, logger, updateConfig }) => {
         if (command !== 'build' && command !== 'dev') {
           return
         }
@@ -23,7 +23,20 @@ export default function starlightOpenAPIPlugin(userConfig: StarlightOpenAPIUserC
 
         const sidebar = getSidebarFromSchemas(starlightConfig.sidebar, schemas)
 
-        updateConfig({ customCss: [...(starlightConfig.customCss ?? []), 'starlight-openapi/styles'], sidebar })
+        const updatedConfig: Parameters<typeof updateConfig>[0] = {
+          customCss: [...(starlightConfig.customCss ?? []), 'starlight-openapi/styles'],
+          sidebar,
+        }
+
+        if (updatedConfig.expressiveCode !== false) {
+          updatedConfig.expressiveCode =
+            updatedConfig.expressiveCode === true || updatedConfig.expressiveCode === undefined
+              ? {}
+              : updatedConfig.expressiveCode
+          updatedConfig.expressiveCode.removeUnusedThemes = false
+        }
+
+        updateConfig(updatedConfig)
       },
     },
   }
