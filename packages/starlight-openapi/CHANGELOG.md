@@ -1,5 +1,17 @@
 # starlight-openapi
 
+## 0.13.0
+
+### Minor Changes
+
+- [#75](https://github.com/HiDeoo/starlight-openapi/pull/75) [`52dd833`](https://github.com/HiDeoo/starlight-openapi/commit/52dd833ca0cb2bcac14693f95ebe9bfd758232a5) Thanks [@HiDeoo](https://github.com/HiDeoo)! - ⚠️ **BREAKING CHANGE:** The minimum supported version of Starlight is now version `0.32.0`.
+
+  Please use the `@astrojs/upgrade` command to upgrade your project:
+
+  ```sh
+  npx @astrojs/upgrade
+  ```
+
 ## 0.12.1
 
 ### Patch Changes
