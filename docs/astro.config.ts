@@ -15,51 +15,50 @@ export default defineConfig({
         starlightOpenAPI([
           {
             base: 'api/petstore',
-            collapsed: false,
-            label: 'Petstore',
             schema: '../schemas/v3.0/petstore-expanded.yaml',
+            sidebar: { collapsed: false, label: 'Petstore' },
           },
           {
             base: 'api/1password',
-            label: '1Password Connect',
             schema:
               'https://raw.githubusercontent.com/APIs-guru/openapi-directory/gh-pages/v2/specs/1password.local/connect/1.5.7/openapi.yaml',
+            sidebar: { label: '1Password Connect' },
           },
           {
             base: 'api/giphy',
-            label: 'Giphy',
             schema:
               'https://raw.githubusercontent.com/APIs-guru/openapi-directory/gh-pages/v2/specs/giphy.com/1.0/openapi.yaml',
+            sidebar: { label: 'Giphy' },
           },
           {
             base: 'api/v3/petstore-simple',
-            label: 'Petstore v3.0 (simple)',
             schema: '../schemas/v3.0/petstore.json',
+            sidebar: { label: 'Petstore v3.0 (simple)' },
           },
           {
             base: 'api/v2/petstore-simple',
-            label: 'Petstore v2.0 (simple)',
             schema: '../schemas/v2.0/petstore-simple.yaml',
+            sidebar: { label: 'Petstore v2.0 (simple)' },
           },
           {
             base: 'api/v3/animals',
-            label: 'Animals v3.0',
             schema: '../schemas/v3.0/animals.yaml',
+            sidebar: { label: 'Animals v3.0' },
           },
           {
             base: 'api/v2/animals',
-            label: 'Animals v2.0',
             schema: '../schemas/v2.0/animals.yaml',
+            sidebar: { label: 'Animals v2.0' },
           },
           {
             base: 'api/v3/recursive',
-            label: 'Recursion v3.0',
             schema: '../schemas/v3.0/recursive.yaml',
+            sidebar: { label: 'Recursion v3.0' },
           },
           {
             base: 'api/v3/recursive-simple',
-            label: 'Simple Recursion v3.0',
             schema: '../schemas/v3.0/recursive-simple.yaml',
+            sidebar: { label: 'Simple Recursion v3.0' },
           },
         ]),
         starlightOpenAPIDocsDemoPlugin(),
