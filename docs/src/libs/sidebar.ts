@@ -4,7 +4,9 @@ export function starlightOpenAPIDocsDemoPlugin(): StarlightPlugin {
   return {
     name: 'starlight-openapi-docs-demo-plugin',
     hooks: {
-      setup: ({ config, updateConfig }) => {
+      'config:setup': ({ config, updateConfig }) => {
+        if (process.env.TEST) return
+
         updateConfig({
           sidebar: config.sidebar?.map((item) => {
             if (isSidebarGroup(item) && item.label === 'Demo') {
@@ -26,4 +28,12 @@ function isSidebarGroup(item: unknown): item is SidebarGroup {
 export interface SidebarGroup {
   items: unknown[]
   label: string
+}
+
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv {
+      TEST: string
+    }
+  }
 }

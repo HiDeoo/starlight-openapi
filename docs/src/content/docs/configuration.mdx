@@ -74,6 +74,16 @@ The generated documentation sidebar group operations configuration which accepts
 
 Defines if the sidebar should display badges next to operation links with the associated HTTP method.
 
+##### `labels`
+
+**Type:** `'operationId' | 'summary'`  
+**Default:** `'summary'`
+
+Whether the operation sidebar labels should use the operation ID or summary.
+
+By default, the summary is used as the operation sidebar label and falls back to the operation ID if no summary is provided.
+Setting this option to `'operationId'` will always use the operation ID as the operation sidebar label.
+
 ## Multiple schemas
 
 You can generate documentation for multiple OpenAPI/Swagger schemas by passing multiple objects to the plugin configuration.

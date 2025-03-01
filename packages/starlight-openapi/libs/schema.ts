@@ -55,6 +55,11 @@ export const SchemaConfigSchema = z
              * @default false
              */
             badges: z.boolean().default(false),
+            /**
+             * Whether the operation sidebar labels should use the operation ID or summary.
+             * @default 'operationId'
+             */
+            labels: z.enum(['operationId', 'summary']).default('summary'),
           })
           .default({}),
       })

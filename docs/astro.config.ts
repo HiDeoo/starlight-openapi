@@ -33,7 +33,7 @@ export default defineConfig({
           {
             base: 'api/v3/petstore-simple',
             schema: '../schemas/v3.0/petstore.json',
-            sidebar: { label: 'Petstore v3.0 (simple)' },
+            sidebar: { label: 'Petstore v3.0 (simple)', operations: { labels: 'operationId' } },
           },
           {
             base: 'api/v2/petstore-simple',

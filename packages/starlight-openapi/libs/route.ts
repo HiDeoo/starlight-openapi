@@ -28,7 +28,7 @@ export function getSchemaStaticPaths(): StarlighOpenAPIRoute[] {
 
 function getPathItemStaticPaths(schema: Schema): StarlighOpenAPIRoute[] {
   const baseLink = getBasePath(schema.config)
-  const operations = getOperationsByTag(schema.document)
+  const operations = getOperationsByTag(schema)
 
   return [...operations.entries()].flatMap(([, operations]) => {
     const paths: StarlighOpenAPIRoute[] = operations.entries.map((operation) => {
@@ -63,7 +63,7 @@ function getPathItemStaticPaths(schema: Schema): StarlighOpenAPIRoute[] {
 
 function getWebhooksStaticPaths(schema: Schema): StarlighOpenAPIRoute[] {
   const baseLink = getBasePath(schema.config)
-  const operations = getWebhooksOperations(schema.document)
+  const operations = getWebhooksOperations(schema)
 
   return operations.map((operation) => ({
     params: {

@@ -3,14 +3,15 @@ import { getBasePath, slug } from './path'
 import type { Schema } from './schema'
 import { getMethodSidebarBadge, makeSidebarGroup, makeSidebarLink, type SidebarManualGroup } from './starlight'
 
-export function getPathItemSidebarGroups({ config, document }: Schema): SidebarManualGroup['items'] {
+export function getPathItemSidebarGroups(schema: Schema): SidebarManualGroup['items'] {
+  const { config } = schema
   const baseLink = getBasePath(config)
-  const operations = getOperationsByTag(document)
+  const operations = getOperationsByTag(schema)
 
   return [...operations.entries()].map(([tag, operations]) => {
-    const items = operations.entries.map(({ method, slug, title }) =>
+    const items = operations.entries.map(({ method, sidebar, slug }) =>
       makeSidebarLink(
-        title,
+        sidebar.label,
         baseLink + slug,
         config.sidebar.operations.badges ? getMethodSidebarBadge(method) : undefined,
       ),
@@ -24,9 +25,10 @@ export function getPathItemSidebarGroups({ config, document }: Schema): SidebarM
   })
 }
 
-export function getWebhooksSidebarGroups({ config, document }: Schema): SidebarManualGroup['items'] {
+export function getWebhooksSidebarGroups(schema: Schema): SidebarManualGroup['items'] {
+  const { config } = schema
   const baseLink = getBasePath(config)
-  const operations = getWebhooksOperations(document)
+  const operations = getWebhooksOperations(schema)
 
   if (operations.length === 0) {
     return []
@@ -35,9 +37,9 @@ export function getWebhooksSidebarGroups({ config, document }: Schema): SidebarM
   return [
     makeSidebarGroup(
       'Webhooks',
-      operations.map(({ method, slug, title }) =>
+      operations.map(({ method, sidebar, slug }) =>
         makeSidebarLink(
-          title,
+          sidebar.label,
           baseLink + slug,
           config.sidebar.operations.badges ? getMethodSidebarBadge(method) : undefined,
         ),
