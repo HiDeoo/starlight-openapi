@@ -9,13 +9,18 @@ export function getPathItemSidebarGroups(schema: Schema): SidebarManualGroup['it
   const operations = getOperationsByTag(schema)
 
   return [...operations.entries()].map(([tag, operations]) => {
-    const items = operations.entries.map(({ method, sidebar, slug }) =>
-      makeSidebarLink(
+    const entries =
+      config.sidebar.operations.sort === 'alphabetical'
+        ? operations.entries.sort((a, b) => a.sidebar.label.localeCompare(b.sidebar.label))
+        : operations.entries
+
+    const items = entries.map(({ method, sidebar, slug }) => {
+      return makeSidebarLink(
         sidebar.label,
         baseLink + slug,
         config.sidebar.operations.badges ? getMethodSidebarBadge(method) : undefined,
-      ),
-    )
+      )
+    })
 
     if (!isMinimalOperationTag(operations.tag)) {
       items.unshift(makeSidebarLink('Overview', `${baseLink}operations/tags/${slug(operations.tag.name)}`))
@@ -34,10 +39,15 @@ export function getWebhooksSidebarGroups(schema: Schema): SidebarManualGroup['it
     return []
   }
 
+  const entries =
+    config.sidebar.operations.sort === 'alphabetical'
+      ? operations.sort((a, b) => a.sidebar.label.localeCompare(b.sidebar.label))
+      : operations
+
   return [
     makeSidebarGroup(
       'Webhooks',
-      operations.map(({ method, sidebar, slug }) =>
+      entries.map(({ method, sidebar, slug }) =>
         makeSidebarLink(
           sidebar.label,
           baseLink + slug,

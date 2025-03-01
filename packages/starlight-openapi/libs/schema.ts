@@ -60,6 +60,11 @@ export const SchemaConfigSchema = z
              * @default 'operationId'
              */
             labels: z.enum(['operationId', 'summary']).default('summary'),
+            /**
+             * Defines the sorting method for the operation sidebar links.
+             * @default 'document'
+             */
+            sort: z.enum(['alphabetical', 'document']).default('document'),
           })
           .default({}),
       })

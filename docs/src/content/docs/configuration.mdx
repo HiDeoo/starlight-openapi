@@ -84,6 +84,15 @@ Whether the operation sidebar labels should use the operation ID or summary.
 By default, the summary is used as the operation sidebar label and falls back to the operation ID if no summary is provided.
 Setting this option to `'operationId'` will always use the operation ID as the operation sidebar label.
 
+##### `sort`
+
+**Type:** `'alphabetical' | 'document'`  
+**Default:** `'document'`
+
+Defines the sorting method for the operation sidebar links.
+
+By default, the operation sidebar links are sorted in the order they appear in the OpenAPI document.
+
 ## Multiple schemas
 
 You can generate documentation for multiple OpenAPI/Swagger schemas by passing multiple objects to the plugin configuration.
