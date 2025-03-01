@@ -8,7 +8,12 @@ export function getPathItemSidebarGroups(schema: Schema): SidebarManualGroup['it
   const baseLink = getBasePath(config)
   const operations = getOperationsByTag(schema)
 
-  return [...operations.entries()].map(([tag, operations]) => {
+  const tags =
+    config.sidebar.tags.sort === 'alphabetical'
+      ? [...operations.entries()].sort((a, b) => a[0].localeCompare(b[0]))
+      : [...operations.entries()]
+
+  return tags.map(([tag, operations]) => {
     const entries =
       config.sidebar.operations.sort === 'alphabetical'
         ? operations.entries.sort((a, b) => a.sidebar.label.localeCompare(b.sidebar.label))

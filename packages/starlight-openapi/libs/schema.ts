@@ -46,7 +46,7 @@ export const SchemaConfigSchema = z
          */
         label: z.string().optional(),
         /**
-         * The generated documentation sidebar group operations configuration.
+         * The generated documentation operations sidebar links configuration.
          */
         operations: z
           .object({
@@ -56,12 +56,24 @@ export const SchemaConfigSchema = z
              */
             badges: z.boolean().default(false),
             /**
-             * Whether the operation sidebar labels should use the operation ID or summary.
+             * Whether the operation sidebar link labels should use the operation ID or summary.
              * @default 'operationId'
              */
             labels: z.enum(['operationId', 'summary']).default('summary'),
             /**
              * Defines the sorting method for the operation sidebar links.
+             * @default 'document'
+             */
+            sort: z.enum(['alphabetical', 'document']).default('document'),
+          })
+          .default({}),
+        /**
+         * The generated documentation tags sidebar groups configuration.
+         */
+        tags: z
+          .object({
+            /**
+             * Defines the sorting method for the tag sidebar groups.
              * @default 'document'
              */
             sort: z.enum(['alphabetical', 'document']).default('document'),

@@ -34,47 +34,6 @@ test('lists operations grouped by tag and sorted by order of appearance in the d
   ])
 })
 
-test('sorts operations alphabetically if configured to do so', async ({ sidebarPage }) => {
-  await sidebarPage.goto()
-
-  const items = await sidebarPage.getSidebarGroupItems('Animals v3.0')
-
-  expect(items).toMatchObject([
-    { name: 'Overview' },
-    {
-      collapsed: true,
-      label: 'places',
-      items: [{ name: 'List all shelters' }],
-    },
-    {
-      collapsed: true,
-      label: 'animals',
-      items: [
-        { name: '/turtles' },
-        { name: 'Create an animal' },
-        { name: 'Creates a new hamster' },
-        { name: 'Creates a new okapi' },
-        { name: 'List all animals' },
-        { name: 'List all bears' },
-        { name: 'List all birds' },
-        { name: 'List all cats' },
-        { name: 'List all dogs' },
-        { name: 'List all turtles' },
-      ],
-    },
-    {
-      collapsed: true,
-      label: 'Operations',
-      items: [{ name: 'Get a jaguar' }],
-    },
-    {
-      collapsed: true,
-      label: 'Webhooks',
-      items: [{ name: 'New animal' }, { name: 'newCat' }],
-    },
-  ])
-})
-
 test('uses a fallback group for untagged operations', async ({ sidebarPage }) => {
   await sidebarPage.goto()
 
@@ -123,6 +82,47 @@ test('sorts tags by order of appearance in the document by default', async ({ si
     { collapsed: true, label: 'Health' },
     { collapsed: true, label: 'Metrics' },
     { collapsed: true, label: 'Files' },
+  ])
+})
+
+test('sorts tags and operations alphabetically if configured to do so', async ({ sidebarPage }) => {
+  await sidebarPage.goto()
+
+  const items = await sidebarPage.getSidebarGroupItems('Animals v3.0')
+
+  expect(items).toMatchObject([
+    { name: 'Overview' },
+    {
+      collapsed: true,
+      label: 'animals',
+      items: [
+        { name: '/turtles' },
+        { name: 'Create an animal' },
+        { name: 'Creates a new hamster' },
+        { name: 'Creates a new okapi' },
+        { name: 'List all animals' },
+        { name: 'List all bears' },
+        { name: 'List all birds' },
+        { name: 'List all cats' },
+        { name: 'List all dogs' },
+        { name: 'List all turtles' },
+      ],
+    },
+    {
+      collapsed: true,
+      label: 'Operations',
+      items: [{ name: 'Get a jaguar' }],
+    },
+    {
+      collapsed: true,
+      label: 'places',
+      items: [{ name: 'List all shelters' }],
+    },
+    {
+      collapsed: true,
+      label: 'Webhooks',
+      items: [{ name: 'New animal' }, { name: 'newCat' }],
+    },
   ])
 })
 

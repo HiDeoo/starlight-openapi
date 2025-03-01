@@ -43,7 +43,7 @@ export default defineConfig({
           {
             base: 'api/v3/animals',
             schema: '../schemas/v3.0/animals.yaml',
-            sidebar: { label: 'Animals v3.0', operations: { sort: 'alphabetical' } },
+            sidebar: { label: 'Animals v3.0', operations: { sort: 'alphabetical' }, tags: { sort: 'alphabetical' } },
           },
           {
             base: 'api/v2/animals',

@@ -65,7 +65,7 @@ The generated documentation sidebar group label.
 
 #### `operations`
 
-The generated documentation sidebar group operations configuration which accepts the following properties:
+The generated documentation operations sidebar links configuration which accepts the following properties:
 
 ##### `badges`
 
@@ -79,7 +79,7 @@ Defines if the sidebar should display badges next to operation links with the as
 **Type:** `'operationId' | 'summary'`  
 **Default:** `'summary'`
 
-Whether the operation sidebar labels should use the operation ID or summary.
+Whether the operation sidebar link labels should use the operation ID or summary.
 
 By default, the summary is used as the operation sidebar label and falls back to the operation ID if no summary is provided.
 Setting this option to `'operationId'` will always use the operation ID as the operation sidebar label.
@@ -92,6 +92,19 @@ Setting this option to `'operationId'` will always use the operation ID as the o
 Defines the sorting method for the operation sidebar links.
 
 By default, the operation sidebar links are sorted in the order they appear in the OpenAPI document.
+
+#### `tags`
+
+The generated documentation tags sidebar groups configuration which accepts the following properties:
+
+##### `sort`
+
+**Type:** `'alphabetical' | 'document'`  
+**Default:** `'document'`
+
+Defines the sorting method for the tag sidebar groups.
+
+By default, the tag sidebar groups are sorted in the order they appear in the OpenAPI document.
 
 ## Multiple schemas
 
