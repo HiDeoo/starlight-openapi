@@ -22,9 +22,10 @@ interface Props {
   nested?: boolean
   parents?: SchemaObject[]
   schemaObject: SchemaObject
+  type?: string | undefined
 }
 
-const { hideExample = false, negated, nested = false, parents = [], schemaObject } = Astro.props
+const { hideExample = false, negated, nested = false, parents = [], schemaObject, type } = Astro.props
 
 const schemaObjects = getSchemaObjects(schemaObject)
 
@@ -47,7 +48,7 @@ const hasMany = schemaObjects !== undefined
       ) : (
         <Items {parents} items={schemaObject} {negated} nullable={getNullable(schemaObject)} />
       )}
-      {!hideExample && schemaObject.example && <Example raw={schemaObject.example} />}
+      {!hideExample && schemaObject.example && <Example raw={schemaObject.example} {type} />}
     </>
   )
 }

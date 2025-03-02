@@ -491,6 +491,10 @@ components:
           type: string
         tag:
           type: string
+      example:
+        id: 1
+        name: dog
+        tag: pet
     Hamster:
       required:
         - id
