@@ -42,6 +42,7 @@ const { nested, schemaObject, parents = [] } = Astro.props
             properties={getProperties(allOfSchemaObject)}
             required={allOfSchemaObject.required}
           />
+          <Astro.self {nested} parents={[...parents, schemaObject]} schemaObject={allOfSchemaObject} />
         )
       }
       return (
