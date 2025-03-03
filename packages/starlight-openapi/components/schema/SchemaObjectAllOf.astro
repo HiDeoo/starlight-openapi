@@ -37,12 +37,14 @@ const { nested, schemaObject, parents = [] } = Astro.props
         )
       } else if (isSchemaObjectObject(schemaObject)) {
         return (
-          <SchemaObjectObjectProperties
-            parents={[...parents, schemaObject]}
-            properties={getProperties(allOfSchemaObject)}
-            required={allOfSchemaObject.required}
-          />
-          <Astro.self {nested} parents={[...parents, schemaObject]} schemaObject={allOfSchemaObject} />
+          <>
+            <SchemaObjectObjectProperties
+              parents={[...parents, schemaObject]}
+              properties={getProperties(allOfSchemaObject)}
+              required={allOfSchemaObject.required}
+            />
+            <Astro.self {nested} parents={[...parents, schemaObject]} schemaObject={allOfSchemaObject} />
+          </>
         )
       }
       return (
