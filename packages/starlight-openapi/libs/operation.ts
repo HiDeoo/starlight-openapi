@@ -8,7 +8,7 @@ import type { Schema } from './schema'
 const defaultOperationTag = 'Operations'
 const operationHttpMethods = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'] as const
 
-export function getOperationsByTag(document: Schema['document']) {
+export function getOperationsByTag({ config, document }: Schema) {
   const operationsByTag = new Map<string, { entries: PathItemOperation[]; tag: OperationTag }>()
 
   for (const [pathItemPath, pathItem] of Object.entries(document.paths ?? {})) {
@@ -34,16 +34,21 @@ export function getOperationsByTag(document: Schema['document']) {
       for (const tag of operation.tags ?? [defaultOperationTag]) {
         const operations = operationsByTag.get(tag) ?? { entries: [], tag: { name: tag } }
 
+        const title =
+          operation.summary ?? (isDuplicateOperationId ? `${operationId} (${method.toUpperCase()})` : operationId)
+
         operations.entries.push({
           method,
           operation,
           path: pathItemPath,
           pathItem,
+          sidebar: {
+            label: config.sidebar.operations.labels === 'summary' && operation.summary ? title : operationId,
+          },
           slug: isDuplicateOperationId
             ? `operations/${operationIdSlug}/${slug(method)}`
             : `operations/${operationIdSlug}`,
-          title:
-            operation.summary ?? (isDuplicateOperationId ? `${operationId} (${method.toUpperCase()})` : operationId),
+          title,
         })
 
         operationsByTag.set(tag, operations)
@@ -70,7 +75,7 @@ export function getOperationsByTag(document: Schema['document']) {
   return operationsByTag
 }
 
-export function getWebhooksOperations(document: Schema['document']): PathItemOperation[] {
+export function getWebhooksOperations({ config, document }: Schema): PathItemOperation[] {
   if (!('webhooks' in document)) {
     return []
   }
@@ -90,12 +95,17 @@ export function getWebhooksOperations(document: Schema['document']): PathItemOpe
       const operation = pathItem[method]
       const operationId = operation.operationId ?? webhookKey
 
+      const title = operation.summary ?? operationId
+
       operations.push({
         method,
         operation,
         pathItem,
+        sidebar: {
+          label: config.sidebar.operations.labels === 'summary' && operation.summary ? title : operationId,
+        },
         slug: `webhooks/${slug(operationId)}`,
-        title: operation.summary ?? operationId,
+        title,
       })
     }
   }
@@ -157,6 +167,9 @@ export interface PathItemOperation {
   operation: Operation
   path?: string
   pathItem: PathItem
+  sidebar: {
+    label: string
+  }
   slug: string
   title: string
 }

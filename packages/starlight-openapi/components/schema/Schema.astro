@@ -8,15 +8,16 @@ import SchemaObject from './SchemaObject.astro'
 interface Props extends ExamplesProps {
   description?: string | undefined
   schema: SchemaObjectType | undefined
+  type?: string | undefined
 }
 
-const { description, example, examples, parameter, schema } = Astro.props
+const { description, example, examples, parameter, schema, type } = Astro.props
 
 // For objects, we want to show the description before the object itself.
 const isObject = schema && isSchemaObjectObject(schema)
 ---
 
 {isObject && <Md text={description} />}
-{schema && <SchemaObject schemaObject={schema} hideExample={example !== undefined || examples !== undefined} />}
+{schema && <SchemaObject schemaObject={schema} hideExample={example !== undefined || examples !== undefined} {type} />}
 {!isObject && <Md text={description} />}
 <Examples example={example} examples={examples} parameter={parameter} />

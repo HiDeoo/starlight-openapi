@@ -357,6 +357,7 @@ paths:
                   properties:
                     name:
                       type: string
+                - $ref: '#/components/schemas/Position'
                 - anyOf:
                     - type: object
                       title: 'basic details'
@@ -491,6 +492,10 @@ components:
           type: string
         tag:
           type: string
+      example:
+        id: 1
+        name: dog
+        tag: pet
     Hamster:
       required:
         - id
@@ -532,6 +537,18 @@ components:
           type: integer
           format: int32
         message:
+          type: string
+    Position:
+      allOf:
+        - $ref: '#/components/schemas/Country'
+        - type: object
+          properties:
+            coordinates:
+              type: string
+    Country:
+      type: object
+      properties:
+        country:
           type: string
   securitySchemes:
     basic_auth:

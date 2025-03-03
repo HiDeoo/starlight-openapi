@@ -3,38 +3,63 @@ import { getBasePath, slug } from './path'
 import type { Schema } from './schema'
 import { getMethodSidebarBadge, makeSidebarGroup, makeSidebarLink, type SidebarManualGroup } from './starlight'
 
-export function getPathItemSidebarGroups({ config, document }: Schema): SidebarManualGroup['items'] {
+export function getPathItemSidebarGroups(schema: Schema): SidebarManualGroup['items'] {
+  const { config } = schema
   const baseLink = getBasePath(config)
-  const operations = getOperationsByTag(document)
+  const operations = getOperationsByTag(schema)
 
-  return [...operations.entries()].map(([tag, operations]) => {
-    const items = operations.entries.map(({ method, slug, title }) =>
-      makeSidebarLink(title, baseLink + slug, config.sidebarMethodBadges ? getMethodSidebarBadge(method) : undefined),
-    )
+  const tags =
+    config.sidebar.tags.sort === 'alphabetical'
+      ? [...operations.entries()].sort((a, b) => a[0].localeCompare(b[0]))
+      : [...operations.entries()]
+
+  return tags.map(([tag, operations]) => {
+    const entries =
+      config.sidebar.operations.sort === 'alphabetical'
+        ? operations.entries.sort((a, b) => a.sidebar.label.localeCompare(b.sidebar.label))
+        : operations.entries
+
+    const items = entries.map(({ method, sidebar, slug }) => {
+      return makeSidebarLink(
+        sidebar.label,
+        baseLink + slug,
+        config.sidebar.operations.badges ? getMethodSidebarBadge(method) : undefined,
+      )
+    })
 
     if (!isMinimalOperationTag(operations.tag)) {
       items.unshift(makeSidebarLink('Overview', `${baseLink}operations/tags/${slug(operations.tag.name)}`))
     }
 
-    return makeSidebarGroup(tag, items, config.collapsed)
+    return makeSidebarGroup(tag, items, config.sidebar.collapsed)
   })
 }
 
-export function getWebhooksSidebarGroups({ config, document }: Schema): SidebarManualGroup['items'] {
+export function getWebhooksSidebarGroups(schema: Schema): SidebarManualGroup['items'] {
+  const { config } = schema
   const baseLink = getBasePath(config)
-  const operations = getWebhooksOperations(document)
+  const operations = getWebhooksOperations(schema)
 
   if (operations.length === 0) {
     return []
   }
 
+  const entries =
+    config.sidebar.operations.sort === 'alphabetical'
+      ? operations.sort((a, b) => a.sidebar.label.localeCompare(b.sidebar.label))
+      : operations
+
   return [
     makeSidebarGroup(
       'Webhooks',
-      operations.map(({ method, slug, title }) =>
-        makeSidebarLink(title, baseLink + slug, config.sidebarMethodBadges ? getMethodSidebarBadge(method) : undefined),
+      entries.map(({ method, sidebar, slug }) =>
+        makeSidebarLink(
+          sidebar.label,
+          baseLink + slug,
+          config.sidebar.operations.badges ? getMethodSidebarBadge(method) : undefined,
+        ),
       ),
-      config.collapsed,
+      config.sidebar.collapsed,
     ),
   ]
 }

@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "test": "pnpm --stream -r test",
-    "lint": "astro check --noSync && pnpm -r lint",
+    "lint": "astro check --noSync --minimumSeverity warning && pnpm -r lint",
     "format": "prettier -w --cache --ignore-unknown .",
     "version": "pnpm changeset version && pnpm i --no-frozen-lockfile"
   },

@@ -1,6 +1,8 @@
 ---
 title: Configuration
 description: An overview of all the configuration options supported by the Starlight OpenAPI plugin.
+tableOfContents:
+  maxHeadingLevel: 5
 ---
 
 The Starlight OpenAPI plugin can be configured inside the `astro.config.mjs` configuration file of your project:
@@ -43,25 +45,66 @@ The base path containing the generated documentation, e.g. `'api/petstore'`.
 
 The OpenAPI/Swagger schema path or URL.
 
-### `label`
+### `sidebar`
 
-**Type:** `string`
+The generated sidebar group configuration which accepts the following properties:
 
-The generated documentation sidebar group label.
-
-### `collapsed`
+#### `collapsed`
 
 **Type:** `boolean`  
 **Default:** `true`
 
 Wheter the generated documentation sidebar group should be collapsed by default or not.
 
-### `sidebarMethodBadges`
+#### `label`
+
+**Type:** `string`  
+**Default:** the OpenAPI document title
+
+The generated documentation sidebar group label.
+
+#### `operations`
+
+The generated documentation operations sidebar links configuration which accepts the following properties:
+
+##### `badges`
 
 **Type:** `boolean`  
 **Default:** `false`
 
 Defines if the sidebar should display badges next to operation links with the associated HTTP method.
+
+##### `labels`
+
+**Type:** `'operationId' | 'summary'`  
+**Default:** `'summary'`
+
+Whether the operation sidebar link labels should use the operation ID or summary.
+
+By default, the summary is used as the operation sidebar label and falls back to the operation ID if no summary is provided.
+Setting this option to `'operationId'` will always use the operation ID as the operation sidebar label.
+
+##### `sort`
+
+**Type:** `'alphabetical' | 'document'`  
+**Default:** `'document'`
+
+Defines the sorting method for the operation sidebar links.
+
+By default, the operation sidebar links are sorted in the order they appear in the OpenAPI document.
+
+#### `tags`
+
+The generated documentation tags sidebar groups configuration which accepts the following properties:
+
+##### `sort`
+
+**Type:** `'alphabetical' | 'document'`  
+**Default:** `'document'`
+
+Defines the sorting method for the tag sidebar groups.
+
+By default, the tag sidebar groups are sorted in the order they appear in the OpenAPI document.
 
 ## Multiple schemas
 
@@ -80,14 +123,14 @@ export default defineConfig({
         starlightOpenAPI([
           {
             base: 'api/petstore',
-            label: 'My API',
             schema: '../schemas/api-schema.yaml',
+            sidebar: { label: 'My API' },
           },
           {
             base: 'api/1password',
-            label: '1Password Connect',
             schema:
               'https://raw.githubusercontent.com/APIs-guru/openapi-directory/gh-pages/v2/specs/1password.local/connect/1.5.7/openapi.yaml',
+            sidebar: { label: '1Password Connect' },
           },
         ]),
       ],
@@ -99,7 +142,7 @@ export default defineConfig({
 
 ## Sidebar groups
 
-The `openAPISidebarGroups` export can be used in your Starlight [sidebar configuration](https://starlight.astro.build/reference/configuration/#sidebar) to add the generated documentation sidebar group to the sidebar.
+The `openAPISidebarGroups` export can be used in your Starlight [sidebar configuration](https://starlight.astro.build/reference/configuration/#sidebar) to add the generated documentation sidebar groups to the sidebar.
 
 ```js {24-25} "{ openAPISidebarGroups }"
 // astro.config.mjs
@@ -115,8 +158,8 @@ export default defineConfig({
         starlightOpenAPI([
           {
             base: 'api',
-            label: 'My API',
             schema: '../schemas/api-schema.yaml',
+            sidebar: { label: 'My API' },
           },
         ]),
       ],
@@ -125,7 +168,7 @@ export default defineConfig({
           label: 'Guides',
           items: [{ label: 'Example Guide', link: '/guides/example/' }],
         },
-        // Add the generated sidebar group to the sidebar.
+        // Add the generated sidebar groups to the sidebar.
         ...openAPISidebarGroups,
       ],
       title: 'My Docs',
