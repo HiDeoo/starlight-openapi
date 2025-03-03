@@ -1,5 +1,48 @@
 # starlight-openapi
 
+## 0.14.0
+
+### Minor Changes
+
+- [#80](https://github.com/HiDeoo/starlight-openapi/pull/80) [`d6175bc`](https://github.com/HiDeoo/starlight-openapi/commit/d6175bc807b52e4d38e3771b83df16b11346a25a) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Adds a new [`sidebar.operations.sort`](https://starlight-openapi.vercel.app/configuration/#sort) configuration option to configure the sorting method for the operation sidebar links.
+
+  The current behavior to sort the operation sidebar links in the order they appear in the OpenAPI document is preserved by default. Setting this option to `'alphabetical'` will sort the operation sidebar links alphabetically.
+
+- [#80](https://github.com/HiDeoo/starlight-openapi/pull/80) [`d6175bc`](https://github.com/HiDeoo/starlight-openapi/commit/d6175bc807b52e4d38e3771b83df16b11346a25a) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Deprecates the sidebar `label`, `collapsed`, and `sidebarMethodBadges` options in favor of a new [`sidebar`](https://starlight-openapi.vercel.app/configuration/#sidebar) option object.
+
+  The previous options are still supported for backward compatibility, but they will be removed in a future release.
+
+  ```diff
+  starlightOpenAPI([
+    {
+      base: 'api',
+      schema: '../schemas/api-schema.yaml',
+  -   label: 'My API',
+  -   collapsed: false,
+  -   sidebarMethodBadges: true,
+  +   sidebar: {
+  +     label: 'My API',
+  +     collapsed: false,
+  +     operations: { badges: true },
+  +   },
+    },
+  ])
+  ```
+
+- [#80](https://github.com/HiDeoo/starlight-openapi/pull/80) [`d6175bc`](https://github.com/HiDeoo/starlight-openapi/commit/d6175bc807b52e4d38e3771b83df16b11346a25a) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Adds a new [`sidebar.tags.sort`](https://starlight-openapi.vercel.app/configuration/#sort-1) configuration option to configure the sorting method for the tag sidebar groups.
+
+  The current behavior to sort the tag sidebar groups in the order they appear in the OpenAPI document is preserved by default. Setting this option to `'alphabetical'` will sort the tag sidebar groups alphabetically.
+
+- [#80](https://github.com/HiDeoo/starlight-openapi/pull/80) [`d6175bc`](https://github.com/HiDeoo/starlight-openapi/commit/d6175bc807b52e4d38e3771b83df16b11346a25a) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Adds a new [`sidebar.operations.labels`](https://starlight-openapi.vercel.app/configuration/#labels) configuration option to define whether the operation sidebar labels should use the operation ID or summary.
+
+  The current behavior to use the operation summary and fall back to the operation ID if no summary is provided is preserved by default. Setting this option to `'operationId'` will always use the operation ID as the operation sidebar label.
+
+### Patch Changes
+
+- [#80](https://github.com/HiDeoo/starlight-openapi/pull/80) [`d6175bc`](https://github.com/HiDeoo/starlight-openapi/commit/d6175bc807b52e4d38e3771b83df16b11346a25a) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Fixes a rendering issue for model definition properties using nested `allOf` properties.
+
+- [#80](https://github.com/HiDeoo/starlight-openapi/pull/80) [`d6175bc`](https://github.com/HiDeoo/starlight-openapi/commit/d6175bc807b52e4d38e3771b83df16b11346a25a) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Fixes a syntax highlighting issue for response [examples defined at the object-level in a reference of the `components` section](https://swagger.io/docs/specification/v3_0/adding-examples/#object-and-property-examples).
+
 ## 0.13.0
 
 ### Minor Changes
