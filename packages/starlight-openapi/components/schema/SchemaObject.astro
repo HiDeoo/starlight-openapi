@@ -39,6 +39,7 @@ const hasMany = schemaObjects !== undefined
     <Astro.self negated schemaObject={schemaObject.not} />
   ) : (
     <>
+      {schemaObject.title && <em>{schemaObject.title}</em>}
       <Md text={schemaObject.description} />
       <ExternalDocs docs={schemaObject.externalDocs} />
       {isSchemaObjectObject(schemaObject) ? (

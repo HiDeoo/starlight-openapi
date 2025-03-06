@@ -211,3 +211,12 @@ test('overrides the global `consumes` property for a v2.0 schema', async ({ docP
   await requestBody.getByRole('combobox').selectOption('application/json')
   await requestBody.getByRole('combobox').selectOption('application/xml')
 })
+
+test('displays property titles when provided', async ({ docPage }) => {
+  await docPage.goto('/v3/animals/operations/addanimal/')
+
+  const requestBody = docPage.getRequestBody()
+
+  await expect(requestBody.getByText('Name of the animal')).toBeVisible()
+  await expect(requestBody.getByText('A friendly name for the animal.')).toBeVisible()
+})
