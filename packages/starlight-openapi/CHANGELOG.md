@@ -1,5 +1,11 @@
 # starlight-openapi
 
+## 0.14.1
+
+### Patch Changes
+
+- [#83](https://github.com/HiDeoo/starlight-openapi/pull/83) [`dc88650`](https://github.com/HiDeoo/starlight-openapi/commit/dc886506e811b78512a3c87702fe4c8372e1fae5) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Ensures property titles are rendered when provided in a schema.
+
 ## 0.14.0
 
 ### Minor Changes
