@@ -490,6 +490,8 @@ components:
           format: int64
         name:
           type: string
+          title: Name of the animal
+          description: A friendly name for the animal.
         tag:
           type: string
       example:
