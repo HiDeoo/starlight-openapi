@@ -1,5 +1,11 @@
 # starlight-openapi
 
+## 0.14.2
+
+### Patch Changes
+
+- [#86](https://github.com/HiDeoo/starlight-openapi/pull/86) [`ecc5bb3`](https://github.com/HiDeoo/starlight-openapi/commit/ecc5bb3c710a0f0f426198c5af980ec95c964cba) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Fixes syntax highlighting issues for many examples where the code block language was not properly inferred.
+
 ## 0.14.1
 
 ### Patch Changes
