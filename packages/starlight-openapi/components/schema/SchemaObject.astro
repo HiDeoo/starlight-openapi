@@ -47,7 +47,7 @@ const hasMany = schemaObjects !== undefined
       ) : isSchemaObjectAllOf(schemaObject) ? (
         <SchemaObjectAllOf {nested} {parents} {schemaObject} />
       ) : (
-        <Items {parents} items={schemaObject} {negated} nullable={getNullable(schemaObject)} />
+        <Items {parents} items={schemaObject} {negated} nullable={getNullable(schemaObject)} {type} />
       )}
       {!hideExample && schemaObject.example && <Example raw={schemaObject.example} {type} />}
     </>

@@ -20,4 +20,4 @@ const isObject = schema && isSchemaObjectObject(schema)
 {isObject && <Md text={description} />}
 {schema && <SchemaObject schemaObject={schema} hideExample={example !== undefined || examples !== undefined} {type} />}
 {!isObject && <Md text={description} />}
-<Examples example={example} examples={examples} parameter={parameter} />
+<Examples {example} {examples} {parameter} {type} />
