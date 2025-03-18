@@ -74,12 +74,18 @@ function getFormValue(parameter: Parameter, value: unknown) {
   })
 }
 
-function getExampleLang(type: string | undefined) {
+function getExampleLang(code: string, type: string | undefined) {
   switch (type) {
     case 'application/json': {
       return 'json'
     }
     default: {
+      try {
+        JSON.parse(code)
+        return 'json'
+      } catch {
+        // Fallback to plain text when failing to parse the code as JSON.
+      }
       return 'plaintext'
     }
   }
@@ -98,7 +104,7 @@ const code = exampleToRender ? getExampleValue(exampleToRender.value).trim() : '
           <a href={exampleToRender.externalValue}>{exampleToRender.externalValue}</a>
         </Text>
       )}
-      {code.length > 0 && <Code {code} lang={getExampleLang(type)} />}
+      {code.length > 0 && <Code {code} lang={getExampleLang(code, type)} />}
     </>
   )
 }
