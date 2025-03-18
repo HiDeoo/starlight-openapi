@@ -8,5 +8,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["starlight-openapi-docs"]
+  "ignore": ["starlight-openapi-docs", "starlight-openapi-docs-demo"]
 }
