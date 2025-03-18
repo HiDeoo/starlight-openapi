@@ -1,5 +1,11 @@
 # starlight-openapi
 
+## 0.14.3
+
+### Patch Changes
+
+- [#88](https://github.com/HiDeoo/starlight-openapi/pull/88) [`d2cdf30`](https://github.com/HiDeoo/starlight-openapi/commit/d2cdf3008aa7693b73d306f7d2fe2e0cc2f9e05a) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Fixes a compatibility issue with some other Starlight plugins due to how the sidebar entries for the generated pages were being created.
+
 ## 0.14.2
 
 ### Patch Changes
