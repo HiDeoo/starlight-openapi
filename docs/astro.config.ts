@@ -1,8 +1,7 @@
 import starlight from '@astrojs/starlight'
 import { defineConfig } from 'astro/config'
 import starlightOpenAPI, { openAPISidebarGroups } from 'starlight-openapi'
-
-import { starlightOpenAPIDocsDemoPlugin } from './src/libs/sidebar'
+import starlightOpenAPIDocsDemo from 'starlight-openapi-docs-demo'
 
 export default defineConfig({
   integrations: [
@@ -61,7 +60,7 @@ export default defineConfig({
             sidebar: { label: 'Simple Recursion v3.0' },
           },
         ]),
-        starlightOpenAPIDocsDemoPlugin(),
+        starlightOpenAPIDocsDemo(),
       ],
       sidebar: [
         {

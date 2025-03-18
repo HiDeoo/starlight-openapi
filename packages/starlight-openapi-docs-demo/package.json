@@ -1,0 +1,36 @@
+{
+  "name": "starlight-openapi-docs-demo",
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": "HiDeoo <github@hideoo.dev> (https://hideoo.dev)",
+  "type": "module",
+  "exports": {
+    ".": "./index.ts",
+    "./middleware": "./middleware.ts",
+    "./package.json": "./package.json"
+  },
+  "peerDependencies": {
+    "@astrojs/starlight": ">=0.30.0"
+  },
+  "engines": {
+    "node": ">=18.17.1"
+  },
+  "packageManager": "pnpm@8.6.12",
+  "private": true,
+  "sideEffects": false,
+  "keywords": [
+    "starlight",
+    "plugin",
+    "openapi",
+    "swagger",
+    "documentation",
+    "astro"
+  ],
+  "homepage": "https://github.com/HiDeoo/starlight-openapi",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HiDeoo/starlight-openapi.git",
+    "directory": "packages/starlight-openapi-docs-demo"
+  },
+  "bugs": "https://github.com/HiDeoo/starlight-openapi/issues"
+}
