@@ -1,9 +1,10 @@
-import type { StarlightUserConfig } from '@astrojs/starlight/types'
+import type { StarlightRouteData } from '@astrojs/starlight/route-data'
+import type { HookParameters } from '@astrojs/starlight/types'
 import type { MarkdownHeading } from 'astro'
 
 import type { OperationHttpMethod, OperationTag, PathItemOperation } from './operation'
 import { getParametersByLocation } from './parameter'
-import { slug } from './path'
+import { slug, stripLeadingAndTrailingSlashes } from './path'
 import { hasRequestBody } from './requestBody'
 import { includesDefaultResponse } from './response'
 import { getSchemaSidebarGroups, type Schema } from './schema'
@@ -12,7 +13,7 @@ import { capitalize } from './utils'
 
 const starlightOpenAPISidebarGroupsLabel = Symbol('StarlightOpenAPISidebarGroupsLabel')
 
-export function getSidebarGroupsPlaceholder(): SidebarGroup[] {
+export function getSidebarGroupsPlaceholder(): SidebarManualGroupConfig[] {
   return [
     {
       collapsed: false,
@@ -44,25 +45,26 @@ export function getPageProps(
 }
 
 export function getSidebarFromSchemas(
-  sidebar: StarlightUserConfigSidebar,
+  pathname: string,
+  sidebar: StarlightRouteData['sidebar'],
   schemas: Schema[],
-): StarlightUserConfigSidebar {
-  if (!sidebar || sidebar.length === 0) {
+): StarlightRouteData['sidebar'] {
+  if (sidebar.length === 0) {
     return sidebar
   }
 
-  const sidebarGroups = schemas.map((schema) => getSchemaSidebarGroups(schema))
+  const sidebarGroups = schemas.map((schema) => getSchemaSidebarGroups(pathname, schema))
 
-  function replaceSidebarGroupsPlaceholder(group: SidebarManualGroup): SidebarManualGroup | SidebarManualGroup[] {
+  function replaceSidebarGroupsPlaceholder(group: SidebarGroup): SidebarGroup | SidebarGroup[] {
     if (group.label === starlightOpenAPISidebarGroupsLabel.toString()) {
       return sidebarGroups
     }
 
-    if (isSidebarManualGroup(group)) {
+    if (isSidebarGroup(group)) {
       return {
         ...group,
-        items: group.items.flatMap((item) => {
-          return isSidebarManualGroup(item) ? replaceSidebarGroupsPlaceholder(item) : item
+        entries: group.entries.flatMap((item) => {
+          return isSidebarGroup(item) ? replaceSidebarGroupsPlaceholder(item) : item
         }),
       }
     }
@@ -71,28 +73,24 @@ export function getSidebarFromSchemas(
   }
 
   return sidebar.flatMap((item) => {
-    return isSidebarManualGroup(item) ? replaceSidebarGroupsPlaceholder(item) : item
+    return isSidebarGroup(item) ? replaceSidebarGroupsPlaceholder(item) : item
   })
 }
 
-export function makeSidebarGroup(
-  label: string,
-  items: SidebarManualGroup['items'],
-  collapsed: boolean,
-): SidebarManualGroup {
-  return { collapsed, items, label }
+export function makeSidebarGroup(label: string, entries: SidebarItem[], collapsed: boolean): SidebarGroup {
+  return { type: 'group', collapsed, entries, label, badge: undefined }
 }
 
-export function makeSidebarLink(label: string, link: string, badge?: StarlightUserConfigSidebarBadge): SidebarLink {
-  return { label, link, badge }
+export function makeSidebarLink(pathname: string, label: string, href: string, badge?: SidebarBadge): SidebarLink {
+  return { type: 'link', isCurrent: pathname === stripLeadingAndTrailingSlashes(href), label, href, badge, attrs: {} }
 }
 
-export function getMethodSidebarBadge(method: OperationHttpMethod): StarlightUserConfigSidebarBadge {
+export function getMethodSidebarBadge(method: OperationHttpMethod): SidebarBadge {
   return { class: `sl-openapi-method-${method}`, text: method.toUpperCase(), variant: 'caution' }
 }
 
-function isSidebarManualGroup(item: NonNullable<StarlightUserConfigSidebar>[number]): item is SidebarManualGroup {
-  return typeof item !== 'string' && 'items' in item
+function isSidebarGroup(item: SidebarItem): item is SidebarGroup {
+  return item.type === 'group'
 }
 
 function getOverviewHeadings({ document }: Schema): MarkdownHeading[] {
@@ -163,28 +161,16 @@ function makeHeading(depth: number, text: string, customSlug?: string): Markdown
   return { depth, slug: customSlug ?? slug(text), text }
 }
 
-type SidebarGroup =
-  | SidebarManualGroup
-  | {
-      autogenerate: {
-        collapsed?: boolean
-        directory: string
-      }
-      collapsed?: boolean
-      label: string
-    }
+type SidebarUserConfig = NonNullable<HookParameters<'config:setup'>['config']['sidebar']>
 
-export interface SidebarManualGroup {
-  collapsed?: boolean
-  items: (SidebarLink | SidebarGroup)[]
-  label: string
-}
+type SidebarItemConfig = SidebarUserConfig[number]
+type SidebarManualGroupConfig = Extract<SidebarItemConfig, { items: SidebarItemConfig[] }>
 
-interface SidebarLink {
-  badge?: StarlightUserConfigSidebarBadge | undefined
-  label: string
-  link: string
-}
+type SidebarItem = StarlightRouteData['sidebar'][number]
+type SidebarLink = Extract<SidebarItem, { type: 'link' }>
+export type SidebarGroup = Extract<SidebarItem, { type: 'group' }>
+
+type SidebarBadge = SidebarItem['badge']
 
 interface StarlightPageProps {
   frontmatter: {
@@ -192,9 +178,3 @@ interface StarlightPageProps {
   }
   headings: MarkdownHeading[]
 }
-
-type StarlightUserConfigSidebar = StarlightUserConfig['sidebar']
-type StarlightUserConfigSidebarBadge = Exclude<
-  NonNullable<Exclude<NonNullable<StarlightUserConfigSidebar>[number], string>['badge']>,
-  string
->
