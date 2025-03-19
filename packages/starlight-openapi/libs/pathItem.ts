@@ -1,11 +1,11 @@
 import { getOperationsByTag, getWebhooksOperations, isMinimalOperationTag } from './operation'
-import { getBasePath, slug } from './path'
+import { getBaseLink, slug } from './path'
 import type { Schema } from './schema'
 import { getMethodSidebarBadge, makeSidebarGroup, makeSidebarLink, type SidebarGroup } from './starlight'
 
 export function getPathItemSidebarGroups(pathname: string, schema: Schema): SidebarGroup['entries'] {
   const { config } = schema
-  const baseLink = getBasePath(config)
+  const baseLink = getBaseLink(config)
   const operations = getOperationsByTag(schema)
 
   const tags =
@@ -38,7 +38,7 @@ export function getPathItemSidebarGroups(pathname: string, schema: Schema): Side
 
 export function getWebhooksSidebarGroups(pathname: string, schema: Schema): SidebarGroup['entries'] {
   const { config } = schema
-  const baseLink = getBasePath(config)
+  const baseLink = getBaseLink(config)
   const operations = getWebhooksOperations(schema)
 
   if (operations.length === 0) {
