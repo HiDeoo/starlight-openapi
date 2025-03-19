@@ -1,5 +1,11 @@
 # starlight-openapi
 
+## 0.14.4
+
+### Patch Changes
+
+- [#90](https://github.com/HiDeoo/starlight-openapi/pull/90) [`6953670`](https://github.com/HiDeoo/starlight-openapi/commit/6953670897d4fad2125bf66f31bfe936e9d1ba3d) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Fixes potential sidebar link issues when using the Astro `base` option.
+
 ## 0.14.3
 
 ### Patch Changes
