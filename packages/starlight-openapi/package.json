@@ -17,7 +17,7 @@
     "lint": "eslint . --cache --max-warnings=0"
   },
   "dependencies": {
-    "@readme/openapi-parser": "^2.5.0",
+    "@readme/openapi-parser": "^2.7.0",
     "github-slugger": "^2.0.0",
     "url-template": "^3.1.1"
   },
