@@ -1,5 +1,11 @@
 # starlight-openapi
 
+## 0.15.0
+
+### Minor Changes
+
+- [#94](https://github.com/HiDeoo/starlight-openapi/pull/94) [`9b95bca`](https://github.com/HiDeoo/starlight-openapi/commit/9b95bca2f91225a096393d5e0584b6def658c23d) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Adds support for schemas using version `3.0.4` of the OpenAPI specification by updating the OpenAPI and Swagger API definitions parser used internally.
+
 ## 0.14.4
 
 ### Patch Changes
