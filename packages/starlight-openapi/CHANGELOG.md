@@ -1,5 +1,19 @@
 # starlight-openapi
 
+## 0.16.0
+
+### Minor Changes
+
+- [#96](https://github.com/HiDeoo/starlight-openapi/pull/96) [`933cc5c`](https://github.com/HiDeoo/starlight-openapi/commit/933cc5c2c7d400c5f2392679620cb3daddd787d2) Thanks [@HiDeoo](https://github.com/HiDeoo)! - ⚠️ **BREAKING CHANGE:** The minimum supported version of Starlight is now version `0.34.0`.
+
+  Please use the `@astrojs/upgrade` command to upgrade your project:
+
+  ```sh
+  npx @astrojs/upgrade
+  ```
+
+- [#96](https://github.com/HiDeoo/starlight-openapi/pull/96) [`933cc5c`](https://github.com/HiDeoo/starlight-openapi/commit/933cc5c2c7d400c5f2392679620cb3daddd787d2) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Adds clickable anchor links to headings which respects the Starlight [`markdown.headingLinksSection`](https://starlight.astro.build/reference/configuration/#headinglinks) configuration option.
+
 ## 0.15.0
 
 ### Minor Changes
