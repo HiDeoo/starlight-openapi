@@ -2,6 +2,7 @@
 import type { PathItemOperation } from '../../libs/operation'
 import { getParametersByLocation } from '../../libs/parameter'
 import { capitalize } from '../../libs/utils'
+import Heading from '../Heading.astro'
 import Section from '../Section.astro'
 
 import Parameter from './Parameter.astro'
@@ -20,7 +21,9 @@ const parametersByLocation = getParametersByLocation(operation.parameters, pathI
 {
   parametersByLocation.size > 0 && (
     <>
-      <h2 id="parameters">Parameters</h2>
+      <Heading level={2} id="parameters">
+        Parameters
+      </Heading>
       {[...parametersByLocation.entries()].map(([location, parameters]) => (
         <Section title={`${capitalize(location)} Parameters`}>
           {[...parameters.values()].map((parameter) => (

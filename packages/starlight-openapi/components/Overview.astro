@@ -5,6 +5,7 @@ import { getSecurityDefinitions } from '../libs/security'
 import { interspece } from '../libs/utils'
 
 import ExternalDocs from './ExternalDocs.astro'
+import Heading from './Heading.astro'
 import Md from './Md.astro'
 import SecurityDefinitions from './security/SecurityDefinitions.astro'
 import Text from './Text.astro'
@@ -26,7 +27,7 @@ const contacts = [document.info.contact?.url, document.info.contact?.email].filt
 
 <Text>{summary}</Text>
 
-<h2 id="overview">{document.info.title} ({document.info.version})</h2>
+<Heading level={2} id="overview">{document.info.title} ({document.info.version})</Heading>
 
 <Md text={document.info.description} />
 <ExternalDocs docs={document.externalDocs} />

@@ -5,6 +5,7 @@ import {
   type SecurityDefinitions,
 } from '../../libs/security'
 import { capitalize } from '../../libs/utils'
+import Heading from '../Heading.astro'
 import Md from '../Md.astro'
 import Section from '../Section.astro'
 import Text from '../Text.astro'
@@ -21,7 +22,9 @@ const { definitions } = Astro.props
 {
   definitions && (
     <>
-      <h2 id="authentication">Authentication</h2>
+      <Heading level={2} id="authentication">
+        Authentication
+      </Heading>
       {Object.entries(definitions).map(([name, scheme]) => (
         <Section title={name}>
           <Md text={scheme.description} />
