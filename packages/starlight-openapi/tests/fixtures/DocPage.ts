@@ -31,11 +31,11 @@ export class DocPage {
   }
 
   getParameters(location: string) {
-    return this.page.locator(`h3:text-is("${capitalize(location)} Parameters") + div > div`)
+    return this.page.locator(`.sl-heading-wrapper:has(> h3:text-is("${capitalize(location)} Parameters")) + div > div`)
   }
 
   getRequestBody() {
-    return this.page.locator('section:has(> h2:first-child:text-is("Request Body"))')
+    return this.page.locator('section:has(> .sl-heading-wrapper h2:first-child:text-is("Request Body"))')
   }
 
   getRequestBodyParameter(name: string) {
@@ -47,11 +47,11 @@ export class DocPage {
   }
 
   getResponse(status: string) {
-    return this.page.locator(`section:has(> h3:first-child:text-is("${status}"))`)
+    return this.page.locator(`section:has(> .sl-heading-wrapper h3:first-child:text-is("${status}"))`)
   }
 
   getResponseHeaders(status: string) {
-    return this.getResponse(status).getByRole('heading', { level: 4, name: 'Headers' })
+    return this.getResponse(status).locator(`.sl-heading-wrapper:has(> h4:text-is("Headers"))`)
   }
 
   getResponseHeader(status: string, name: string) {
@@ -59,11 +59,11 @@ export class DocPage {
   }
 
   getResponseExamples(status: string) {
-    return this.getResponse(status).locator('section:has(> h4:first-child:text-is("Examples"))')
+    return this.getResponse(status).locator('section:has(> .sl-heading-wrapper h4:first-child:text-is("Examples"))')
   }
 
   getAuthorizations() {
-    return this.page.locator('section:has(> h2:first-child:text-is("Authorizations"))')
+    return this.page.locator('section:has(> .sl-heading-wrapper h2:first-child:text-is("Authorizations"))')
   }
 
   getAuthentication() {
@@ -71,7 +71,7 @@ export class DocPage {
   }
 
   getAuthenticationMethod(name: string) {
-    return this.page.locator(`section:has(> h3:first-child:text-is("${name}"))`)
+    return this.page.locator(`section:has(> .sl-heading-wrapper h3:first-child:text-is("${name}"))`)
   }
 
   getTocItems() {

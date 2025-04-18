@@ -82,10 +82,10 @@ export default defineConfig({
           items: openAPISidebarGroups,
         },
       ],
-      social: {
-        blueSky: 'https://bsky.app/profile/hideoo.dev',
-        github: 'https://github.com/HiDeoo/starlight-openapi',
-      },
+      social: [
+        { href: 'https://bsky.app/profile/hideoo.dev', icon: 'blueSky', label: 'Bluesky' },
+        { href: 'https://github.com/HiDeoo/starlight-openapi', icon: 'github', label: 'GitHub' },
+      ],
       title: 'Starlight OpenAPI',
     }),
   ],
