@@ -55,13 +55,17 @@ paths:
       parameters:
         - name: limit
           in: query
-          description: How many animals to return at one time (max 100)
+          description: How many animals to return at one time (max 50)
           deprecated: true
           schema:
             type: integer
             maximum: 50
             format: int32
             nullable: true
+            enum:
+              - 10
+              - 20
+              - 50
         - name: offset
           in: header
           description: The number of animals to skip before starting to collect the result set
