@@ -1,5 +1,11 @@
 # starlight-openapi
 
+## 0.16.1
+
+### Patch Changes
+
+- [#100](https://github.com/HiDeoo/starlight-openapi/pull/100) [`1b00fcf`](https://github.com/HiDeoo/starlight-openapi/commit/1b00fcf91a7573d2caf5bdd6a3425b411f0f6f09) Thanks [@cruzdanilo](https://github.com/cruzdanilo)! - Fixes an issue preventing numeric enum values from being rendered.
+
 ## 0.16.0
 
 ### Minor Changes
