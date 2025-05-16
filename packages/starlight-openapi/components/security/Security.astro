@@ -8,12 +8,12 @@ import Tags from '../Tags.astro'
 
 interface Props {
   operation: Operation
-  schema: Schema
+  schema?: Schema
 }
 
 const { operation, schema } = Astro.props
 
-const requirements = getSecurityRequirements(schema, operation)
+const requirements = getSecurityRequirements(operation, schema)
 ---
 
 {
@@ -35,7 +35,7 @@ const requirements = getSecurityRequirements(schema, operation)
             return (
               <li class="scheme not-content">
                 <strong>
-                  <a href={`${getBaseLink(schema.config)}#${slug(scheme)}`}>{scheme}</a>
+                  {schema ? <a href={`${getBaseLink(schema.config)}#${slug(scheme)}`}>{scheme}</a> : scheme}
                 </strong>
                 {scopes.length > 0 ? <Tags tags={[...scopes]} /> : null}
               </li>

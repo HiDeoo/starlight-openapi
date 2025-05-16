@@ -455,6 +455,51 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /feed:
+    post:
+      description: Subscribe a client to receive data
+      parameters:
+        - name: callbackUrl
+          in: query
+          required: true
+          description: The location where data will be sent
+          schema:
+            type: string
+            format: uri
+            example: https://example.com
+      responses:
+        '201':
+          description: subscription successfully created
+          content:
+            application/json:
+              schema:
+                description: subscription information
+                required:
+                  - subscriptionId
+                properties:
+                  subscriptionId:
+                    description: this unique identifier allows management of the subscription
+                    type: string
+                    example: 2531329f-fb09-4ef7-887e-84e648214436
+      callbacks:
+        onData:
+          '{$request.query.callbackUrl}/data':
+            post:
+              requestBody:
+                description: subscription payload
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/Animals'
+              responses:
+                '202':
+                  description: |
+                    Your server implementation should return this HTTP status code
+                    if the data was received successfully
+                '204':
+                  description: |
+                    Your server should return this HTTP status code if no longer interested
+                    in further updates
 webhooks:
   newAnimal:
     post:

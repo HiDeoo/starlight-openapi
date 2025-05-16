@@ -3,17 +3,21 @@ import { slug } from '../libs/path'
 
 import Heading from './Heading.astro'
 
-interface Props {
+export interface SectionHeadingProps {
+  level?: number
+  prefix?: string | undefined
+}
+
+interface Props extends SectionHeadingProps {
   empty?: boolean
-  level?: 2 | 3 | 4
   title: string
 }
 
-const { empty, level = 3, title } = Astro.props
+const { empty, level = 3, prefix = '', title } = Astro.props
 ---
 
 <section>
-  <Heading {level} id={slug(title)}>
+  <Heading {level} id={slug(prefix ? `${prefix}-${title}` : title)}>
     {title}<slot name="post-title" />
   </Heading>
   {

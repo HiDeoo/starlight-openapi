@@ -1,6 +1,8 @@
 ---
-import type { PathItemOperation } from '../../libs/operation'
+import { getOperationURLs, type PathItemOperation } from '../../libs/operation'
+import { getParametersByLocation } from '../../libs/parameter'
 import type { Schema } from '../../libs/schema'
+import Callbacks from '../callback/Callbacks.astro'
 import Deprecated from '../Deprecated.astro'
 import ExternalDocs from '../ExternalDocs.astro'
 import Md from '../Md.astro'
@@ -18,13 +20,16 @@ interface Props {
 
 const { operation: pathItemOperation, schema } = Astro.props
 const { operation } = pathItemOperation
+const urls = getOperationURLs(schema.document, pathItemOperation)
+const parameters = getParametersByLocation(operation.parameters, pathItemOperation.pathItem.parameters)
 ---
 
 <Deprecated deprecated={operation.deprecated} />
-<OperationDescription operation={pathItemOperation} {schema} />
+<OperationDescription method={pathItemOperation.method} path={pathItemOperation.path} {urls} />
 <Md text={operation.description} />
 <ExternalDocs docs={operation.externalDocs} />
 <Security {operation} {schema} />
-<Parameters operation={pathItemOperation} />
+<Parameters {parameters} />
 <RequestBody {operation} {schema} />
+<Callbacks {operation} {schema} />
 <Responses {operation} responses={operation.responses} {schema} />

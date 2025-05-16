@@ -1,5 +1,6 @@
 import type { OpenAPI } from 'openapi-types'
 
+import type { Callback } from './callback'
 import { type Document, isOpenAPIV2Document } from './document'
 import { slug } from './path'
 import { isPathItem, type PathItem } from './pathItem'
@@ -113,6 +114,19 @@ export function getWebhooksOperations({ config, document }: Schema): PathItemOpe
   return operations
 }
 
+export function getCallbackOperations(callback: Callback): CallbackOperation[] {
+  const operations: CallbackOperation[] = []
+
+  for (const method of operationHttpMethods) {
+    const operation = callback[method]
+    if (!operation) continue
+
+    operations.push({ method, operation })
+  }
+
+  return operations
+}
+
 export function isPathItemOperation<TMethod extends OperationHttpMethod>(
   pathItem: PathItem,
   method: TMethod,
@@ -174,11 +188,16 @@ export interface PathItemOperation {
   title: string
 }
 
+export interface CallbackOperation {
+  method: OperationHttpMethod
+  operation: Operation
+}
+
 export type Operation = OpenAPI.Operation
 export type OperationHttpMethod = (typeof operationHttpMethods)[number]
 export type OperationTag = NonNullable<Document['tags']>[number]
 
-interface OperationURL {
+export interface OperationURL {
   description?: string | undefined
   url: string
 }

@@ -2,6 +2,7 @@ import type { StarlightRouteData } from '@astrojs/starlight/route-data'
 import type { HookParameters } from '@astrojs/starlight/types'
 import type { MarkdownHeading } from 'astro'
 
+import { getCallbacks } from './callback'
 import type { OperationHttpMethod, OperationTag, PathItemOperation } from './operation'
 import { getParametersByLocation } from './parameter'
 import { slug, stripLeadingAndTrailingSlashes } from './path'
@@ -115,7 +116,7 @@ function getOperationTagHeadings(tag: OperationTag): MarkdownHeading[] {
 function getOperationHeadings(schema: Schema, { operation, pathItem }: PathItemOperation): MarkdownHeading[] {
   const items: MarkdownHeading[] = []
 
-  const securityRequirements = getSecurityRequirements(schema, operation)
+  const securityRequirements = getSecurityRequirements(operation, schema)
 
   if (securityRequirements && securityRequirements.length > 0) {
     items.push(makeHeading(2, 'Authorizations'))
@@ -132,6 +133,13 @@ function getOperationHeadings(schema: Schema, { operation, pathItem }: PathItemO
 
   if (hasRequestBody(operation)) {
     items.push(makeHeading(2, 'Request Body'))
+  }
+
+  const callbacks = getCallbacks(operation)
+  const callbackIdentifiers = Object.keys(callbacks ?? {})
+
+  if (callbackIdentifiers.length > 0) {
+    items.push(makeHeading(2, 'Callbacks'), ...callbackIdentifiers.map((identifier) => makeHeading(3, identifier)))
   }
 
   if (operation.responses) {
