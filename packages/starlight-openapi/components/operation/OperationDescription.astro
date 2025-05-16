@@ -1,27 +1,24 @@
 ---
 import { Icon } from '@astrojs/starlight/components'
 
-import { getOperationURLs, type PathItemOperation } from '../../libs/operation'
-import type { Schema } from '../../libs/schema'
+import type { OperationURL, PathItemOperation } from '../../libs/operation'
 
 import OperationMethod from './OperationMethod.astro'
 import OperationUrl from './OperationUrl.astro'
 
 interface Props {
-  operation: PathItemOperation
-  schema: Schema
+  method: PathItemOperation['method']
+  path: PathItemOperation['path']
+  urls?: OperationURL[]
 }
 
-const { operation: pathItemOperation, schema } = Astro.props
-const { method, path } = pathItemOperation
-
-const urls = getOperationURLs(schema.document, pathItemOperation)
+const { method, path, urls } = Astro.props
 ---
 
 <div class="not-content">
   {
     path ? (
-      urls.length > 0 ? (
+      urls && urls.length > 0 ? (
         <details class="operation-description-urls">
           <summary>
             <OperationMethod {method} {path} />

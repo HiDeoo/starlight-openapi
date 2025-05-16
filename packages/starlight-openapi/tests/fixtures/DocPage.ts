@@ -42,6 +42,22 @@ export class DocPage {
     return this.getRequestBody().locator('.key').filter({ hasText: name })
   }
 
+  getCallback(identifier: string, siblingLocator?: string) {
+    return this.page.locator(
+      `.sl-heading-wrapper:has(> h2:text-is("Callbacks")) + .sl-heading-wrapper:has(> h3:first-child:has-text("${identifier}"))${
+        siblingLocator ? ` ${siblingLocator}` : ''
+      }`,
+    )
+  }
+
+  getCallbackRequestBody(identifier: string) {
+    return this.getCallback(identifier, '~ section:has(> .sl-heading-wrapper h4:first-child:has-text("Request Body"))')
+  }
+
+  getCallbackRequestResponse(identifier: string, status: string) {
+    return this.getCallback(identifier, `~ section:has(> .sl-heading-wrapper h5:first-child:text-is("${status}"))`)
+  }
+
   getParameter(location: string, name: string) {
     return this.getParameters(location).filter({ hasText: name })
   }

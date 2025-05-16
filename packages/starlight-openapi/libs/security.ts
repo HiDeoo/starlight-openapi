@@ -4,10 +4,10 @@ import type { Document } from './document'
 import type { Operation } from './operation'
 import type { Schema } from './schema'
 
-export function getSecurityRequirements(schema: Schema, operation: Operation): SecurityRequirement[] | undefined {
+export function getSecurityRequirements(operation: Operation, schema?: Schema): SecurityRequirement[] | undefined {
   if ('security' in operation) {
     return operation.security
-  } else if ('security' in schema.document) {
+  } else if (schema && 'security' in schema.document) {
     return schema.document.security
   }
 

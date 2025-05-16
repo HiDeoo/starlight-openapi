@@ -1,31 +1,26 @@
 ---
-import type { PathItemOperation } from '../../libs/operation'
-import { getParametersByLocation } from '../../libs/parameter'
+import type { getParametersByLocation } from '../../libs/parameter'
 import { capitalize } from '../../libs/utils'
 import Heading from '../Heading.astro'
-import Section from '../Section.astro'
+import Section, { type SectionHeadingProps } from '../Section.astro'
 
 import Parameter from './Parameter.astro'
 
-interface Props {
-  operation: PathItemOperation
+interface Props extends SectionHeadingProps {
+  parameters: ReturnType<typeof getParametersByLocation>
 }
 
-const {
-  operation: { operation, pathItem },
-} = Astro.props
-
-const parametersByLocation = getParametersByLocation(operation.parameters, pathItem.parameters)
+const { level = 2, parameters, prefix } = Astro.props
 ---
 
 {
-  parametersByLocation.size > 0 && (
+  parameters.size > 0 && (
     <>
-      <Heading level={2} id="parameters">
+      <Heading level={level} id={prefix ? `${prefix}-parameters` : 'parameters'}>
         Parameters
       </Heading>
-      {[...parametersByLocation.entries()].map(([location, parameters]) => (
-        <Section title={`${capitalize(location)} Parameters`}>
+      {[...parameters.entries()].map(([location, parameters]) => (
+        <Section level={level + 1} {prefix} title={`${capitalize(location)} Parameters`}>
           {[...parameters.values()].map((parameter) => (
             <Parameter {parameter} />
           ))}

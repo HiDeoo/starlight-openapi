@@ -111,7 +111,7 @@ test('sorts tags and operations alphabetically if configured to do so', async ({
     {
       collapsed: true,
       label: 'Operations',
-      items: [{ name: 'Get a jaguar' }],
+      items: [{ name: '/feed' }, { name: 'Get a jaguar' }],
     },
     {
       collapsed: true,
