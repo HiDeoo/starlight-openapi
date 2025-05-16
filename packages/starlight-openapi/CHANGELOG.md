@@ -1,5 +1,11 @@
 # starlight-openapi
 
+## 0.17.0
+
+### Minor Changes
+
+- [#103](https://github.com/HiDeoo/starlight-openapi/pull/103) [`4179569`](https://github.com/HiDeoo/starlight-openapi/commit/41795691d108dd609cf3785a05ba5f3e126c06b9) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Adds support for [callbacks](https://swagger.io/docs/specification/v3_0/callbacks/) in OpenAPI 3 specs.
+
 ## 0.16.1
 
 ### Patch Changes
