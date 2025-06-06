@@ -11,6 +11,7 @@ import { includesDefaultResponse } from './response'
 import { getSchemaSidebarGroups, type Schema } from './schema'
 import { getSecurityDefinitions, getSecurityRequirements } from './security'
 import { capitalize } from './utils'
+import type { StarlightOpenAPIContext } from './vite'
 
 const starlightOpenAPISidebarGroupsLabel = Symbol('StarlightOpenAPISidebarGroupsLabel')
 
@@ -49,12 +50,13 @@ export function getSidebarFromSchemas(
   pathname: string,
   sidebar: StarlightRouteData['sidebar'],
   schemas: Schema[],
+  context: StarlightOpenAPIContext,
 ): StarlightRouteData['sidebar'] {
   if (sidebar.length === 0) {
     return sidebar
   }
 
-  const sidebarGroups = schemas.map((schema) => getSchemaSidebarGroups(pathname, schema))
+  const sidebarGroups = schemas.map((schema) => getSchemaSidebarGroups(pathname, schema, context))
 
   function replaceSidebarGroupsPlaceholder(group: SidebarGroup): SidebarGroup | SidebarGroup[] {
     if (group.label === starlightOpenAPISidebarGroupsLabel.toString()) {

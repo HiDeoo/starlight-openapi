@@ -1,4 +1,5 @@
 import { defineRouteMiddleware } from '@astrojs/starlight/route-data'
+import projectContext from 'virtual:starlight-openapi-context'
 import schemas from 'virtual:starlight-openapi-schemas'
 
 import { stripLeadingAndTrailingSlashes } from './libs/path'
@@ -14,5 +15,6 @@ export const onRequest = defineRouteMiddleware((context) => {
     stripLeadingAndTrailingSlashes(context.url.pathname),
     sidebar,
     allSchemas,
+    projectContext,
   )
 })

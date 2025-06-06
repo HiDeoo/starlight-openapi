@@ -1,10 +1,22 @@
+import type { AstroConfig } from 'astro'
 import { slug } from 'github-slugger'
 
 import type { StarlightOpenAPISchemaConfig } from './schema'
+import type { StarlightOpenAPIContext } from './vite'
 
 export { slug } from 'github-slugger'
 
 const base = stripTrailingSlash(import.meta.env.BASE_URL)
+
+const trailingSlashTransformers: Record<AstroConfig['trailingSlash'], TrailingSlashTransformer> = {
+  always: ensureTrailingSlash,
+  ignore: ensureTrailingSlash,
+  never: stripTrailingSlash,
+}
+
+export function getTrailingSlashTransformer(context: StarlightOpenAPIContext) {
+  return trailingSlashTransformers[context.trailingSlash]
+}
 
 /**
  * Does not take the Astro `base` configuration option into account.
@@ -23,10 +35,11 @@ export function getBasePath(config: StarlightOpenAPISchemaConfig) {
  * Takes the Astro `base` configuration option into account.
  * @see {@link getBasePath} for a slug that does not.
  */
-export function getBaseLink(config: StarlightOpenAPISchemaConfig) {
+export function getBaseLink(config: StarlightOpenAPISchemaConfig, context?: StarlightOpenAPIContext) {
   const path = stripLeadingSlash(getBasePath(config))
+  const baseLink = path ? `${base}/${path}` : `${base}/`
 
-  return path ? `${base}/${path}` : `${base}/`
+  return context ? getTrailingSlashTransformer(context)(baseLink) : baseLink
 }
 
 export function stripLeadingAndTrailingSlashes(path: string): string {
@@ -48,3 +61,13 @@ function stripTrailingSlash(path: string) {
 
   return path.slice(0, -1)
 }
+
+function ensureTrailingSlash(path: string) {
+  if (path.endsWith('/')) {
+    return path
+  }
+
+  return `${path}/`
+}
+
+type TrailingSlashTransformer = (path: string) => string

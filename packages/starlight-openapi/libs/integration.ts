@@ -1,13 +1,13 @@
 import type { AstroIntegration } from 'astro'
 
 import type { Schema } from './schema'
-import { vitePluginStarlightOpenAPISchemas } from './vite'
+import { vitePluginStarlightOpenAPI } from './vite'
 
 export function starlightOpenAPIIntegration(schemas: Schema[]): AstroIntegration {
   const starlightOpenAPI: AstroIntegration = {
     name: 'starlight-openapi',
     hooks: {
-      'astro:config:setup': ({ injectRoute, updateConfig }) => {
+      'astro:config:setup': ({ config, injectRoute, updateConfig }) => {
         injectRoute({
           entrypoint: 'starlight-openapi/route',
           pattern: `[...openAPISlug]`,
@@ -16,7 +16,7 @@ export function starlightOpenAPIIntegration(schemas: Schema[]): AstroIntegration
 
         updateConfig({
           vite: {
-            plugins: [vitePluginStarlightOpenAPISchemas(schemas)],
+            plugins: [vitePluginStarlightOpenAPI(schemas, { trailingSlash: config.trailingSlash })],
           },
         })
       },
