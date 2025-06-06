@@ -1,5 +1,15 @@
 # starlight-openapi
 
+## 0.18.0
+
+### Minor Changes
+
+- [#109](https://github.com/HiDeoo/starlight-openapi/pull/109) [`6de8f2b`](https://github.com/HiDeoo/starlight-openapi/commit/6de8f2bfbba77dc3ed20d5ca307994da5cfc8998) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Respects Starlight convention to generate URLs with a trailing slash when using the [`trailingSlash: 'ignore'`](https://docs.astro.build/en/reference/configuration-reference/#trailingslash) Astro configuration option (the default) as many common hosting providers redirect to URLs with a trailing slash by default.
+
+### Patch Changes
+
+- [#109](https://github.com/HiDeoo/starlight-openapi/pull/109) [`6de8f2b`](https://github.com/HiDeoo/starlight-openapi/commit/6de8f2bfbba77dc3ed20d5ca307994da5cfc8998) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Fixes a sidebar link generation issue when using the Astro `trailingSlash` configuration option set to `always`.
+
 ## 0.17.0
 
 ### Minor Changes
