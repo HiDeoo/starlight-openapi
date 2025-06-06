@@ -1,9 +1,14 @@
 import { getOperationsByTag, getWebhooksOperations, isMinimalOperationTag } from './operation'
-import { getBaseLink, slug } from './path'
+import { getBaseLink, getTrailingSlashTransformer, slug } from './path'
 import type { Schema } from './schema'
 import { getMethodSidebarBadge, makeSidebarGroup, makeSidebarLink, type SidebarGroup } from './starlight'
+import type { StarlightOpenAPIContext } from './vite'
 
-export function getPathItemSidebarGroups(pathname: string, schema: Schema): SidebarGroup['entries'] {
+export function getPathItemSidebarGroups(
+  pathname: string,
+  schema: Schema,
+  context: StarlightOpenAPIContext,
+): SidebarGroup['entries'] {
   const { config } = schema
   const baseLink = getBaseLink(config)
   const operations = getOperationsByTag(schema)
@@ -23,20 +28,30 @@ export function getPathItemSidebarGroups(pathname: string, schema: Schema): Side
       return makeSidebarLink(
         pathname,
         sidebar.label,
-        baseLink + slug,
+        getTrailingSlashTransformer(context)(baseLink + slug),
         config.sidebar.operations.badges ? getMethodSidebarBadge(method) : undefined,
       )
     })
 
     if (!isMinimalOperationTag(operations.tag)) {
-      items.unshift(makeSidebarLink(pathname, 'Overview', `${baseLink}operations/tags/${slug(operations.tag.name)}`))
+      items.unshift(
+        makeSidebarLink(
+          pathname,
+          'Overview',
+          getTrailingSlashTransformer(context)(`${baseLink}operations/tags/${slug(operations.tag.name)}`),
+        ),
+      )
     }
 
     return makeSidebarGroup(tag, items, config.sidebar.collapsed)
   })
 }
 
-export function getWebhooksSidebarGroups(pathname: string, schema: Schema): SidebarGroup['entries'] {
+export function getWebhooksSidebarGroups(
+  pathname: string,
+  schema: Schema,
+  context: StarlightOpenAPIContext,
+): SidebarGroup['entries'] {
   const { config } = schema
   const baseLink = getBaseLink(config)
   const operations = getWebhooksOperations(schema)
@@ -57,7 +72,7 @@ export function getWebhooksSidebarGroups(pathname: string, schema: Schema): Side
         makeSidebarLink(
           pathname,
           sidebar.label,
-          baseLink + slug,
+          getTrailingSlashTransformer(context)(baseLink + slug),
           config.sidebar.operations.badges ? getMethodSidebarBadge(method) : undefined,
         ),
       ),

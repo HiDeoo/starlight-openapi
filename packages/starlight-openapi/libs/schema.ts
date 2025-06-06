@@ -4,6 +4,7 @@ import type { OpenAPI } from 'openapi-types'
 import { getBaseLink, stripLeadingAndTrailingSlashes } from './path'
 import { getPathItemSidebarGroups, getWebhooksSidebarGroups } from './pathItem'
 import { makeSidebarGroup, makeSidebarLink, type SidebarGroup } from './starlight'
+import type { StarlightOpenAPIContext } from './vite'
 
 export const SchemaConfigSchema = z
   .object({
@@ -107,15 +108,19 @@ export const SchemaConfigSchema = z
     return rest
   })
 
-export function getSchemaSidebarGroups(pathname: string, schema: Schema): SidebarGroup {
+export function getSchemaSidebarGroups(
+  pathname: string,
+  schema: Schema,
+  context: StarlightOpenAPIContext,
+): SidebarGroup {
   const { config, document } = schema
 
   return makeSidebarGroup(
     config.sidebar.label ?? document.info.title,
     [
-      makeSidebarLink(pathname, 'Overview', getBaseLink(config)),
-      ...getPathItemSidebarGroups(pathname, schema),
-      ...getWebhooksSidebarGroups(pathname, schema),
+      makeSidebarLink(pathname, 'Overview', getBaseLink(config, context)),
+      ...getPathItemSidebarGroups(pathname, schema, context),
+      ...getWebhooksSidebarGroups(pathname, schema, context),
     ],
     config.sidebar.collapsed,
   )
