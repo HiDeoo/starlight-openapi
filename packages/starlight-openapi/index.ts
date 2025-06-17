@@ -1,9 +1,11 @@
+import { randomBytes } from 'node:crypto'
+
 import type { StarlightPlugin } from '@astrojs/starlight/types'
 
 import { validateConfig, type StarlightOpenAPIUserConfig } from './libs/config'
 import { starlightOpenAPIIntegration } from './libs/integration'
 import { parseSchema } from './libs/parser'
-import { getSidebarGroupsPlaceholder } from './libs/starlight'
+import { getSidebarGroupPlaceholder, getSidebarGroupsPlaceholder } from './libs/starlight'
 
 export const openAPISidebarGroups = getSidebarGroupsPlaceholder()
 
@@ -45,4 +47,8 @@ export default function starlightOpenAPIPlugin(userConfig: StarlightOpenAPIUserC
       },
     },
   }
+}
+
+export function createOpenAPISidebarGroup() {
+  return getSidebarGroupPlaceholder(Symbol(randomBytes(24).toString('base64url')))
 }
