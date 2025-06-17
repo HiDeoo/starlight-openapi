@@ -1,5 +1,15 @@
 # starlight-openapi
 
+## 0.19.0
+
+### Minor Changes
+
+- [#112](https://github.com/HiDeoo/starlight-openapi/pull/112) [`64e03d9`](https://github.com/HiDeoo/starlight-openapi/commit/64e03d9201a0dc30bad088b83cede5f1f04aea09) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Adds support for specifying custom sidebar groups for individual OpenAPI schemas.
+
+  When generating documentation for multiple schemas, this allows you to place the generated documentation pages for each schema anywhere in the Starlight sidebar, even in different sidebar groups.
+
+  See the ["Sidebar groups"](https://starlight-openapi.vercel.app/configuration/#sidebar-groups) section in the documentation for more information.
+
 ## 0.18.0
 
 ### Minor Changes
