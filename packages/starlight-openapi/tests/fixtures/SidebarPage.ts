@@ -42,13 +42,13 @@ export class SidebarPage {
   }
 }
 
-type SidebarItem = SidebarItemGroup | SidebarItemLink
+export type SidebarItem = SidebarItemGroup | SidebarItemLink
 
 interface SidebarItemLink {
   name: string | null
 }
 
-interface SidebarItemGroup {
+export interface SidebarItemGroup {
   collapsed: boolean
   items: (SidebarItemGroup | SidebarItemLink)[]
   label: string | null

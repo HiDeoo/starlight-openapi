@@ -16,13 +16,15 @@ import type { StarlightOpenAPIContext } from './vite'
 const starlightOpenAPISidebarGroupsLabel = Symbol('StarlightOpenAPISidebarGroupsLabel')
 
 export function getSidebarGroupsPlaceholder(): SidebarManualGroupConfig[] {
-  return [
-    {
-      collapsed: false,
-      items: [],
-      label: starlightOpenAPISidebarGroupsLabel.toString(),
-    },
-  ]
+  return [getSidebarGroupPlaceholder(starlightOpenAPISidebarGroupsLabel)]
+}
+
+export function getSidebarGroupPlaceholder(label: symbol): SidebarManualGroupConfig {
+  return {
+    collapsed: false,
+    items: [],
+    label: label.toString(),
+  }
 }
 
 export function getPageProps(
@@ -56,10 +58,21 @@ export function getSidebarFromSchemas(
     return sidebar
   }
 
-  const sidebarGroups = schemas.map((schema) => getSchemaSidebarGroups(pathname, schema, context))
+  const sidebarGroups = schemas.map((schema) =>
+    getSchemaSidebarGroups(pathname, schema, context, starlightOpenAPISidebarGroupsLabel.toString()),
+  )
+
+  const sidebarGroupsMap: Record<string, SidebarGroup[]> = {}
+
+  for (const [label, group] of sidebarGroups) {
+    if (!sidebarGroupsMap[label]) sidebarGroupsMap[label] = []
+    sidebarGroupsMap[label].push(group)
+  }
 
   function replaceSidebarGroupsPlaceholder(group: SidebarGroup): SidebarGroup | SidebarGroup[] {
-    if (group.label === starlightOpenAPISidebarGroupsLabel.toString()) {
+    const sidebarGroups = sidebarGroupsMap[group.label]
+
+    if (sidebarGroups) {
       return sidebarGroups
     }
 
@@ -175,6 +188,7 @@ type SidebarUserConfig = NonNullable<HookParameters<'config:setup'>['config']['s
 
 type SidebarItemConfig = SidebarUserConfig[number]
 type SidebarManualGroupConfig = Extract<SidebarItemConfig, { items: SidebarItemConfig[] }>
+export type StarlightOpenAPISidebarGroup = SidebarManualGroupConfig
 
 type SidebarItem = StarlightRouteData['sidebar'][number]
 type SidebarLink = Extract<SidebarItem, { type: 'link' }>

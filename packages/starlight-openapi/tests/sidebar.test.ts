@@ -1,3 +1,4 @@
+import type { SidebarItem, SidebarItemGroup } from './fixtures/SidebarPage'
 import { expect, test } from './test'
 
 test('lists operations grouped by tag and sorted by order of appearance in the document by default', async ({
@@ -137,3 +138,34 @@ test('create operation tag overview page for non-minimal tags', async ({ sidebar
     items: [{ name: 'Overview' }, { name: 'Get all Vaults' }, { name: 'Get Vault details and metadata' }],
   })
 })
+
+test('use custom sidebar groups', async ({ sidebarPage }) => {
+  await sidebarPage.goto()
+
+  const items = await sidebarPage.getSidebarGroupItems('Demo')
+
+  expect(items).toHaveLength(3)
+
+  expect(isSidebarItemGroup(items[0]) && items[0].label === 'Petstore').toBe(true)
+  expect(isSidebarItemGroup(items[1]) && items[1].label === '1Password Connect').toBe(true)
+  expect(isSidebarItemGroup(items[2]) && items[2].label === 'Giphy').toBe(true)
+})
+
+test('use default sidebar groups when no custom sidebar group is provided', async ({ sidebarPage }) => {
+  await sidebarPage.goto()
+
+  const items = await sidebarPage.getSidebarGroupItems('Tests')
+
+  expect(items).toHaveLength(6)
+
+  expect(isSidebarItemGroup(items[0]) && items[0].label === 'Petstore v3.0 (simple)').toBe(true)
+  expect(isSidebarItemGroup(items[1]) && items[1].label === 'Petstore v2.0 (simple)').toBe(true)
+  expect(isSidebarItemGroup(items[2]) && items[2].label === 'Animals v3.0').toBe(true)
+  expect(isSidebarItemGroup(items[3]) && items[3].label === 'Animals v2.0').toBe(true)
+  expect(isSidebarItemGroup(items[4]) && items[4].label === 'Recursion v3.0').toBe(true)
+  expect(isSidebarItemGroup(items[5]) && items[5].label === 'Simple Recursion v3.0').toBe(true)
+})
+
+function isSidebarItemGroup(item: SidebarItem | undefined): item is SidebarItemGroup {
+  return typeof item === 'object' && 'label' in item
+}

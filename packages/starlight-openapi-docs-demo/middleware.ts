@@ -4,12 +4,8 @@ export const onRequest = defineRouteMiddleware((context) => {
   const { starlightRoute } = context.locals
   const { sidebar } = starlightRoute
 
-  starlightRoute.sidebar = sidebar.map((item) => {
-    if (isSidebarGroup(item) && item.label === 'Demo') {
-      return { ...item, entries: item.entries.slice(0, 3) }
-    }
-
-    return item
+  starlightRoute.sidebar = sidebar.filter((item) => {
+    return !(isSidebarGroup(item) && item.label === 'Tests')
   })
 })
 

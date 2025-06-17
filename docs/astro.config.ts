@@ -1,7 +1,11 @@
 import starlight from '@astrojs/starlight'
 import { defineConfig } from 'astro/config'
-import starlightOpenAPI, { openAPISidebarGroups } from 'starlight-openapi'
+import starlightOpenAPI, { openAPISidebarGroups, createOpenAPISidebarGroup } from 'starlight-openapi'
 import starlightOpenAPIDocsDemo from 'starlight-openapi-docs-demo'
+
+const demoPetstoreSidebarGroup = createOpenAPISidebarGroup()
+const demo1PasswordSidebarGroup = createOpenAPISidebarGroup()
+const demoGiphySidebarGroup = createOpenAPISidebarGroup()
 
 export default defineConfig({
   integrations: [
@@ -15,19 +19,19 @@ export default defineConfig({
           {
             base: 'api/petstore',
             schema: '../schemas/v3.0/petstore-expanded.yaml',
-            sidebar: { collapsed: false, label: 'Petstore' },
+            sidebar: { collapsed: false, label: 'Petstore', group: demoPetstoreSidebarGroup },
           },
           {
             base: 'api/1password',
             schema:
               'https://raw.githubusercontent.com/APIs-guru/openapi-directory/gh-pages/v2/specs/1password.local/connect/1.5.7/openapi.yaml',
-            sidebar: { label: '1Password Connect' },
+            sidebar: { label: '1Password Connect', group: demo1PasswordSidebarGroup },
           },
           {
             base: 'api/giphy',
             schema:
               'https://raw.githubusercontent.com/APIs-guru/openapi-directory/gh-pages/v2/specs/giphy.com/1.0/openapi.yaml',
-            sidebar: { label: 'Giphy' },
+            sidebar: { label: 'Giphy', group: demoGiphySidebarGroup },
           },
           {
             base: 'api/v3/petstore-simple',
@@ -79,6 +83,10 @@ export default defineConfig({
         },
         {
           label: 'Demo',
+          items: [demoPetstoreSidebarGroup, demo1PasswordSidebarGroup, demoGiphySidebarGroup],
+        },
+        {
+          label: 'Tests',
           items: openAPISidebarGroups,
         },
       ],
