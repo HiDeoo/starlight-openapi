@@ -1,5 +1,11 @@
 # starlight-openapi
 
+## 0.19.1
+
+### Patch Changes
+
+- [#115](https://github.com/HiDeoo/starlight-openapi/pull/115) [`6c37f8e`](https://github.com/HiDeoo/starlight-openapi/commit/6c37f8eee1aae915c76d444d0038379a9613593e) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Prevents a potential build error for OpenAPI schemas containing incorrectly formatted enum values.
+
 ## 0.19.0
 
 ### Minor Changes
