@@ -23,14 +23,12 @@ export default defineConfig({
           },
           {
             base: 'api/1password',
-            schema:
-              'https://raw.githubusercontent.com/APIs-guru/openapi-directory/gh-pages/v2/specs/1password.local/connect/1.5.7/openapi.yaml',
+            schema: 'https://api.apis.guru/v2/specs/1password.local/connect/1.5.7/openapi.yaml',
             sidebar: { label: '1Password Connect', group: demo1PasswordSidebarGroup },
           },
           {
             base: 'api/giphy',
-            schema:
-              'https://raw.githubusercontent.com/APIs-guru/openapi-directory/gh-pages/v2/specs/giphy.com/1.0/openapi.yaml',
+            schema: 'https://api.apis.guru/v2/specs/giphy.com/1.0/openapi.yaml',
             sidebar: { label: 'Giphy', group: demoGiphySidebarGroup },
           },
           {

@@ -3,7 +3,11 @@ import { expect, type Locator, type Page } from '@playwright/test'
 import { capitalize } from '../../libs/utils'
 
 export class DocPage {
-  constructor(public readonly page: Page) {}
+  public readonly page: Page
+
+  constructor(page: Page) {
+    this.page = page
+  }
 
   goto(url: string) {
     return this.page.goto(`/api${url}`)
