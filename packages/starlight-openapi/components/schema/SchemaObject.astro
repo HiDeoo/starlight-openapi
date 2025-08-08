@@ -49,7 +49,12 @@ const hasMany = schemaObjects !== undefined
       ) : (
         <Items {parents} items={schemaObject} {negated} nullable={getNullable(schemaObject)} {type} />
       )}
-      {!hideExample && schemaObject.example && <Example raw={schemaObject.example} {type} />}
+      {!hideExample && schemaObject.example && (
+        <>
+          <h5>Example</h5>
+          <Example raw={schemaObject.example} {type} />
+        </>
+      )}
     </>
   )
 }
