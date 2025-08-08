@@ -1,7 +1,11 @@
 import type { Locator, Page } from '@playwright/test'
 
 export class SidebarPage {
-  constructor(public readonly page: Page) {}
+  public readonly page: Page
+
+  constructor(page: Page) {
+    this.page = page
+  }
 
   goto() {
     return this.page.goto('/getting-started/')
