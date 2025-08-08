@@ -45,9 +45,7 @@ const properties = getProperties(schemaObject)
 
 <style>
   details {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
+    display: block;
   }
 
   details details {
@@ -55,11 +53,22 @@ const properties = getProperties(schemaObject)
     padding-inline-start: 0.8rem;
   }
 
+  details:not([open]):hover,
+  details:has(> summary:hover) {
+    border-color: var(--sl-details-border-color--hover);
+  }
+
+  details[open] > summary {
+    margin-bottom: 0.8rem;
+  }
+
   summary {
     align-items: center;
     cursor: pointer;
     display: flex;
     list-style-type: none;
+    margin-inline-start: -0.5rem;
+    padding-inline-start: 0.5rem;
     user-select: none;
   }
 
@@ -74,6 +83,33 @@ const properties = getProperties(schemaObject)
   summary::marker,
   summary::-webkit-details-marker {
     display: none;
+  }
+
+  summary::before {
+    --sl-details-marker-size: 1.25rem;
+
+    background-color: currentColor;
+    content: '';
+    display: inline-block;
+    height: var(--sl-details-marker-size);
+    margin-inline: calc((var(--sl-details-marker-size) / 4) * -1) 0.25rem;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14.8 11.3 10.6 7a1 1 0 1 0-1.4 1.5l3.5 3.5-3.5 3.5a1 1 0 0 0 0 1.4 1 1 0 0 0 .7.3 1 1 0 0 0 .7-.3l4.2-4.2a1 1 0 0 0 0-1.4Z'/%3E%3C/svg%3E%0A");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14.8 11.3 10.6 7a1 1 0 1 0-1.4 1.5l3.5 3.5-3.5 3.5a1 1 0 0 0 0 1.4 1 1 0 0 0 .7.3 1 1 0 0 0 .7-.3l4.2-4.2a1 1 0 0 0 0-1.4Z'/%3E%3C/svg%3E%0A");
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    vertical-align: middle;
+    width: var(--sl-details-marker-size);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    summary::before {
+      transition: transform 0.2s ease-in-out;
+    }
+  }
+  details[open] > summary::before {
+    transform: rotateZ(90deg);
+  }
+  [dir='rtl'] summary::before {
+    transform: rotateZ(180deg);
   }
 
   .type {

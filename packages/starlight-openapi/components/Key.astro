@@ -56,4 +56,12 @@ const { additional, deprecated, name, required } = Astro.props
   .description {
     flex: 1;
   }
+
+  .description :global(details:not(:first-child)) {
+    margin-block-start: 0.5rem;
+  }
+
+  .description :global(details:not(:last-child)) {
+    margin-block-end: 0.5rem;
+  }
 </style>
