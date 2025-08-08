@@ -1,5 +1,17 @@
 # starlight-openapi
 
+## 0.20.0
+
+### Minor Changes
+
+- [#119](https://github.com/HiDeoo/starlight-openapi/pull/119) [`d5eb2b0`](https://github.com/HiDeoo/starlight-openapi/commit/d5eb2b0f0698884263265c0b8358643504c49057) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Updates the underlying OpenAPI [parser](https://github.com/readmeio/oas/tree/main/packages/parser) to version `4.1.2`.
+
+### Patch Changes
+
+- [#125](https://github.com/HiDeoo/starlight-openapi/pull/125) [`3c2dc5d`](https://github.com/HiDeoo/starlight-openapi/commit/3c2dc5dcb58bcfab8433252785186a63f6571ebc) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Fixes various UI inconsistencies when rendering schema objects.
+
+- [#121](https://github.com/HiDeoo/starlight-openapi/pull/121) [`6b94d76`](https://github.com/HiDeoo/starlight-openapi/commit/6b94d76003a6df9d9a39d82bc8f0ce219d98d823) Thanks [@LouiseMcMahon](https://github.com/LouiseMcMahon)! - Adds an heading before schema object examples to improve clarity and consistency.
+
 ## 0.19.1
 
 ### Patch Changes
