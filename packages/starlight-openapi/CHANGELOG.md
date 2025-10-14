@@ -1,5 +1,11 @@
 # starlight-openapi
 
+## 0.21.0
+
+### Minor Changes
+
+- [#127](https://github.com/HiDeoo/starlight-openapi/pull/127) [`f5141da`](https://github.com/HiDeoo/starlight-openapi/commit/f5141da3c61f62cf9286bbd7f0c21751386d11a8) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Adds a new [`sidebar.operations.labels`](https://starlight-openapi.vercel.app/configuration/#labels) configuration value of `'path'` to use the operation path as the label for operation sidebar links.
+
 ## 0.20.0
 
 ### Minor Changes
