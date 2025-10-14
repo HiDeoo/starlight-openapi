@@ -39,7 +39,7 @@ export default defineConfig({
           {
             base: 'api/v2/petstore-simple',
             schema: '../schemas/v2.0/petstore-simple.yaml',
-            sidebar: { label: 'Petstore v2.0 (simple)' },
+            sidebar: { label: 'Petstore v2.0 (simple)', operations: { labels: 'path' } },
           },
           {
             base: 'api/v3/animals',

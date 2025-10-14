@@ -70,6 +70,21 @@ test('uses the operationId as the label for the operation if configured to do so
   ])
 })
 
+test('uses the path as the label for the operation if configured to do so', async ({ sidebarPage }) => {
+  await sidebarPage.goto()
+
+  const items = await sidebarPage.getSidebarGroupItems('Petstore v2.0 (simple)')
+
+  expect(items).toMatchObject([
+    { name: 'Overview' },
+    {
+      collapsed: true,
+      label: 'Operations',
+      items: [{ name: '/pets' }, { name: '/pets' }, { name: '/pets/{id}' }, { name: '/pets/{id}' }],
+    },
+  ])
+})
+
 test('sorts tags by order of appearance in the document by default', async ({ sidebarPage }) => {
   await sidebarPage.goto()
 
