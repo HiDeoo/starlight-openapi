@@ -44,7 +44,12 @@ export function getOperationsByTag({ config, document }: Schema) {
           path: pathItemPath,
           pathItem,
           sidebar: {
-            label: config.sidebar.operations.labels === 'summary' && operation.summary ? title : operationId,
+            label:
+              config.sidebar.operations.labels === 'path'
+                ? pathItemPath
+                : config.sidebar.operations.labels === 'summary' && operation.summary
+                  ? title
+                  : operationId,
           },
           slug: isDuplicateOperationId
             ? `operations/${operationIdSlug}/${slug(method)}`

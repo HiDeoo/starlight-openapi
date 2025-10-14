@@ -62,10 +62,10 @@ export const SchemaConfigSchema = z
              */
             badges: z.boolean().default(false),
             /**
-             * Whether the operation sidebar link labels should use the operation ID or summary.
-             * @default 'operationId'
+             * Whether the operation sidebar link labels should use the operation ID, path, or summary.
+             * @default 'summary'
              */
-            labels: z.enum(['operationId', 'summary']).default('summary'),
+            labels: z.enum(['operationId', 'path', 'summary']).default('summary'),
             /**
              * Defines the sorting method for the operation sidebar links.
              * @default 'document'

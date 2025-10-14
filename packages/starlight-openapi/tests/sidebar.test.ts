@@ -55,17 +55,17 @@ test('uses a fallback group for untagged operations', async ({ sidebarPage }) =>
   ])
 })
 
-test('uses the operationId as the label for the operation if configured to do so', async ({ sidebarPage }) => {
+test('uses the path as the label for the operation if configured to do so', async ({ sidebarPage }) => {
   await sidebarPage.goto()
 
-  const items = await sidebarPage.getSidebarGroupItems('Petstore v3.0 (simple)')
+  const items = await sidebarPage.getSidebarGroupItems('Petstore v2.0 (simple)')
 
   expect(items).toMatchObject([
     { name: 'Overview' },
     {
       collapsed: true,
-      label: 'pets',
-      items: [{ name: 'listPets' }, { name: 'createPets' }, { name: 'showPetById' }],
+      label: 'Operations',
+      items: [{ name: '/pets' }, { name: '/pets' }, { name: '/pets/{id}' }, { name: '/pets/{id}' }],
     },
   ])
 })

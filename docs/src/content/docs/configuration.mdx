@@ -85,13 +85,13 @@ Defines if the sidebar should display badges next to operation links with the as
 
 ##### `labels`
 
-**Type:** `'operationId' | 'summary'`  
+**Type:** `'operationId' | 'path' | 'summary'`  
 **Default:** `'summary'`
 
-Whether the operation sidebar link labels should use the operation ID or summary.
+Whether the operation sidebar link labels should use the operation ID, path, or summary.
 
 By default, the summary is used as the operation sidebar label and falls back to the operation ID if no summary is provided.
-Setting this option to `'operationId'` will always use the operation ID as the operation sidebar label.
+Setting this option to `'operationId'` will always use the operation ID as the operation sidebar label while setting it to `'path'` will always use the operation path when applicable.
 
 ##### `sort`
 
