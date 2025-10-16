@@ -1,5 +1,11 @@
 # starlight-openapi
 
+## 0.21.1
+
+### Patch Changes
+
+- [#129](https://github.com/HiDeoo/starlight-openapi/pull/129) [`5a55272`](https://github.com/HiDeoo/starlight-openapi/commit/5a552728b1b42c1ff51e332796947243e08d92f8) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Setups trusted publishing using OpenID Connect (OIDC) authentication — no code changes.
+
 ## 0.21.0
 
 ### Minor Changes
