@@ -7,6 +7,11 @@ const demoPetstoreSidebarGroup = createOpenAPISidebarGroup()
 const demo1PasswordSidebarGroup = createOpenAPISidebarGroup()
 const demoGiphySidebarGroup = createOpenAPISidebarGroup()
 
+const site =
+  process.env['VERCEL_ENV'] !== 'production' && process.env['VERCEL_URL']
+    ? `https://${process.env['VERCEL_URL']}`
+    : 'https://starlight-openapi.vercel.app/'
+
 export default defineConfig({
   integrations: [
     starlight({
@@ -14,6 +19,19 @@ export default defineConfig({
       editLink: {
         baseUrl: 'https://github.com/HiDeoo/starlight-openapi/edit/main/docs/',
       },
+      head: [
+        {
+          tag: 'meta',
+          attrs: { property: 'og:image', content: new URL('og.jpg', site).href },
+        },
+        {
+          tag: 'meta',
+          attrs: {
+            property: 'og:image:alt',
+            content: 'Starlight plugin to generate documentation from OpenAPI/Swagger specifications.',
+          },
+        },
+      ],
       plugins: [
         starlightOpenAPI([
           {
@@ -96,4 +114,5 @@ export default defineConfig({
     }),
   ],
   image: { service: { entrypoint: 'astro/assets/services/sharp' } },
+  site,
 })
