@@ -34,6 +34,7 @@ const openAPIV3ResponseContent = getOpenAPIV3ResponseContent(response)
 const produces = getOpenAPIV2OperationProduces(schema, operation)
 
 const isEmpty = !openAPIV2ResponseSchema && !openAPIV3ResponseContent
+const t = Astro.locals.t
 ---
 
 <Section {...sectionHeadingProps} empty={isEmpty} title={name}>
@@ -41,7 +42,7 @@ const isEmpty = !openAPIV2ResponseSchema && !openAPIV3ResponseContent
   {
     openAPIV2ResponseSchema ? (
       <>
-        <Select label="The list of MIME types the operation can produce" options={produces} />
+        <Select label={t('starlight-openapi.mimeTypesProducesLabel')} options={produces} />
         <SchemaObject schemaObject={openAPIV2ResponseSchema} />
       </>
     ) : openAPIV3ResponseContent ? (

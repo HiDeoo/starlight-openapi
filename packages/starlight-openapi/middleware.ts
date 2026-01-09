@@ -8,7 +8,7 @@ import { getSidebarFromSchemas } from './libs/starlight'
 const allSchemas = Object.values(schemas)
 
 export const onRequest = defineRouteMiddleware((context) => {
-  const { starlightRoute } = context.locals
+  const { starlightRoute, t } = context.locals
   const { sidebar } = starlightRoute
 
   starlightRoute.sidebar = getSidebarFromSchemas(
@@ -16,5 +16,6 @@ export const onRequest = defineRouteMiddleware((context) => {
     sidebar,
     allSchemas,
     projectContext,
+    t,
   )
 })

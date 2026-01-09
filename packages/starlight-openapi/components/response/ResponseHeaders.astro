@@ -13,11 +13,12 @@ interface Props {
 }
 
 const headers = Object.entries(Astro.props.headers).filter(([key]) => key.toLowerCase() !== 'content-type')
+const t = Astro.locals.t
 ---
 
 {
   headers.length > 0 && (
-    <Section level={4} title="Headers">
+    <Section level={4} title={t('starlight-openapi.headers')}>
       {headers.map(([name, header]) =>
         isOpenAPIV2Items(header) ? (
           <Key {name}>

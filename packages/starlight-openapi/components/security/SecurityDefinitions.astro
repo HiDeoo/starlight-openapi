@@ -17,32 +17,33 @@ interface Props {
 }
 
 const { definitions } = Astro.props
+const t = Astro.locals.t
 ---
 
 {
   definitions && (
     <>
       <Heading level={2} id="authentication">
-        Authentication
+        {t('starlight-openapi.authentication')}
       </Heading>
       {Object.entries(definitions).map(([name, scheme]) => (
         <Section title={name}>
           <Md text={scheme.description} />
-          <Text label="Security scheme type" tag>
+          <Text label={t('starlight-openapi.securitySchemeType')} tag>
             {scheme.type}
           </Text>
           {'bearerFormat' in scheme && (
-            <Text label="Bearer format" tag>
+            <Text label={t('starlight-openapi.bearerFormat')} tag>
               {scheme.bearerFormat}
             </Text>
           )}
           {'openIdConnectUrl' in scheme && (
-            <Text label="OpenID Connect URL">
+            <Text label={t('starlight-openapi.openIdConnectUrl')}>
               <a href={scheme.openIdConnectUrl}>{scheme.openIdConnectUrl}</a>
             </Text>
           )}
           {scheme.type === 'apiKey' && (
-            <Text label={`${capitalize(scheme.in)} parameter name`} tag>
+            <Text label={`${capitalize(scheme.in)}${t('starlight-openapi.parameterNameSuffix')}`} tag>
               {scheme.name}
             </Text>
           )}

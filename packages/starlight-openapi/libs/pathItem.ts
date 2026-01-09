@@ -1,17 +1,19 @@
 import { getOperationsByTag, getWebhooksOperations, isMinimalOperationTag } from './operation'
 import { getBaseLink, getTrailingSlashTransformer, slug } from './path'
 import type { Schema } from './schema'
-import { getMethodSidebarBadge, makeSidebarGroup, makeSidebarLink, type SidebarGroup } from './starlight'
+import { getMethodSidebarBadge, makeSidebarGroup, makeSidebarLink, type SidebarGroup, type TranslationFunction } from './starlight'
 import type { StarlightOpenAPIContext } from './vite'
 
 export function getPathItemSidebarGroups(
   pathname: string,
   schema: Schema,
   context: StarlightOpenAPIContext,
+  t?: TranslationFunction,
 ): SidebarGroup['entries'] {
   const { config } = schema
   const baseLink = getBaseLink(config)
   const operations = getOperationsByTag(schema)
+  const overviewLabel = t ? t('starlight-openapi.overview') : 'Overview'
 
   const tags =
     config.sidebar.tags.sort === 'alphabetical'
@@ -37,7 +39,7 @@ export function getPathItemSidebarGroups(
       items.unshift(
         makeSidebarLink(
           pathname,
-          'Overview',
+          overviewLabel,
           getTrailingSlashTransformer(context)(`${baseLink}operations/tags/${slug(operations.tag.name)}`),
         ),
       )
@@ -51,6 +53,7 @@ export function getWebhooksSidebarGroups(
   pathname: string,
   schema: Schema,
   context: StarlightOpenAPIContext,
+  t?: TranslationFunction,
 ): SidebarGroup['entries'] {
   const { config } = schema
   const baseLink = getBaseLink(config)
@@ -65,9 +68,11 @@ export function getWebhooksSidebarGroups(
       ? operations.sort((a, b) => a.sidebar.label.localeCompare(b.sidebar.label))
       : operations
 
+  const webhooksLabel = t ? t('starlight-openapi.webhooks') : 'Webhooks'
+
   return [
     makeSidebarGroup(
-      'Webhooks',
+      webhooksLabel,
       entries.map(({ method, sidebar, slug }) =>
         makeSidebarLink(
           pathname,

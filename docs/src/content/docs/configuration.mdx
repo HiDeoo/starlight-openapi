@@ -119,6 +119,63 @@ By default, the tag sidebar groups are sorted in the order they appear in the Op
 
 You can generate documentation for multiple OpenAPI/Swagger schemas by passing multiple objects to the plugin configuration.
 
+## UI translations (i18n)
+
+Starlight OpenAPI uses Starlight’s UI translation system. You can override any plugin UI label in your project by adding keys to `src/content/i18n/{locale}.json`.
+
+For example, to customize a few labels in Japanese:
+
+```json
+// src/content/i18n/ja.json
+{
+  "starlight-openapi.overview": "概要",
+  "starlight-openapi.authorizations": "認証",
+  "starlight-openapi.pathParameters": "パスパラメータ"
+}
+```
+
+### Available translation keys
+
+- `starlight-openapi.overview`
+- `starlight-openapi.authorizations`
+- `starlight-openapi.authentication`
+- `starlight-openapi.contact`
+- `starlight-openapi.license`
+- `starlight-openapi.termsOfService`
+- `starlight-openapi.openApiVersion`
+- `starlight-openapi.parameters`
+- `starlight-openapi.pathParameters`
+- `starlight-openapi.queryParameters`
+- `starlight-openapi.headerParameters`
+- `starlight-openapi.cookieParameters`
+- `starlight-openapi.requestBody`
+- `starlight-openapi.mimeTypesConsumesLabel`
+- `starlight-openapi.mimeTypesProducesLabel`
+- `starlight-openapi.required`
+- `starlight-openapi.deprecated`
+- `starlight-openapi.deprecatedBadge`
+- `starlight-openapi.additionalProperties`
+- `starlight-openapi.allowedValues`
+- `starlight-openapi.callbacks`
+- `starlight-openapi.responses`
+- `starlight-openapi.headers`
+- `starlight-openapi.example`
+- `starlight-openapi.examples`
+- `starlight-openapi.selectExample`
+- `starlight-openapi.selectResponseExample`
+- `starlight-openapi.selectMediaType`
+- `starlight-openapi.webhooks`
+- `starlight-openapi.securitySchemeType`
+- `starlight-openapi.bearerFormat`
+- `starlight-openapi.openIdConnectUrl`
+- `starlight-openapi.parameterNameSuffix`
+- `starlight-openapi.flowType`
+- `starlight-openapi.authorizationUrl`
+- `starlight-openapi.tokenUrl`
+- `starlight-openapi.refreshUrl`
+- `starlight-openapi.scopes`
+- `starlight-openapi.none`
+
 ```js {11-21}
 // astro.config.mjs
 import starlight from '@astrojs/starlight'

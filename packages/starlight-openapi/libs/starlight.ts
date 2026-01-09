@@ -1,8 +1,10 @@
+import type { StarlightLocals } from '@astrojs/starlight'
 import type { StarlightRouteData } from '@astrojs/starlight/route-data'
 import type { HookParameters } from '@astrojs/starlight/types'
 import type { MarkdownHeading } from 'astro'
 
 import { getCallbacks } from './callback'
+import { parameterLocationKeys } from './i18n'
 import type { OperationHttpMethod, OperationTag, PathItemOperation } from './operation'
 import { getParametersByLocation } from './parameter'
 import { slug, stripLeadingAndTrailingSlashes } from './path'
@@ -12,6 +14,12 @@ import { getSchemaSidebarGroups, type Schema } from './schema'
 import { getSecurityDefinitions, getSecurityRequirements } from './security'
 import { capitalize } from './utils'
 import type { StarlightOpenAPIContext } from './vite'
+
+/**
+ * Translation function type from Starlight's i18n system.
+ * Used to translate UI strings throughout the plugin.
+ */
+export type TranslationFunction = StarlightLocals['t']
 
 const starlightOpenAPISidebarGroupsLabel = Symbol('StarlightOpenAPISidebarGroupsLabel')
 
@@ -32,6 +40,7 @@ export function getPageProps(
   schema: Schema,
   pathItemOperation?: PathItemOperation,
   tag?: OperationTag,
+  t?: TranslationFunction,
 ): StarlightPageProps {
   const isOverview = pathItemOperation === undefined
   const isOperationTag = tag !== undefined
@@ -41,10 +50,10 @@ export function getPageProps(
       title,
     },
     headings: isOperationTag
-      ? getOperationTagHeadings(tag)
+      ? getOperationTagHeadings(tag, t)
       : isOverview
-        ? getOverviewHeadings(schema)
-        : getOperationHeadings(schema, pathItemOperation),
+        ? getOverviewHeadings(schema, t)
+        : getOperationHeadings(schema, pathItemOperation, t),
   }
 }
 
@@ -53,13 +62,14 @@ export function getSidebarFromSchemas(
   sidebar: StarlightRouteData['sidebar'],
   schemas: Schema[],
   context: StarlightOpenAPIContext,
+  t: TranslationFunction,
 ): StarlightRouteData['sidebar'] {
   if (sidebar.length === 0) {
     return sidebar
   }
 
   const sidebarGroups = schemas.map((schema) =>
-    getSchemaSidebarGroups(pathname, schema, context, starlightOpenAPISidebarGroupsLabel.toString()),
+    getSchemaSidebarGroups(pathname, schema, context, starlightOpenAPISidebarGroupsLabel.toString(), t),
   )
 
   const sidebarGroupsMap: Record<string, SidebarGroup[]> = {}
@@ -109,52 +119,62 @@ function isSidebarGroup(item: SidebarItem): item is SidebarGroup {
   return item.type === 'group'
 }
 
-function getOverviewHeadings({ document }: Schema): MarkdownHeading[] {
+function getOverviewHeadings({ document }: Schema, t?: TranslationFunction): MarkdownHeading[] {
   const items: MarkdownHeading[] = [makeHeading(2, `${document.info.title} (${document.info.version})`, 'overview')]
 
   const securityDefinitions = getSecurityDefinitions(document)
 
   if (securityDefinitions) {
+    const authLabel = t ? t('starlight-openapi.authentication') : 'Authentication'
     items.push(
-      makeHeading(2, 'Authentication'),
+      makeHeading(2, authLabel),
       ...Object.keys(securityDefinitions).map((name) => makeHeading(3, name)),
     )
   }
 
-  return makeHeadings(items)
+  return makeHeadings(items, t)
 }
 
-function getOperationTagHeadings(tag: OperationTag): MarkdownHeading[] {
+function getOperationTagHeadings(tag: OperationTag, _t?: TranslationFunction): MarkdownHeading[] {
+  // Note: tag.name comes from OpenAPI spec and should not be translated
   return [makeHeading(2, tag.name, 'overview')]
 }
 
-function getOperationHeadings(schema: Schema, { operation, pathItem }: PathItemOperation): MarkdownHeading[] {
+function getOperationHeadings(schema: Schema, { operation, pathItem }: PathItemOperation, t?: TranslationFunction): MarkdownHeading[] {
   const items: MarkdownHeading[] = []
 
   const securityRequirements = getSecurityRequirements(operation, schema)
 
   if (securityRequirements && securityRequirements.length > 0) {
-    items.push(makeHeading(2, 'Authorizations'))
+    const authLabel = t ? t('starlight-openapi.authorizations') : 'Authorizations'
+    items.push(makeHeading(2, authLabel))
   }
 
   const parametersByLocation = getParametersByLocation(operation.parameters, pathItem.parameters)
 
   if (parametersByLocation.size > 0) {
+    const paramsLabel = t ? t('starlight-openapi.parameters') : 'Parameters'
     items.push(
-      makeHeading(2, 'Parameters'),
-      ...[...parametersByLocation.keys()].map((location) => makeHeading(3, `${capitalize(location)} Parameters`)),
+      makeHeading(2, paramsLabel),
+      ...[...parametersByLocation.keys()].map((location) => {
+        const key = parameterLocationKeys[location]
+        const label = t && key ? t(key) : `${capitalize(location)} Parameters`
+        return makeHeading(3, label)
+      }),
     )
   }
 
   if (hasRequestBody(operation)) {
-    items.push(makeHeading(2, 'Request Body'))
+    const reqBodyLabel = t ? t('starlight-openapi.requestBody') : 'Request Body'
+    items.push(makeHeading(2, reqBodyLabel))
   }
 
   const callbacks = getCallbacks(operation)
   const callbackIdentifiers = Object.keys(callbacks ?? {})
 
   if (callbackIdentifiers.length > 0) {
-    items.push(makeHeading(2, 'Callbacks'), ...callbackIdentifiers.map((identifier) => makeHeading(3, identifier)))
+    const callbacksLabel = t ? t('starlight-openapi.callbacks') : 'Callbacks'
+    items.push(makeHeading(2, callbacksLabel), ...callbackIdentifiers.map((identifier) => makeHeading(3, identifier)))
   }
 
   if (operation.responses) {
@@ -170,14 +190,16 @@ function getOperationHeadings(schema: Schema, { operation, pathItem }: PathItemO
       responseItems.push(makeHeading(3, 'default'))
     }
 
-    items.push(makeHeading(2, 'Responses'), ...responseItems)
+    const responsesLabel = t ? t('starlight-openapi.responses') : 'Responses'
+    items.push(makeHeading(2, responsesLabel), ...responseItems)
   }
 
-  return makeHeadings(items)
+  return makeHeadings(items, t)
 }
 
-function makeHeadings(items: MarkdownHeading[]): MarkdownHeading[] {
-  return [makeHeading(1, 'Overview', '_top'), ...items]
+function makeHeadings(items: MarkdownHeading[], t?: TranslationFunction): MarkdownHeading[] {
+  const overviewLabel = t ? t('starlight-openapi.overview') : 'Overview'
+  return [makeHeading(1, overviewLabel, '_top'), ...items]
 }
 
 function makeHeading(depth: number, text: string, customSlug?: string): MarkdownHeading {

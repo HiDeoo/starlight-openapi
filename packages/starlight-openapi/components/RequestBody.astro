@@ -19,6 +19,7 @@ interface Props extends SectionHeadingProps {
 }
 
 const { level = 2, operation, prefix, schema } = Astro.props
+const t = Astro.locals.t
 
 const openAPIV2RequestBodyParameter = getOpenAPIV2RequestBodyParameter(operation)
 const openAPIV3RequestBody = getOpenAPIV3RequestBody(operation)
@@ -33,16 +34,16 @@ const consumes = getOpenAPIV2OperationConsumes(schema, operation)
 
 {
   hasRequestBody && (
-    <Section {level} {prefix} title="Request Body">
+    <Section {level} {prefix} title={t('starlight-openapi.requestBody')}>
       {openAPIV3RequestBody?.required && (
         <sup class="required" slot="post-title">
-          required
+          {t('starlight-openapi.required')}
         </sup>
       )}
       <Md text={description} slot="pre-panel" />
       {openAPIV2RequestBodyParameter ? (
         <>
-          <Select label="The list of MIME types the operation can consume" options={consumes} />
+          <Select label={t('starlight-openapi.mimeTypesConsumesLabel')} options={consumes} />
           <SchemaObject schemaObject={openAPIV2RequestBodyParameter.schema} />
         </>
       ) : openAPIV3RequestBody ? (

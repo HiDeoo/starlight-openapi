@@ -1,5 +1,6 @@
 ---
 import type { getParametersByLocation } from '../../libs/parameter'
+import { parameterLocationKeys } from '../../libs/i18n'
 import { capitalize } from '../../libs/utils'
 import Heading from '../Heading.astro'
 import Section, { type SectionHeadingProps } from '../Section.astro'
@@ -11,16 +12,25 @@ interface Props extends SectionHeadingProps {
 }
 
 const { level = 2, parameters, prefix } = Astro.props
+const t = Astro.locals.t
 ---
 
 {
   parameters.size > 0 && (
     <>
       <Heading level={level} id={prefix ? `${prefix}-parameters` : 'parameters'}>
-        Parameters
+        {t('starlight-openapi.parameters')}
       </Heading>
       {[...parameters.entries()].map(([location, parameters]) => (
-        <Section level={level + 1} {prefix} title={`${capitalize(location)} Parameters`}>
+        <Section
+          level={level + 1}
+          {prefix}
+          title={
+            parameterLocationKeys[location]
+              ? t(parameterLocationKeys[location])
+              : `${capitalize(location)} Parameters`
+          }
+        >
           {[...parameters.values()].map((parameter) => (
             <Parameter {parameter} />
           ))}

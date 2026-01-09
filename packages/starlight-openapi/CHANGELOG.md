@@ -1,5 +1,30 @@
 # starlight-openapi
 
+## Unreleased
+
+### Minor Changes
+
+- Adds internationalization (i18n) support for all UI strings in the generated documentation.
+
+  The following UI elements are now translatable:
+
+  - Overview
+  - Authorizations
+  - Authentication
+  - Parameters (including Path/Query/Header/Cookie Parameters)
+  - Request Body
+  - Callbacks
+  - Responses
+  - Response headers
+  - Response examples
+  - Webhooks
+
+  Default translations are provided for English and Japanese.
+  By default, Japanese strings are intentionally kept identical to English. This avoids shipping potentially incorrect translations while still allowing users to override any string in their project.
+  Users can override any translation by adding the corresponding keys to their `src/content/i18n/{locale}.json` files.
+
+  See the [Starlight i18n documentation](https://starlight.astro.build/guides/i18n/#using-ui-translations) for more information.
+
 ## 0.21.1
 
 ### Patch Changes

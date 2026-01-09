@@ -7,14 +7,15 @@ interface Props {
 }
 
 const { additional, deprecated, name, required } = Astro.props
+const t = Astro.locals.t
 ---
 
 <div class="key not-content">
   <div class="name">
     <strong>{additional ? <em>{name}</em> : deprecated ? <s>{name}</s> : name}</strong>
-    {required && <div class="required">required</div>}
-    {deprecated && <div class="deprecated">deprecated</div>}
-    {additional && <div class="additional">additional properties</div>}
+    {required && <div class="required">{t('starlight-openapi.required')}</div>}
+    {deprecated && <div class="deprecated">{t('starlight-openapi.deprecated')}</div>}
+    {additional && <div class="additional">{t('starlight-openapi.additionalProperties')}</div>}
   </div>
   <div class="description">
     <slot />

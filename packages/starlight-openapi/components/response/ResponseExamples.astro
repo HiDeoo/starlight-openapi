@@ -9,12 +9,13 @@ interface Props {
 }
 
 const examples = Object.entries(Astro.props.examples)
+const t = Astro.locals.t
 ---
 
 {
   examples.length > 0 && (
-    <Section level={4} title="Examples">
-      <ContentPicker label="Select response example" types={Object.keys(Astro.props.examples)}>
+    <Section level={4} title={t('starlight-openapi.examples')}>
+      <ContentPicker label={t('starlight-openapi.selectResponseExample')} types={Object.keys(Astro.props.examples)}>
         {examples.map(([type, data], index) => (
           <div data-openapi-content-type={type} hidden={index > 0} role="tabpanel">
             <Example raw={data} {type} />

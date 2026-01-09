@@ -9,29 +9,30 @@ interface Props {
 }
 
 const { flow, type } = Astro.props
+const t = Astro.locals.t
 ---
 
-<Text label="Flow type">
+<Text label={t('starlight-openapi.flowType')}>
   <Tag>{type}</Tag>
 </Text>
 
 {
   'authorizationUrl' in flow && (
-    <Text label="Authorization URL">
+    <Text label={t('starlight-openapi.authorizationUrl')}>
       <a href={flow.authorizationUrl}>{flow.authorizationUrl}</a>
     </Text>
   )
 }
 {
   'tokenUrl' in flow && (
-    <Text label="Token URL">
+    <Text label={t('starlight-openapi.tokenUrl')}>
       <a href={flow.tokenUrl}>{flow.tokenUrl}</a>
     </Text>
   )
 }
 {
   'refreshUrl' in flow && (
-    <Text label="Refresh URL">
+    <Text label={t('starlight-openapi.refreshUrl')}>
       <a href={flow.refreshUrl}>{flow.refreshUrl}</a>
     </Text>
   )
@@ -40,7 +41,7 @@ const { flow, type } = Astro.props
   Object.keys(flow.scopes).length > 0 && (
     <>
       <Text>
-        <b>Scopes:</b>
+        <b>{t('starlight-openapi.scopes')}:</b>
       </Text>
       <ul>
         {Object.entries(flow.scopes).map(([scope, description]) => (

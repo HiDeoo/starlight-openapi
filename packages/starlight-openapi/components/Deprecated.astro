@@ -4,9 +4,10 @@ interface Props {
 }
 
 const { deprecated } = Astro.props
+const t = Astro.locals.t
 ---
 
-{deprecated && <div>Deprecated</div>}
+{deprecated && <div>{t('starlight-openapi.deprecatedBadge')}</div>}
 
 <style>
   :root {
