@@ -19,13 +19,14 @@ export function getStaticPaths() {
 type Props = InferGetStaticPropsType<typeof getStaticPaths>
 
 const { schema, type } = Astro.props
+const t = Astro.locals.t
 
 schema.document = await dereference(schema.document)
 
 const isOverview = type === 'overview'
 const isOperationTag = type === 'operation-tag'
 
-const title = isOverview || isOperationTag ? 'Overview' : Astro.props.operation.title
+const title = isOverview || isOperationTag ? t('starlight-openapi.overview') : Astro.props.operation.title
 ---
 
 <StarlightPage
@@ -34,6 +35,7 @@ const title = isOverview || isOperationTag ? 'Overview' : Astro.props.operation.
     schema,
     isOverview || isOperationTag ? undefined : Astro.props.operation,
     isOperationTag ? Astro.props.tag : undefined,
+    t,
   )}
 >
   {

@@ -14,6 +14,7 @@ interface Props extends SectionHeadingProps {
 }
 
 const { level = 2, operation, prefix = '', responses, schema } = Astro.props
+const t = Astro.locals.t
 
 const id = prefix ? `${prefix}-responses` : 'responses'
 const responseSectionHeadingProps: SectionHeadingProps = {
@@ -26,7 +27,7 @@ const responseSectionHeadingProps: SectionHeadingProps = {
   responses && (
     <>
       <Heading {level} {id}>
-        Responses
+        {t('starlight-openapi.responses')}
       </Heading>
       {Object.entries(responses).map(([name, response]) => {
         if (name === 'default') {

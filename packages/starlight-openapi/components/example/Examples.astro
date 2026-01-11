@@ -13,14 +13,15 @@ export interface Props {
 }
 
 const { example, examples, parameter, type } = Astro.props
+const t = Astro.locals.t
 ---
 
 {
   example || examples ? (
     examples ? (
       <>
-        <h5>Examples</h5>
-        <ContentPicker label="Select example" types={Object.keys(examples)}>
+        <h5>{t('starlight-openapi.examples')}</h5>
+        <ContentPicker label={t('starlight-openapi.selectExample')} types={Object.keys(examples)}>
           {Object.entries(examples).map(([exampleType, data], index) => (
             <div data-openapi-content-type={exampleType} hidden={index > 0} role="tabpanel">
               <Example example={data} {type} />
@@ -30,7 +31,7 @@ const { example, examples, parameter, type } = Astro.props
       </>
     ) : (
       <>
-        <h5>Example</h5>
+        <h5>{t('starlight-openapi.example')}</h5>
         <Example raw={example} {parameter} {type} />
       </>
     )

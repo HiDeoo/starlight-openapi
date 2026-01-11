@@ -13,6 +13,7 @@ interface Props {
 }
 
 const { operation, schema } = Astro.props
+const t = Astro.locals.t
 
 const callbacks = getCallbacks(operation)
 const identifiers = Object.keys(callbacks ?? {})
@@ -22,7 +23,7 @@ const identifiers = Object.keys(callbacks ?? {})
   callbacks && identifiers.length > 0 && (
     <>
       <Heading level={2} id="callbacks">
-        Callbacks
+        {t('starlight-openapi.callbacks')}
       </Heading>
       {identifiers.map((identifier) => {
         const callbackObject = getCallbackObject(callbacks, identifier)

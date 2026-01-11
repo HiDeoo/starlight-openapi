@@ -3,6 +3,7 @@ import { randomBytes } from 'node:crypto'
 import type { StarlightPlugin } from '@astrojs/starlight/types'
 
 import { validateConfig, type StarlightOpenAPIUserConfig } from './libs/config'
+import { UIStrings } from './libs/i18n'
 import { starlightOpenAPIIntegration } from './libs/integration'
 import { parseSchema } from './libs/parser'
 import { getSidebarGroupPlaceholder, getSidebarGroupsPlaceholder } from './libs/starlight'
@@ -13,6 +14,9 @@ export default function starlightOpenAPIPlugin(userConfig: StarlightOpenAPIUserC
   return {
     name: 'starlight-openapi-plugin',
     hooks: {
+      'i18n:setup'({ injectTranslations }) {
+        injectTranslations(UIStrings)
+      },
       'config:setup': async ({
         addIntegration,
         addRouteMiddleware,

@@ -18,6 +18,7 @@ interface Props {
 const { hideExample, items, negated, nullable, parents = [], type } = Astro.props
 
 const enumItems = items.enum ?? items.items?.enum
+const t = Astro.locals.t
 ---
 
 {
@@ -47,7 +48,7 @@ const enumItems = items.enum ?? items.items?.enum
   ]}
 />
 
-{enumItems && <Tags label="Allowed values:" tags={enumItems} />}
+{enumItems && <Tags label={t('starlight-openapi.allowedValues')} tags={enumItems} />}
 {
   items.items && isSchemaObjectObject(items.items) && (
     <SchemaObject {parents} nested schemaObject={items.items} {hideExample} {type} />

@@ -30,6 +30,7 @@ const { hideExample = false, negated, nested = false, parents = [], schemaObject
 const schemaObjects = getSchemaObjects(schemaObject)
 
 const hasMany = schemaObjects !== undefined
+const t = Astro.locals.t
 ---
 
 {
@@ -51,7 +52,7 @@ const hasMany = schemaObjects !== undefined
       )}
       {!hideExample && schemaObject.example && (
         <>
-          <h5>Example</h5>
+          <h5>{t('starlight-openapi.example')}</h5>
           <Example raw={schemaObject.example} {type} />
         </>
       )}

@@ -14,13 +14,14 @@ interface Props {
 }
 
 const { operation, schema } = Astro.props
+const t = Astro.locals.t
 
 const requirements = getSecurityRequirements(operation, schema)
 ---
 
 {
   requirements && requirements.length > 0 ? (
-    <Section level={2} title="Authorizations">
+    <Section level={2} title={t('starlight-openapi.authorizations')}>
       <ul>
         {requirements.map((requirement) => {
           const schemes = Object.keys(requirement)
@@ -28,7 +29,7 @@ const requirements = getSecurityRequirements(operation, schema)
           if (schemes.length === 0) {
             return (
               <li>
-                <strong>None</strong>
+                <strong>{t('starlight-openapi.none')}</strong>
               </li>
             )
           }

@@ -11,9 +11,10 @@ interface Props {
 }
 
 const { content } = Astro.props
+const t = Astro.locals.t
 ---
 
-<ContentPicker label="Select media type" types={Object.keys(content)}>
+<ContentPicker label={t('starlight-openapi.selectMediaType')} types={Object.keys(content)}>
   {
     Object.entries(content).map(([type, media], index) => {
       return (
