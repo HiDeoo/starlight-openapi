@@ -33,6 +33,7 @@ export function getBound(items: Items, type: 'maximum' | 'minimum'): string | un
 }
 
 export type Items = Omit<OpenAPIV2.ItemsObject, 'exclusiveMaximum' | 'exclusiveMinimum' | 'type'> & {
+  const?: unknown
   exclusiveMaximum?: boolean | number
   exclusiveMinimum?: boolean | number
   items?: SchemaObject
