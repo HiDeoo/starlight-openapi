@@ -220,3 +220,19 @@ test('displays property titles when provided', async ({ docPage }) => {
   await expect(requestBody.getByText('Name of the animal')).toBeVisible()
   await expect(requestBody.getByText('A friendly name for the animal.')).toBeVisible()
 })
+
+test('supports the `const` property in schemas', async ({ docPage }) => {
+  await docPage.goto('/v3/animals/operations/elephant/')
+
+  const requestBody = docPage.getRequestBody()
+
+  await expect(requestBody.getByText('One of:')).toBeVisible()
+
+  await expect(requestBody.getByRole('tab')).toContainText(['string', 'string'])
+
+  await expect(requestBody.getByText('Allowed value: large')).toBeVisible()
+
+  await requestBody.getByRole('tab', { name: 'string' }).nth(1).click()
+
+  await expect(requestBody.getByText('Allowed value: small')).toBeVisible()
+})

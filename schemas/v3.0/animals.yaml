@@ -455,6 +455,37 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /elephant:
+    post:
+      summary: Creates a new elephant
+      tags:
+        - animals
+      requestBody:
+        description: Elephant to add
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: string
+                  description: Ear size
+                  const: large
+                - type: string
+                  description: Ear size
+                  const: small
+      responses:
+        '200':
+          description: animal response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Animal'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /feed:
     post:
       description: Subscribe a client to receive data
