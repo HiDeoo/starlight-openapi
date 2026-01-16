@@ -47,6 +47,7 @@ const enumItems = items.enum ?? items.items?.enum
   ]}
 />
 
+{items.const && <Tags label="Allowed value:" tags={[items.const]} />}
 {enumItems && <Tags label="Allowed values:" tags={enumItems} />}
 {
   items.items && isSchemaObjectObject(items.items) && (

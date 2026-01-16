@@ -114,6 +114,7 @@ test('sorts tags and operations alphabetically if configured to do so', async ({
       items: [
         { name: '/turtles' },
         { name: 'Create an animal' },
+        { name: 'Creates a new elephant' },
         { name: 'Creates a new hamster' },
         { name: 'Creates a new okapi' },
         { name: 'List all animals' },
