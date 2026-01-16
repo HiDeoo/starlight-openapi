@@ -1,5 +1,11 @@
 # starlight-openapi
 
+## 0.22.0
+
+### Minor Changes
+
+- [#133](https://github.com/HiDeoo/starlight-openapi/pull/133) [`2e813b1`](https://github.com/HiDeoo/starlight-openapi/commit/2e813b17eb3d7819fc933da7faef422a8f3f554b) Thanks [@nonoakij](https://github.com/nonoakij)! - Adds support for the JSON schema `const` keyword in schema definitions.
+
 ## 0.21.1
 
 ### Patch Changes
