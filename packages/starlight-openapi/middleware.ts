@@ -12,7 +12,7 @@ export const onRequest = defineRouteMiddleware((context) => {
   const { sidebar } = starlightRoute
 
   starlightRoute.sidebar = getSidebarFromSchemas(
-    stripLeadingAndTrailingSlashes(context.url.pathname),
+    stripLeadingAndTrailingSlashes(context.url.pathname.replace(/\.html$/, '')),
     sidebar,
     allSchemas,
     projectContext,

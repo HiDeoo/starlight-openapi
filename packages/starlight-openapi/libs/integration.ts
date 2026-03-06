@@ -16,7 +16,7 @@ export function starlightOpenAPIIntegration(schemas: Schema[]): AstroIntegration
 
         updateConfig({
           vite: {
-            plugins: [vitePluginStarlightOpenAPI(schemas, { trailingSlash: config.trailingSlash })],
+            plugins: [vitePluginStarlightOpenAPI(schemas, { trailingSlash: config.trailingSlash, build: { format: config.build.format } })],
           },
         })
       },

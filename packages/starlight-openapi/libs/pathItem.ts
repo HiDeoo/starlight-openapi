@@ -1,5 +1,5 @@
 import { getOperationsByTag, getWebhooksOperations, isMinimalOperationTag } from './operation'
-import { getBaseLink, getTrailingSlashTransformer, slug } from './path'
+import { getBaseLink, getLinkTransformer, slug } from './path'
 import type { Schema } from './schema'
 import { getMethodSidebarBadge, makeSidebarGroup, makeSidebarLink, type SidebarGroup } from './starlight'
 import type { StarlightOpenAPIContext } from './vite'
@@ -28,7 +28,7 @@ export function getPathItemSidebarGroups(
       return makeSidebarLink(
         pathname,
         sidebar.label,
-        getTrailingSlashTransformer(context)(baseLink + slug),
+        getLinkTransformer(context)(baseLink + slug),
         config.sidebar.operations.badges ? getMethodSidebarBadge(method) : undefined,
       )
     })
@@ -38,7 +38,7 @@ export function getPathItemSidebarGroups(
         makeSidebarLink(
           pathname,
           'Overview',
-          getTrailingSlashTransformer(context)(`${baseLink}operations/tags/${slug(operations.tag.name)}`),
+          getLinkTransformer(context)(`${baseLink}operations/tags/${slug(operations.tag.name)}`),
         ),
       )
     }
@@ -72,7 +72,7 @@ export function getWebhooksSidebarGroups(
         makeSidebarLink(
           pathname,
           sidebar.label,
-          getTrailingSlashTransformer(context)(baseLink + slug),
+          getLinkTransformer(context)(baseLink + slug),
           config.sidebar.operations.badges ? getMethodSidebarBadge(method) : undefined,
         ),
       ),

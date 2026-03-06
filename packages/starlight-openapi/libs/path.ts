@@ -14,7 +14,10 @@ const trailingSlashTransformers: Record<AstroConfig['trailingSlash'], TrailingSl
   never: stripTrailingSlash,
 }
 
-export function getTrailingSlashTransformer(context: StarlightOpenAPIContext) {
+export function getLinkTransformer(context: StarlightOpenAPIContext) {
+  if (context.build.format !== 'directory') {
+    return (path: string) => `${stripTrailingSlash(path)}.html`
+  }
   return trailingSlashTransformers[context.trailingSlash]
 }
 
@@ -39,7 +42,7 @@ export function getBaseLink(config: StarlightOpenAPISchemaConfig, context?: Star
   const path = stripLeadingSlash(getBasePath(config))
   const baseLink = path ? `${base}/${path}` : `${base}/`
 
-  return context ? getTrailingSlashTransformer(context)(baseLink) : baseLink
+  return context ? getLinkTransformer(context)(baseLink) : baseLink
 }
 
 export function stripLeadingAndTrailingSlashes(path: string): string {
