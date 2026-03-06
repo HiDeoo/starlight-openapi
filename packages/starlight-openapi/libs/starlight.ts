@@ -98,7 +98,14 @@ export function makeSidebarGroup(label: string, entries: SidebarItem[], collapse
 }
 
 export function makeSidebarLink(pathname: string, label: string, href: string, badge?: SidebarBadge): SidebarLink {
-  return { type: 'link', isCurrent: pathname === stripLeadingAndTrailingSlashes(href.replace(/\.html$/, '')), label, href, badge, attrs: {} }
+  return {
+    type: 'link',
+    isCurrent: pathname === stripLeadingAndTrailingSlashes(href.replace(/\.html$/, '')),
+    label,
+    href,
+    badge,
+    attrs: {},
+  }
 }
 
 export function getMethodSidebarBadge(method: OperationHttpMethod): SidebarBadge {
