@@ -1,5 +1,11 @@
 # starlight-openapi
 
+## 0.22.1
+
+### Patch Changes
+
+- [#135](https://github.com/HiDeoo/starlight-openapi/pull/135) [`bba6ed9`](https://github.com/HiDeoo/starlight-openapi/commit/bba6ed9c4c19f307172ccd0e61f61fa8b6af7c33) Thanks [@nonoakij](https://github.com/nonoakij)! - Fixes a link generation issue when using the Astro `build.format` configuration option set to `file`.
+
 ## 0.22.0
 
 ### Minor Changes
