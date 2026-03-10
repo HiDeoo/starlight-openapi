@@ -5,7 +5,7 @@ import type { MarkdownHeading } from 'astro'
 import { getCallbacks } from './callback'
 import type { OperationHttpMethod, OperationTag, PathItemOperation } from './operation'
 import { getParametersByLocation } from './parameter'
-import { slug, stripLeadingAndTrailingSlashes } from './path'
+import { slug, stripHtmlExtension, stripLeadingAndTrailingSlashes } from './path'
 import { hasRequestBody } from './requestBody'
 import { includesDefaultResponse } from './response'
 import { getSchemaSidebarGroups, type Schema } from './schema'
@@ -100,7 +100,7 @@ export function makeSidebarGroup(label: string, entries: SidebarItem[], collapse
 export function makeSidebarLink(pathname: string, label: string, href: string, badge?: SidebarBadge): SidebarLink {
   return {
     type: 'link',
-    isCurrent: pathname === stripLeadingAndTrailingSlashes(href.replace(/\.html$/, '')),
+    isCurrent: pathname === stripLeadingAndTrailingSlashes(stripHtmlExtension(href)),
     label,
     href,
     badge,

@@ -15,9 +15,11 @@ const trailingSlashTransformers: Record<AstroConfig['trailingSlash'], TrailingSl
 }
 
 export function getLinkTransformer(context: StarlightOpenAPIContext) {
-  if (context.build.format !== 'directory') {
-    return (path: string) => `${stripTrailingSlash(path)}.html`
+  if (context.build.format === 'file') {
+    // Skip trailing slash handling for `build.format: 'file'`.
+    return (path: string) => ensureHtmlExtension(path)
   }
+
   return trailingSlashTransformers[context.trailingSlash]
 }
 
@@ -71,6 +73,21 @@ function ensureTrailingSlash(path: string) {
   }
 
   return `${path}/`
+}
+
+export function stripHtmlExtension(path: string) {
+  const pathWithoutTrailingSlash = stripTrailingSlash(path)
+  return pathWithoutTrailingSlash.endsWith('.html') ? pathWithoutTrailingSlash.slice(0, -5) : path
+}
+
+function ensureHtmlExtension(path: string) {
+  path = stripTrailingSlash(path)
+
+  if (!path.endsWith('.html')) {
+    path = path ? `${path}.html` : '/index.html'
+  }
+
+  return path
 }
 
 type TrailingSlashTransformer = (path: string) => string
