@@ -20,7 +20,7 @@ export class SidebarPage {
   }
 
   #getSidebarRootDetails(label: string) {
-    return this.#sidebar.getByRole('listitem').locator(`details:has(summary > div > span:text-is("${label}"))`).last()
+    return this.#sidebar.getByRole('listitem').locator(`details:has(summary > span > span:text-is("${label}"))`).last()
   }
 
   async #getSidebarChildrenItems(list: Locator): Promise<SidebarItem[]> {
@@ -36,7 +36,7 @@ export class SidebarPage {
       } else {
         items.push({
           collapsed: (await item.getAttribute('open')) === null,
-          label: await item.locator(`> summary > div > span`).textContent(),
+          label: await item.locator(`> summary > span > span`).textContent(),
           items: await this.#getSidebarChildrenItems(item.locator('> ul')),
         })
       }

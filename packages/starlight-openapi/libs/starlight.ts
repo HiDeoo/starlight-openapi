@@ -65,7 +65,7 @@ export function getSidebarFromSchemas(
   const sidebarGroupsMap: Record<string, SidebarGroup[]> = {}
 
   for (const [label, group] of sidebarGroups) {
-    if (!sidebarGroupsMap[label]) sidebarGroupsMap[label] = []
+    sidebarGroupsMap[label] ??= []
     sidebarGroupsMap[label].push(group)
   }
 

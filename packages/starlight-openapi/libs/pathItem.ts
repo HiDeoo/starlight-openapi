@@ -15,13 +15,13 @@ export function getPathItemSidebarGroups(
 
   const tags =
     config.sidebar.tags.sort === 'alphabetical'
-      ? [...operations.entries()].sort((a, b) => a[0].localeCompare(b[0]))
+      ? [...operations.entries()].toSorted((a, b) => a[0].localeCompare(b[0]))
       : [...operations.entries()]
 
   return tags.map(([tag, operations]) => {
     const entries =
       config.sidebar.operations.sort === 'alphabetical'
-        ? operations.entries.sort((a, b) => a.sidebar.label.localeCompare(b.sidebar.label))
+        ? operations.entries.toSorted((a, b) => a.sidebar.label.localeCompare(b.sidebar.label))
         : operations.entries
 
     const items = entries.map(({ method, sidebar, slug }) => {
@@ -62,7 +62,7 @@ export function getWebhooksSidebarGroups(
 
   const entries =
     config.sidebar.operations.sort === 'alphabetical'
-      ? operations.sort((a, b) => a.sidebar.label.localeCompare(b.sidebar.label))
+      ? operations.toSorted((a, b) => a.sidebar.label.localeCompare(b.sidebar.label))
       : operations
 
   return [

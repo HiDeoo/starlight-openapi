@@ -64,7 +64,7 @@ export function getOperationsByTag({ config, document }: Schema) {
 
   if (document.tags) {
     const orderedTags = new Map(document.tags.map((tag, index) => [tag.name, { index, tag }]))
-    const operationsByTagArray = [...operationsByTag.entries()].sort(([tagA], [tagB]) => {
+    const operationsByTagArray = [...operationsByTag.entries()].toSorted(([tagA], [tagB]) => {
       const orderA = orderedTags.get(tagA)?.index ?? Number.POSITIVE_INFINITY
       const orderB = orderedTags.get(tagB)?.index ?? Number.POSITIVE_INFINITY
 
