@@ -25,7 +25,7 @@ export default function starlightOpenAPIPlugin(userConfig: StarlightOpenAPIUserC
           return
         }
 
-        const config = validateConfig(logger, userConfig)
+        const config = validateConfig(userConfig)
         const schemas = await Promise.all(config.map((schemaConfig) => parseSchema(logger, schemaConfig)))
 
         addRouteMiddleware({ entrypoint: 'starlight-openapi/middleware', order: 'post' })

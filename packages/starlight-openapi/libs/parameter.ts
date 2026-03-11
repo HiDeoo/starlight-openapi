@@ -24,7 +24,7 @@ export function getParametersByLocation(
   }
 
   return new Map(
-    [...parametersByLocation].sort((locationA, locationB) =>
+    [...parametersByLocation].toSorted((locationA, locationB) =>
       locationA[0] === 'path' ? -1 : locationB[0] === 'path' ? 1 : 0,
     ),
   )
