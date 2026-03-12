@@ -1,5 +1,11 @@
 # starlight-openapi
 
+## 0.23.1
+
+### Patch Changes
+
+- [#140](https://github.com/HiDeoo/starlight-openapi/pull/140) [`53899d2`](https://github.com/HiDeoo/starlight-openapi/commit/53899d23cb94c7b61aec07ea2ef83ee6207467ea) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Fixes the error message logged when the plugin configuration is invalid.
+
 ## 0.23.0
 
 ### Minor Changes
