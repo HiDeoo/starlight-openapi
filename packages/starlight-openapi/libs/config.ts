@@ -10,7 +10,7 @@ export function validateConfig(userConfig: unknown): StarlightOpenAPIConfig {
 
   if (!config.success) {
     throw new AstroError(
-      `Invalid starlight-blog configuration:
+      `Invalid starlight-openapi configuration:
 
 ${z.prettifyError(config.error)}
 `,
