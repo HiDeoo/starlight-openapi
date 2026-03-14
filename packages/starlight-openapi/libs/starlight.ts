@@ -157,6 +157,10 @@ function getOperationHeadings(schema: Schema, { operation, pathItem }: PathItemO
     items.push(makeHeading(2, 'Request Body'))
   }
 
+  if (operation['x-codeSamples']) {
+    items.push(makeHeading(2, 'Code Samples'))
+  }
+
   const callbacks = getCallbacks(operation)
   const callbackIdentifiers = Object.keys(callbacks ?? {})
 

@@ -1,0 +1,49 @@
+openapi: 3.0.0
+info:
+  title: Code Samples Test
+  version: 1.0.0
+paths:
+  /test:
+    get:
+      summary: Test Code Samples
+      operationId: testCodeSamples
+      x-codeSamples:
+        - lang: javascript
+          label: JavaScript
+          source: |
+            fetch('https://api.example.com/test')
+              .then(response => response.json())
+              .then(data => console.log(data));
+        - lang: python
+          label: Python
+          source: |
+            import requests
+            response = requests.get('https://api.example.com/test')
+            print(response.json())
+        - lang: go
+          label: Go
+          source: |
+            package main
+            import ("fmt"; "net/http")
+            func main() {
+              resp, _ := http.Get("https://api.example.com/test")
+              fmt.Println(resp.Status)
+            }
+        - lang: java
+          label: Java
+          source: |
+            import java.net.http.*;
+            import java.net.URI;
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+              .uri(URI.create("https://api.example.com/test"))
+              .build();
+        - lang: php
+          label: PHP
+          source: |
+            $client = new \GuzzleHttp\Client();
+            $response = $client->get('https://api.example.com/test');
+            echo $response->getBody();
+      responses:
+        '200':
+          description: OK

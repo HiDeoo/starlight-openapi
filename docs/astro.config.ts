@@ -79,6 +79,11 @@ export default defineConfig({
             schema: '../schemas/v3.0/recursive-simple.yaml',
             sidebar: { label: 'Simple Recursion v3.0' },
           },
+          {
+            base: 'api/v3/code-samples',
+            schema: '../schemas/v3.0/code-samples.yaml',
+            sidebar: { label: 'Code Samples v3.0' },
+          },
         ]),
         starlightOpenAPIDocsDemo(),
       ],
@@ -103,7 +108,7 @@ export default defineConfig({
         },
         {
           label: 'Tests',
-          items: openAPISidebarGroups,
+          items: [...openAPISidebarGroups, { label: 'Code Samples', link: '/api/v3/code-samples/' }],
         },
       ],
       social: [
