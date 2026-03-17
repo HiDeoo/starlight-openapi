@@ -1,14 +1,17 @@
 import { expect, test } from './test'
 
 test('displays code samples', async ({ docPage }) => {
-  await docPage.goto('/v3/code-samples/operations/testcodesamples/')
+  await docPage.goto('/v2/petstore-simple/operations/addpet/')
 
   await expect(docPage.getByRole('heading', { level: 2, name: 'Code Samples' })).toBeVisible()
 
-  await expect(docPage.page.getByRole('tab', { name: 'JavaScript' })).toBeVisible()
-  await expect(docPage.getByText("fetch('https://api.example.com/test')")).toBeVisible()
+  await expect(docPage.getByRole('tab', { name: 'JavaScript' })).toBeVisible()
 
-  await expect(docPage.page.getByRole('tab', { name: 'Python' })).toBeVisible()
-  await docPage.page.getByRole('tab', { name: 'Python' }).click()
-  await expect(docPage.getByText("requests.get('https://api.example.com/test')")).toBeVisible()
+  await expect(docPage.getByRole('tabpanel')).toContainText("fetch('http://petstore.swagger.io/api/pets', {")
+
+  await docPage.getByRole('tab', { name: 'python' }).click()
+
+  await expect(docPage.getByRole('tabpanel')).toContainText(
+    "requests.post('http://petstore.swagger.io/api/pets', json={'name': 'Fido'})",
+  )
 })
