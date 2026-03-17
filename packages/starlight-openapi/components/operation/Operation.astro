@@ -5,7 +5,6 @@ import type { Schema } from '../../libs/schema'
 import Callbacks from '../callback/Callbacks.astro'
 import Deprecated from '../Deprecated.astro'
 import ExternalDocs from '../ExternalDocs.astro'
-import Heading from '../Heading.astro'
 import Md from '../Md.astro'
 import Parameters from '../parameter/Parameters.astro'
 import RequestBody from '../RequestBody.astro'
@@ -29,18 +28,9 @@ const parameters = getParametersByLocation(operation.parameters, pathItemOperati
 <Deprecated deprecated={operation.deprecated} />
 <OperationDescription method={pathItemOperation.method} path={pathItemOperation.path} {urls} />
 <Md text={operation.description} />
-{
-  operation['x-codeSamples'] && (
-    <section>
-      <Heading level={2} id="code-samples">
-        Code Samples
-      </Heading>
-      <OperationCodeSamples {operation} />
-    </section>
-  )
-}
 <ExternalDocs docs={operation.externalDocs} />
 <Security {operation} {schema} />
+<OperationCodeSamples codeSamples={operation['x-codeSamples']} />
 <Parameters {parameters} />
 <RequestBody {operation} {schema} />
 <Callbacks {operation} {schema} />
