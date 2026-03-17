@@ -146,6 +146,10 @@ function getOperationHeadings(schema: Schema, { operation, pathItem }: PathItemO
 
   const parametersByLocation = getParametersByLocation(operation.parameters, pathItem.parameters)
 
+  if (operation['x-codeSamples'] && operation['x-codeSamples'].length > 0) {
+    items.push(makeHeading(2, 'Code Samples'))
+  }
+
   if (parametersByLocation.size > 0) {
     items.push(
       makeHeading(2, 'Parameters'),
@@ -155,10 +159,6 @@ function getOperationHeadings(schema: Schema, { operation, pathItem }: PathItemO
 
   if (hasRequestBody(operation)) {
     items.push(makeHeading(2, 'Request Body'))
-  }
-
-  if (operation['x-codeSamples']) {
-    items.push(makeHeading(2, 'Code Samples'))
   }
 
   const callbacks = getCallbacks(operation)
