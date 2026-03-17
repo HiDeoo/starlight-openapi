@@ -1,29 +1,29 @@
 ---
 import { Code, Tabs, TabItem } from '@astrojs/starlight/components'
 
-interface CodeSample {
-  lang: string
-  label: string
-  source: string
-}
+import type { OperationCodeSample } from '../../libs/operation'
+import Heading from '../Heading.astro'
 
 interface Props {
-  operation: any
+  codeSamples: OperationCodeSample[] | undefined
 }
 
-const { operation } = Astro.props
-
-const codeSamples = (operation['x-codeSamples'] ?? []) as CodeSample[]
+const { codeSamples = [] } = Astro.props
 ---
 
 {
   codeSamples.length > 0 && (
-    <Tabs>
-      {codeSamples.map((sample) => (
-        <TabItem label={sample.label}>
-          <Code code={sample.source} lang={sample.lang} />
-        </TabItem>
-      ))}
-    </Tabs>
+    <>
+      <Heading level={2} id="code-samples">
+        Code Samples
+      </Heading>
+      <Tabs>
+        {codeSamples.map((sample) => (
+          <TabItem label={sample.label || sample.lang}>
+            <Code code={sample.source} lang={sample.lang} />
+          </TabItem>
+        ))}
+      </Tabs>
+    </>
   )
 }
