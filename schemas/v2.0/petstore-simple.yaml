@@ -56,6 +56,18 @@ paths:
     post:
       description: 'Creates a new pet in the store.  Duplicates are allowed'
       operationId: 'addPet'
+      x-codeSamples:
+        - lang: javascript
+          label: JavaScript
+          source: |
+            fetch('http://petstore.swagger.io/api/pets', {
+              method: 'POST',
+              body: JSON.stringify({ name: 'Fido' })
+            })
+        - lang: python
+          source: |
+            import requests
+            requests.post('http://petstore.swagger.io/api/pets', json={'name': 'Fido'})
       produces:
         - 'application/json'
       parameters:

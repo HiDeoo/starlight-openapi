@@ -67,6 +67,7 @@ test('displays the toc for an operation', async ({ docPage }) => {
 
   expect(await docPage.getTocItems()).toMatchObject([
     { name: 'Overview' },
+    { name: 'Code Samples' },
     { name: 'Request Body' },
     {
       label: 'Responses',

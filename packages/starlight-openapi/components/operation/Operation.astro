@@ -11,6 +11,7 @@ import RequestBody from '../RequestBody.astro'
 import Responses from '../response/Responses.astro'
 import Security from '../security/Security.astro'
 
+import OperationCodeSamples from './OperationCodeSamples.astro'
 import OperationDescription from './OperationDescription.astro'
 
 interface Props {
@@ -29,6 +30,7 @@ const parameters = getParametersByLocation(operation.parameters, pathItemOperati
 <Md text={operation.description} />
 <ExternalDocs docs={operation.externalDocs} />
 <Security {operation} {schema} />
+<OperationCodeSamples codeSamples={operation['x-codeSamples']} />
 <Parameters {parameters} />
 <RequestBody {operation} {schema} />
 <Callbacks {operation} {schema} />

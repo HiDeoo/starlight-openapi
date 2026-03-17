@@ -198,11 +198,17 @@ export interface CallbackOperation {
   operation: Operation
 }
 
-export type Operation = OpenAPI.Operation
+export type Operation = OpenAPI.Operation<{ 'x-codeSamples'?: OperationCodeSample[] }>
 export type OperationHttpMethod = (typeof operationHttpMethods)[number]
 export type OperationTag = NonNullable<Document['tags']>[number]
 
 export interface OperationURL {
   description?: string | undefined
   url: string
+}
+
+export interface OperationCodeSample {
+  label?: string
+  lang: string
+  source: string
 }
