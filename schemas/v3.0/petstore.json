@@ -83,33 +83,6 @@
         "summary": "Create a pet",
         "operationId": "createPets",
         "tags": ["pets"],
-        "x-codeSamples": [
-          {
-            "lang": "javascript",
-            "label": "JavaScript",
-            "source": "fetch('http://petstore.swagger.io/v1/pets', {\n  method: 'POST',\n  body: JSON.stringify({ name: 'Fido' })\n})"
-          },
-          {
-            "lang": "python",
-            "label": "Python",
-            "source": "import requests\nrequests.post('http://petstore.swagger.io/v1/pets', json={'name': 'Fido'})"
-          },
-          {
-            "lang": "go",
-            "label": "Go",
-            "source": "package main\n\nimport (\n\t\"bytes\"\n\t\"net/http\"\n)\n\nfunc main() {\n\tjson := []byte(`{\"name\": \"Fido\"}`)\n\thttp.Post(\"http://petstore.swagger.io/v1/pets\", \"application/json\", bytes.NewBuffer(json))\n}"
-          },
-          {
-            "lang": "java",
-            "label": "Java",
-            "source": "import java.net.http.HttpClient;\nimport java.net.http.HttpRequest;\nimport java.net.http.HttpResponse;\nimport java.net.URI;\n\nHttpClient client = HttpClient.newHttpClient();\nHttpRequest request = HttpRequest.newBuilder()\n  .uri(URI.create(\"http://petstore.swagger.io/v1/pets\"))\n  .POST(HttpRequest.BodyPublishers.ofString(\"{\\\"name\\\": \\\"Fido\\\"}\"))\n  .build();\nclient.send(request, HttpResponse.BodyHandlers.ofString());"
-          },
-          {
-            "lang": "php",
-            "label": "PHP",
-            "source": "$client = new \\GuzzleHttp\\Client();\n$response = $client->post('http://petstore.swagger.io/v1/pets', [\n  'json' => ['name' => 'Fido']\n]);"
-          }
-        ],
         "responses": {
           "201": {
             "description": "Null response"
