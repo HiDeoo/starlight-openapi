@@ -16,7 +16,7 @@ interface Props extends SectionHeadingProps {
 const { empty, level = 3, prefix = '', title } = Astro.props
 ---
 
-<section>
+<section class="sl-openapi-section">
   <Heading {level} id={slug(prefix ? `${prefix}-${title}` : title)}>
     {title}<slot name="post-title" />
   </Heading>
@@ -69,5 +69,9 @@ const { empty, level = 3, prefix = '', title } = Astro.props
 
   :global(main .content) section :global(ul:only-child:not([role='tablist'])) {
     padding-inline-start: 1.3rem;
+  }
+
+  :global(:not(h1, h2, h3, h4, h5, h6) + section:has(> .level-h2)) {
+    margin-top: calc(var(--sl-text-h2) * 1.5);
   }
 </style>
