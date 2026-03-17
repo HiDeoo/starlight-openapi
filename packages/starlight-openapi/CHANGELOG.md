@@ -1,5 +1,11 @@
 # starlight-openapi
 
+## 0.24.0
+
+### Minor Changes
+
+- [#142](https://github.com/HiDeoo/starlight-openapi/pull/142) [`c23beef`](https://github.com/HiDeoo/starlight-openapi/commit/c23beef0be98d1c926429ebee0328223c811cd1b) Thanks [@alebedev80](https://github.com/alebedev80)! - Adds support for the `x-codeSamples` OpenAPI extension.
+
 ## 0.23.1
 
 ### Patch Changes
