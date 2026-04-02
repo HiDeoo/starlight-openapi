@@ -112,6 +112,64 @@ export function getMethodSidebarBadge(method: OperationHttpMethod): SidebarBadge
   return { class: `sl-openapi-method-${method}`, text: method.toUpperCase(), variant: 'caution' }
 }
 
+export function getPaginationLinks(
+  sidebar: StarlightRouteData['sidebar'],
+  config: Pick<StarlightRouteData['entry']['data'], 'prev' | 'next'>,
+  context: StarlightOpenAPIContext,
+): StarlightRouteData['pagination'] {
+  const links = flattenSidebar(sidebar)
+  const currentIndex = links.findIndex((entry) => entry.isCurrent)
+
+  return {
+    prev: applyPaginationLinkConfig(links[currentIndex - 1], config.prev, context),
+    next: applyPaginationLinkConfig(currentIndex > -1 ? links[currentIndex + 1] : undefined, config.next, context),
+  }
+}
+
+function flattenSidebar(sidebar: StarlightRouteData['sidebar']): SidebarLink[] {
+  return sidebar.flatMap((entry) => (entry.type === 'group' ? flattenSidebar(entry.entries) : entry))
+}
+
+// https://github.com/withastro/starlight/blob/cb573b5410ab97620b59f71a5a6e448f13b88a7f/packages/starlight/utils/navigation.ts#L495-L526
+function applyPaginationLinkConfig(
+  link: SidebarLink | undefined,
+  config: StarlightRouteData['entry']['data']['prev'],
+  context: StarlightOpenAPIContext,
+): SidebarLink | undefined {
+  // Explicitly remove the link.
+  if (config === false) return undefined
+  // Use the generated link if any.
+  if (config === true) return link
+  // If a link exists, update its label if needed.
+  if (typeof config === 'string' && link) return { ...link, label: config }
+
+  if (typeof config === 'object') {
+    if (link) {
+      return {
+        ...link,
+        label: config.label ?? link.label,
+        href: config.link ?? link.href,
+        // Explicitly remove sidebar link attributes for prev/next links.
+        attrs: {},
+      }
+    }
+    if (config.link && config.label) {
+      // If there is no link and the frontmatter contains both a URL and a label, create a new link.
+      return {
+        type: 'link',
+        isCurrent: false,
+        label: config.label,
+        href: config.link,
+        badge: undefined,
+        attrs: {},
+      }
+    }
+  }
+
+  // Otherwise, if the global config is enabled, return the generated link if any.
+  return context.pagination ? link : undefined
+}
+
 function isSidebarGroup(item: SidebarItem): item is SidebarGroup {
   return item.type === 'group'
 }

@@ -31,6 +31,7 @@ function resolveVirtualModuleId<TModuleId extends string>(id: TModuleId): `\0${T
 }
 
 export interface StarlightOpenAPIContext {
+  pagination: boolean
   trailingSlash: AstroConfig['trailingSlash']
   build: {
     format: AstroConfig['build']['format']

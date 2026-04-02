@@ -6,7 +6,7 @@ import type { Schema } from './schema'
 import { vitePluginStarlightOpenAPI } from './vite'
 
 export function starlightOpenAPIIntegration(
-  starlightConfig: Pick<StarlightUserConfig, 'prerender'>,
+  starlightConfig: Pick<StarlightUserConfig, 'pagination' | 'prerender'>,
   schemas: Schema[],
 ): AstroIntegration {
   const starlightOpenAPI: AstroIntegration = {
@@ -35,6 +35,7 @@ export function starlightOpenAPIIntegration(
           vite: {
             plugins: [
               vitePluginStarlightOpenAPI(schemas, {
+                pagination: starlightConfig.pagination ?? true,
                 trailingSlash: config.trailingSlash,
                 build: { format: config.build.format },
               }),
