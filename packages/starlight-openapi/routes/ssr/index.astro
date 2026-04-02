@@ -1,0 +1,14 @@
+---
+import { getSchemaRouteFromPathname } from '../../libs/route'
+import Common from '../common.astro'
+
+export const prerender = false
+
+const route = getSchemaRouteFromPathname(Astro.url.pathname)
+
+if (route === undefined) {
+  return new Response(null, { status: 404 })
+}
+---
+
+<Common {...route.props} />

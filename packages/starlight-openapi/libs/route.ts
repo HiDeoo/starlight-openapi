@@ -7,47 +7,53 @@ import {
   type OperationTag,
   type PathItemOperation,
 } from './operation'
-import { getBasePath, slug, stripLeadingAndTrailingSlashes } from './path'
+import { getSchemaBasePath, getSlugFromPathname, slug, stripLeadingAndTrailingSlashes } from './path'
 import type { Schema } from './schema'
 
-export function getSchemaStaticPaths(): StarlighOpenAPIRoute[] {
-  return Object.values(schemas).flatMap((schema) => [
-    {
-      params: {
-        openAPISlug: stripLeadingAndTrailingSlashes(getBasePath(schema.config)),
-      },
-      props: {
-        schema,
-        type: 'overview',
-      },
+const routes = Object.values(schemas).flatMap((schema): StarlightOpenAPIRoute[] => [
+  {
+    params: {
+      openAPISlug: stripLeadingAndTrailingSlashes(getSchemaBasePath(schema.config)),
     },
-    ...getPathItemStaticPaths(schema),
-    ...getWebhooksStaticPaths(schema),
-  ])
+    props: {
+      schema,
+      type: 'overview',
+    },
+  },
+  ...getPathItemRoutes(schema),
+  ...getWebhooksRoutes(schema),
+])
+
+const routesBySlug = new Map(routes.map((route) => [route.params.openAPISlug, route]))
+
+export function getSchemaStaticPaths(): StarlightOpenAPIRoute[] {
+  return routes
 }
 
-function getPathItemStaticPaths(schema: Schema): StarlighOpenAPIRoute[] {
-  const baseLink = getBasePath(schema.config)
-  const operations = getOperationsByTag(schema)
+export function getSchemaRouteFromPathname(pathname: string): StarlightOpenAPIRoute | undefined {
+  const slug = getSlugFromPathname(pathname)
+  return slug === undefined ? undefined : routesBySlug.get(slug)
+}
 
+function getPathItemRoutes(schema: Schema): StarlightOpenAPIRoute[] {
+  const schemaBasePath = getSchemaBasePath(schema.config)
+  const operations = getOperationsByTag(schema)
   return [...operations.entries()].flatMap(([, operations]) => {
-    const paths: StarlighOpenAPIRoute[] = operations.entries.map((operation) => {
-      return {
-        params: {
-          openAPISlug: stripLeadingAndTrailingSlashes(baseLink + operation.slug),
-        },
-        props: {
-          operation,
-          schema,
-          type: 'operation',
-        },
-      }
-    })
+    const routes: StarlightOpenAPIRoute[] = operations.entries.map((operation) => ({
+      params: {
+        openAPISlug: stripLeadingAndTrailingSlashes(schemaBasePath + operation.slug),
+      },
+      props: {
+        operation,
+        schema,
+        type: 'operation',
+      },
+    }))
 
     if (!isMinimalOperationTag(operations.tag)) {
-      paths.unshift({
+      routes.unshift({
         params: {
-          openAPISlug: stripLeadingAndTrailingSlashes(`${baseLink}operations/tags/${slug(operations.tag.name)}`),
+          openAPISlug: stripLeadingAndTrailingSlashes(`${schemaBasePath}operations/tags/${slug(operations.tag.name)}`),
         },
         props: {
           schema,
@@ -57,17 +63,17 @@ function getPathItemStaticPaths(schema: Schema): StarlighOpenAPIRoute[] {
       })
     }
 
-    return paths
+    return routes
   })
 }
 
-function getWebhooksStaticPaths(schema: Schema): StarlighOpenAPIRoute[] {
-  const baseLink = getBasePath(schema.config)
+function getWebhooksRoutes(schema: Schema): StarlightOpenAPIRoute[] {
+  const schemaBasePath = getSchemaBasePath(schema.config)
   const operations = getWebhooksOperations(schema)
 
   return operations.map((operation) => ({
     params: {
-      openAPISlug: stripLeadingAndTrailingSlashes(baseLink + operation.slug),
+      openAPISlug: stripLeadingAndTrailingSlashes(schemaBasePath + operation.slug),
     },
     props: {
       operation,
@@ -77,25 +83,28 @@ function getWebhooksStaticPaths(schema: Schema): StarlighOpenAPIRoute[] {
   }))
 }
 
-interface StarlighOpenAPIRoute {
-  params: {
-    openAPISlug: string
-  }
-  props: StarlighOpenAPIRouteOverviewProps | StarlighOpenAPIRouteOperationProps | StarlighOpenAPIRouteOperationTagProps
+export type StarlightOpenAPIRouteProps =
+  | StarlightOpenAPIRouteOverviewProps
+  | StarlightOpenAPIRouteOperationProps
+  | StarlightOpenAPIRouteOperationTagProps
+
+interface StarlightOpenAPIRoute {
+  params: { openAPISlug: string }
+  props: StarlightOpenAPIRouteProps
 }
 
-interface StarlighOpenAPIRouteOverviewProps {
+interface StarlightOpenAPIRouteOverviewProps {
   schema: Schema
   type: 'overview'
 }
 
-interface StarlighOpenAPIRouteOperationProps {
+interface StarlightOpenAPIRouteOperationProps {
   operation: PathItemOperation
   schema: Schema
   type: 'operation'
 }
 
-interface StarlighOpenAPIRouteOperationTagProps {
+interface StarlightOpenAPIRouteOperationTagProps {
   schema: Schema
   tag: OperationTag
   type: 'operation-tag'

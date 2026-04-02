@@ -1,7 +1,7 @@
 import { z } from 'astro/zod'
 import type { OpenAPI } from 'openapi-types'
 
-import { getBaseLink, stripLeadingAndTrailingSlashes } from './path'
+import { getSchemaBaseLink, stripLeadingAndTrailingSlashes } from './path'
 import { getPathItemSidebarGroups, getWebhooksSidebarGroups } from './pathItem'
 import { makeSidebarGroup, makeSidebarLink, type SidebarGroup, type StarlightOpenAPISidebarGroup } from './starlight'
 import type { StarlightOpenAPIContext } from './vite'
@@ -9,7 +9,7 @@ import type { StarlightOpenAPIContext } from './vite'
 export const SchemaConfigSchema = z
   .object({
     /**
-     * The base path containing the generated documentation.
+     * The OpenAPI route base path containing the generated documentation.
      * @example 'api/petstore'
      */
     base: z.string().min(1).transform(stripLeadingAndTrailingSlashes),
@@ -126,7 +126,7 @@ export function getSchemaSidebarGroups(
     makeSidebarGroup(
       config.sidebar.label ?? document.info.title,
       [
-        makeSidebarLink(pathname, 'Overview', getBaseLink(config, context)),
+        makeSidebarLink(pathname, 'Overview', getSchemaBaseLink(config, context)),
         ...getPathItemSidebarGroups(pathname, schema, context),
         ...getWebhooksSidebarGroups(pathname, schema, context),
       ],
