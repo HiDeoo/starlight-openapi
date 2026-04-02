@@ -1,6 +1,7 @@
 import { test as base } from '@playwright/test'
 
 import { DocPage } from './fixtures/DocPage'
+import { PaginationPage } from './fixtures/PaginationPage'
 import { SidebarPage } from './fixtures/SidebarPage'
 
 export { expect } from '@playwright/test'
@@ -11,6 +12,11 @@ export const test = base.extend<Fixtures>({
 
     await use(docPage)
   },
+  paginationPage: async ({ page }, use) => {
+    const paginationPage = new PaginationPage(page)
+
+    await use(paginationPage)
+  },
   sidebarPage: async ({ page }, use) => {
     const sidebarPage = new SidebarPage(page)
 
@@ -20,5 +26,6 @@ export const test = base.extend<Fixtures>({
 
 interface Fixtures {
   docPage: DocPage
+  paginationPage: PaginationPage
   sidebarPage: SidebarPage
 }

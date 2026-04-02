@@ -2,11 +2,15 @@ import { defineRouteMiddleware, type StarlightRouteData } from '@astrojs/starlig
 
 export const onRequest = defineRouteMiddleware((context) => {
   const { starlightRoute } = context.locals
-  const { sidebar } = starlightRoute
+  const { id, pagination, sidebar } = starlightRoute
 
   starlightRoute.sidebar = sidebar.filter((item) => {
     return !(isSidebarGroup(item) && item.label === 'Tests')
   })
+
+  if (id === 'api/giphy/operations/trendingstickers') {
+    pagination.next = undefined
+  }
 })
 
 function isSidebarGroup(item: SidebarItem): item is SidebarGroup {

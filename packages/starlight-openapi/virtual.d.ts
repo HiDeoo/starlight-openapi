@@ -6,6 +6,7 @@ declare module 'virtual:starlight-openapi-schemas' {
 
 declare module 'virtual:starlight-openapi-context' {
   const Context: {
+    pagination: import('@astrojs/starlight/types').StarlightConfig['pagination']
     trailingSlash: import('astro').AstroConfig['trailingSlash']
     build: {
       format: import('astro').AstroConfig['build']['format']
