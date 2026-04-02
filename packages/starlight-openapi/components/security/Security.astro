@@ -2,7 +2,7 @@
 import context from 'virtual:starlight-openapi-context'
 
 import type { Operation } from '../../libs/operation'
-import { getBaseLink, slug } from '../../libs/path'
+import { getSchemaBaseLink, slug } from '../../libs/path'
 import type { Schema } from '../../libs/schema'
 import { getSecurityRequirements } from '../../libs/security'
 import Section from '../Section.astro'
@@ -37,7 +37,11 @@ const requirements = getSecurityRequirements(operation, schema)
             return (
               <li class="scheme not-content">
                 <strong>
-                  {schema ? <a href={`${getBaseLink(schema.config, context)}#${slug(scheme)}`}>{scheme}</a> : scheme}
+                  {schema ? (
+                    <a href={`${getSchemaBaseLink(schema.config, context)}#${slug(scheme)}`}>{scheme}</a>
+                  ) : (
+                    scheme
+                  )}
                 </strong>
                 {scopes.length > 0 ? <Tags tags={[...scopes]} /> : null}
               </li>

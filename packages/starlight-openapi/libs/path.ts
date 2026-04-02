@@ -6,7 +6,8 @@ import type { StarlightOpenAPIContext } from './vite'
 
 export { slug } from 'github-slugger'
 
-const base = stripTrailingSlash(import.meta.env.BASE_URL)
+const astroBase = stripTrailingSlash(import.meta.env.BASE_URL)
+const htmlExt = '.html'
 
 const trailingSlashTransformers: Record<AstroConfig['trailingSlash'], TrailingSlashTransformer> = {
   always: ensureTrailingSlash,
@@ -24,27 +25,45 @@ export function getLinkTransformer(context: StarlightOpenAPIContext) {
 }
 
 /**
- * Does not take the Astro `base` configuration option into account.
- * @see {@link getBaseLink} for a link that does.
+ * Returns the schema base path without taking the Astro `base` configuration option into account.
+ * @see {@link getSchemaBaseLink} for a link that does.
  */
-export function getBasePath(config: StarlightOpenAPISchemaConfig) {
-  const path = config.base
+export function getSchemaBasePath(config: StarlightOpenAPISchemaConfig) {
+  const schemaBasePath = config.base
     .split('/')
     .map((part) => slug(part))
     .join('/')
 
-  return `/${path}/`
+  return `/${schemaBasePath}/`
 }
 
 /**
- * Takes the Astro `base` configuration option into account.
- * @see {@link getBasePath} for a slug that does not.
+ * Returns a link for the schema base path with the Astro `base` configuration option taken into account.
+ * @see {@link getSchemaBasePath} for a path that does not.
  */
-export function getBaseLink(config: StarlightOpenAPISchemaConfig, context?: StarlightOpenAPIContext) {
-  const path = stripLeadingSlash(getBasePath(config))
-  const baseLink = path ? `${base}/${path}` : `${base}/`
+export function getSchemaBaseLink(config: StarlightOpenAPISchemaConfig, context?: StarlightOpenAPIContext) {
+  const schemaBasePath = stripLeadingSlash(getSchemaBasePath(config))
+  const schemaBaseLink = schemaBasePath ? `${astroBase}/${schemaBasePath}` : `${astroBase}/`
 
-  return context ? getLinkTransformer(context)(baseLink) : baseLink
+  return context ? getLinkTransformer(context)(schemaBaseLink) : schemaBaseLink
+}
+
+// https://github.com/withastro/starlight/blob/bfcd532b3d43b68eb65366a09e9ab865eb6a55ad/packages/starlight/utils/slugs.ts#L103-L119
+export function getSlugFromPathname(pathname: string): string | undefined {
+  if (pathname.startsWith(astroBase)) pathname = pathname.slice(astroBase.length)
+
+  const segments = pathname.split('/')
+
+  if (segments.at(-1) === 'index.html') {
+    // Remove trailing `index.html`.
+    segments.pop()
+  } else if (segments.at(-1)?.endsWith(htmlExt)) {
+    // Remove trailing `.html`.
+    const lastSegment = segments.pop()
+    if (lastSegment) segments.push(lastSegment.slice(0, -1 * htmlExt.length))
+  }
+
+  return segments.filter(Boolean).join('/') || undefined
 }
 
 export function stripLeadingAndTrailingSlashes(path: string): string {
@@ -59,7 +78,7 @@ function stripLeadingSlash(path: string) {
   return path.slice(1)
 }
 
-function stripTrailingSlash(path: string) {
+export function stripTrailingSlash(path: string) {
   if (!path.endsWith('/')) {
     return path
   }

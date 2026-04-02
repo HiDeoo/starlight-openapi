@@ -1,0 +1,12 @@
+---
+import { getSchemaStaticPaths } from '../../libs/route'
+import Common from '../common.astro'
+
+export const prerender = true
+
+export function getStaticPaths() {
+  return getSchemaStaticPaths()
+}
+---
+
+<Common {...Astro.props} />

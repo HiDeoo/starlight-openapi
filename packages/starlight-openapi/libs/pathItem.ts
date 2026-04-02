@@ -1,5 +1,5 @@
 import { getOperationsByTag, getWebhooksOperations, isMinimalOperationTag } from './operation'
-import { getBaseLink, getLinkTransformer, slug } from './path'
+import { getSchemaBaseLink, getLinkTransformer, slug } from './path'
 import type { Schema } from './schema'
 import { getMethodSidebarBadge, makeSidebarGroup, makeSidebarLink, type SidebarGroup } from './starlight'
 import type { StarlightOpenAPIContext } from './vite'
@@ -10,7 +10,7 @@ export function getPathItemSidebarGroups(
   context: StarlightOpenAPIContext,
 ): SidebarGroup['entries'] {
   const { config } = schema
-  const baseLink = getBaseLink(config)
+  const schemaBaseLink = getSchemaBaseLink(config)
   const operations = getOperationsByTag(schema)
 
   const tags =
@@ -28,7 +28,7 @@ export function getPathItemSidebarGroups(
       return makeSidebarLink(
         pathname,
         sidebar.label,
-        getLinkTransformer(context)(baseLink + slug),
+        getLinkTransformer(context)(schemaBaseLink + slug),
         config.sidebar.operations.badges ? getMethodSidebarBadge(method) : undefined,
       )
     })
@@ -38,7 +38,7 @@ export function getPathItemSidebarGroups(
         makeSidebarLink(
           pathname,
           'Overview',
-          getLinkTransformer(context)(`${baseLink}operations/tags/${slug(operations.tag.name)}`),
+          getLinkTransformer(context)(`${schemaBaseLink}operations/tags/${slug(operations.tag.name)}`),
         ),
       )
     }
@@ -53,7 +53,7 @@ export function getWebhooksSidebarGroups(
   context: StarlightOpenAPIContext,
 ): SidebarGroup['entries'] {
   const { config } = schema
-  const baseLink = getBaseLink(config)
+  const schemaBaseLink = getSchemaBaseLink(config)
   const operations = getWebhooksOperations(schema)
 
   if (operations.length === 0) {
@@ -72,7 +72,7 @@ export function getWebhooksSidebarGroups(
         makeSidebarLink(
           pathname,
           sidebar.label,
-          getLinkTransformer(context)(baseLink + slug),
+          getLinkTransformer(context)(schemaBaseLink + slug),
           config.sidebar.operations.badges ? getMethodSidebarBadge(method) : undefined,
         ),
       ),
