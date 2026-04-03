@@ -2,6 +2,7 @@
 import type { getParametersByLocation } from '../../libs/parameter'
 import { capitalize } from '../../libs/utils'
 import Heading from '../Heading.astro'
+import Keys from '../Keys.astro'
 import Section, { type SectionHeadingProps } from '../Section.astro'
 
 import Parameter from './Parameter.astro'
@@ -21,9 +22,11 @@ const { level = 2, parameters, prefix } = Astro.props
       </Heading>
       {[...parameters.entries()].map(([location, parameters]) => (
         <Section level={level + 1} {prefix} title={`${capitalize(location)} Parameters`}>
-          {[...parameters.values()].map((parameter) => (
-            <Parameter {parameter} />
-          ))}
+          <Keys>
+            {[...parameters.values()].map((parameter) => (
+              <Parameter {parameter} />
+            ))}
+          </Keys>
         </Section>
       ))}
     </>

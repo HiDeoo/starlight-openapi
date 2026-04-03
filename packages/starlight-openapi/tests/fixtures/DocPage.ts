@@ -35,7 +35,9 @@ export class DocPage {
   }
 
   getParameters(location: string) {
-    return this.page.locator(`.sl-heading-wrapper:has(> h3:text-is("${capitalize(location)} Parameters")) + div > div`)
+    return this.page.locator(
+      `.sl-heading-wrapper:has(> h3:text-is("${capitalize(location)} Parameters")) + div > .keys > .key`,
+    )
   }
 
   getRequestBody() {
@@ -75,7 +77,7 @@ export class DocPage {
   }
 
   getResponseHeader(status: string, name: string) {
-    return this.getResponseHeaders(status).locator('+ div > div').filter({ hasText: name })
+    return this.getResponseHeaders(status).locator('+ div > .keys > .key').filter({ hasText: name })
   }
 
   getResponseExamples(status: string) {

@@ -1,6 +1,7 @@
 ---
 import { getProperties, isAdditionalPropertiesWithSchemaObject, type SchemaObject } from '../../libs/schemaObject'
 import Key from '../Key.astro'
+import Keys from '../Keys.astro'
 import Tags from '../Tags.astro'
 
 import Schema from './SchemaObject.astro'
@@ -28,28 +29,30 @@ const properties = getProperties(schemaObject)
       schemaObject.maxProperties && `<= ${schemaObject.maxProperties} properties`,
     ]}
   />
-  <SchemaObjectObjectProperties parents={[...parents, schemaObject]} {properties} required={schemaObject.required} />
-  <SchemaObjectAllOf {nested} {parents} {schemaObject} />
-  {
-    schemaObject.additionalProperties && (
-      <Key additional name="key">
-        {schemaObject.additionalProperties === true ? (
-          <div class="any">any</div>
-        ) : isAdditionalPropertiesWithSchemaObject(schemaObject.additionalProperties) ? (
-          <Schema parents={[...parents, schemaObject]} schemaObject={schemaObject.additionalProperties} />
-        ) : null}
-      </Key>
-    )
-  }
+  <Keys>
+    <SchemaObjectObjectProperties parents={[...parents, schemaObject]} {properties} required={schemaObject.required} />
+    <SchemaObjectAllOf {nested} {parents} {schemaObject} />
+    {
+      schemaObject.additionalProperties && (
+        <Key additional name="key">
+          {schemaObject.additionalProperties === true ? (
+            <div class="any">any</div>
+          ) : isAdditionalPropertiesWithSchemaObject(schemaObject.additionalProperties) ? (
+            <Schema parents={[...parents, schemaObject]} schemaObject={schemaObject.additionalProperties} />
+          ) : null}
+        </Key>
+      )
+    }
+  </Keys>
 </details>
 
 <style>
   details {
+    border-inline-start: 1px solid var(--sl-color-gray-4);
     display: block;
   }
 
   details details {
-    border-inline-start: 1px solid var(--sl-color-gray-4);
     padding-inline-start: 0.8rem;
   }
 
@@ -74,6 +77,10 @@ const properties = getProperties(schemaObject)
 
   summary:hover {
     color: var(--sl-color-gray-2);
+  }
+
+  details.root {
+    padding-inline-start: 1rem;
   }
 
   details.root > summary {

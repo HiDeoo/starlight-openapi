@@ -23,13 +23,19 @@ const { additional, deprecated, name, required } = Astro.props
 
 <style>
   .key {
-    display: flex;
-    gap: 1rem;
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+  }
+
+  .key + .key {
+    margin-top: var(--sl-content-gap-y);
   }
 
   .name {
-    max-width: 50%;
-    min-width: 25%;
+    grid-column: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 
   .required {
@@ -54,7 +60,8 @@ const { additional, deprecated, name, required } = Astro.props
   }
 
   .description {
-    flex: 1;
+    grid-column: 2;
+    min-width: 0;
   }
 
   .description :global(details:not(:first-child)) {
