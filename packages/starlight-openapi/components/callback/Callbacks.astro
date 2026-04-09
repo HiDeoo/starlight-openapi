@@ -6,6 +6,7 @@ import type { Schema } from '../../libs/schema'
 import CallbackOperation from '../callback/CallbackOperation.astro'
 import Heading from '../Heading.astro'
 import Md from '../Md.astro'
+import Text from '../Text.astro'
 
 interface Props {
   operation: CallbacksOperation
@@ -38,7 +39,7 @@ const identifiers = Object.keys(callbacks ?? {})
 
               return (
                 <>
-                  {callback.summary && <p>{callback.summary}</p>}
+                  {callback.summary && <Text>{callback.summary}</Text>}
                   <Md text={callback.description} />
                   {operations.map((operation) => (
                     <CallbackOperation {callback} {id} {operation} {schema} {url} />

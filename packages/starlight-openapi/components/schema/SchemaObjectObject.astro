@@ -3,6 +3,7 @@ import { getProperties, isAdditionalPropertiesWithSchemaObject, type SchemaObjec
 import Key from '../Key.astro'
 import Keys from '../Keys.astro'
 import Tags from '../Tags.astro'
+import Type from '../Type.astro'
 
 import Schema from './SchemaObject.astro'
 import SchemaObjectAllOf from './SchemaObjectAllOf.astro'
@@ -19,9 +20,9 @@ const { nested, parents = [], schemaObject } = Astro.props
 const properties = getProperties(schemaObject)
 ---
 
-<details class:list={[!nested && 'root']} open={!nested}>
+<details class:list={[!nested && 'sl-openapi-schema-object-root']} open={!nested}>
   <summary>
-    <span class="type">object</span>
+    <Type>object</Type>
   </summary>
   <Tags
     tags={[
@@ -36,7 +37,7 @@ const properties = getProperties(schemaObject)
       schemaObject.additionalProperties && (
         <Key additional name="key">
           {schemaObject.additionalProperties === true ? (
-            <div class="any">any</div>
+            <Type>any</Type>
           ) : isAdditionalPropertiesWithSchemaObject(schemaObject.additionalProperties) ? (
             <Schema parents={[...parents, schemaObject]} schemaObject={schemaObject.additionalProperties} />
           ) : null}
@@ -79,11 +80,11 @@ const properties = getProperties(schemaObject)
     color: var(--sl-color-gray-2);
   }
 
-  details.root {
+  details.sl-openapi-schema-object-root {
     padding-inline-start: 1rem;
   }
 
-  details.root > summary {
+  details.sl-openapi-schema-object-root > summary {
     display: none;
   }
 
@@ -107,27 +108,18 @@ const properties = getProperties(schemaObject)
     vertical-align: middle;
     width: var(--sl-details-marker-size);
   }
+
   @media (prefers-reduced-motion: no-preference) {
     summary::before {
       transition: transform 0.2s ease-in-out;
     }
   }
+
   details[open] > summary::before {
     transform: rotateZ(90deg);
   }
+
   [dir='rtl'] summary::before {
     transform: rotateZ(180deg);
-  }
-
-  .type {
-    color: var(--sl-color-text-accent);
-    font-weight: 600;
-    margin-inline-end: 0.3rem;
-  }
-
-  .any {
-    color: var(--sl-color-text-accent);
-    font-weight: 600;
-    margin-inline-end: 0.3rem;
   }
 </style>

@@ -16,10 +16,10 @@ const { example, examples, parameter, type } = Astro.props
 ---
 
 {
-  example || examples ? (
+  example !== undefined || examples ? (
     examples ? (
-      <>
-        <h5>Examples</h5>
+      <div class="sl-openapi-examples">
+        <h5 class="sl-openapi-examples-heading">Examples</h5>
         <ContentPicker label="Select example" types={Object.keys(examples)}>
           {Object.entries(examples).map(([exampleType, data], index) => (
             <div data-openapi-content-type={exampleType} hidden={index > 0} role="tabpanel">
@@ -27,18 +27,18 @@ const { example, examples, parameter, type } = Astro.props
             </div>
           ))}
         </ContentPicker>
-      </>
+      </div>
     ) : (
-      <>
-        <h5>Example</h5>
+      <div class="sl-openapi-examples">
+        <h5 class="sl-openapi-examples-heading">Example</h5>
         <Example raw={example} {parameter} {type} />
-      </>
+      </div>
     )
   ) : null
 }
 
 <style>
-  h5 {
+  .sl-openapi-examples-heading {
     margin-block: 0.8rem;
   }
 </style>

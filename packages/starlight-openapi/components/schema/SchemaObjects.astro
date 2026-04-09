@@ -34,8 +34,8 @@ const humanReadableType: Record<SchemaObjects['type'], string> = {
 }
 ---
 
-<div>
-  <span class="type">{humanReadableType[type]}:</span>
+<div class="sl-openapi-schema-objects">
+  <span class="sl-openapi-schema-objects-type">{humanReadableType[type]}:</span>
   {discriminatorPropertyName && <Tag>discriminator: {discriminatorPropertyName}</Tag>}
 </div>
 <Tabs>
@@ -49,11 +49,11 @@ const humanReadableType: Record<SchemaObjects['type'], string> = {
 </Tabs>
 
 <style>
-  div {
+  .sl-openapi-schema-objects {
     margin-bottom: 0.5rem;
   }
 
-  .type {
+  .sl-openapi-schema-objects-type {
     margin-inline-end: 0.3rem;
     text-decoration: underline;
     text-underline-offset: 0.3rem;

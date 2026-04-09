@@ -31,7 +31,7 @@ const contacts = [document.info.contact?.url, document.info.contact?.email].filt
 
 <Md text={document.info.description} />
 <ExternalDocs docs={document.externalDocs} />
-<ul>
+<ul class="sl-openapi-overview-meta">
   {
     contacts.length > 0 && (
       <li>

@@ -6,14 +6,14 @@ interface Props {
 const { deprecated } = Astro.props
 ---
 
-{deprecated && <div>Deprecated</div>}
+{deprecated && <div class="sl-openapi-deprecated">Deprecated</div>}
 
 <style>
   :root {
     --sl-openapi-deprecated-hue: 50;
   }
 
-  div {
+  .sl-openapi-deprecated {
     --sl-openapi-deprecated-bg: hsl(var(--sl-openapi-deprecated-hue), 82%, 13%);
     --sl-openapi-deprecated-border: hsl(var(--sl-openapi-deprecated-hue), 82%, 63%);
 
@@ -26,7 +26,7 @@ const { deprecated } = Astro.props
     padding: 0.13rem 0.6rem;
   }
 
-  :global(:root[data-theme='light']) div {
+  :global(:root[data-theme='light']) .sl-openapi-deprecated {
     --sl-openapi-deprecated-bg: hsl(var(--sl-openapi-deprecated-hue), 90%, 28%);
     --sl-openapi-deprecated-border: hsl(var(--sl-openapi-deprecated-hue), 90%, 60%);
   }

@@ -35,7 +35,7 @@ const requirements = getSecurityRequirements(operation, schema)
 
           return Object.entries(requirement).map(([scheme, scopes]) => {
             return (
-              <li class="scheme not-content">
+              <li class="sl-openapi-security-scheme not-content">
                 <strong>
                   {schema ? (
                     <a href={`${getSchemaBaseLink(schema.config, context)}#${slug(scheme)}`}>{scheme}</a>
@@ -54,15 +54,15 @@ const requirements = getSecurityRequirements(operation, schema)
 }
 
 <style>
-  .scheme a {
+  .sl-openapi-security-scheme a {
     color: var(--sl-color-text-accent);
   }
 
-  .scheme a:hover {
+  .sl-openapi-security-scheme a:hover {
     color: var(--sl-color-white);
   }
 
-  .scheme > :global(.tags) {
+  .sl-openapi-security-scheme > :global(.sl-openapi-tags) {
     display: inline-flex;
     margin-left: 0.5rem;
   }

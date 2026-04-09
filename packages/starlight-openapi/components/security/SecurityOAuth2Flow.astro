@@ -42,7 +42,7 @@ const { flow, type } = Astro.props
       <Text>
         <b>Scopes:</b>
       </Text>
-      <ul>
+      <ul class="sl-openapi-security-oauth2-scopes">
         {Object.entries(flow.scopes).map(([scope, description]) => (
           <li>
             <Tag>{scope}</Tag> - {description}

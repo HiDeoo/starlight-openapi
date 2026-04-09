@@ -19,10 +19,10 @@ const { method, path, urls } = Astro.props
   {
     path ? (
       urls && urls.length > 0 ? (
-        <details class="operation-description-urls">
+        <details class="sl-openapi-operation-description-urls">
           <summary>
             <OperationMethod {method} {path} />
-            <Icon class="caret" name="right-caret" size="1.25rem" />
+            <Icon class="sl-openapi-operation-description-caret" name="right-caret" size="1.25rem" />
           </summary>
           <ul>
             {urls.map(({ description, url }) => (
@@ -31,7 +31,7 @@ const { method, path, urls } = Astro.props
           </ul>
         </details>
       ) : (
-        <div class="operation-description">
+        <div class="sl-openapi-operation-description">
           <OperationMethod {method} {path} />
         </div>
       )
@@ -42,8 +42,8 @@ const { method, path, urls } = Astro.props
 </div>
 
 <style>
-  .operation-description,
-  .operation-description-urls {
+  .sl-openapi-operation-description,
+  .sl-openapi-operation-description-urls {
     background-color: var(--astro-code-color-background);
     border: 1px solid var(--sl-color-gray-5);
     font-size: var(--sl-text-sm);
@@ -62,7 +62,7 @@ const { method, path, urls } = Astro.props
   }
 
   summary,
-  .operation-description {
+  .sl-openapi-operation-description {
     align-items: center;
     display: flex;
     font-family: var(--__sl-font-mono);
@@ -74,21 +74,21 @@ const { method, path, urls } = Astro.props
     display: none;
   }
 
-  .caret {
+  .sl-openapi-operation-description-caret {
     flex-shrink: 0;
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    .caret {
+    .sl-openapi-operation-description-caret {
       transition: transform 0.2s ease-in-out;
     }
   }
 
-  details[open] .caret {
+  details[open] .sl-openapi-operation-description-caret {
     transform: rotateZ(90deg);
   }
 
-  :global([dir='rtl']) .caret {
+  :global([dir='rtl']) .sl-openapi-operation-description-caret {
     transform: rotateZ(180deg);
   }
 

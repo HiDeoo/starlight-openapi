@@ -15,7 +15,7 @@ const tags = Array.isArray(allTags)
 
 {
   tags.length > 0 && (
-    <div class="tags">
+    <div class="sl-openapi-tags">
       {label && <>{label}</>}
       {tags.map((tag) => {
         if (typeof tag === 'string' && tag.length === 0) {
@@ -29,7 +29,7 @@ const tags = Array.isArray(allTags)
 }
 
 <style>
-  .tags {
+  .sl-openapi-tags {
     display: flex;
     flex-wrap: wrap;
     font-size: var(--sl-text-xs);

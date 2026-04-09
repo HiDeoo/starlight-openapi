@@ -36,7 +36,7 @@ export class DocPage {
 
   getParameters(location: string) {
     return this.page.locator(
-      `.sl-heading-wrapper:has(> h3:text-is("${capitalize(location)} Parameters")) + div > .keys > .key`,
+      `.sl-heading-wrapper:has(> h3:text-is("${capitalize(location)} Parameters")) + div > .sl-openapi-keys > .sl-openapi-key`,
     )
   }
 
@@ -45,7 +45,7 @@ export class DocPage {
   }
 
   getRequestBodyParameter(name: string) {
-    return this.getRequestBody().locator('.key').filter({ hasText: name })
+    return this.getRequestBody().locator('.sl-openapi-key').filter({ hasText: name })
   }
 
   getCallback(identifier: string, siblingLocator?: string) {
@@ -77,7 +77,9 @@ export class DocPage {
   }
 
   getResponseHeader(status: string, name: string) {
-    return this.getResponseHeaders(status).locator('+ div > .keys > .key').filter({ hasText: name })
+    return this.getResponseHeaders(status)
+      .locator('+ div > .sl-openapi-keys > .sl-openapi-key')
+      .filter({ hasText: name })
   }
 
   getResponseExamples(status: string) {
