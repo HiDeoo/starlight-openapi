@@ -5,12 +5,12 @@ test('displays a basic overview', async ({ docPage }) => {
 
   await docPage.expectToHaveTitle('Overview')
 
-  await expect(docPage.getByRole('heading', { level: 2, name: 'Swagger Petstore (1.0.0)' })).toBeVisible()
+  await expect(docPage.getByRole('heading', { level: 2, name: 'Swagger Petstore 1.0.0' })).toBeVisible()
 
-  const details = docPage.getByRole('listitem')
+  const infos = docPage.getByRole('article').first()
 
-  await expect(details.getByText('License: MIT')).toBeVisible()
-  await expect(details.getByText('OpenAPI version: 3.0.0')).toBeVisible()
+  await expect(infos.getByText('License: MIT')).toBeVisible()
+  await expect(infos.getByText('OpenAPI version: 3.0.0')).toBeVisible()
 })
 
 test('displays advanced overviews', async ({ docPage }) => {
@@ -18,7 +18,7 @@ test('displays advanced overviews', async ({ docPage }) => {
 
   await docPage.expectToHaveTitle('Overview')
 
-  await expect(docPage.getByRole('heading', { level: 2, name: 'Swagger Petstore (1.0.0)' })).toBeVisible()
+  await expect(docPage.getByRole('heading', { level: 2, name: 'Swagger Petstore 1.0.0' })).toBeVisible()
 
   await expect(
     docPage.getByText(
@@ -26,24 +26,26 @@ test('displays advanced overviews', async ({ docPage }) => {
     ),
   ).toBeVisible()
 
-  const details = docPage.getByRole('list')
+  const contacts = docPage.getByRole('article').first()
 
-  await expect(details.getByText('Swagger API Team')).toBeVisible()
-  expect(await details.getByRole('link', { name: 'http://swagger.io' }).getAttribute('href')).toBe('http://swagger.io')
-  expect(await details.getByRole('link', { name: 'apiteam@swagger.io' }).getAttribute('href')).toBe(
+  await expect(contacts.getByText('Swagger API Team')).toBeVisible()
+  expect(await contacts.getByRole('link', { name: 'http://swagger.io' }).getAttribute('href')).toBe('http://swagger.io')
+  expect(await contacts.getByRole('link', { name: 'apiteam@swagger.io' }).getAttribute('href')).toBe(
     'mailto:apiteam@swagger.io',
   )
 
-  await expect(details.getByText('License: Apache 2.0')).toBeVisible()
-  expect(await details.getByRole('link', { name: 'Apache 2.0' }).getAttribute('href')).toBe(
+  const infos = docPage.getByRole('article').nth(1)
+
+  await expect(infos.getByText('License: Apache 2.0')).toBeVisible()
+  expect(await infos.getByRole('link', { name: 'Apache 2.0' }).getAttribute('href')).toBe(
     'https://www.apache.org/licenses/LICENSE-2.0.html',
   )
 
-  expect(await details.getByRole('link', { name: 'Terms of Service' }).getAttribute('href')).toBe(
+  expect(await infos.getByRole('link', { name: 'Terms of Service' }).getAttribute('href')).toBe(
     'http://swagger.io/terms/',
   )
 
-  await expect(details.getByText('OpenAPI version: 3.1.0')).toBeVisible()
+  await expect(infos.getByText('OpenAPI version: 3.1.0')).toBeVisible()
 })
 
 test('displays external docs link in the overview', async ({ docPage }) => {

@@ -1,8 +1,9 @@
 ---
+import { Badge, Card } from '@astrojs/starlight/components'
+
 import { getOpenAPIVersion, getSummary } from '../libs/document'
 import type { Schema } from '../libs/schema'
 import { getSecurityDefinitions } from '../libs/security'
-import { interspece } from '../libs/utils'
 
 import ExternalDocs from './ExternalDocs.astro'
 import Heading from './Heading.astro'
@@ -20,49 +21,64 @@ const {
 
 const summary = getSummary(document)
 const securityDefinitions = getSecurityDefinitions(document)
-const contacts = [document.info.contact?.url, document.info.contact?.email].filter(
-  (contact): contact is string => !!contact,
-)
+const contacts = [
+  document.info.contact?.url && { href: document.info.contact.url, label: document.info.contact.url },
+  document.info.contact?.email && { href: `mailto:${document.info.contact.email}`, label: document.info.contact.email },
+].filter((contact): contact is { href: string; label: string } => !!contact)
 ---
 
 <Text>{summary}</Text>
 
-<Heading level={2} id="overview">{document.info.title} ({document.info.version})</Heading>
+<Heading level={2} id="overview">{document.info.title}{' '}<Badge size="large" text={document.info.version} /></Heading>
 
 <Md text={document.info.description} />
 <ExternalDocs docs={document.externalDocs} />
-<ul class="sl-openapi-overview-meta">
+
+<div class="sl-openapi-overview-meta">
   {
     contacts.length > 0 && (
-      <li>
-        {document.info.contact?.name ?? 'Contact'}:{' '}
-        {interspece(
-          ' - ',
-          contacts.map((contact, index) => <a href={index === 1 ? `mailto:${contact}` : contact}>{contact}</a>),
-        )}
-      </li>
+      <Card icon="external" title={document.info.contact?.name ?? 'Contact'}>
+        <ul>
+          {contacts.map((contact) => (
+            <li>
+              <a href={contact.href}>{contact.label}</a>
+            </li>
+          ))}
+        </ul>
+      </Card>
     )
   }
-  {
-    document.info.license && (
-      <li>
-        License:{' '}
-        {document.info.license.url ? (
-          <a href={document.info.license.url}>{document.info.license.name}</a>
-        ) : (
-          document.info.license.name
-        )}
-      </li>
-    )
-  }
-  {
-    document.info.termsOfService && (
-      <li>
-        <a href={document.info.termsOfService}>Terms of Service</a>
-      </li>
-    )
-  }
-  <li>OpenAPI version: {getOpenAPIVersion(document)}</li>
-</ul>
+  <Card icon="information" title="Informations">
+    <ul>
+      {
+        document.info.termsOfService && (
+          <li>
+            <a href={document.info.termsOfService}>Terms of Service</a>
+          </li>
+        )
+      }
+      {
+        document.info.license && (
+          <li>
+            License:{' '}
+            {document.info.license.url ? (
+              <a href={document.info.license.url}>{document.info.license.name}</a>
+            ) : (
+              document.info.license.name
+            )}
+          </li>
+        )
+      }
+      <li>OpenAPI version: <code>{getOpenAPIVersion(document)}</code></li>
+    </ul>
+  </Card>
+</div>
 
 <SecurityDefinitions definitions={securityDefinitions} />
+
+<style>
+  .sl-openapi-overview-meta :global(.card ul) {
+    margin-block-start: 0.5rem;
+    padding-inline-start: 1.75rem;
+  }
+</style>
