@@ -2,8 +2,8 @@
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro'
 
 import Operation from '../components/operation/Operation.astro'
-import OperationTag from '../components/OperationTag.astro'
-import Overview from '../components/Overview.astro'
+import OverviewOperationTag from '../components/overview/OverviewOperationTag.astro'
+import OverviewSchema from '../components/overview/OverviewSchema.astro'
 import { ensureSchemaDereference } from '../libs/dereference'
 import type { StarlightOpenAPIRouteProps } from '../libs/route'
 import { getPageProps } from '../libs/starlight'
@@ -14,25 +14,25 @@ const { schema, type } = Astro.props
 
 await ensureSchemaDereference(schema)
 
-const isOverview = type === 'overview'
-const isOperationTag = type === 'operation-tag'
+const isSchemaOverview = type === 'schema-overview'
+const isOperationTagOverview = type === 'operation-tag-overview'
 
-const title = isOverview || isOperationTag ? 'Overview' : Astro.props.operation.title
+const title = isSchemaOverview || isOperationTagOverview ? 'Overview' : Astro.props.operation.title
 ---
 
 <StarlightPage
   {...getPageProps(
     title,
     schema,
-    isOverview || isOperationTag ? undefined : Astro.props.operation,
-    isOperationTag ? Astro.props.tag : undefined,
+    isSchemaOverview || isOperationTagOverview ? undefined : Astro.props.operation,
+    isOperationTagOverview ? Astro.props.tag : undefined,
   )}
 >
   {
-    isOverview ? (
-      <Overview {schema} />
-    ) : isOperationTag ? (
-      <OperationTag tag={Astro.props.tag} />
+    isSchemaOverview ? (
+      <OverviewSchema {schema} />
+    ) : isOperationTagOverview ? (
+      <OverviewOperationTag {schema} tag={Astro.props.tag} />
     ) : (
       <Operation {schema} operation={Astro.props.operation} />
     )

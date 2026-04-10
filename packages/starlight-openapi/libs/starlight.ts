@@ -3,7 +3,13 @@ import type { HookParameters } from '@astrojs/starlight/types'
 import type { MarkdownHeading } from 'astro'
 
 import { getCallbacks } from './callback'
-import type { OperationHttpMethod, OperationTag, PathItemOperation } from './operation'
+import {
+  getOperationsByTag,
+  getWebhooksOperations,
+  type OperationHttpMethod,
+  type OperationTag,
+  type PathItemOperation,
+} from './operation'
 import { getParametersByLocation } from './parameter'
 import { slug, stripHtmlExtension, stripLeadingAndTrailingSlashes } from './path'
 import { hasRequestBody } from './requestBody'
@@ -33,17 +39,17 @@ export function getPageProps(
   pathItemOperation?: PathItemOperation,
   tag?: OperationTag,
 ): StarlightPageProps {
-  const isOverview = pathItemOperation === undefined
-  const isOperationTag = tag !== undefined
+  const isSchemaOverview = pathItemOperation === undefined
+  const isOperationTagOverview = tag !== undefined
 
   return {
     frontmatter: {
       title,
     },
-    headings: isOperationTag
-      ? getOperationTagHeadings(tag)
-      : isOverview
-        ? getOverviewHeadings(schema)
+    headings: isOperationTagOverview
+      ? getOperationTagOverviewHeadings(schema, tag)
+      : isSchemaOverview
+        ? getSchemaOverviewHeadings(schema)
         : getOperationHeadings(schema, pathItemOperation),
   }
 }
@@ -174,10 +180,16 @@ function isSidebarGroup(item: SidebarItem): item is SidebarGroup {
   return item.type === 'group'
 }
 
-function getOverviewHeadings({ document }: Schema): MarkdownHeading[] {
+function getSchemaOverviewHeadings(schema: Schema): MarkdownHeading[] {
+  const { document } = schema
+
   const items: MarkdownHeading[] = [makeHeading(2, `${document.info.title} (${document.info.version})`, 'overview')]
 
   const securityDefinitions = getSecurityDefinitions(document)
+
+  if (hasSchemaNavigationItems(schema)) {
+    items.push(makeHeading(2, 'Operations'))
+  }
 
   if (securityDefinitions) {
     items.push(
@@ -189,8 +201,14 @@ function getOverviewHeadings({ document }: Schema): MarkdownHeading[] {
   return makeHeadings(items)
 }
 
-function getOperationTagHeadings(tag: OperationTag): MarkdownHeading[] {
-  return [makeHeading(2, tag.name, 'overview')]
+function getOperationTagOverviewHeadings(schema: Schema, tag: OperationTag): MarkdownHeading[] {
+  const items: MarkdownHeading[] = [makeHeading(2, tag.name, 'overview')]
+
+  if (hasOperationTagNavigationItems(schema, tag)) {
+    items.push(makeHeading(2, 'Operations'))
+  }
+
+  return makeHeadings(items)
 }
 
 function getOperationHeadings(schema: Schema, { operation, pathItem }: PathItemOperation): MarkdownHeading[] {
@@ -245,6 +263,14 @@ function getOperationHeadings(schema: Schema, { operation, pathItem }: PathItemO
   return makeHeadings(items)
 }
 
+function hasSchemaNavigationItems(schema: Schema): boolean {
+  return getOperationsByTag(schema).size > 0 || getWebhooksOperations(schema).length > 0
+}
+
+function hasOperationTagNavigationItems(schema: Schema, tag: OperationTag): boolean {
+  return (getOperationsByTag(schema).get(tag.name)?.entries.length ?? 0) > 0
+}
+
 function makeHeadings(items: MarkdownHeading[]): MarkdownHeading[] {
   return [makeHeading(1, 'Overview', '_top'), ...items]
 }
@@ -263,7 +289,7 @@ type SidebarItem = StarlightRouteData['sidebar'][number]
 type SidebarLink = Extract<SidebarItem, { type: 'link' }>
 export type SidebarGroup = Extract<SidebarItem, { type: 'group' }>
 
-type SidebarBadge = SidebarItem['badge']
+export type SidebarBadge = SidebarItem['badge']
 
 interface StarlightPageProps {
   frontmatter: {

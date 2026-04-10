@@ -1,0 +1,68 @@
+---
+import type { OperationHttpMethod } from '../../libs/operation'
+import OperationMethodBadge from '../operation/OperationMethodBadge.astro'
+import Tag from '../Tag.astro'
+
+interface Props {
+  href: string
+  isWebhook: boolean
+  label: string
+  method: OperationHttpMethod
+}
+
+const { href, isWebhook, label, method } = Astro.props
+---
+
+<li class="sl-openapi-overview-navigation-link">
+  <OperationMethodBadge {method} />
+  <div>
+    <a {href}>{label}</a>
+    {isWebhook && <Tag>WEBHOOK</Tag>}
+  </div>
+</li>
+
+<style>
+  .sl-openapi-overview-navigation-link {
+    align-items: start;
+    column-gap: inherit;
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+  }
+
+  .sl-openapi-overview-navigation-link :global(.sl-openapi-operation-method-badge) {
+    justify-self: end;
+    width: max-content;
+  }
+
+  .sl-openapi-overview-navigation-link > div {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+
+  .sl-openapi-overview-navigation-link a {
+    color: var(--sl-color-gray-1);
+    font-family: var(--__sl-font-mono);
+    font-size: clamp(var(--sl-text-xs), calc(0.5rem + 1vw), var(--sl-text-sm));
+    justify-self: start;
+    line-height: 1.5;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    text-decoration: none;
+    text-underline-offset: 4px;
+  }
+
+  @media (min-width: 35rem) {
+    .sl-openapi-overview-navigation-link a {
+      line-height: var(--sl-line-height);
+    }
+  }
+
+  .sl-openapi-overview-navigation-link a:hover {
+    color: var(--sl-color-gray-2);
+    text-decoration: underline;
+  }
+</style>

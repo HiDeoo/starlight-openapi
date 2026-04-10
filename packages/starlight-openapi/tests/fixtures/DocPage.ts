@@ -90,6 +90,10 @@ export class DocPage {
     return this.page.locator('section:has(> .sl-heading-wrapper h2:first-child:text-is("Authorizations"))')
   }
 
+  getOperations() {
+    return this.page.locator('.sl-heading-wrapper:has(> h2:first-child:text-is("Operations")) + ul')
+  }
+
   getAuthentication() {
     return this.page.getByRole('heading', { level: 2, name: 'Authentication' })
   }

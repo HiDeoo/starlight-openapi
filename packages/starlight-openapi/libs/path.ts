@@ -109,4 +109,4 @@ function ensureHtmlExtension(path: string) {
   return path
 }
 
-type TrailingSlashTransformer = (path: string) => string
+export type TrailingSlashTransformer = (path: string) => string

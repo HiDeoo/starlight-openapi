@@ -17,7 +17,7 @@ const routes = Object.values(schemas).flatMap((schema): StarlightOpenAPIRoute[] 
     },
     props: {
       schema,
-      type: 'overview',
+      type: 'schema-overview',
     },
   },
   ...getPathItemRoutes(schema),
@@ -58,7 +58,7 @@ function getPathItemRoutes(schema: Schema): StarlightOpenAPIRoute[] {
         props: {
           schema,
           tag: operations.tag,
-          type: 'operation-tag',
+          type: 'operation-tag-overview',
         },
       })
     }
@@ -84,28 +84,28 @@ function getWebhooksRoutes(schema: Schema): StarlightOpenAPIRoute[] {
 }
 
 export type StarlightOpenAPIRouteProps =
-  | StarlightOpenAPIRouteOverviewProps
+  | StarlightOpenAPIRouteSchemaOverviewProps
   | StarlightOpenAPIRouteOperationProps
-  | StarlightOpenAPIRouteOperationTagProps
+  | StarlightOpenAPIRouteOperationTagOverviewProps
 
 interface StarlightOpenAPIRoute {
   params: { openAPISlug: string }
   props: StarlightOpenAPIRouteProps
 }
 
-interface StarlightOpenAPIRouteOverviewProps {
+interface StarlightOpenAPIRouteSchemaOverviewProps {
   schema: Schema
-  type: 'overview'
+  type: 'schema-overview'
+}
+
+interface StarlightOpenAPIRouteOperationTagOverviewProps {
+  schema: Schema
+  tag: OperationTag
+  type: 'operation-tag-overview'
 }
 
 interface StarlightOpenAPIRouteOperationProps {
   operation: PathItemOperation
   schema: Schema
   type: 'operation'
-}
-
-interface StarlightOpenAPIRouteOperationTagProps {
-  schema: Schema
-  tag: OperationTag
-  type: 'operation-tag'
 }

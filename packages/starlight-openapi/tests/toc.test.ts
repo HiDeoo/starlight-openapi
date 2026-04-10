@@ -8,6 +8,9 @@ test('displays the toc for a basic overview', async ({ docPage }) => {
     {
       name: 'Swagger Petstore (1.0.0)',
     },
+    {
+      name: 'Operations',
+    },
   ])
 })
 
@@ -18,6 +21,9 @@ test('displays the toc for an overview with authentication', async ({ docPage })
     { name: 'Overview' },
     {
       name: 'Animals (1.0.0)',
+    },
+    {
+      name: 'Operations',
     },
     {
       label: 'Authentication',
@@ -73,5 +79,17 @@ test('displays the toc for an operation', async ({ docPage }) => {
       label: 'Responses',
       items: [{ name: '200' }, { name: 'default' }],
     },
+  ])
+})
+
+test('displays the toc for an operation tag overview', async ({ docPage }) => {
+  await docPage.goto('/1password/operations/tags/items/')
+
+  expect(await docPage.getTocItems()).toMatchObject([
+    {
+      name: 'Overview',
+    },
+    { name: 'Items' },
+    { name: 'Operations' },
   ])
 })
