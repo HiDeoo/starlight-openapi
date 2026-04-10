@@ -1,23 +1,25 @@
 ---
 import { Badge, Card } from '@astrojs/starlight/components'
+import context from 'virtual:starlight-openapi-context'
 
-import { getOpenAPIVersion, getSummary } from '../libs/document'
-import type { Schema } from '../libs/schema'
-import { getSecurityDefinitions } from '../libs/security'
+import { getOpenAPIVersion, getSummary } from '../../libs/document'
+import { getSchemaNavigationGroups } from '../../libs/pathItem'
+import type { Schema } from '../../libs/schema'
+import { getSecurityDefinitions } from '../../libs/security'
+import ExternalDocs from '../ExternalDocs.astro'
+import Heading from '../Heading.astro'
+import Md from '../Md.astro'
+import SecurityDefinitions from '../security/SecurityDefinitions.astro'
+import Text from '../Text.astro'
 
-import ExternalDocs from './ExternalDocs.astro'
-import Heading from './Heading.astro'
-import Md from './Md.astro'
-import SecurityDefinitions from './security/SecurityDefinitions.astro'
-import Text from './Text.astro'
+import OverviewNavigationLinks from './OverviewNavigationLinks.astro'
 
 interface Props {
   schema: Schema
 }
 
-const {
-  schema: { document },
-} = Astro.props
+const { schema } = Astro.props
+const { document } = schema
 
 const summary = getSummary(document)
 const securityDefinitions = getSecurityDefinitions(document)
@@ -74,9 +76,15 @@ const contacts = [
   </Card>
 </div>
 
+<OverviewNavigationLinks groups={getSchemaNavigationGroups(schema, context)} />
+
 <SecurityDefinitions definitions={securityDefinitions} />
 
 <style>
+  .sl-openapi-overview-meta :global(.card) {
+    padding: clamp(1rem, calc(0.125rem + 3vw), 2rem);
+  }
+
   .sl-openapi-overview-meta :global(.card ul) {
     margin-block-start: 0.5rem;
     padding-inline-start: 1.75rem;

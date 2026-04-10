@@ -1,0 +1,60 @@
+---
+import type { SchemaNavigationGroup } from '../../libs/pathItem'
+import Heading from '../Heading.astro'
+
+import OverviewNavigationLink from './OverviewNavigationLink.astro'
+
+interface Props {
+  groups: SchemaNavigationGroup[]
+}
+
+const { groups } = Astro.props
+
+const visibleGroups = groups.filter((group) => group.links.length > 0)
+---
+
+{
+  visibleGroups.length > 0 && (
+    <div class="sl-openapi-overview-navigation">
+      <Heading level={2} id="operations">
+        Operations
+      </Heading>
+      <ul class="sl-openapi-overview-navigation-links not-content">
+        {visibleGroups.map((group) =>
+          group.links.map((link) => (
+            <OverviewNavigationLink
+              href={link.href}
+              isWebhook={link.path === undefined}
+              label={link.path ?? link.label}
+              method={link.method}
+            />
+          )),
+        )}
+      </ul>
+    </div>
+  )
+}
+
+<style>
+  .sl-openapi-overview-navigation {
+    margin-top: 3.25rem;
+  }
+
+  .sl-openapi-overview-navigation-links {
+    background-color: var(--astro-code-color-background);
+    border: 1px solid var(--sl-color-gray-5);
+    column-gap: 0.75rem;
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    font-size: var(--sl-text-xs);
+    list-style-type: none;
+    padding: clamp(1rem, calc(0.125rem + 3vw), 2rem);
+    row-gap: 0.5rem;
+  }
+
+  @media (min-width: 35rem) {
+    .sl-openapi-overview-navigation-links {
+      row-gap: 0.75rem;
+    }
+  }
+</style>

@@ -1,6 +1,8 @@
 ---
 import type { OperationHttpMethod } from '../../libs/operation'
 
+import OperationMethodBadge from './OperationMethodBadge.astro'
+
 interface Props {
   method: OperationHttpMethod
   path?: string
@@ -10,7 +12,7 @@ const { method, path } = Astro.props
 ---
 
 <div class="sl-openapi-operation-method">
-  <div class:list={['sl-openapi-operation-method-badge', method]}>{method.toUpperCase()}</div>
+  <OperationMethodBadge {method} />
   {path && <div class="sl-openapi-operation-method-path">{path}</div>}
 </div>
 
@@ -19,54 +21,6 @@ const { method, path } = Astro.props
     display: flex;
     gap: 0.8rem;
     overflow-x: hidden;
-  }
-
-  .sl-openapi-operation-method-badge {
-    background-color: var(--sl-openapi-method-bg);
-    border: 1px solid var(--sl-openapi-method-border);
-    color: hsl(0, 0%, 100%);
-    font-weight: 600;
-    padding-inline: 0.5rem;
-  }
-
-  .sl-openapi-operation-method-badge.get {
-    --sl-openapi-method-bg: var(--sl-openapi-method-bg-get);
-    --sl-openapi-method-border: var(--sl-openapi-method-border-get);
-  }
-
-  .sl-openapi-operation-method-badge.put {
-    --sl-openapi-method-bg: var(--sl-openapi-method-bg-put);
-    --sl-openapi-method-border: var(--sl-openapi-method-border-put);
-  }
-
-  .sl-openapi-operation-method-badge.post {
-    --sl-openapi-method-bg: var(--sl-openapi-method-bg-post);
-    --sl-openapi-method-border: var(--sl-openapi-method-border-post);
-  }
-
-  .sl-openapi-operation-method-badge.delete {
-    --sl-openapi-method-bg: var(--sl-openapi-method-bg-delete);
-    --sl-openapi-method-border: var(--sl-openapi-method-border-delete);
-  }
-
-  .sl-openapi-operation-method-badge.options {
-    --sl-openapi-method-bg: var(--sl-openapi-method-bg-options);
-    --sl-openapi-method-border: var(--sl-openapi-method-border-options);
-  }
-
-  .sl-openapi-operation-method-badge.head {
-    --sl-openapi-method-bg: var(--sl-openapi-method-bg-head);
-    --sl-openapi-method-border: var(--sl-openapi-method-border-head);
-  }
-
-  .sl-openapi-operation-method-badge.patch {
-    --sl-openapi-method-bg: var(--sl-openapi-method-bg-patch);
-    --sl-openapi-method-border: var(--sl-openapi-method-border-patch);
-  }
-
-  .sl-openapi-operation-method-badge.trace {
-    --sl-openapi-method-bg: var(--sl-openapi-method-bg-trace);
-    --sl-openapi-method-border: var(--sl-openapi-method-border-trace);
   }
 
   .sl-openapi-operation-method-path {

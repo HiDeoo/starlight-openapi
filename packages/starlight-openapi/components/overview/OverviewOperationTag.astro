@@ -1,0 +1,30 @@
+---
+import context from 'virtual:starlight-openapi-context'
+
+import type { OperationTag } from '../../libs/operation'
+import { getSchemaNavigationGroups } from '../../libs/pathItem'
+import type { Schema } from '../../libs/schema'
+import ExternalDocs from '../ExternalDocs.astro'
+import Heading from '../Heading.astro'
+import Md from '../Md.astro'
+
+import OverviewNavigationLinks from './OverviewNavigationLinks.astro'
+
+interface Props {
+  schema: Schema
+  tag: OperationTag
+}
+
+const { schema, tag } = Astro.props
+
+const groups = getSchemaNavigationGroups(schema, context).filter(
+  (group) => group.type === 'operations' && group.operationTag.name === tag.name,
+)
+---
+
+<Heading level={2} id="overview">{tag.name}</Heading>
+
+{tag.description && <Md text={tag.description} />}
+{tag.externalDocs && <ExternalDocs docs={tag.externalDocs} />}
+
+<OverviewNavigationLinks {groups} />

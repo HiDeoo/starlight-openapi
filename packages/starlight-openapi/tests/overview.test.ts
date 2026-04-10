@@ -46,6 +46,40 @@ test('displays advanced overviews', async ({ docPage }) => {
   )
 
   await expect(infos.getByText('OpenAPI version: 3.1.0')).toBeVisible()
+
+  const operations = docPage.getOperations().getByRole('listitem')
+  await expect(operations).toHaveCount(5)
+
+  await expect(operations.nth(0).getByText('GET', { exact: true })).toBeVisible()
+  await expect(operations.nth(0).getByRole('link', { name: '/pets' })).toHaveAttribute(
+    'href',
+    '/api/petstore/operations/findpets/',
+  )
+
+  await expect(operations.nth(1).getByText('POST', { exact: true })).toBeVisible()
+  await expect(operations.nth(1).getByRole('link', { name: '/pets' })).toHaveAttribute(
+    'href',
+    '/api/petstore/operations/addpet/',
+  )
+
+  await expect(operations.nth(2).getByText('GET', { exact: true })).toBeVisible()
+  await expect(operations.nth(2).getByRole('link', { name: '/pets/{id}' })).toHaveAttribute(
+    'href',
+    '/api/petstore/operations/find-pet-by-id/',
+  )
+
+  await expect(operations.nth(3).getByText('DELETE', { exact: true })).toBeVisible()
+  await expect(operations.nth(3).getByRole('link', { name: '/pets/{id}' })).toHaveAttribute(
+    'href',
+    '/api/petstore/operations/deletepet/',
+  )
+
+  await expect(operations.nth(4).getByText('POST', { exact: true })).toBeVisible()
+  await expect(operations.nth(4).getByRole('link', { name: 'newPet' })).toHaveAttribute(
+    'href',
+    '/api/petstore/webhooks/newpet/',
+  )
+  await expect(operations.nth(4)).toContainText('WEBHOOK')
 })
 
 test('displays external docs link in the overview', async ({ docPage }) => {
