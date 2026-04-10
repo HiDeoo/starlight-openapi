@@ -11,4 +11,4 @@ const { text } = Astro.props
 const code = text && text.length > 0 ? await transformMarkdown(capitalize(text)) : ''
 ---
 
-{text && text.length > 0 && <div set:html={code} />}
+{text && text.length > 0 && <div class="sl-openapi-markdown" set:html={code} />}

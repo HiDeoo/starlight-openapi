@@ -11,31 +11,31 @@ const { label, options } = Astro.props
 
 {
   options && options.length > 0 && (
-    <label class="not-content">
+    <label class="not-content sl-openapi-select">
       <span class="sr-only">{label}</span>
       <select>
         {options.map((option) => (
           <option value={option}>{option}</option>
         ))}
       </select>
-      <Icon name="down-caret" class="caret" />
+      <Icon name="down-caret" class="sl-openapi-select-caret" />
     </label>
   )
 }
 
 <style>
-  label {
+  .sl-openapi-select {
     color: var(--sl-color-gray-1);
     display: flex;
     margin-bottom: 0.5rem;
     position: relative;
   }
 
-  label:hover {
+  .sl-openapi-select:hover {
     color: var(--sl-color-gray-2);
   }
 
-  select {
+  .sl-openapi-select select {
     appearance: none;
     background-color: var(--sl-color-gray-5);
     border: 1px solid var(--sl-color-gray-4);
@@ -47,7 +47,7 @@ const { label, options } = Astro.props
     width: 100%;
   }
 
-  .caret {
+  .sl-openapi-select-caret {
     font-size: var(1.25rem);
     inset-inline-end: 0.8rem;
     pointer-events: none;

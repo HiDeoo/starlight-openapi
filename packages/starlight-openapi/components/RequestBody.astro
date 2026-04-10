@@ -35,7 +35,7 @@ const consumes = getOpenAPIV2OperationConsumes(schema, operation)
   hasRequestBody && (
     <Section {level} {prefix} title="Request Body">
       {openAPIV3RequestBody?.required && (
-        <sup class="required" slot="post-title">
+        <sup class="sl-openapi-request-body-required" slot="post-title">
           required
         </sup>
       )}
@@ -53,7 +53,7 @@ const consumes = getOpenAPIV2OperationConsumes(schema, operation)
 }
 
 <style>
-  .required {
+  .sl-openapi-request-body-required {
     color: var(--sl-color-red);
     font-size: var(--sl-text-sm);
     font-weight: 400;

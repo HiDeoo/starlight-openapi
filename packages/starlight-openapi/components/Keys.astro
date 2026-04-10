@@ -1,0 +1,21 @@
+<div class="sl-openapi-keys">
+  <slot />
+</div>
+
+<style>
+  .sl-openapi-keys {
+    column-gap: 1rem;
+    display: grid;
+    grid-template-columns: fit-content(30%) minmax(0, 1fr);
+  }
+
+  @media (min-width: 40rem) {
+    .sl-openapi-keys {
+      grid-template-columns: minmax(8rem, 30%) minmax(0, 1fr);
+    }
+  }
+
+  .sl-openapi-keys > :global(:not(.sl-openapi-key)) {
+    grid-column: 1 / -1;
+  }
+</style>

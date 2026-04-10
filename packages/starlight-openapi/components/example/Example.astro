@@ -96,7 +96,7 @@ const code = exampleToRender ? getExampleValue(exampleToRender.value).trim() : '
 
 {
   exampleToRender && (
-    <>
+    <div class="sl-openapi-example">
       <Text>{exampleToRender.summary}</Text>
       <Md text={exampleToRender.description} />
       {exampleToRender.externalValue && (
@@ -105,18 +105,18 @@ const code = exampleToRender ? getExampleValue(exampleToRender.value).trim() : '
         </Text>
       )}
       {code.length > 0 && <Code {code} lang={getExampleLang(code, type)} />}
-    </>
+    </div>
   )
 }
 
 <style>
-  :global(.sl-openapi-section div.expressive-code .frame pre) {
+  .sl-openapi-example :global(div.expressive-code .frame pre) {
     background-color: var(--sl-color-gray-5);
     border: 1px solid var(--sl-color-gray-4);
     margin-block: 0.5rem;
   }
 
-  :global(.sl-openapi-section div.expressive-code pre > code) {
+  .sl-openapi-example :global(div.expressive-code pre > code) {
     text-wrap: wrap;
     word-break: break-all;
   }

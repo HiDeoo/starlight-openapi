@@ -16,27 +16,27 @@ interface Props extends SectionHeadingProps {
 const { empty, level = 3, prefix = '', title } = Astro.props
 ---
 
-<section class="sl-openapi-section">
+<section class="sl-openapi-section" data-openapi-section-level={level}>
   <Heading {level} id={slug(prefix ? `${prefix}-${title}` : title)}>
     {title}<slot name="post-title" />
   </Heading>
   {
     Astro.slots.has('pre-panel') && (
-      <div>
+      <div class="sl-openapi-section-pre-panel">
         <slot name="pre-panel" />
       </div>
     )
   }
   {
     !empty && (
-      <div class="panel">
+      <div class="sl-openapi-section-panel">
         <slot />
       </div>
     )
   }
   {
     Astro.slots.has('post-panel') && (
-      <div>
+      <div class="sl-openapi-section-post-panel">
         <slot name="post-panel" />
       </div>
     )
@@ -44,34 +44,36 @@ const { empty, level = 3, prefix = '', title } = Astro.props
 </section>
 
 <style>
-  .panel {
+  .sl-openapi-section-panel {
     background-color: var(--sl-color-gray-6);
     border: 1px solid var(--sl-color-gray-5);
     overflow-x: auto;
     padding: 1rem;
   }
 
-  .panel:empty {
+  .sl-openapi-section-panel:empty {
     display: none;
   }
 
-  :global(main .content) section :global(p) {
+  :global(main .sl-markdown-content) .sl-openapi-section :global(p) {
     margin-top: 0.5rem;
   }
 
-  :global(main .content) section :global(p:first-child) {
+  :global(main .sl-markdown-content) .sl-openapi-section :global(p:first-child) {
     margin-top: 0;
   }
 
-  :global(main .content) section :global(ul:not(:first-child)) {
+  :global(main .sl-markdown-content) .sl-openapi-section :global(ul:not(:first-child)) {
     margin-top: 0.5rem;
   }
 
-  :global(main .content) section :global(ul:only-child:not([role='tablist'])) {
+  :global(main .sl-markdown-content)
+    .sl-openapi-section
+    :global(ul:only-child:not(:is([role='tablist'], .sl-openapi-security-schemes))) {
     padding-inline-start: 1.3rem;
   }
 
-  :global(:not(h1, h2, h3, h4, h5, h6) + section:has(> .level-h2)) {
+  :global(:not(h1, h2, h3, h4, h5, h6) + .sl-openapi-section[data-openapi-section-level='2']) {
     margin-top: calc(var(--sl-text-h2) * 1.5);
   }
 </style>

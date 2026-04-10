@@ -13,7 +13,7 @@ const { codeSamples = [] } = Astro.props
 
 {
   codeSamples.length > 0 && (
-    <>
+    <div class="sl-openapi-operation-code-samples ">
       <Heading level={2} id="code-samples">
         Code Samples
       </Heading>
@@ -24,6 +24,6 @@ const { codeSamples = [] } = Astro.props
           </TabItem>
         ))}
       </Tabs>
-    </>
+    </div>
   )
 }

@@ -23,7 +23,7 @@ test('displays the recursive tag for simple and array recursive schema', async (
 
   await expect(okResponse.getByText('recursive')).toHaveCount(2)
 
-  const descriptions = okResponse.locator('.description')
+  const descriptions = okResponse.locator('.sl-openapi-key-description')
 
   await expect(descriptions.nth(2)).toHaveText(/object\s+recursive/)
   await expect(descriptions.nth(3)).toHaveText(/Array<object>\s+recursive/)

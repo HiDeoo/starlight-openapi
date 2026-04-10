@@ -9,59 +9,66 @@ interface Props {
 const { additional, deprecated, name, required } = Astro.props
 ---
 
-<div class="key not-content">
-  <div class="name">
+<div class="sl-openapi-key not-content">
+  <div class="sl-openapi-key-name">
     <strong>{additional ? <em>{name}</em> : deprecated ? <s>{name}</s> : name}</strong>
-    {required && <div class="required">required</div>}
-    {deprecated && <div class="deprecated">deprecated</div>}
-    {additional && <div class="additional">additional properties</div>}
+    {required && <div class="sl-openapi-key-required">required</div>}
+    {deprecated && <div class="sl-openapi-key-deprecated">deprecated</div>}
+    {additional && <div class="sl-openapi-key-additional">additional properties</div>}
   </div>
-  <div class="description">
+  <div class="sl-openapi-key-description">
     <slot />
   </div>
 </div>
 
 <style>
-  .key {
-    display: flex;
-    gap: 1rem;
+  .sl-openapi-key {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
   }
 
-  .name {
-    max-width: 50%;
-    min-width: 25%;
+  .sl-openapi-key + .sl-openapi-key {
+    margin-top: var(--sl-content-gap-y);
   }
 
-  .required {
+  .sl-openapi-key-name {
+    grid-column: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .sl-openapi-key-required {
     color: var(--sl-color-red);
     font-size: var(--sl-text-sm);
   }
 
-  .deprecated {
+  .sl-openapi-key-deprecated {
     --sl-openapi-deprecated-color: hsl(var(--sl-openapi-deprecated-hue), 82%, 63%);
 
     color: var(--sl-openapi-deprecated-color);
     font-size: var(--sl-text-sm);
   }
 
-  :global(:root[data-theme='light']) .deprecated {
+  :global(:root[data-theme='light']) .sl-openapi-key-deprecated {
     --sl-openapi-deprecated-color: hsl(var(--sl-openapi-deprecated-hue), 90%, 25%);
   }
 
-  .additional {
+  .sl-openapi-key-additional {
     color: var(--sl-color-gray-3);
     font-size: var(--sl-text-sm);
   }
 
-  .description {
-    flex: 1;
+  .sl-openapi-key-description {
+    grid-column: 2;
+    min-width: 0;
   }
 
-  .description :global(details:not(:first-child)) {
+  .sl-openapi-key-description :global(details:not(:first-child)) {
     margin-block-start: 0.5rem;
   }
 
-  .description :global(details:not(:last-child)) {
+  .sl-openapi-key-description :global(details:not(:last-child)) {
     margin-block-end: 0.5rem;
   }
 </style>

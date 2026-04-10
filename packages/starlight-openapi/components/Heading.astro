@@ -14,11 +14,11 @@ const Element = `h${headingLevel}` as const
 
 {
   starlightConfig.markdown.headingLinks ? (
-    <AnchorHeading {id} level={headingLevel}>
+    <AnchorHeading class="sl-openapi-heading" {id} level={headingLevel}>
       <slot />
     </AnchorHeading>
   ) : (
-    <Element {id}>
+    <Element class="sl-openapi-heading" {id}>
       <slot />
     </Element>
   )

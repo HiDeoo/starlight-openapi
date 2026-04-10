@@ -25,7 +25,7 @@ test.describe('SSR', () => {
     await page.goto(app.url('/tests/petstore/'))
 
     await expect(page.getByRole('heading', { level: 1, name: 'Overview' })).toBeVisible()
-    await expect(page.getByRole('heading', { level: 2, name: 'Swagger Petstore (1.0.0)' })).toBeVisible()
+    await expect(page.getByRole('heading', { level: 2, name: 'Swagger Petstore 1.0.0' })).toBeVisible()
   })
 
   test('serves an OpenAPI operation page', async ({ page }) => {

@@ -7,7 +7,7 @@ import {
   isSchemaObjectObject,
   type SchemaObject,
 } from '../../libs/schemaObject'
-import Example from '../example/Example.astro'
+import Examples from '../example/Examples.astro'
 import ExternalDocs from '../ExternalDocs.astro'
 import Items from '../Items.astro'
 import Md from '../Md.astro'
@@ -49,11 +49,8 @@ const hasMany = schemaObjects !== undefined
       ) : (
         <Items {parents} items={schemaObject} {negated} nullable={getNullable(schemaObject)} {type} />
       )}
-      {!hideExample && schemaObject.example && (
-        <>
-          <h5>Example</h5>
-          <Example raw={schemaObject.example} {type} />
-        </>
+      {!hideExample && schemaObject.example !== undefined && (
+        <Examples example={schemaObject.example} examples={undefined} {type} />
       )}
     </>
   )
