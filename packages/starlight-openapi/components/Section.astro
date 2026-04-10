@@ -67,7 +67,9 @@ const { empty, level = 3, prefix = '', title } = Astro.props
     margin-top: 0.5rem;
   }
 
-  :global(main .sl-markdown-content) .sl-openapi-section :global(ul:only-child:not([role='tablist'])) {
+  :global(main .sl-markdown-content)
+    .sl-openapi-section
+    :global(ul:only-child:not(:is([role='tablist'], .sl-openapi-security-schemes))) {
     padding-inline-start: 1.3rem;
   }
 
