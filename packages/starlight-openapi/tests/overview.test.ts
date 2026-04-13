@@ -47,7 +47,9 @@ test('displays advanced overviews', async ({ docPage }) => {
 
   await expect(infos.getByText('OpenAPI version: 3.1.0')).toBeVisible()
 
-  const operations = docPage.getOperations().getByRole('listitem')
+  await expect(docPage.getByRole('heading', { level: 2, name: 'Operations' })).toBeVisible()
+
+  const operations = docPage.getOperations()
   await expect(operations).toHaveCount(5)
 
   await expect(operations.nth(0).getByText('GET', { exact: true })).toBeVisible()

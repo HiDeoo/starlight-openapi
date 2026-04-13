@@ -19,7 +19,7 @@ const visibleGroups = groups.filter((group) => group.links.length > 0)
       <Heading level={2} id="operations">
         Operations
       </Heading>
-      <ul class="sl-openapi-overview-navigation-links not-content">
+      <div class="sl-openapi-overview-navigation-links not-content">
         {visibleGroups.map((group) =>
           group.links.map((link) => (
             <OverviewNavigationLink
@@ -30,7 +30,7 @@ const visibleGroups = groups.filter((group) => group.links.length > 0)
             />
           )),
         )}
-      </ul>
+      </div>
     </div>
   )
 }
@@ -41,20 +41,10 @@ const visibleGroups = groups.filter((group) => group.links.length > 0)
   }
 
   .sl-openapi-overview-navigation-links {
-    background-color: var(--astro-code-color-background);
-    border: 1px solid var(--sl-color-gray-5);
     column-gap: 0.75rem;
     display: grid;
-    grid-template-columns: max-content minmax(0, 1fr);
     font-size: var(--sl-text-xs);
-    list-style-type: none;
-    padding: clamp(1rem, calc(0.125rem + 3vw), 2rem);
-    row-gap: 0.5rem;
-  }
-
-  @media (min-width: 35rem) {
-    .sl-openapi-overview-navigation-links {
-      row-gap: 0.75rem;
-    }
+    grid-template-columns: max-content minmax(0, 1fr) auto;
+    row-gap: 0.625rem;
   }
 </style>
