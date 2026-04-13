@@ -9,9 +9,9 @@ test('displays an operation tag overview', async ({ docPage }) => {
 
   await expect(docPage.getByText('Access and manage items inside 1Password Vaults')).toBeVisible()
 
-  const operations = docPage.getOperations().getByRole('listitem')
-
   await expect(docPage.getByRole('heading', { level: 2, name: 'Operations' })).toBeVisible()
+
+  const operations = docPage.getOperations()
   await expect(operations).toHaveCount(6)
 
   await expect(operations.nth(0).getByText('GET', { exact: true })).toBeVisible()

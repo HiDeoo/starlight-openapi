@@ -1,4 +1,6 @@
 ---
+import { Icon } from '@astrojs/starlight/components'
+
 import type { OperationHttpMethod } from '../../libs/operation'
 import OperationMethodBadge from '../operation/OperationMethodBadge.astro'
 import Tag from '../Tag.astro'
@@ -13,21 +15,26 @@ interface Props {
 const { href, isWebhook, label, method } = Astro.props
 ---
 
-<li class="sl-openapi-overview-navigation-link">
+<div class="sl-openapi-overview-navigation-link">
   <OperationMethodBadge {method} />
-  <div>
+  <span class="sl-openapi-overview-navigation-link-content">
     <a {href}>{label}</a>
     {isWebhook && <Tag>WEBHOOK</Tag>}
-  </div>
-</li>
+  </span>
+  <Icon name="right-arrow" size="1.333em" class="sl-openapi-overview-navigation-link-icon rtl:flip" />
+</div>
 
 <style>
   .sl-openapi-overview-navigation-link {
     align-items: start;
+    border: 1px solid var(--sl-color-gray-5);
+    box-shadow: var(--sl-shadow-sm);
     column-gap: inherit;
     display: grid;
     grid-column: 1 / -1;
     grid-template-columns: subgrid;
+    padding: 0.875rem;
+    position: relative;
   }
 
   .sl-openapi-overview-navigation-link :global(.sl-openapi-operation-method-badge) {
@@ -35,7 +42,7 @@ const { href, isWebhook, label, method } = Astro.props
     width: max-content;
   }
 
-  .sl-openapi-overview-navigation-link > div {
+  .sl-openapi-overview-navigation-link-content {
     align-items: center;
     display: flex;
     flex-wrap: wrap;
@@ -46,23 +53,28 @@ const { href, isWebhook, label, method } = Astro.props
   .sl-openapi-overview-navigation-link a {
     color: var(--sl-color-gray-1);
     font-family: var(--__sl-font-mono);
-    font-size: clamp(var(--sl-text-xs), calc(0.5rem + 1vw), var(--sl-text-sm));
+    font-size: var(--sl-text-sm);
     justify-self: start;
-    line-height: 1.5;
-    min-width: 0;
     overflow-wrap: anywhere;
     text-decoration: none;
-    text-underline-offset: 4px;
   }
 
-  @media (min-width: 35rem) {
-    .sl-openapi-overview-navigation-link a {
-      line-height: var(--sl-line-height);
-    }
+  .sl-openapi-overview-navigation-link a::before {
+    content: '';
+    inset: 0;
+    position: absolute;
   }
 
-  .sl-openapi-overview-navigation-link a:hover {
-    color: var(--sl-color-gray-2);
-    text-decoration: underline;
+  .sl-openapi-overview-navigation-link-icon {
+    color: var(--sl-color-gray-3);
+  }
+
+  .sl-openapi-overview-navigation-link:is(:hover, :focus-within) {
+    background: var(--sl-color-gray-7, var(--sl-color-gray-6));
+    border-color: var(--sl-color-gray-2);
+  }
+
+  .sl-openapi-overview-navigation-link:is(:hover, :focus-within) .sl-openapi-overview-navigation-link-icon {
+    color: var(--sl-color-white);
   }
 </style>

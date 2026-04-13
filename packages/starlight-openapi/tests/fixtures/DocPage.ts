@@ -91,7 +91,7 @@ export class DocPage {
   }
 
   getOperations() {
-    return this.page.locator('.sl-heading-wrapper:has(> h2:first-child:text-is("Operations")) + ul')
+    return this.page.locator('.sl-heading-wrapper:has(> h2:first-child:text-is("Operations")) + div > div')
   }
 
   getAuthentication() {
