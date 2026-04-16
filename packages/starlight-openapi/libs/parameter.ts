@@ -261,7 +261,7 @@ function serializeParameterEntries(
       }
 
       return Object.entries(value).map(([key, entryValue]) => ({
-        name: `${serializeName(name)}[${serializeName(key)}]`,
+        name: serializeName(`${name}[${key}]`),
         value: serializeValue(entryValue),
       }))
     }

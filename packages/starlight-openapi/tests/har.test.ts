@@ -178,7 +178,7 @@ test('builds a HAR request for a GET operation with deepObject query serializati
 
   expectOperationHarRequest(schema, operation, {
     method: 'GET',
-    url: 'https://example.com/api/jaguar?age=1,2,3&weight=100&weight=200&weight=300&name=Mona&name=Lisa&surname=Butch,Cassidy&limit[limit]=50&limit[offset]=100',
+    url: 'https://example.com/api/jaguar?age=1,2,3&weight=100&weight=200&weight=300&name=Mona&name=Lisa&surname=Butch,Cassidy&limit%5Blimit%5D=50&limit%5Boffset%5D=100',
     headers: [{ name: 'Authorization', value: 'Bearer <token>' }],
     queryString: [
       { name: 'age', value: '1,2,3' },
