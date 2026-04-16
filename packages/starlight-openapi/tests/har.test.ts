@@ -216,6 +216,24 @@ test('builds a HAR request for a GET operation with a relative server URL', asyn
   })
 })
 
+test('builds a HAR request for a POST operation with a JSON string request body', async () => {
+  const schema = await parseTestSchema('v3.0/animals.yaml')
+  const operation = getTestOperation(schema, { path: '/elephant', method: 'post' })
+
+  expectOperationHarRequest(schema, operation, {
+    method: 'POST',
+    url: 'https://example.com/api/elephant',
+    headers: [
+      { name: 'Authorization', value: 'Bearer <token>' },
+      { name: 'Content-Type', value: 'application/json' },
+    ],
+    postData: {
+      mimeType: 'application/json',
+      text: '"large"',
+    },
+  })
+})
+
 function getTestOperation(
   schema: Schema,
   selector: { operationId: string } | { path: string; method: OperationHttpMethod },

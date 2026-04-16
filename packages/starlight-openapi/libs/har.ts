@@ -361,6 +361,13 @@ function getMediaTypeRequestBody(
     return createMultipartRequestBody(mediaType, value)
   }
 
+  if (mimeType.includes('json')) {
+    return createOperationRequestBody({
+      mimeType,
+      text: JSON.stringify(value, null, 2),
+    })
+  }
+
   if (mimeType.startsWith('text/') || mimeType.includes('xml')) {
     return createOperationRequestBody({
       mimeType,
