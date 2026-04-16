@@ -2,6 +2,7 @@ import type { OpenAPIV2, OpenAPIV3, OpenAPIV3_1 } from 'openapi-types'
 
 import type { Operation } from './operation'
 import type { Parameter } from './parameter'
+import { hasDefinedValue, isObjectLike } from './predicate'
 import type { Schema } from './schema'
 
 export function getOpenAPIV2RequestBodyParameter(operation: Operation): OpenAPIV2.InBodyParameterObject | undefined {
@@ -49,7 +50,7 @@ function isOpenAPIV2RequestBodyParameter(parameter: Parameter): parameter is Ope
 }
 
 function isOperationWithRequestBody(operation: Operation): operation is Operation & { requestBody: RequestBody } {
-  return 'requestBody' in operation && typeof operation.requestBody === 'object'
+  return hasDefinedValue(operation, 'requestBody') && isObjectLike(operation.requestBody)
 }
 
 type RequestBody = OpenAPIV3.RequestBodyObject | OpenAPIV3_1.RequestBodyObject

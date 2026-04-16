@@ -6,6 +6,7 @@ import type { Discriminator, SchemaObjects, SchemaObject as SchemaObjectType } f
 import Tag from '../Tag.astro'
 
 import SchemaObject from './SchemaObject.astro'
+import { isObjectLike } from '../../libs/predicate'
 
 interface Props {
   discriminator: Discriminator
@@ -24,7 +25,7 @@ const {
 const discriminatorPropertyName =
   typeof discriminator === 'string'
     ? discriminator
-    : typeof discriminator === 'object'
+    : isObjectLike(discriminator)
       ? discriminator.propertyName
       : undefined
 

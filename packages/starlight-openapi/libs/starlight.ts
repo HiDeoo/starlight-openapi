@@ -12,6 +12,7 @@ import {
 } from './operation'
 import { getParametersByLocation } from './parameter'
 import { slug, stripHtmlExtension, stripLeadingAndTrailingSlashes } from './path'
+import { isObjectLike } from './predicate'
 import { hasRequestBody } from './requestBody'
 import { includesDefaultResponse } from './response'
 import { getSchemaSidebarGroups, type Schema } from './schema'
@@ -149,7 +150,7 @@ function applyPaginationLinkConfig(
   // If a link exists, update its label if needed.
   if (typeof config === 'string' && link) return { ...link, label: config }
 
-  if (typeof config === 'object') {
+  if (isObjectLike(config)) {
     if (link) {
       return {
         ...link,

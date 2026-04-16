@@ -1,10 +1,11 @@
 import type { OpenAPIV2, OpenAPIV3, OpenAPIV3_1 } from 'openapi-types'
 
 import type { Content } from './content'
+import { hasDefinedValue, isObjectLike } from './predicate'
 import { isSchemaObject, type SchemaObject } from './schemaObject'
 
 export function includesDefaultResponse(responses: Responses): responses is Responses & { default: Response } {
-  return 'default' in responses && typeof responses.default === 'object'
+  return hasDefinedValue(responses, 'default') && isObjectLike(responses.default)
 }
 
 export function getOpenAPIV2ResponseSchema(response: Response): SchemaObject | undefined {

@@ -1,11 +1,10 @@
 import type { OpenAPIV2 } from 'openapi-types'
 
+import { hasDefinedValue } from './predicate'
 import type { SchemaObject } from './schemaObject'
 
 export function isOpenAPIV2Items(items: unknown): items is Items {
-  return (
-    items !== undefined && typeof items === 'object' && 'type' in (items as Items) && !('schema' in (items as Items))
-  )
+  return hasDefinedValue(items, 'type') && !('schema' in items)
 }
 
 export function getType(items: Items): string | undefined {
