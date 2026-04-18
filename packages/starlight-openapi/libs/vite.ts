@@ -1,6 +1,7 @@
 import type { AstroConfig, ViteUserConfig } from 'astro'
 
-import type { Schema } from './schema'
+import type { Schema } from './schemas/schema'
+
 
 export function vitePluginStarlightOpenAPI(schemas: Schema[], context: StarlightOpenAPIContext): VitePlugin {
   const modules = {

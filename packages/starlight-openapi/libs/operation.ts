@@ -4,7 +4,7 @@ import type { Callback } from './callback'
 import { type Document, isOpenAPIV2Document } from './document'
 import { getURLWithPath, slug } from './path'
 import { isPathItem, type PathItem } from './pathItem'
-import type { Schema } from './schema'
+import type { Schema } from './schemas/schema'
 
 const defaultOperationTag = 'Operations'
 const operationHttpMethods = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'] as const

@@ -8,7 +8,7 @@ import {
   type PathItemOperation,
 } from './operation'
 import { getSchemaBasePath, getSlugFromPathname, slug, stripLeadingAndTrailingSlashes } from './path'
-import type { Schema } from './schema'
+import type { Schema } from './schemas/schema'
 
 const routes = Object.values(schemas).flatMap((schema): StarlightOpenAPIRoute[] => [
   {

@@ -15,7 +15,7 @@ import { slug, stripHtmlExtension, stripLeadingAndTrailingSlashes } from './path
 import { isObjectLike } from './predicate'
 import { hasRequestBody } from './requestBody'
 import { includesDefaultResponse } from './response'
-import { getSchemaSidebarGroups, type Schema } from './schema'
+import { getSchemaSidebarGroups, type Schema } from './schemas/schema'
 import { getSecurityDefinitions, getSecurityRequirements } from './security'
 import { capitalize } from './utils'
 import type { StarlightOpenAPIContext } from './vite'

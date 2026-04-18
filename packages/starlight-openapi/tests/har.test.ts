@@ -10,7 +10,7 @@ import {
   type PathItemOperation,
 } from '../libs/operation'
 import { parseSchema } from '../libs/parser'
-import type { Schema } from '../libs/schema'
+import type { Schema } from '../libs/schemas/schema'
 
 const schemasRoot = new URL('../../../schemas/', import.meta.url)
 

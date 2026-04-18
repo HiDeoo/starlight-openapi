@@ -2,9 +2,9 @@ import { randomBytes } from 'node:crypto'
 
 import type { StarlightPlugin } from '@astrojs/starlight/types'
 
-import { validateConfig, type StarlightOpenAPIUserConfig } from './libs/config'
 import { starlightOpenAPIIntegration } from './libs/integration'
 import { parseSchema } from './libs/parser'
+import { validateConfig, type StarlightOpenAPIUserConfig } from './libs/schemas/config'
 import { getSidebarGroupPlaceholder, getSidebarGroupsPlaceholder } from './libs/starlight'
 
 export const openAPISidebarGroups = getSidebarGroupsPlaceholder()

@@ -1,6 +1,6 @@
 import { dereference } from '@readme/openapi-parser'
 
-import type { Schema } from './schema'
+import type { Schema } from './schemas/schema'
 
 const dereferences = new WeakMap<Schema, Promise<void>>()
 

@@ -2,7 +2,7 @@ import type { OpenAPIV2, OpenAPIV3, OpenAPIV3_1 } from 'openapi-types'
 
 import type { Document } from './document'
 import type { Operation } from './operation'
-import type { Schema } from './schema'
+import type { Schema } from './schemas/schema'
 
 export function getSecurityRequirements(operation: Operation, schema?: Schema): SecurityRequirement[] | undefined {
   if ('security' in operation) {

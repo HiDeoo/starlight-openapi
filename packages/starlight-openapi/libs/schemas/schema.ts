@@ -1,10 +1,12 @@
 import { z } from 'astro/zod'
 import type { OpenAPI } from 'openapi-types'
 
-import { getSchemaBaseLink, stripLeadingAndTrailingSlashes } from './path'
-import { getPathItemSidebarGroups, getWebhooksSidebarGroups } from './pathItem'
-import { makeSidebarGroup, makeSidebarLink, type SidebarGroup, type StarlightOpenAPISidebarGroup } from './starlight'
-import type { StarlightOpenAPIContext } from './vite'
+import { getSchemaBaseLink, stripLeadingAndTrailingSlashes } from '../path'
+import { getPathItemSidebarGroups, getWebhooksSidebarGroups } from '../pathItem'
+import { makeSidebarGroup, makeSidebarLink, type SidebarGroup, type StarlightOpenAPISidebarGroup } from '../starlight'
+import type { StarlightOpenAPIContext } from '../vite'
+
+import { SnippetsSchema } from './snippet'
 
 export const SchemaConfigSchema = z
   .object({
@@ -93,6 +95,8 @@ export const SchemaConfigSchema = z
      * @default false
      */
     sidebarMethodBadges: z.boolean().default(false),
+    // TODO(HiDeoo)
+    snippets: SnippetsSchema,
   })
   .transform((value) => {
     // eslint-disable-next-line @typescript-eslint/no-deprecated
@@ -135,7 +139,7 @@ export function getSchemaSidebarGroups(
   ]
 }
 
-export type StarlightOpenAPISchemaConfig = z.infer<typeof SchemaConfigSchema>
+export type StarlightOpenAPISchemaConfig = z.output<typeof SchemaConfigSchema>
 
 export interface Schema {
   config: StarlightOpenAPISchemaConfig

@@ -4,7 +4,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 import { bundle } from '@readme/openapi-parser'
 import type { AstroConfig, AstroIntegrationLogger } from 'astro'
 
-import type { Schema, StarlightOpenAPISchemaConfig } from './schema'
+import type { Schema, StarlightOpenAPISchemaConfig } from './schemas/schema'
 
 export async function parseSchema(
   logger: AstroIntegrationLogger,

@@ -25,7 +25,6 @@ import {
 import { getURLWithPath } from './path'
 import { hasDefinedValue, isArray, isObjectLike } from './predicate'
 import { getOpenAPIV2OperationConsumes, getOpenAPIV2RequestBodyParameter, getOpenAPIV3RequestBody } from './requestBody'
-import type { Schema } from './schema'
 import {
   getProperties,
   getSchemaFormat,
@@ -35,6 +34,7 @@ import {
   isSchemaObjectObject,
   type SchemaObject,
 } from './schemaObject'
+import type { Schema } from './schemas/schema'
 import { getSecurityDefinitions, getSecurityRequirements } from './security'
 
 export function getOperationHarRequest(schema: Schema, pathItemOperation: PathItemOperation): HarRequest {

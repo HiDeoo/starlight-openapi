@@ -7,7 +7,7 @@ import {
 } from './operation'
 import { getSchemaBaseLink, getLinkTransformer, slug, type TrailingSlashTransformer } from './path'
 import { isObjectLike } from './predicate'
-import type { Schema } from './schema'
+import type { Schema } from './schemas/schema'
 import {
   getMethodSidebarBadge,
   makeSidebarGroup,

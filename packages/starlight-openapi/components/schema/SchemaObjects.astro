@@ -2,11 +2,11 @@
 import { Tabs, TabItem } from '@astrojs/starlight/components'
 
 import { getType } from '../../libs/items'
+import { isObjectLike } from '../../libs/predicate'
 import type { Discriminator, SchemaObjects, SchemaObject as SchemaObjectType } from '../../libs/schemaObject'
 import Tag from '../Tag.astro'
 
 import SchemaObject from './SchemaObject.astro'
-import { isObjectLike } from '../../libs/predicate'
 
 interface Props {
   discriminator: Discriminator

@@ -1,7 +1,7 @@
 import type { AstroConfig } from 'astro'
 import { slug } from 'github-slugger'
 
-import type { StarlightOpenAPISchemaConfig } from './schema'
+import type { StarlightOpenAPISchemaConfig } from './schemas/schema'
 import type { StarlightOpenAPIContext } from './vite'
 
 export { slug } from 'github-slugger'
