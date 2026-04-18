@@ -109,7 +109,7 @@ export function createSchemaExampleValue(rootSchema: SchemaObject): unknown {
   return visit(rootSchema)
 }
 
-export function createParameterExampleValue(parameter: Parameter): unknown {
+function getOrCreateParameterExampleValue(parameter: Parameter, options: { createFallback: boolean }): unknown {
   // When using OpenAPI v3 `content` to define a parameter, use the first media type's `example`, then `examples`, then
   // fall back to that media type's schema.
   if (hasDefinedValue(parameter, 'content') && isObjectLike(parameter.content)) {
@@ -122,22 +122,38 @@ export function createParameterExampleValue(parameter: Parameter): unknown {
       if (exampleValue !== undefined) return exampleValue
     }
 
-    if (hasSchemaObject(firstMediaType)) return createSchemaExampleValue(firstMediaType.schema)
+    if (hasSchemaObject(firstMediaType)) {
+      return options.createFallback
+        ? createSchemaExampleValue(firstMediaType.schema)
+        : getSchemaExampleValueByPrecedence(firstMediaType.schema)
+    }
   }
 
   // Handle parameters defined with a schema object.
-  if (isParameterWithSchemaObject(parameter)) return createSchemaExampleValue(parameter.schema)
+  if (isParameterWithSchemaObject(parameter)) {
+    return options.createFallback
+      ? createSchemaExampleValue(parameter.schema)
+      : getSchemaExampleValueByPrecedence(parameter.schema)
+  }
+
+  return undefined
+}
+
+export function createParameterExampleValue(parameter: Parameter): unknown {
+  const value = getOrCreateParameterExampleValue(parameter, { createFallback: true })
+  if (value !== undefined) return value
 
   // If no `content` or schema-based value is available, use the parameter primitive type to create a fallback value.
-  if ('type' in parameter) {
-    return createPrimitiveExampleValue(parameter.type)
-  }
+  if ('type' in parameter) return createPrimitiveExampleValue(parameter.type)
 
   return 'example'
 }
 
-export function getParameterExampleValueByPrecedence(value: unknown): unknown {
-  return getExampleValueByPrecedence(value, parameterExampleValuePrecedence)
+export function getParameterExampleValueByPrecedence(parameter: Parameter): unknown {
+  const value = getExampleValueByPrecedence(parameter, parameterExampleValuePrecedence)
+  if (value !== undefined) return value
+
+  return getOrCreateParameterExampleValue(parameter, { createFallback: false })
 }
 
 export function getSchemaExampleValueByPrecedence(value: unknown): unknown {
@@ -149,7 +165,7 @@ function createPrimitiveExampleValue(primitiveType: unknown, format?: string): u
     typeof primitiveType === 'string'
       ? primitiveType
       : Array.isArray(primitiveType) && primitiveType.every((item): item is string => typeof item === 'string')
-        ? primitiveType[0]
+        ? (primitiveType.find((item) => item !== 'null') ?? primitiveType[0])
         : undefined
 
   switch (type) {

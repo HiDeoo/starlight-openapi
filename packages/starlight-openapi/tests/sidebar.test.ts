@@ -172,7 +172,7 @@ test('use default sidebar groups when no custom sidebar group is provided', asyn
 
   const items = await sidebarPage.getSidebarGroupItems('Tests')
 
-  expect(items).toHaveLength(6)
+  expect(items).toHaveLength(7)
 
   expect(isSidebarItemGroup(items[0]) && items[0].label === 'Petstore v3.0 (simple)').toBe(true)
   expect(isSidebarItemGroup(items[1]) && items[1].label === 'Petstore v2.0 (simple)').toBe(true)
@@ -180,6 +180,7 @@ test('use default sidebar groups when no custom sidebar group is provided', asyn
   expect(isSidebarItemGroup(items[3]) && items[3].label === 'Animals v2.0').toBe(true)
   expect(isSidebarItemGroup(items[4]) && items[4].label === 'Recursion v3.0').toBe(true)
   expect(isSidebarItemGroup(items[5]) && items[5].label === 'Simple Recursion v3.0').toBe(true)
+  expect(isSidebarItemGroup(items[6]) && items[6].label === 'No Servers v3.0').toBe(true)
 })
 
 function isSidebarItemGroup(item: SidebarItem | undefined): item is SidebarItemGroup {

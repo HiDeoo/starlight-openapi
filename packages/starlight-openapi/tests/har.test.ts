@@ -1,18 +1,10 @@
 import { expect, test } from '@playwright/test'
-import type { AstroIntegrationLogger } from 'astro'
 
-import { ensureSchemaDereference } from '../libs/dereference'
 import { getOperationHarRequest, type HarRequest } from '../libs/har'
-import {
-  getOperationsByTag,
-  getWebhooksOperations,
-  type OperationHttpMethod,
-  type PathItemOperation,
-} from '../libs/operation'
-import { parseSchema } from '../libs/parser'
+import type { PathItemOperation } from '../libs/operation'
 import type { Schema } from '../libs/schemas/schema'
 
-const schemasRoot = new URL('../../../schemas/', import.meta.url)
+import { getTestOperation, parseTestSchema } from './utils'
 
 test('builds a basic HAR request for a GET operation', async () => {
   const schema = await parseTestSchema('v3.0/petstore-expanded.yaml')
@@ -44,23 +36,33 @@ test('builds a HAR request for a POST operation with a JSON request body', async
     headers: [{ name: 'Content-Type', value: 'application/json' }],
     postData: {
       mimeType: 'application/json',
-      text: `{
-  "name": "example",
-  "tag": "example"
-}`,
+      text: `{ "name": "example", "tag": "example" }`,
     },
   })
 })
 
-test('builds a HAR request for an authenticated GET operation with query parameters', async () => {
+test('builds a HAR request for a GET operation with no explicit OpenAPI 3 servers', async () => {
+  const schema = await parseTestSchema('v3.0/no-servers.yaml')
+  const operation = getTestOperation(schema, { operationId: 'listAnimals' })
+
+  expectOperationHarRequest(schema, operation, {
+    method: 'GET',
+    url: 'https://example.com/animals',
+  })
+})
+
+test('builds a HAR request for an authenticated GET operation with query parameters using schema-level example-like values', async () => {
   const schema = await parseTestSchema('v3.0/animals.yaml')
   const operation = getTestOperation(schema, { operationId: 'listAnimals' })
 
   expectOperationHarRequest(schema, operation, {
     method: 'GET',
-    url: 'https://example.com/api/animals?tags=fish',
+    url: 'https://example.com/api/animals?limit=10&tags=fish',
     headers: [{ name: 'Authorization', value: 'Bearer <token>' }],
-    queryString: [{ name: 'tags', value: 'fish' }],
+    queryString: [
+      { name: 'limit', value: '10' },
+      { name: 'tags', value: 'fish' },
+    ],
   })
 })
 
@@ -75,11 +77,7 @@ test('builds a HAR request for a POST operation with operation-level security ov
     queryString: [{ name: 'tags', value: 'fish' }],
     postData: {
       mimeType: 'application/json',
-      text: `{
-  "id": 1,
-  "name": "dog",
-  "tag": "pet"
-}`,
+      text: `{ "id": 1, "name": "dog", "tag": "pet" }`,
     },
   })
 })
@@ -90,8 +88,9 @@ test('builds a HAR request for a GET operation with an operation-level server ov
 
   expectOperationHarRequest(schema, operation, {
     method: 'GET',
-    url: 'https://custom.example.com/api/bears',
+    url: 'https://custom.example.com/api/bears?limit=20',
     headers: [{ name: 'Authorization', value: 'Bearer <token>' }],
+    queryString: [{ name: 'limit', value: '20' }],
   })
 })
 
@@ -151,26 +150,6 @@ test('builds a HAR request for a POST operation with an x-www-form-urlencoded bo
     },
   })
 })
-
-async function parseTestSchema(schemaPath: string) {
-  const schema = await parseSchema(
-    { info: () => undefined, error: () => undefined } as unknown as AstroIntegrationLogger,
-    schemasRoot,
-    {
-      base: 'test',
-      schema: schemaPath,
-      sidebar: {
-        collapsed: true,
-        operations: { badges: false, labels: 'summary', sort: 'document' },
-        tags: { sort: 'document' },
-      },
-    },
-  )
-
-  await ensureSchemaDereference(schema)
-
-  return schema
-}
 
 test('builds a HAR request for a GET operation with deepObject query serialization', async () => {
   const schema = await parseTestSchema('v3.0/animals.yaml')
@@ -233,30 +212,6 @@ test('builds a HAR request for a POST operation with a JSON string request body'
     },
   })
 })
-
-function getTestOperation(
-  schema: Schema,
-  selector: { operationId: string } | { path: string; method: OperationHttpMethod },
-): PathItemOperation {
-  const operations = [
-    ...[...getOperationsByTag(schema).values()].flatMap((group) => group.entries),
-    ...getWebhooksOperations(schema),
-  ]
-
-  const operation =
-    'operationId' in selector
-      ? operations.find((entry) => entry.operation.operationId === selector.operationId)
-      : operations.find((entry) => entry.path === selector.path && entry.method === selector.method)
-
-  if (operation) return operation
-
-  const description =
-    'operationId' in selector
-      ? `with ID '${selector.operationId}'`
-      : `for ${selector.method.toUpperCase()} at ${selector.path}`
-
-  throw new Error(`Could not find test operation ${description}.`)
-}
 
 function expectOperationHarRequest(schema: Schema, operation: PathItemOperation, expected: Partial<HarRequest>): void {
   expect(getOperationHarRequest(schema, operation)).toEqual({

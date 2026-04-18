@@ -1,7 +1,8 @@
 ---
 import { getOperationURLs, type PathItemOperation } from '../../libs/operation'
 import { getParametersByLocation } from '../../libs/parameter'
-import type { Schema } from '../../libs/schema'
+import type { Schema } from '../../libs/schemas/schema'
+import { getOperationSnippets } from '../../libs/snippet'
 import Callbacks from '../callback/Callbacks.astro'
 import Deprecated from '../Deprecated.astro'
 import ExternalDocs from '../ExternalDocs.astro'
@@ -11,7 +12,6 @@ import RequestBody from '../RequestBody.astro'
 import Responses from '../response/Responses.astro'
 import Security from '../security/Security.astro'
 
-import OperationCodeSamples from './OperationCodeSamples.astro'
 import OperationDescription from './OperationDescription.astro'
 
 interface Props {
@@ -23,14 +23,14 @@ const { operation: pathItemOperation, schema } = Astro.props
 const { operation } = pathItemOperation
 const urls = getOperationURLs(schema.document, pathItemOperation)
 const parameters = getParametersByLocation(operation.parameters, pathItemOperation.pathItem.parameters)
+const snippets = getOperationSnippets(schema, pathItemOperation)
 ---
 
 <Deprecated deprecated={operation.deprecated} />
-<OperationDescription method={pathItemOperation.method} path={pathItemOperation.path} {urls} />
+<OperationDescription method={pathItemOperation.method} path={pathItemOperation.path} {snippets} {urls} />
 <Md text={operation.description} />
 <ExternalDocs docs={operation.externalDocs} />
 <Security {operation} {schema} />
-<OperationCodeSamples codeSamples={operation['x-codeSamples']} />
 <Parameters {parameters} />
 <RequestBody {operation} {schema} />
 <Callbacks {operation} {schema} />

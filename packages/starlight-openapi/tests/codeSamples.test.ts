@@ -1,17 +1,18 @@
 import { expect, test } from './test'
 
-test('displays code samples', async ({ docPage }) => {
+test('displays authored code samples in the snippet picker', async ({ docPage }) => {
   await docPage.goto('/v2/petstore-simple/operations/addpet/')
 
-  await expect(docPage.getByRole('heading', { level: 2, name: 'Code Samples' })).toBeVisible()
+  const picker = docPage.getOperationSnippetPicker()
 
-  await expect(docPage.getByRole('tab', { name: 'JavaScript' })).toBeVisible()
+  await expect(picker).toBeVisible()
+  await expect(picker.locator('option')).toHaveText(['JavaScript', 'python'])
 
-  await expect(docPage.getByRole('tabpanel')).toContainText("fetch('http://petstore.swagger.io/api/pets', {")
+  const snippet = docPage.getVisibleOperationSnippet()
 
-  await docPage.getByRole('tab', { name: 'python' }).click()
+  await expect(snippet).toContainText("fetch('http://petstore.swagger.io/api/pets', {")
 
-  await expect(docPage.getByRole('tabpanel')).toContainText(
-    "requests.post('http://petstore.swagger.io/api/pets', json={'name': 'Fido'})",
-  )
+  await picker.selectOption({ label: 'python' })
+
+  await expect(snippet).toContainText("requests.post('http://petstore.swagger.io/api/pets', json={'name': 'Fido'})")
 })

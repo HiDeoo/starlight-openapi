@@ -364,7 +364,7 @@ function getMediaTypeRequestBody(
   if (mimeType.includes('json')) {
     return createOperationRequestBody({
       mimeType,
-      text: JSON.stringify(value, null, 2),
+      text: stringifyBodyInline(value),
     })
   }
 
@@ -377,7 +377,7 @@ function getMediaTypeRequestBody(
 
   return createOperationRequestBody({
     mimeType,
-    text: typeof value === 'string' ? value : JSON.stringify(value, null, 2),
+    text: typeof value === 'string' ? value : stringifyBodyInline(value),
   })
 }
 
@@ -578,9 +578,27 @@ function serializeUrlEncodedFormBody(
 }
 
 function serializeFieldValue(fieldValue: unknown, contentType: string): string {
-  if (contentType.includes('json')) return JSON.stringify(fieldValue)
+  if (contentType.includes('json')) return stringifyBodyInline(fieldValue)
   if (typeof fieldValue === 'string') return fieldValue
   return formatParameterValue(fieldValue, false)
+}
+
+// Stringify request bodies inline to keep shell snippets compact, but with some spacing to improve readability and
+// without any newlines that could end up being escaped in some clients like Wget with `httpsnippet`.
+function stringifyBodyInline(value: unknown): string {
+  if (value === null || typeof value !== 'object') return JSON.stringify(value)
+
+  if (Array.isArray(value)) {
+    if (value.length === 0) return '[]'
+    return `[ ${value.map((item) => stringifyBodyInline(item)).join(', ')} ]`
+  }
+
+  const entries = Object.entries(value)
+  if (entries.length === 0) return '{}'
+
+  return `{ ${entries
+    .map(([key, entryValue]) => `${JSON.stringify(key)}: ${stringifyBodyInline(entryValue)}`)
+    .join(', ')} }`
 }
 
 // https://github.com/ahmadnassri/har-spec/blob/master/versions/1.2.md#request

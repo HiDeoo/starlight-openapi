@@ -1,0 +1,55 @@
+---
+import { Code } from '@astrojs/starlight/components'
+
+import type { OperationSnippets } from '../../libs/snippet'
+
+interface Props {
+  snippets: OperationSnippets
+}
+
+const { snippets } = Astro.props
+---
+
+<script is:inline>
+  customElements.define(
+    'sl-openapi-snippets',
+    class StarlightOpenAPISnippets extends HTMLElement {
+      connectedCallback() {
+        const openAPISnippets = this.parentElement
+        if (!(openAPISnippets instanceof HTMLDivElement) || typeof localStorage === 'undefined') return
+        const id = localStorage.getItem('starlight-openapi-snippet-id')
+        if (!id) return
+        const snippets = [...openAPISnippets.querySelectorAll('.sl-openapi-snippet')]
+        const snippetToRestore = snippets.find(
+          (snippet) => snippet instanceof HTMLElement && snippet.dataset['openapiSnippetId'] === id,
+        )
+        if (!snippetToRestore) return
+        const picker = document.querySelector('sl-openapi-snippet-picker select')
+        if (picker) picker.value = id
+        for (const snippet of snippets) snippet.setAttribute('hidden', 'true')
+        snippetToRestore?.removeAttribute('hidden')
+      }
+    },
+  )
+</script>
+
+<div class="sl-openapi-snippets">
+  {
+    snippets.items.map((snippet) => (
+      <div class="sl-openapi-snippet" data-openapi-snippet-id={snippet.id} hidden={snippet.id !== snippets.defaultId}>
+        <Code code={snippet.content} frame="none" lang={snippet.lang} />
+      </div>
+    ))
+  }
+  <sl-openapi-snippets></sl-openapi-snippets>
+</div>
+
+<style>
+  .sl-openapi-snippets {
+    border-bottom: 1px solid var(--sl-color-gray-5);
+  }
+
+  .sl-openapi-snippet :global(div.expressive-code .frame pre) {
+    border: none;
+  }
+</style>

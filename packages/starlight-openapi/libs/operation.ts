@@ -152,6 +152,7 @@ export function isMinimalOperationTag(tag: OperationTag): boolean {
 export function getOperationURLs(document: Document, pathItemOperation: PathItemOperation): OperationURL[] {
   return getOperationServerObjects(document, pathItemOperation).map((serverObject) => ({
     description: serverObject.description,
+    implicit: serverObject.implicit,
     url: getURLWithPath(getDisplayServerURL(serverObject), pathItemOperation.path ?? ''),
   }))
 }
@@ -197,26 +198,27 @@ function getOperationServerObjects(document: Document, { operation, pathItem }: 
     }))
   }
 
-  const servers =
+  const servers: ServerObject[] =
     'servers' in operation && operation.servers.length > 0
       ? operation.servers
       : 'servers' in pathItem && pathItem.servers.length > 0
         ? pathItem.servers
-        : 'servers' in document
+        : 'servers' in document && document.servers.length > 0
           ? document.servers
-          : []
+          : [{ url: '/', implicit: true }]
 
   return servers.map((server) => {
     const serverObject: ServerObject = { url: server.url }
 
     if (server.description) serverObject.description = server.description
+    if (server.implicit) serverObject.implicit = true
     if (server.variables) serverObject.variables = server.variables
 
     return serverObject
   })
 }
 
-type ServerObject = OpenAPIV3.ServerObject | OpenAPIV3_1.ServerObject
+type ServerObject = (OpenAPIV3.ServerObject | OpenAPIV3_1.ServerObject) & { implicit?: boolean }
 
 export interface PathItemOperation {
   method: OperationHttpMethod
@@ -241,6 +243,7 @@ export type OperationTag = NonNullable<Document['tags']>[number]
 
 export interface OperationURL {
   description?: string | undefined
+  implicit?: boolean | undefined
   url: string
 }
 
