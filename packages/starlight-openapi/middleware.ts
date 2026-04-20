@@ -1,6 +1,6 @@
 import { defineRouteMiddleware } from '@astrojs/starlight/route-data'
-import projectContext from 'virtual:starlight-openapi-context'
-import schemas from 'virtual:starlight-openapi-schemas'
+import projectContext from 'virtual:starlight-openapi/context'
+import schemas from 'virtual:starlight-openapi/schemas'
 
 import { stripHtmlExtension, stripLeadingAndTrailingSlashes } from './libs/path'
 import { getPaginationLinks, getSidebarFromSchemas } from './libs/starlight'

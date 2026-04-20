@@ -2,13 +2,12 @@ import type { AstroConfig, ViteUserConfig } from 'astro'
 
 import type { Schema } from './schemas/schema'
 
-
 export function vitePluginStarlightOpenAPI(schemas: Schema[], context: StarlightOpenAPIContext): VitePlugin {
   const modules = {
-    'virtual:starlight-openapi-schemas': `export default ${JSON.stringify(
+    'virtual:starlight-openapi/schemas': `export default ${JSON.stringify(
       Object.fromEntries(schemas.map((schema) => [schema.config.base, schema])),
     )}`,
-    'virtual:starlight-openapi-context': `export default ${JSON.stringify(context)}`,
+    'virtual:starlight-openapi/context': `export default ${JSON.stringify(context)}`,
   }
 
   const moduleResolutionMap = Object.fromEntries(

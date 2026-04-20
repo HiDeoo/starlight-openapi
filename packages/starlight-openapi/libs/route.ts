@@ -1,4 +1,4 @@
-import schemas from 'virtual:starlight-openapi-schemas'
+import schemas from 'virtual:starlight-openapi/schemas'
 
 import {
   getOperationsByTag,

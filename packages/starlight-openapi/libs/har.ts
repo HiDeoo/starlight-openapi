@@ -13,7 +13,6 @@ import {
   isOpenAPIV2ArrayParameter,
   serializeArrayWithCollectionFormat,
   serializeCookieParameter,
-  serializeEncodedParameterValue,
   serializeHeaderParameter,
   serializeParameterValue,
   serializePathParameter,
