@@ -25,3 +25,13 @@ const text: string | undefined = await Astro.slots.render('default')
     </p>
   )
 }
+
+<style>
+  .sl-openapi-text :global(a) {
+    color: var(--sl-color-text-accent);
+  }
+
+  .sl-openapi-text :global(a:hover) {
+    color: var(--sl-color-white);
+  }
+</style>

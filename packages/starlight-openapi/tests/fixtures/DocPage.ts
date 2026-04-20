@@ -102,10 +102,6 @@ export class DocPage {
       .filter({ hasText: name })
   }
 
-  getResponseExamples(status: string) {
-    return this.getResponse(status).locator('section:has(> .sl-heading-wrapper h4:first-child:text-is("Examples"))')
-  }
-
   getAuthorizations() {
     return this.page.locator('section:has(> .sl-heading-wrapper h2:first-child:text-is("Authorizations"))')
   }

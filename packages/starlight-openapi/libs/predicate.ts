@@ -11,6 +11,10 @@ export function hasDefinedValue(value: unknown, key: string): boolean {
   return isObjectLike(value) && key in value && value[key] !== undefined
 }
 
+export function getDefinedValue(value: unknown, key: string): unknown {
+  return hasDefinedValue(value, key) ? value[key] : undefined
+}
+
 export function isArray(value: unknown): value is unknown[] {
   return Array.isArray(value)
 }

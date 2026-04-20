@@ -46,15 +46,29 @@ test('overrides the global `produces` property for a v2.0 schema', async ({ docP
 test('display the examples for a v2.0 schema', async ({ docPage }) => {
   await docPage.goto('/v2/animals/operations/findanimals/')
 
-  const examples = docPage.getResponseExamples('200')
+  const okResponse = docPage.getResponse('200')
 
-  await examples.getByRole('combobox').selectOption('application/json')
+  await expect(okResponse.getByText('animal response')).toBeVisible()
 
-  await expect(examples.getByText(`[ { "id": 1, "name": "Bessy" }, { "id": 2, "name": "Hazel" }]`)).toBeVisible()
+  await okResponse.getByRole('combobox').selectOption('application/json')
 
-  await examples.getByRole('combobox').selectOption('application/xml')
+  const example = okResponse.locator('[role="tabpanel"]:not([hidden]) .sl-openapi-example')
 
-  await expect(examples.getByText(`[ { "id": 3, "name": "Cleo" }, { "id": 4, "name": "Daisy" }]`)).toBeVisible()
+  await expect(example).toBeVisible()
+  await expect(example.getByText(`[ { "id": 1, "name": "Bessy" }, { "id": 2, "name": "Hazel" }]`)).toBeVisible()
+
+  await okResponse.getByRole('combobox').selectOption('application/xml')
+
+  await expect(example).toBeVisible()
+  await expect(example.getByText(`[ { "id": 3, "name": "Cleo" }, { "id": 4, "name": "Daisy" }]`)).toBeVisible()
+
+  await okResponse.getByRole('combobox').selectOption('text/xml')
+
+  await expect(example).toHaveCount(0)
+
+  await okResponse.getByRole('combobox').selectOption('text/html')
+
+  await expect(example).toHaveCount(0)
 })
 
 test('displays nested objects collapsed by default', async ({ docPage }) => {
