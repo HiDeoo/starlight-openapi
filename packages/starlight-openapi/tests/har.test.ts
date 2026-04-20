@@ -146,7 +146,10 @@ test('builds a HAR request for a POST operation with an x-www-form-urlencoded bo
     ],
     postData: {
       mimeType: 'application/x-www-form-urlencoded',
-      text: 'id=1&name=example',
+      params: [
+        { name: 'id', value: '1' },
+        { name: 'name', value: 'example' },
+      ],
     },
   })
 })

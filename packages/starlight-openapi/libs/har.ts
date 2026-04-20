@@ -353,7 +353,7 @@ function getMediaTypeRequestBody(
   if (mimeType === 'application/x-www-form-urlencoded' && isObjectLike(value)) {
     return createOperationRequestBody({
       mimeType,
-      text: serializeUrlEncodedFormBody(mediaType, value),
+      params: serializeUrlEncodedFormParams(mediaType, value),
     })
   }
 
@@ -550,31 +550,17 @@ function createMultipartFileParams(
   }))
 }
 
-function serializeUrlEncodedFormBody(
+function serializeUrlEncodedFormParams(
   mediaType: Record<string, unknown> | undefined,
   value: Record<string, unknown>,
-): string {
-  return Object.entries(value)
-    .flatMap(([name, fieldValue]) => {
-      const { allowReserved, contentType, explode, style } = getFormFieldEncodingOptions(mediaType, name)
+): OperationRequestBodyParam[] {
+  return Object.entries(value).flatMap(([name, fieldValue]) => {
+    const { contentType, explode, style } = getFormFieldEncodingOptions(mediaType, name)
 
-      if (contentType !== undefined) {
-        const serializedFieldValue = serializeFieldValue(fieldValue, contentType)
+    if (contentType !== undefined) return [{ name, value: serializeFieldValue(fieldValue, contentType) }]
 
-        return [
-          `${serializeUriComponent(name, { useFormSpaceEncoding: true })}=${serializeUriComponent(
-            serializedFieldValue,
-            { allowReserved, useFormSpaceEncoding: true },
-          )}`,
-        ]
-      }
-
-      return serializeEncodedParameterValue(name, fieldValue, style, explode, {
-        allowReserved,
-        useFormSpaceEncoding: true,
-      })
-    })
-    .join('&')
+    return serializeParameterValue(name, fieldValue, style, explode)
+  })
 }
 
 function serializeFieldValue(fieldValue: unknown, contentType: string): string {

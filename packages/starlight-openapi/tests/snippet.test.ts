@@ -278,6 +278,28 @@ requests.post('http://petstore.swagger.io/api/pets', json={'name': 'Fido'})
       ],
     })
   })
+
+  test('generates snippets for x-www-form-urlencoded request bodies', async () => {
+    const schema = await parseTestSchema('v3.0/animals.yaml', {
+      snippets: {
+        generated: {
+          clients: {
+            shell: ['curl'],
+          },
+          default: { target: 'shell', client: 'curl' },
+        },
+      },
+    })
+    const operation = getTestOperation(schema, { path: '/hamsters', method: 'post' })
+
+    const snippets = getOperationSnippets(schema, operation)
+
+    const curlSnippet = snippets?.items.find((snippet) => snippet.id === 'shell:curl')
+
+    expect(curlSnippet?.content).toContain('--data id=1')
+    expect(curlSnippet?.content).toContain('--data name=example')
+    expect(curlSnippet?.content).not.toContain("--data ''")
+  })
 })
 
 test.describe('ui', () => {
