@@ -1,0 +1,47 @@
+---
+import {
+  GeneratedSnippetClientMetadata,
+  GeneratedSnippetTargetMetadata,
+} from '../../../packages/starlight-openapi/libs/snippet'
+
+const docLinks: Record<`${string}:${string}`, string> = {
+  'c:libcurl': 'https://curl.se/libcurl/',
+  'csharp:httpclient': 'https://learn.microsoft.com/dotnet/api/system.net.http.httpclient',
+  'go:nethttp': 'https://pkg.go.dev/net/http',
+  'java:okhttp': 'https://square.github.io/okhttp/',
+  'java:nethttp': 'https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/package-summary.html',
+  'javascript:axios': 'https://axios-http.com/',
+  'javascript:fetch': 'https://developer.mozilla.org/docs/Web/API/Fetch_API',
+  'kotlin:okhttp': 'https://square.github.io/okhttp/',
+  'rust:reqwest': 'https://docs.rs/reqwest/latest/reqwest/',
+  'shell:curl': 'https://curl.se/docs/manpage.html',
+  'shell:wget': 'https://www.gnu.org/software/wget/manual/wget.html',
+}
+---
+
+<ul>
+  {
+    Object.keys(GeneratedSnippetTargetMetadata).map((target) => {
+      const clients = Object.keys(
+        GeneratedSnippetClientMetadata[target as keyof typeof GeneratedSnippetClientMetadata],
+      ).map((client) => {
+        const id = `${target}:${client}`
+        const docLink = docLinks[`${target}:${client}`]
+        if (!docLink) throw new Error(`Missing doc link for target/client: '${id}'`)
+
+        return `<a href={"${docLink}"}><code>${client}</code></a>`
+      })
+
+      const clientsList = new Intl.ListFormat('en', {
+        style: 'long',
+        type: 'conjunction',
+      }).format(clients)
+
+      return (
+        <li>
+          <code>{target}</code>: <Fragment set:html={clientsList} />
+        </li>
+      )
+    })
+  }
+</ul>

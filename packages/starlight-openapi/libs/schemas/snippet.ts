@@ -45,9 +45,14 @@ const defaultGeneratedSnippetReference = {
 
 const generatedSnippetsSchema = z
   .object({
-    // TODO(HiDeoo)
+    /**
+     * Defines the enabled clients for which snippets should be generated.
+     */
     clients: generatedSnippetClientsSchema.default(defaultGeneratedSnippetClients),
-    // TODO(HiDeoo)
+    /**
+     * Defines the generated snippet that should be used by default on operation pages among the enabled generated
+     * snippet clients.
+     */
     default: snippetReferenceSchema.optional(),
   })
   .transform((value, ctx) => {
@@ -103,7 +108,12 @@ const snippetsGeneratedSchema = z
   .default(defaultGeneratedSnippetsConfig)
 
 export const SnippetsSchema = z
-  .object({ generated: snippetsGeneratedSchema })
+  .object({
+    /**
+     * Controls whether generated snippets are available on operation pages.
+     */
+    generated: snippetsGeneratedSchema,
+  })
   .default({ generated: defaultGeneratedSnippetsConfig })
 
 function includesSnippetReference(clients: GeneratedSnippetClients, reference: SnippetReference): boolean {

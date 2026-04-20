@@ -95,7 +95,12 @@ export const SchemaConfigSchema = z
      * @default false
      */
     sidebarMethodBadges: z.boolean().default(false),
-    // TODO(HiDeoo)
+    /**
+     * The snippets configuration.
+     *
+     * Snippets are code examples shown at the top of operation pages, with a picker to switch between languages and
+     * clients, that demonstrate how to execute an operation in a specific environment.
+     */
     snippets: SnippetsSchema,
   })
   .transform((value) => {

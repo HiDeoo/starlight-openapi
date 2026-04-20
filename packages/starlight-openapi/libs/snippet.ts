@@ -7,7 +7,7 @@ import type { SnippetReference } from './schemas/snippet'
 
 const snippetPlaceholderRegex = /^<[^<>]+>$/
 
-const generatedSnippetTargetMetadata: Record<SnippetReference['target'], { label: string }> = {
+export const GeneratedSnippetTargetMetadata: Record<SnippetReference['target'], { label: string }> = {
   c: { label: 'C' },
   csharp: { label: 'C#' },
   go: { label: 'Go' },
@@ -18,7 +18,7 @@ const generatedSnippetTargetMetadata: Record<SnippetReference['target'], { label
   shell: { label: 'Shell' },
 }
 
-const generatedSnippetClientMetadata: GeneratedSnippetClientMetadata = {
+export const GeneratedSnippetClientMetadata: GeneratedSnippetClientMetadata = {
   c: {
     libcurl: { label: 'libcurl', lang: 'c' },
   },
@@ -33,8 +33,8 @@ const generatedSnippetClientMetadata: GeneratedSnippetClientMetadata = {
     nethttp: { label: 'net.http', lang: 'java' },
   },
   javascript: {
-    fetch: { label: 'Fetch', lang: 'js' },
     axios: { label: 'Axios', lang: 'js' },
+    fetch: { label: 'Fetch', lang: 'js' },
   },
   kotlin: {
     okhttp: { label: 'OkHttp', lang: 'kt' },
@@ -88,7 +88,7 @@ function generateOperationSnippets(schema: Schema, operation: PathItemOperation)
 
     items.push({
       content,
-      groupLabel: generatedSnippetTargetMetadata[reference.target].label,
+      groupLabel: GeneratedSnippetTargetMetadata[reference.target].label,
       id: `${reference.target}:${reference.client}`,
       label: clientMetadata.label,
       lang: clientMetadata.lang,
@@ -121,8 +121,8 @@ function generateOperationSnippet(harRequest: HarRequest, reference: SnippetRefe
 }
 
 function getGeneratedSnippetClientMetadata(reference: SnippetReference): GeneratedSnippetClientMetadataValue {
-  return generatedSnippetClientMetadata[reference.target][
-    reference.client as keyof (typeof generatedSnippetClientMetadata)[typeof reference.target]
+  return GeneratedSnippetClientMetadata[reference.target][
+    reference.client as keyof (typeof GeneratedSnippetClientMetadata)[typeof reference.target]
   ]
 }
 

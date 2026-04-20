@@ -115,6 +115,98 @@ Defines the sorting method for the tag sidebar groups.
 
 By default, the tag sidebar groups are sorted in the order they appear in the OpenAPI document.
 
+### `snippets`
+
+Snippets are code examples shown at the top of operation pages, with a picker to switch between languages and clients, that demonstrate how to execute an operation in a specific environment.
+Such code examples can be either generated from the OpenAPI document or authored using the [`x-codeSamples` OpenAPI extension](https://redocly.com/docs/realm/content/api-docs/openapi-extensions/x-code-samples).
+
+The snippets configuration accepts the following properties:
+
+#### `generated`
+
+**Type:** `boolean | { clients?: Record<string, string[]>; default?: { target: string; client: string } }`  
+**Default:** `true`
+
+Controls whether generated snippets are available on operation pages.
+When authored OpenAPI code samples are available for an operation using the [`x-codeSamples` OpenAPI extension](https://redocly.com/docs/realm/content/api-docs/openapi-extensions/x-code-samples), they are always used instead of generated snippets.
+
+If you want to disable generated snippets, set `generated: false` in your schema configuration:
+
+```js {6}
+starlightOpenAPI([
+  {
+    base: 'api',
+    schema: '../schemas/api-schema.yaml',
+    snippets: {
+      generated: false,
+    },
+  },
+])
+```
+
+The generated snippets configuration accepts the following properties:
+
+##### `clients`
+
+**Type:** `Record<string, string[]>`  
+**Default:** `{ javascript: ['fetch'], shell: ['curl'] }`
+
+Defines the enabled clients for which snippets should be generated.
+
+The expected value is an object where the keys are snippet environment, e.g. `javascript` or `shell`, and the values are arrays of client names, e.g. `fetch` or `curl`, that should be generated for the specific environment.
+
+import SnippetClients from '../../components/SnippetClients.astro'
+
+The following snippet environments and clients are available:
+
+<SnippetClients />
+
+The following example shows how to enable generated snippets for the `fetch` and `axios` clients in the `javascript` environment and only for the `wget` client in the `shell` environment:
+
+```js {7-10}
+starlightOpenAPI([
+  {
+    base: 'api',
+    schema: '../schemas/api-schema.yaml',
+    snippets: {
+      generated: {
+        clients: {
+          javascript: ['fetch', 'axios'],
+          shell: ['wget'],
+        },
+      },
+    },
+  },
+])
+```
+
+##### `default`
+
+**Type:** `{ target: string; client: string }`  
+**Default:** `{ target: 'shell', client: 'curl' }`
+
+Defines the generated snippet that should be used by default on operation pages among the [enabled generated snippet clients](#clients).
+
+The following example defines the default generated snippet to be the one for the `fetch` client in the `javascript` environment:
+
+```js {11}
+starlightOpenAPI([
+  {
+    base: 'api',
+    schema: '../schemas/api-schema.yaml',
+    snippets: {
+      generated: {
+        clients: {
+          javascript: ['fetch', 'axios'],
+          shell: ['wget'],
+        },
+        default: { target: 'javascript', client: 'fetch' },
+      },
+    },
+  },
+])
+```
+
 ## Multiple schemas
 
 You can generate documentation for multiple OpenAPI/Swagger schemas by passing multiple objects to the plugin configuration.
