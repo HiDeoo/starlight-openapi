@@ -1,0 +1,157 @@
+---
+import { Icon } from '@astrojs/starlight/components'
+
+import type { OperationSnippets } from '../../libs/snippet'
+
+interface Props {
+  snippets: OperationSnippets
+}
+
+const { snippets } = Astro.props
+
+const singleSnippet = snippets.items.length === 1 ? snippets.items[0] : undefined
+const singleSnippetLabel = singleSnippet
+  ? singleSnippet.groupLabel
+    ? `${singleSnippet.groupLabel} / ${singleSnippet.label}`
+    : singleSnippet.label
+  : undefined
+
+let hasGroupedSnippets = false
+const groupedSnippets: { label: string; items: OperationSnippets['items'] }[] = []
+
+for (const snippet of snippets.items) {
+  if (!snippet.groupLabel) continue
+
+  hasGroupedSnippets = true
+
+  const group = groupedSnippets.find((group) => group.label === snippet.groupLabel)
+
+  if (group) {
+    group.items.push(snippet)
+  } else {
+    groupedSnippets.push({ label: snippet.groupLabel, items: [snippet] })
+  }
+}
+---
+
+<sl-openapi-snippet-picker>
+  {
+    singleSnippet ? (
+      <div class="sl-openapi-snippet-picker">
+        <span class="sr-only">Code sample: </span>
+        <span class="sl-openapi-snippet-picker-value">{singleSnippetLabel}</span>
+      </div>
+    ) : (
+      <>
+        <label class="sl-openapi-snippet-picker">
+          <span class="sr-only">Select code sample</span>
+          <select autocomplete="off">
+            {hasGroupedSnippets
+              ? groupedSnippets.map((group) => (
+                  <optgroup label={group.label}>
+                    {group.items.map((snippet) => (
+                      <option value={snippet.id} selected={snippet.id === snippets.defaultId}>
+                        {snippet.label}
+                      </option>
+                    ))}
+                  </optgroup>
+                ))
+              : snippets.items.map((snippet) => (
+                  <option value={snippet.id} selected={snippet.id === snippets.defaultId}>
+                    {snippet.label}
+                  </option>
+                ))}
+          </select>
+          <Icon name="down-caret" class="sl-openapi-snippet-picker-caret" />
+        </label>
+        <div aria-live="polite" class="sr-only" id="sl-openapi-snippet-status" />
+      </>
+    )
+  }
+</sl-openapi-snippet-picker>
+
+<script>
+  customElements.define(
+    'sl-openapi-snippet-picker',
+    class StarlightOpenAPISnippetPicker extends HTMLElement {
+      #snippets?: HTMLDivElement[]
+      #status?: HTMLDivElement | null
+
+      constructor() {
+        super()
+
+        this.#status = this.querySelector('#sl-openapi-snippet-status')
+
+        this.querySelector('select')?.addEventListener('change', (event) => {
+          if (!(event.currentTarget instanceof HTMLSelectElement)) return
+
+          this.#snippets ??= [...document.querySelectorAll<HTMLDivElement>('div.sl-openapi-snippet')]
+          const id = event.currentTarget.value
+
+          for (const snippet of this.#snippets) {
+            if (snippet.dataset['openapiSnippetId'] === id) snippet.removeAttribute('hidden')
+            else snippet.setAttribute('hidden', 'true')
+          }
+
+          if (this.#status) {
+            this.#status.textContent = `Showing ${event.currentTarget.selectedOptions[0]?.textContent?.trim()} code sample.`
+          }
+
+          if (typeof localStorage !== 'undefined') localStorage.setItem('starlight-openapi-snippet-id', id)
+        })
+      }
+    },
+  )
+</script>
+
+<style>
+  .sl-openapi-snippet-picker {
+    color: var(--sl-color-gray-2);
+    display: flex;
+    position: relative;
+  }
+
+  .sl-openapi-snippet-picker:has(select):hover {
+    color: var(--sl-color-gray-1);
+  }
+
+  .sl-openapi-snippet-picker select,
+  .sl-openapi-snippet-picker-value {
+    background-color: var(--sl-color-gray-7, var(--sl-color-gray-6));
+    border: 1px solid var(--sl-color-gray-4);
+    border-radius: 0;
+    color: inherit;
+    font-family: var(--__sl-font);
+    padding-block: 0.125rem;
+    padding-inline-start: 0.625rem;
+  }
+
+  .sl-openapi-snippet-picker select {
+    appearance: none;
+    padding-inline-end: 2rem;
+    text-overflow: ellipsis;
+  }
+
+  .sl-openapi-snippet-picker-value {
+    display: block;
+    max-inline-size: 100%;
+    overflow: hidden;
+    padding-inline-end: 0.625rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .sl-openapi-snippet-picker select:hover {
+    border-color: var(--sl-color-gray-2);
+  }
+
+  .sl-openapi-snippet-picker-caret {
+    color: inherit;
+    font-size: 1.25rem;
+    inset-inline-end: 0.375rem;
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+</style>

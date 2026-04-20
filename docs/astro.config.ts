@@ -73,11 +73,17 @@ export default defineConfig({
             base: 'api/v3/recursive',
             schema: '../schemas/v3.0/recursive.yaml',
             sidebar: { label: 'Recursion v3.0' },
+            snippets: { generated: false },
           },
           {
             base: 'api/v3/recursive-simple',
             schema: '../schemas/v3.0/recursive-simple.yaml',
             sidebar: { label: 'Simple Recursion v3.0' },
+          },
+          {
+            base: 'api/v3/no-servers',
+            schema: '../schemas/v3.0/no-servers.yaml',
+            sidebar: { label: 'No Servers v3.0' },
           },
         ]),
         starlightOpenAPIDocsDemo(),

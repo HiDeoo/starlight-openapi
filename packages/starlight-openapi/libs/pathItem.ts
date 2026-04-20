@@ -6,7 +6,8 @@ import {
   type PathItemOperation,
 } from './operation'
 import { getSchemaBaseLink, getLinkTransformer, slug, type TrailingSlashTransformer } from './path'
-import type { Schema } from './schema'
+import { isObjectLike } from './predicate'
+import type { Schema } from './schemas/schema'
 import {
   getMethodSidebarBadge,
   makeSidebarGroup,
@@ -94,7 +95,7 @@ export function getSchemaNavigationGroups(schema: Schema, context: StarlightOpen
 }
 
 export function isPathItem(pathItem: unknown): pathItem is PathItem {
-  return typeof pathItem === 'object'
+  return isObjectLike(pathItem)
 }
 
 function getSchemaNavigationLinks(

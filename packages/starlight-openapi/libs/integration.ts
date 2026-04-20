@@ -2,7 +2,7 @@ import type { StarlightUserConfig } from '@astrojs/starlight/types'
 import type { AstroIntegration } from 'astro'
 
 import { getSchemaBasePath, stripLeadingAndTrailingSlashes } from './path'
-import type { Schema } from './schema'
+import type { Schema } from './schemas/schema'
 import { vitePluginStarlightOpenAPI } from './vite'
 
 export function starlightOpenAPIIntegration(

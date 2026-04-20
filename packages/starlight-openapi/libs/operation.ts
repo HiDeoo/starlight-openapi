@@ -1,13 +1,19 @@
-import type { OpenAPI } from 'openapi-types'
+import type { OpenAPI, OpenAPIV3, OpenAPIV3_1 } from 'openapi-types'
 
 import type { Callback } from './callback'
 import { type Document, isOpenAPIV2Document } from './document'
-import { slug } from './path'
+import { getURLWithPath, slug } from './path'
 import { isPathItem, type PathItem } from './pathItem'
-import type { Schema } from './schema'
+import type { Schema } from './schemas/schema'
 
 const defaultOperationTag = 'Operations'
 const operationHttpMethods = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'] as const
+
+const leadingDoubleSlashRegex = /^\/\//
+const absoluteURLRegex = /^[a-z][a-z\d+.-]*:\/\//i
+const templateVariableRegex = /\{([^}]+)\}/g
+
+const defaultServerOrigin = 'https://example.com'
 
 export function getOperationsByTag({ config, document }: Schema) {
   const operationsByTag = new Map<string, { entries: PathItemOperation[]; tag: OperationTag }>()
@@ -143,43 +149,76 @@ export function isMinimalOperationTag(tag: OperationTag): boolean {
   return (tag.description === undefined || tag.description.length === 0) && tag.externalDocs === undefined
 }
 
-export function getOperationURLs(document: Document, { operation, path, pathItem }: PathItemOperation): OperationURL[] {
-  const urls: OperationURL[] = []
+export function getOperationURLs(document: Document, pathItemOperation: PathItemOperation): OperationURL[] {
+  return getOperationServerObjects(document, pathItemOperation).map((serverObject) => ({
+    description: serverObject.description,
+    implicit: serverObject.implicit,
+    url: getURLWithPath(getDisplayServerURL(serverObject), pathItemOperation.path ?? ''),
+  }))
+}
 
-  if (isOpenAPIV2Document(document) && 'host' in document) {
-    let url = document.host
-    url += document.basePath ?? ''
-    url += path ?? ''
+export function getOperationBaseURL(document: Document, pathItemOperation: PathItemOperation): string | undefined {
+  const serverObject = getOperationServerObjects(document, pathItemOperation)[0]
+  if (!serverObject) return
+  return getRequestServerURL(serverObject)
+}
 
-    if (url.length > 0) {
-      urls.push(makeOperationURL(url))
-    }
-  } else {
-    const servers =
-      'servers' in operation
-        ? operation.servers
-        : 'servers' in pathItem
-          ? pathItem.servers
-          : 'servers' in document
-            ? document.servers
-            : []
+function getDisplayServerURL(serverObject: ServerObject): string {
+  return serverObject.url.replace(absoluteURLRegex, '').replace(leadingDoubleSlashRegex, '')
+}
 
-    for (const server of servers) {
-      let url = server.url
-      url += path ?? ''
+function getRequestServerURL(serverObject: ServerObject): string {
+  const url = serverObject.variables
+    ? replaceTemplateVariables(
+        serverObject.url,
+        Object.fromEntries(Object.entries(serverObject.variables).map(([name, variable]) => [name, variable.default])),
+      )
+    : serverObject.url
 
-      if (url.length > 0) {
-        urls.push(makeOperationURL(url, server.description))
-      }
-    }
+  if (url.startsWith('//')) return `https:${url}`
+  if (absoluteURLRegex.test(url)) return url
+
+  return new URL(url, defaultServerOrigin).toString()
+}
+
+export function replaceTemplateVariables(template: string, values: Record<string, string>): string {
+  return template.replaceAll(templateVariableRegex, (_, name: string) => {
+    return values[name] ?? `{${name}}`
+  })
+}
+
+function getOperationServerObjects(document: Document, { operation, pathItem }: PathItemOperation): ServerObject[] {
+  if (isOpenAPIV2Document(document)) {
+    if (!document.host) return []
+
+    const schemes = document.schemes?.length ? document.schemes : ['https']
+
+    return schemes.map((scheme) => ({
+      url: `${scheme}://${document.host}${document.basePath ?? ''}`,
+    }))
   }
 
-  return urls
+  const servers: ServerObject[] =
+    'servers' in operation && operation.servers.length > 0
+      ? operation.servers
+      : 'servers' in pathItem && pathItem.servers.length > 0
+        ? pathItem.servers
+        : 'servers' in document && document.servers.length > 0
+          ? document.servers
+          : [{ url: '/', implicit: true }]
+
+  return servers.map((server) => {
+    const serverObject: ServerObject = { url: server.url }
+
+    if (server.description) serverObject.description = server.description
+    if (server.implicit) serverObject.implicit = true
+    if (server.variables) serverObject.variables = server.variables
+
+    return serverObject
+  })
 }
 
-function makeOperationURL(url: string, description?: string): OperationURL {
-  return { description, url: url.replace(/^\/\//, '') }
-}
+type ServerObject = (OpenAPIV3.ServerObject | OpenAPIV3_1.ServerObject) & { implicit?: boolean }
 
 export interface PathItemOperation {
   method: OperationHttpMethod
@@ -204,6 +243,7 @@ export type OperationTag = NonNullable<Document['tags']>[number]
 
 export interface OperationURL {
   description?: string | undefined
+  implicit?: boolean | undefined
   url: string
 }
 

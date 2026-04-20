@@ -1,6 +1,6 @@
 import type { OpenAPIV2 } from 'openapi-types'
 
-import type { Schema } from './schema'
+import type { Schema } from './schemas/schema'
 
 export function getOpenAPIVersion(document: Document) {
   return isOpenAPIV2Document(document) ? document.swagger : document.openapi

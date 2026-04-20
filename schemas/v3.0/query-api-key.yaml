@@ -1,0 +1,22 @@
+openapi: 3.0.0
+info:
+  title: Query API Key
+  version: 1.0.0
+servers:
+  - url: https://example.com/api
+paths:
+  /animals/random:
+    get:
+      operationId: getRandomAnimal
+      summary: Get a random animal
+      security:
+        - api_key: []
+      responses:
+        '200':
+          description: OK
+components:
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: api_key
+      in: query

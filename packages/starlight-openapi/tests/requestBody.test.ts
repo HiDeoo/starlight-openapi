@@ -51,8 +51,8 @@ test('displays the request body for a v3.0 schema', async ({ docPage }) => {
 test('supports schema object for implicit objects', async ({ docPage }) => {
   await docPage.goto('/v3/animals/operations/hamsters')
 
-  await expect(docPage.getRequestBodyParameter('id')).toBeVisible()
-  await expect(docPage.getRequestBodyParameter('name')).toBeVisible()
+  await expect(docPage.getRequestBodyParameter('id').first()).toBeVisible()
+  await expect(docPage.getRequestBodyParameter('name').first()).toBeVisible()
 })
 
 test('supports schema object `allOf` property for explicit objects', async ({ docPage }) => {

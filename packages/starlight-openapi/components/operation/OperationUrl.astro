@@ -36,8 +36,15 @@ const inputAttributes: HTMLAttributes<'input'> = {
   input {
     background-color: var(--sl-color-gray-5);
     border: 1px solid var(--sl-color-gray-4);
+    display: block;
     padding: 0.3rem 0.5rem;
     width: 100%;
+  }
+
+  @media (min-width: 30rem) {
+    input {
+      width: 20rem;
+    }
   }
 
   input::selection {

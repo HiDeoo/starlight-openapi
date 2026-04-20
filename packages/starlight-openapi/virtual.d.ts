@@ -1,10 +1,10 @@
-declare module 'virtual:starlight-openapi-schemas' {
-  const StarlightOpenAPISchemas: Record<string, import('./libs/schema').Schema>
+declare module 'virtual:starlight-openapi/schemas' {
+  const StarlightOpenAPISchemas: Record<string, import('./libs/schemas/schema').Schema>
 
   export default StarlightOpenAPISchemas
 }
 
-declare module 'virtual:starlight-openapi-context' {
+declare module 'virtual:starlight-openapi/context' {
   const Context: {
     pagination: import('@astrojs/starlight/types').StarlightConfig['pagination']
     trailingSlash: import('astro').AstroConfig['trailingSlash']

@@ -1,10 +1,10 @@
 ---
 import { Badge, Card } from '@astrojs/starlight/components'
-import context from 'virtual:starlight-openapi-context'
+import context from 'virtual:starlight-openapi/context'
 
 import { getOpenAPIVersion, getSummary } from '../../libs/document'
 import { getSchemaNavigationGroups } from '../../libs/pathItem'
-import type { Schema } from '../../libs/schema'
+import type { Schema } from '../../libs/schemas/schema'
 import { getSecurityDefinitions } from '../../libs/security'
 import ExternalDocs from '../ExternalDocs.astro'
 import Heading from '../Heading.astro'

@@ -1,12 +1,12 @@
 import type { AstroConfig } from 'astro'
 import { slug } from 'github-slugger'
 
-import type { StarlightOpenAPISchemaConfig } from './schema'
+import type { StarlightOpenAPISchemaConfig } from './schemas/schema'
 import type { StarlightOpenAPIContext } from './vite'
 
 export { slug } from 'github-slugger'
 
-const astroBase = stripTrailingSlash(import.meta.env.BASE_URL)
+const astroBase = stripTrailingSlash(getBaseURL())
 const htmlExt = '.html'
 
 const trailingSlashTransformers: Record<AstroConfig['trailingSlash'], TrailingSlashTransformer> = {
@@ -107,6 +107,17 @@ function ensureHtmlExtension(path: string) {
   }
 
   return path
+}
+
+export function getURLWithPath(url: string, path: string): string {
+  if (path.length === 0) return url
+  if (path.startsWith('/')) return `${stripTrailingSlash(url)}${path}`
+  return `${stripTrailingSlash(url)}/${path}`
+}
+
+function getBaseURL(): string {
+  const env = (import.meta as { env?: { BASE_URL?: unknown } }).env
+  return typeof env?.BASE_URL === 'string' ? env.BASE_URL : '/'
 }
 
 export type TrailingSlashTransformer = (path: string) => string

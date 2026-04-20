@@ -5,7 +5,7 @@ import OperationMethodBadge from './OperationMethodBadge.astro'
 
 interface Props {
   method: OperationHttpMethod
-  path?: string
+  path?: string | undefined
 }
 
 const { method, path } = Astro.props
@@ -18,12 +18,14 @@ const { method, path } = Astro.props
 
 <style>
   .sl-openapi-operation-method {
+    align-items: stretch;
     display: flex;
     gap: 0.8rem;
     overflow-x: hidden;
   }
 
   .sl-openapi-operation-method-path {
+    align-items: center;
     display: flex;
     flex-grow: 0;
     flex-shrink: 1;

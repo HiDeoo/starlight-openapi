@@ -34,6 +34,26 @@ export class DocPage {
     return this.getContent().getByRole('group').first()
   }
 
+  getOperationDescription() {
+    return this.page.locator('.sl-openapi-operation-description')
+  }
+
+  getOperationUrlToggle() {
+    return this.getOperationDescription().getByRole('button', { name: 'Toggle operation URLs' })
+  }
+
+  getOperationMethod() {
+    return this.getOperationDescription().locator('.sl-openapi-operation-method')
+  }
+
+  getOperationSnippetPicker() {
+    return this.page.getByRole('combobox', { name: 'Select code sample' })
+  }
+
+  getVisibleOperationSnippet() {
+    return this.page.locator('.sl-openapi-snippet:not([hidden])')
+  }
+
   getParameters(location: string) {
     return this.page.locator(
       `.sl-heading-wrapper:has(> h3:text-is("${capitalize(location)} Parameters")) + div > .sl-openapi-keys > .sl-openapi-key`,

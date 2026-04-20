@@ -12,9 +12,10 @@ import {
 } from './operation'
 import { getParametersByLocation } from './parameter'
 import { slug, stripHtmlExtension, stripLeadingAndTrailingSlashes } from './path'
+import { isObjectLike } from './predicate'
 import { hasRequestBody } from './requestBody'
 import { includesDefaultResponse } from './response'
-import { getSchemaSidebarGroups, type Schema } from './schema'
+import { getSchemaSidebarGroups, type Schema } from './schemas/schema'
 import { getSecurityDefinitions, getSecurityRequirements } from './security'
 import { capitalize } from './utils'
 import type { StarlightOpenAPIContext } from './vite'
@@ -149,7 +150,7 @@ function applyPaginationLinkConfig(
   // If a link exists, update its label if needed.
   if (typeof config === 'string' && link) return { ...link, label: config }
 
-  if (typeof config === 'object') {
+  if (isObjectLike(config)) {
     if (link) {
       return {
         ...link,
@@ -221,10 +222,6 @@ function getOperationHeadings(schema: Schema, { operation, pathItem }: PathItemO
   }
 
   const parametersByLocation = getParametersByLocation(operation.parameters, pathItem.parameters)
-
-  if (operation['x-codeSamples'] && operation['x-codeSamples'].length > 0) {
-    items.push(makeHeading(2, 'Code Samples'))
-  }
 
   if (parametersByLocation.size > 0) {
     items.push(

@@ -1,10 +1,10 @@
 ---
 import { Icon } from '@astrojs/starlight/components'
-import context from 'virtual:starlight-openapi-context'
+import context from 'virtual:starlight-openapi/context'
 
 import type { Operation } from '../../libs/operation'
 import { getSchemaBaseLink, slug } from '../../libs/path'
-import type { Schema } from '../../libs/schema'
+import type { Schema } from '../../libs/schemas/schema'
 import { getSecurityRequirements } from '../../libs/security'
 import Section from '../Section.astro'
 import Tags from '../Tags.astro'

@@ -1,0 +1,18 @@
+openapi: 3.1.0
+info:
+  title: No Servers
+  version: 1.0.0
+paths:
+  /animals:
+    get:
+      summary: List all animals
+      operationId: listAnimals
+      responses:
+        '200':
+          description: A paged array of animals
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string

@@ -129,6 +129,9 @@ paths:
       operationId: listCats
       tags:
         - animals
+      servers:
+        - url: /relative-api
+          description: Relative server
       responses:
         '200':
           description: A paged array of cats
@@ -258,6 +261,8 @@ paths:
       operationId: listShelters
       tags:
         - places
+      security:
+        - api_key: []
       responses:
         '200':
           description: An array of shelters
@@ -299,6 +304,28 @@ paths:
         description: Turtle to add
         required: true
         content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - image
+              properties:
+                image:
+                  type: string
+                  format: binary
+                gallery:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  example:
+                    - front.png
+                    - back.png
+                name:
+                  type: string
+            encoding:
+              image:
+                contentType: image/png
           application/json:
             schema:
               $ref: '#/components/schemas/Animal'
@@ -324,6 +351,9 @@ paths:
         description: Hamster to add
         required: true
         content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Hamster'
           application/json:
             schema:
               $ref: '#/components/schemas/Hamster'
