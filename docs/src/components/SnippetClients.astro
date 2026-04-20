@@ -39,7 +39,7 @@ const docLinks: Record<`${string}:${string}`, string> = {
 
       return (
         <li>
-          <code>{target}</code>: <Fragment set:html={clientsList} />
+          <code>{target}</code>: <span set:html={clientsList} />
         </li>
       )
     })
