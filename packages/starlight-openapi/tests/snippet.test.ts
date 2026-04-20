@@ -4,18 +4,17 @@ import { getOperationSnippets } from '../libs/snippet'
 import { expect, test } from './test'
 import { getTestOperation, parseTestSchema } from './utils'
 
-// FIXME(HiDeoo)
-test.describe.skip('schema', () => {
+test.describe('schema', () => {
   const defaultClients = {
     javascript: ['fetch'],
-    shell: ['curl', 'wget'],
+    shell: ['curl'],
   }
 
   const expectedDefaultClients = Object.entries(defaultClients).flatMap(([target, clients]) =>
     clients.map((client) => ({ target, client })),
   )
 
-  const expectedDefaultClient = { target: 'javascript', client: 'fetch' }
+  const expectedDefaultClient = { target: 'shell', client: 'curl' }
 
   const expectedDefaultConfig = {
     generated: {
@@ -48,13 +47,13 @@ test.describe.skip('schema', () => {
     expect(
       SnippetsSchema.parse({
         generated: {
-          default: { target: 'shell', client: 'wget' },
+          default: { target: 'javascript', client: 'fetch' },
         },
       }),
     ).toEqual({
       generated: {
         clients: expectedDefaultClients,
-        default: { target: 'shell', client: 'wget' },
+        default: { target: 'javascript', client: 'fetch' },
       },
     })
   })
@@ -65,7 +64,7 @@ test.describe.skip('schema', () => {
         generated: {
           clients: {
             javascript: ['fetch'],
-            shell: ['wget'],
+            shell: ['curl', 'wget'],
           },
         },
       }),
@@ -73,6 +72,7 @@ test.describe.skip('schema', () => {
       generated: {
         clients: [
           { target: 'javascript', client: 'fetch' },
+          { target: 'shell', client: 'curl' },
           { target: 'shell', client: 'wget' },
         ],
         default: expectedDefaultClient,
@@ -122,7 +122,7 @@ test.describe.skip('schema', () => {
         generated: {
           clients: {
             javascript: ['axios'],
-            shell: ['curl'],
+            shell: ['wget'],
           },
         },
       }),
@@ -130,7 +130,7 @@ test.describe.skip('schema', () => {
       generated: {
         clients: [
           { target: 'javascript', client: 'axios' },
-          { target: 'shell', client: 'curl' },
+          { target: 'shell', client: 'wget' },
         ],
         default: {
           target: 'javascript',
@@ -203,7 +203,7 @@ test.describe('generation', () => {
         expect.objectContaining({
           id: 'shell:curl',
           label: 'cURL',
-          lang: 'shell',
+          lang: 'sh',
         }),
       ]),
     })
@@ -272,7 +272,7 @@ requests.post('http://petstore.swagger.io/api/pets', json={'name': 'Fido'})
         expect.objectContaining({
           id: 'shell:curl',
           label: 'cURL',
-          lang: 'shell',
+          lang: 'sh',
           content: expect.stringContaining('https://example.com/animals'),
         }),
       ],

@@ -8,18 +8,43 @@ import type { SnippetReference } from './schemas/snippet'
 const snippetPlaceholderRegex = /^<[^<>]+>$/
 
 const generatedSnippetTargetMetadata: Record<SnippetReference['target'], { label: string }> = {
+  c: { label: 'C' },
+  csharp: { label: 'C#' },
+  go: { label: 'Go' },
+  java: { label: 'Java' },
   javascript: { label: 'JavaScript' },
+  kotlin: { label: 'Kotlin' },
+  rust: { label: 'Rust' },
   shell: { label: 'Shell' },
 }
 
 const generatedSnippetClientMetadata: GeneratedSnippetClientMetadata = {
+  c: {
+    libcurl: { label: 'libcurl', lang: 'c' },
+  },
+  csharp: {
+    httpclient: { label: 'HttpClient', lang: 'cs' },
+  },
+  go: {
+    nethttp: { label: 'net/http', lang: 'go', httpsnippetClient: 'native' },
+  },
+  java: {
+    okhttp: { label: 'OkHttp', lang: 'java' },
+    nethttp: { label: 'net.http', lang: 'java' },
+  },
   javascript: {
     fetch: { label: 'Fetch', lang: 'js' },
     axios: { label: 'Axios', lang: 'js' },
   },
+  kotlin: {
+    okhttp: { label: 'OkHttp', lang: 'kt' },
+  },
+  rust: {
+    reqwest: { label: 'Reqwest', lang: 'rs' },
+  },
   shell: {
-    curl: { label: 'cURL', lang: 'shell' },
-    wget: { label: 'Wget', lang: 'shell' },
+    curl: { label: 'cURL', lang: 'sh' },
+    wget: { label: 'Wget', lang: 'sh' },
   },
 }
 
@@ -84,8 +109,9 @@ function generateOperationSnippets(schema: Schema, operation: PathItemOperation)
 function generateOperationSnippet(harRequest: HarRequest, reference: SnippetReference): string | undefined {
   try {
     const httpSnippet = new HTTPSnippet(toHTTPSnippetHarRequest(harRequest))
+    const httpSnippetReference = toHTTPSnippetReference(reference)
 
-    const snippet = httpSnippet.convert(reference.target, reference.client)
+    const snippet = httpSnippet.convert(httpSnippetReference.target, httpSnippetReference.client)
     if (typeof snippet !== 'string' || !snippet) return
 
     return normalizeSnippetPlaceholders(snippet, harRequest)
@@ -142,11 +168,18 @@ function toHTTPSnippetHarRequest(harRequest: HarRequest): HTTPSnippetHarRequest 
   }
 }
 
+function toHTTPSnippetReference(reference: SnippetReference) {
+  const metadata = getGeneratedSnippetClientMetadata(reference)
+
+  return { target: reference.target, client: metadata.httpsnippetClient ?? reference.client }
+}
+
 function sortOperationSnippets(a: OperationSnippet, b: OperationSnippet): number {
   return (a.groupLabel ?? '').localeCompare(b.groupLabel ?? '') || a.label.localeCompare(b.label)
 }
 
 interface GeneratedSnippetClientMetadataValue {
+  httpsnippetClient?: string
   label: string
   lang: string
 }

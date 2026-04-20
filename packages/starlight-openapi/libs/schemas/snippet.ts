@@ -1,30 +1,41 @@
 import { z } from 'astro/zod'
 
-const snippetShellClientSchema = z.enum(['curl', 'wget'])
+const snippetCClientSchema = z.enum(['libcurl'])
+const snippetCSharpClientSchema = z.enum(['httpclient'])
+const snippetGoClientSchema = z.enum(['nethttp'])
+const snippetJavaClientSchema = z.enum(['nethttp', 'okhttp'])
 const snippetJavaScriptClientSchema = z.enum(['axios', 'fetch'])
+const snippetKotlinClientSchema = z.enum(['okhttp'])
+const snippetRustClientSchema = z.enum(['reqwest'])
+const snippetShellClientSchema = z.enum(['curl', 'wget'])
 
 const snippetReferenceSchema = z.discriminatedUnion('target', [
-  z.object({
-    target: z.literal('javascript'),
-    client: snippetJavaScriptClientSchema,
-  }),
-  z.object({
-    target: z.literal('shell'),
-    client: snippetShellClientSchema,
-  }),
+  z.object({ target: z.literal('c'), client: snippetCClientSchema }),
+  z.object({ target: z.literal('csharp'), client: snippetCSharpClientSchema }),
+  z.object({ target: z.literal('go'), client: snippetGoClientSchema }),
+  z.object({ target: z.literal('java'), client: snippetJavaClientSchema }),
+  z.object({ target: z.literal('javascript'), client: snippetJavaScriptClientSchema }),
+  z.object({ target: z.literal('kotlin'), client: snippetKotlinClientSchema }),
+  z.object({ target: z.literal('rust'), client: snippetRustClientSchema }),
+  z.object({ target: z.literal('shell'), client: snippetShellClientSchema }),
 ])
 
 const generatedSnippetClientsSchema = z
   .object({
+    c: z.array(snippetCClientSchema).optional(),
+    csharp: z.array(snippetCSharpClientSchema).optional(),
+    go: z.array(snippetGoClientSchema).optional(),
+    java: z.array(snippetJavaClientSchema).optional(),
     javascript: z.array(snippetJavaScriptClientSchema).optional(),
+    kotlin: z.array(snippetKotlinClientSchema).optional(),
+    rust: z.array(snippetRustClientSchema).optional(),
     shell: z.array(snippetShellClientSchema).optional(),
   })
   .partial()
 
-// TODO(HiDeoo) refine list at the end when all supported clients are added
 const defaultGeneratedSnippetClients = {
-  javascript: ['axios', 'fetch'],
-  shell: ['curl', 'wget'],
+  javascript: ['fetch'],
+  shell: ['curl'],
 } as const satisfies z.input<typeof generatedSnippetClientsSchema>
 
 const defaultGeneratedSnippetReference = {
