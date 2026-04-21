@@ -12,6 +12,21 @@ test('displays the responses for a v2.0 schema', async ({ docPage }) => {
   await expect(defaultResponse.getByText('unexpected error')).toBeVisible()
 })
 
+test('displays a generated response example for a v2.0 schema', async ({ docPage }) => {
+  await docPage.goto('/v2/animals/operations/addanimal/')
+
+  const okResponse = docPage.getResponse('200')
+  const example = docPage.getVisibleExample(okResponse)
+
+  await okResponse.getByRole('combobox').selectOption('application/json')
+
+  await expect(example).toBeVisible()
+
+  await okResponse.getByRole('combobox').selectOption('application/xml')
+
+  await expect(example).toHaveCount(0)
+})
+
 test('displays the responses for a v3.0 schema', async ({ docPage }) => {
   await docPage.goto('/v3/animals/operations/addanimal/')
 
@@ -26,6 +41,12 @@ test('displays the responses for a v3.0 schema', async ({ docPage }) => {
   await expect(defaultResponse.getByText('unexpected error')).toBeVisible()
 
   expect(await defaultResponse.getByRole('combobox').inputValue()).toBe('application/json')
+
+  const example = docPage.getVisibleExample(defaultResponse)
+
+  await expect(example).toBeVisible()
+  await expect(example).toContainText('"code": 1')
+  await expect(example).toContainText('"message": "example"')
 })
 
 test('displays the global `produces` property for a v2.0 schema', async ({ docPage }) => {
@@ -52,7 +73,7 @@ test('display the examples for a v2.0 schema', async ({ docPage }) => {
 
   await okResponse.getByRole('combobox').selectOption('application/json')
 
-  const example = okResponse.locator('[role="tabpanel"]:not([hidden]) .sl-openapi-example')
+  const example = docPage.getVisibleExample(okResponse)
 
   await expect(example).toBeVisible()
   await expect(example.getByText(`[ { "id": 1, "name": "Bessy" }, { "id": 2, "name": "Hazel" }]`)).toBeVisible()

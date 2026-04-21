@@ -2,6 +2,7 @@ import type { OpenAPIV2, OpenAPIV3, OpenAPIV3_1 } from 'openapi-types'
 
 import { getContentEntries, type MediaEntry } from './content'
 import { isOpenAPIV2ResponseWithExamples } from './example'
+import { createSchemaExampleValue, getSchemaExampleValueByPrecedence } from './exampleValue'
 import type { Operation } from './operation'
 import { getDefinedValue, hasDefinedValue, isObjectLike } from './predicate'
 import { getOpenAPIV2OperationProduces } from './requestBody'
@@ -13,9 +14,14 @@ export function includesDefaultResponse(responses: Responses): responses is Resp
 }
 
 export function getResponseMediaEntries(schema: Schema, operation: Operation, response: Response): MediaEntry[] {
-  if ('swagger' in schema.document) return getOpenAPIV2ResponseMediaEntries(schema, operation, response)
+  const entries =
+    'swagger' in schema.document
+      ? getOpenAPIV2ResponseMediaEntries(schema, operation, response)
+      : 'content' in response
+        ? getContentEntries(response.content)
+        : []
 
-  return 'content' in response ? getContentEntries(response.content) : []
+  return schema.config.snippets.response ? addGeneratedResponseExamples(entries) : entries
 }
 
 function getOpenAPIV2ResponseMediaEntries(schema: Schema, operation: Operation, response: Response): MediaEntry[] {
@@ -47,6 +53,25 @@ function getOpenAPIV2ResponseMediaTypes(schema: Schema, operation: Operation, re
   }
 
   return [...mediaTypes]
+}
+
+function addGeneratedResponseExamples(entries: MediaEntry[]): MediaEntry[] {
+  return entries.map((entry) => {
+    if (entry.example !== undefined || entry.examples !== undefined) return entry
+    if (!isJsonLikeResponseMediaType(entry.mediaType)) return entry
+    if (!entry.schema) return entry
+
+    const schemaExample = getSchemaExampleValueByPrecedence(entry.schema)
+
+    if (schemaExample !== undefined) return { ...entry, example: schemaExample }
+
+    const generatedExample = createSchemaExampleValue(entry.schema)
+    return generatedExample === undefined ? entry : { ...entry, example: generatedExample, generated: true }
+  })
+}
+
+function isJsonLikeResponseMediaType(mediaType: string | undefined): boolean {
+  return mediaType?.includes('json') ?? false
 }
 
 export type Response = OpenAPIV2.ResponseObject | OpenAPIV3.ResponseObject | OpenAPIV3_1.ResponseObject

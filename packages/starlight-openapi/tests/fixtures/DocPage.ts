@@ -54,6 +54,10 @@ export class DocPage {
     return this.page.locator('.sl-openapi-snippet:not([hidden])')
   }
 
+  getVisibleExample(container: Locator) {
+    return container.locator('[role="tabpanel"]:not([hidden]) .sl-openapi-example')
+  }
+
   getParameters(location: string) {
     return this.page.locator(
       `.sl-heading-wrapper:has(> h3:text-is("${capitalize(location)} Parameters")) + div > .sl-openapi-keys > .sl-openapi-key`,

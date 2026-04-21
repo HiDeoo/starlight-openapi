@@ -27,8 +27,9 @@ export function getContentEntries(content: Content): MediaEntry[] {
 export type Content = Record<string, OpenAPIV3.MediaTypeObject | OpenAPIV3_1.MediaTypeObject>
 
 export interface MediaEntry {
-  mediaType?: string
-  schema?: SchemaObject
   example?: unknown
   examples?: ExamplesV3
+  generated?: boolean
+  mediaType?: string
+  schema?: SchemaObject
 }

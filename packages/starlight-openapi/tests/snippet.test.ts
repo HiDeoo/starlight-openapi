@@ -1,3 +1,5 @@
+import type { PathItemOperation } from '../libs/operation'
+import { getResponseMediaEntries, type Response } from '../libs/response'
 import { getOperationSnippets } from '../libs/snippet'
 
 import { expect, test } from './test'
@@ -165,3 +167,73 @@ test.describe('ui', () => {
     await expect(docPage.page.locator('.sl-openapi-snippet')).toHaveCount(0)
   })
 })
+
+test.describe('response', () => {
+  test('generates a response example for JSON responses when no example is authored', async () => {
+    const schema = await parseTestSchema('v3.0/animals.yaml')
+    const operation = getTestOperation(schema, { operationId: 'addAnimal' })
+    const response = getTestResponse(operation, 'default')
+
+    const [entry] = getResponseMediaEntries(schema, operation.operation, response)
+
+    expect(entry?.example).toEqual({
+      code: 1,
+      message: 'example',
+    })
+
+    expect(entry?.generated).toBe(true)
+  })
+
+  test('does not generate response examples when disabled', async () => {
+    const schema = await parseTestSchema('v3.0/animals.yaml', {
+      snippets: { operation: false, response: false },
+    })
+    const operation = getTestOperation(schema, { operationId: 'addAnimal' })
+    const response = getTestResponse(operation, 'default')
+
+    const [entry] = getResponseMediaEntries(schema, operation.operation, response)
+
+    expect(entry?.example).toBeUndefined()
+    expect(entry?.generated).toBeUndefined()
+  })
+
+  test('preserves authored response examples and skips non-JSON fallback generation', async () => {
+    const schema = await parseTestSchema('v2.0/animals.yaml')
+    const operation = getTestOperation(schema, { operationId: 'findAnimals' })
+    const response = getTestResponse(operation, '200')
+
+    const entries = getResponseMediaEntries(schema, operation.operation, response)
+
+    const jsonEntry = entries.find((entry) => entry.mediaType === 'application/json')
+    expect(jsonEntry?.example).toEqual([
+      { id: 1, name: 'Bessy' },
+      { id: 2, name: 'Hazel' },
+    ])
+    expect(jsonEntry?.generated).toBeUndefined()
+
+    const xmlEntry = entries.find((entry) => entry.mediaType === 'application/xml')
+    expect(xmlEntry?.example).toEqual([
+      { id: 3, name: 'Cleo' },
+      { id: 4, name: 'Daisy' },
+    ])
+    expect(xmlEntry?.generated).toBeUndefined()
+
+    const textXmlEntry = entries.find((entry) => entry.mediaType === 'text/xml')
+    expect(textXmlEntry?.example).toBeUndefined()
+    expect(textXmlEntry?.generated).toBeUndefined()
+
+    const textHtmlEntry = entries.find((entry) => entry.mediaType === 'text/html')
+    expect(textHtmlEntry?.example).toBeUndefined()
+    expect(textHtmlEntry?.generated).toBeUndefined()
+  })
+})
+
+function getTestResponse(operation: PathItemOperation, status: string): Response {
+  const response = operation.operation.responses?.[status]
+
+  if (!response || '$ref' in response) {
+    throw new Error(`Expected a dereferenced '${status}' response.`)
+  }
+
+  return response
+}

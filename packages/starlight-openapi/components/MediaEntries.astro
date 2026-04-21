@@ -21,6 +21,7 @@ const namedEntries = isSingleEntryWithoutMediaType
     <Schema
       example={entries[0]?.example}
       examples={entries[0]?.examples}
+      generated={entries[0]?.generated}
       schema={entries[0]?.schema}
       type={entries[0]?.mediaType}
     />
@@ -28,7 +29,13 @@ const namedEntries = isSingleEntryWithoutMediaType
     <ContentPicker label="Select media type" types={namedEntries.map((entry) => entry.mediaType)}>
       {namedEntries.map((entry, index) => (
         <div data-openapi-content-type={entry.mediaType} hidden={index > 0} role="tabpanel">
-          <Schema example={entry.example} examples={entry.examples} schema={entry.schema} type={entry.mediaType} />
+          <Schema
+            example={entry.example}
+            examples={entry.examples}
+            generated={entry.generated}
+            schema={entry.schema}
+            type={entry.mediaType}
+          />
         </div>
       ))}
     </ContentPicker>
