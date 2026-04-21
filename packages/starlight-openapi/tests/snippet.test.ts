@@ -1,185 +1,13 @@
-import { SnippetsSchema } from '../libs/schemas/snippet'
 import { getOperationSnippets } from '../libs/snippet'
 
 import { expect, test } from './test'
 import { getTestOperation, parseTestSchema } from './utils'
 
-test.describe('schema', () => {
-  const defaultClients = {
-    javascript: ['fetch'],
-    shell: ['curl'],
-  }
-
-  const expectedDefaultClients = Object.entries(defaultClients).flatMap(([target, clients]) =>
-    clients.map((client) => ({ target, client })),
-  )
-
-  const expectedDefaultClient = { target: 'shell', client: 'curl' }
-
-  const expectedDefaultConfig = {
-    generated: {
-      clients: expectedDefaultClients,
-      default: expectedDefaultClient,
-    },
-  }
-
-  test('normalizes `undefined` snippets config to the default config', () => {
-    expect(SnippetsSchema.parse(undefined)).toEqual(expectedDefaultConfig)
-  })
-
-  test('normalizes `{}` snippets config to the default config', () => {
-    expect(SnippetsSchema.parse({})).toEqual(expectedDefaultConfig)
-  })
-
-  test('normalizes `{ generated: {} }` snippets config to the default config', () => {
-    expect(SnippetsSchema.parse({ generated: {} })).toEqual(expectedDefaultConfig)
-  })
-
-  test('normalizes `{ generated: true }` snippets config to the default config', () => {
-    expect(SnippetsSchema.parse({ generated: true })).toEqual(expectedDefaultConfig)
-  })
-
-  test('parses `{ generated: false }` snippets config', () => {
-    expect(SnippetsSchema.parse({ generated: false })).toEqual({ generated: false })
-  })
-
-  test('uses default clients with a custom default client', () => {
-    expect(
-      SnippetsSchema.parse({
-        generated: {
-          default: { target: 'javascript', client: 'fetch' },
-        },
-      }),
-    ).toEqual({
-      generated: {
-        clients: expectedDefaultClients,
-        default: { target: 'javascript', client: 'fetch' },
-      },
-    })
-  })
-
-  test('uses default client when available with custom clients', () => {
-    expect(
-      SnippetsSchema.parse({
-        generated: {
-          clients: {
-            javascript: ['fetch'],
-            shell: ['curl', 'wget'],
-          },
-        },
-      }),
-    ).toEqual({
-      generated: {
-        clients: [
-          { target: 'javascript', client: 'fetch' },
-          { target: 'shell', client: 'curl' },
-          { target: 'shell', client: 'wget' },
-        ],
-        default: expectedDefaultClient,
-      },
-    })
-  })
-
-  test('throws with a custom default snippet client that is not included in custom clients', () => {
-    expect(() =>
-      SnippetsSchema.parse({
-        generated: {
-          clients: {
-            shell: ['curl'],
-          },
-          default: {
-            target: 'shell',
-            client: 'wget',
-          },
-        },
-      }),
-    ).toThrow('The default generated snippet client must be one of the enabled clients.')
-  })
-
-  test('uses the single enabled client when custom clients enable a single client', () => {
-    expect(
-      SnippetsSchema.parse({
-        generated: {
-          clients: {
-            shell: ['wget'],
-          },
-        },
-      }),
-    ).toEqual({
-      generated: {
-        clients: [{ target: 'shell', client: 'wget' }],
-        default: {
-          target: 'shell',
-          client: 'wget',
-        },
-      },
-    })
-  })
-
-  test('uses the first enabled client when the built-in default client is not enabled', () => {
-    expect(
-      SnippetsSchema.parse({
-        generated: {
-          clients: {
-            javascript: ['axios'],
-            shell: ['wget'],
-          },
-        },
-      }),
-    ).toEqual({
-      generated: {
-        clients: [
-          { target: 'javascript', client: 'axios' },
-          { target: 'shell', client: 'wget' },
-        ],
-        default: {
-          target: 'javascript',
-          client: 'axios',
-        },
-      },
-    })
-  })
-
-  test('throws when no generated clients are enabled', () => {
-    expect(() =>
-      SnippetsSchema.parse({
-        generated: {
-          clients: {},
-        },
-      }),
-    ).toThrow('At least one generated snippet client must be enabled.')
-  })
-
-  test('throws when generated clients contain only an empty client list', () => {
-    expect(() =>
-      SnippetsSchema.parse({
-        generated: {
-          clients: {
-            shell: [],
-          },
-        },
-      }),
-    ).toThrow('At least one generated snippet client must be enabled.')
-  })
-
-  test('throws when generated clients contain duplicates', () => {
-    expect(() =>
-      SnippetsSchema.parse({
-        generated: {
-          clients: {
-            shell: ['curl', 'curl'],
-          },
-        },
-      }),
-    ).toThrow('Generated snippet clients must be unique.')
-  })
-})
-
-test.describe('generation', () => {
-  test('decodes query placeholder values in generated snippets', async () => {
+test.describe('operation', () => {
+  test('decodes query placeholder values in operation snippets', async () => {
     const schema = await parseTestSchema('v3.0/query-api-key.yaml', {
       snippets: {
-        generated: {
+        operation: {
           clients: {
             javascript: ['fetch'],
             shell: ['curl'],
@@ -214,10 +42,10 @@ test.describe('generation', () => {
     }
   })
 
-  test('uses normalized authored code samples over generated snippets when both are available', async () => {
+  test('uses normalized authored code samples over operation snippets when both are available', async () => {
     const schema = await parseTestSchema('v2.0/petstore-simple.yaml', {
       snippets: {
-        generated: {
+        operation: {
           clients: {
             javascript: ['fetch'],
             shell: ['curl'],
@@ -256,7 +84,7 @@ requests.post('http://petstore.swagger.io/api/pets', json={'name': 'Fido'})
   test('generates snippets for v3.0 schema operations without explicit servers', async () => {
     const schema = await parseTestSchema('v3.0/no-servers.yaml', {
       snippets: {
-        generated: {
+        operation: {
           clients: {
             shell: ['curl'],
           },
@@ -282,7 +110,7 @@ requests.post('http://petstore.swagger.io/api/pets', json={'name': 'Fido'})
   test('generates snippets for x-www-form-urlencoded request bodies', async () => {
     const schema = await parseTestSchema('v3.0/animals.yaml', {
       snippets: {
-        generated: {
+        operation: {
           clients: {
             shell: ['curl'],
           },
@@ -303,7 +131,7 @@ requests.post('http://petstore.swagger.io/api/pets', json={'name': 'Fido'})
 })
 
 test.describe('ui', () => {
-  test('displays generated snippets and updates the visible snippet when the picker changes', async ({ docPage }) => {
+  test('displays operation snippets and updates the visible snippet when the picker changes', async ({ docPage }) => {
     await docPage.goto('/v2/animals/operations/addanimal/')
 
     const picker = docPage.getOperationSnippetPicker()
@@ -321,7 +149,7 @@ test.describe('ui', () => {
     await expect(snippet).toContainText('https://example.com/api/animals')
   })
 
-  test('does not display snippets when no snippets are available', async ({ docPage }) => {
+  test('does not display operation snippets when no operation snippets are available', async ({ docPage }) => {
     await docPage.goto('/v3/recursive/operations/listcategories')
 
     await expect(docPage.getOperationSnippetPicker()).not.toBeVisible()
@@ -329,7 +157,7 @@ test.describe('ui', () => {
     await expect(docPage.page.locator('.sl-openapi-snippet')).toHaveCount(0)
   })
 
-  test('does not display generated snippets for webhook operations', async ({ docPage }) => {
+  test('does not display operation snippets for webhook operations', async ({ docPage }) => {
     await docPage.goto('/v3/animals/webhooks/newanimal/')
 
     await expect(docPage.getOperationSnippetPicker()).not.toBeVisible()

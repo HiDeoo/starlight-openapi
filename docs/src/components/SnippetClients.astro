@@ -1,7 +1,7 @@
 ---
 import {
-  GeneratedSnippetClientMetadata,
-  GeneratedSnippetTargetMetadata,
+  OperationSnippetClientMetadata,
+  OperationSnippetTargetMetadata,
 } from '../../../packages/starlight-openapi/libs/snippet'
 
 const docLinks: Record<`${string}:${string}`, string> = {
@@ -21,9 +21,9 @@ const docLinks: Record<`${string}:${string}`, string> = {
 
 <ul>
   {
-    Object.keys(GeneratedSnippetTargetMetadata).map((target) => {
+    Object.keys(OperationSnippetTargetMetadata).map((target) => {
       const clients = Object.keys(
-        GeneratedSnippetClientMetadata[target as keyof typeof GeneratedSnippetClientMetadata],
+        OperationSnippetClientMetadata[target as keyof typeof OperationSnippetClientMetadata],
       ).map((client) => {
         const id = `${target}:${client}`
         const docLink = docLinks[`${target}:${client}`]

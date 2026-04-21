@@ -73,7 +73,7 @@ export default defineConfig({
             base: 'api/v3/recursive',
             schema: '../schemas/v3.0/recursive.yaml',
             sidebar: { label: 'Recursion v3.0' },
-            snippets: { generated: false },
+            snippets: { operation: false },
           },
           {
             base: 'api/v3/recursive-simple',

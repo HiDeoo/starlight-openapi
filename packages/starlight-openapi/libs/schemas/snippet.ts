@@ -1,59 +1,59 @@
 import { z } from 'astro/zod'
 
-const snippetCClientSchema = z.enum(['libcurl'])
-const snippetCSharpClientSchema = z.enum(['httpclient'])
-const snippetGoClientSchema = z.enum(['nethttp'])
-const snippetJavaClientSchema = z.enum(['nethttp', 'okhttp'])
-const snippetJavaScriptClientSchema = z.enum(['axios', 'fetch'])
-const snippetKotlinClientSchema = z.enum(['okhttp'])
-const snippetRustClientSchema = z.enum(['reqwest'])
-const snippetShellClientSchema = z.enum(['curl', 'wget'])
+const operationCClientSchema = z.enum(['libcurl'])
+const operationCSharpClientSchema = z.enum(['httpclient'])
+const operationGoClientSchema = z.enum(['nethttp'])
+const operationJavaClientSchema = z.enum(['nethttp', 'okhttp'])
+const operationJavaScriptClientSchema = z.enum(['axios', 'fetch'])
+const operationKotlinClientSchema = z.enum(['okhttp'])
+const operationRustClientSchema = z.enum(['reqwest'])
+const operationShellClientSchema = z.enum(['curl', 'wget'])
 
-const snippetReferenceSchema = z.discriminatedUnion('target', [
-  z.object({ target: z.literal('c'), client: snippetCClientSchema }),
-  z.object({ target: z.literal('csharp'), client: snippetCSharpClientSchema }),
-  z.object({ target: z.literal('go'), client: snippetGoClientSchema }),
-  z.object({ target: z.literal('java'), client: snippetJavaClientSchema }),
-  z.object({ target: z.literal('javascript'), client: snippetJavaScriptClientSchema }),
-  z.object({ target: z.literal('kotlin'), client: snippetKotlinClientSchema }),
-  z.object({ target: z.literal('rust'), client: snippetRustClientSchema }),
-  z.object({ target: z.literal('shell'), client: snippetShellClientSchema }),
+const operationReferenceSchema = z.discriminatedUnion('target', [
+  z.object({ target: z.literal('c'), client: operationCClientSchema }),
+  z.object({ target: z.literal('csharp'), client: operationCSharpClientSchema }),
+  z.object({ target: z.literal('go'), client: operationGoClientSchema }),
+  z.object({ target: z.literal('java'), client: operationJavaClientSchema }),
+  z.object({ target: z.literal('javascript'), client: operationJavaScriptClientSchema }),
+  z.object({ target: z.literal('kotlin'), client: operationKotlinClientSchema }),
+  z.object({ target: z.literal('rust'), client: operationRustClientSchema }),
+  z.object({ target: z.literal('shell'), client: operationShellClientSchema }),
 ])
 
-const generatedSnippetClientsSchema = z
+const operationClientsSchema = z
   .object({
-    c: z.array(snippetCClientSchema).optional(),
-    csharp: z.array(snippetCSharpClientSchema).optional(),
-    go: z.array(snippetGoClientSchema).optional(),
-    java: z.array(snippetJavaClientSchema).optional(),
-    javascript: z.array(snippetJavaScriptClientSchema).optional(),
-    kotlin: z.array(snippetKotlinClientSchema).optional(),
-    rust: z.array(snippetRustClientSchema).optional(),
-    shell: z.array(snippetShellClientSchema).optional(),
+    c: z.array(operationCClientSchema).optional(),
+    csharp: z.array(operationCSharpClientSchema).optional(),
+    go: z.array(operationGoClientSchema).optional(),
+    java: z.array(operationJavaClientSchema).optional(),
+    javascript: z.array(operationJavaScriptClientSchema).optional(),
+    kotlin: z.array(operationKotlinClientSchema).optional(),
+    rust: z.array(operationRustClientSchema).optional(),
+    shell: z.array(operationShellClientSchema).optional(),
   })
   .partial()
 
-const defaultGeneratedSnippetClients = {
+const defaultOperationClients = {
   javascript: ['fetch'],
   shell: ['curl'],
-} as const satisfies z.input<typeof generatedSnippetClientsSchema>
+} as const satisfies z.input<typeof operationClientsSchema>
 
-const defaultGeneratedSnippetReference = {
+const defaultOperationReference = {
   target: 'shell',
   client: 'curl',
-} as const satisfies z.input<typeof snippetReferenceSchema>
+} as const satisfies z.input<typeof operationReferenceSchema>
 
-const generatedSnippetsSchema = z
+const operationConfigSchema = z
   .object({
     /**
-     * Defines the enabled clients for which snippets should be generated.
+     * Defines the enabled clients for which operation snippets should be generated.
      */
-    clients: generatedSnippetClientsSchema.default(defaultGeneratedSnippetClients),
+    clients: operationClientsSchema.default(defaultOperationClients),
     /**
-     * Defines the generated snippet that should be used by default on operation pages among the enabled generated
-     * snippet clients.
+     * Defines the generated operation snippet that should be used by default among the enabled operation snippet
+     * clients.
      */
-    default: snippetReferenceSchema.optional(),
+    default: operationReferenceSchema.optional(),
   })
   .transform((value, ctx) => {
     for (const [target, clients] of Object.entries(value.clients)) {
@@ -62,7 +62,7 @@ const generatedSnippetsSchema = z
       if (new Set(clients).size !== clients.length) {
         ctx.addIssue({
           code: 'custom',
-          message: 'Generated snippet clients must be unique.',
+          message: 'Operation snippet clients must be unique.',
           path: ['clients', target],
         })
 
@@ -70,22 +70,22 @@ const generatedSnippetsSchema = z
       }
     }
 
-    if (value.default && !includesSnippetReference(value.clients, value.default)) {
+    if (value.default && !includesOperationReference(value.clients, value.default)) {
       ctx.addIssue({
         code: 'custom',
-        message: 'The default generated snippet client must be one of the enabled clients.',
+        message: 'The default operation snippet client must be one of the enabled operation snippet clients.',
         path: ['default'],
       })
 
       return z.NEVER
     }
 
-    const defaultReference = getDefaultSnippetReference(value.clients, value.default)
+    const defaultReference = getDefaultOperationReference(value.clients, value.default)
 
     if (!defaultReference) {
       ctx.addIssue({
         code: 'custom',
-        message: 'At least one generated snippet client must be enabled.',
+        message: 'At least one operation snippet client must be enabled.',
         path: ['clients'],
       })
 
@@ -94,47 +94,47 @@ const generatedSnippetsSchema = z
 
     return {
       clients: Object.entries(value.clients).flatMap(([target, clients]) =>
-        (clients ?? []).map((client) => ({ target: target, client }) as SnippetReference),
+        (clients ?? []).map((client) => ({ target: target, client }) as SnippetOperationReference),
       ),
       default: defaultReference,
     }
   })
 
-const defaultGeneratedSnippetsConfig = generatedSnippetsSchema.parse({})
+const defaultOperationConfig = operationConfigSchema.parse({})
 
-const snippetsGeneratedSchema = z
-  .union([z.literal(true), z.literal(false), generatedSnippetsSchema])
-  .transform((value) => (value === true ? defaultGeneratedSnippetsConfig : value))
-  .default(defaultGeneratedSnippetsConfig)
+const operationSchema = z
+  .union([z.literal(true), z.literal(false), operationConfigSchema])
+  .transform((value) => (value === true ? defaultOperationConfig : value))
+  .default(defaultOperationConfig)
 
 export const SnippetsSchema = z
   .object({
     /**
-     * Controls whether generated snippets are available on operation pages.
+     * Controls whether operation snippets are available on operation pages.
      */
-    generated: snippetsGeneratedSchema,
+    operation: operationSchema,
   })
-  .default({ generated: defaultGeneratedSnippetsConfig })
+  .default({ operation: defaultOperationConfig })
 
-function includesSnippetReference(clients: GeneratedSnippetClients, reference: SnippetReference): boolean {
+function includesOperationReference(clients: SnippetOperationClients, reference: SnippetOperationReference): boolean {
   return clients[reference.target]?.includes(reference.client as never) ?? false
 }
 
-function getDefaultSnippetReference(
-  clients: GeneratedSnippetClients,
-  reference: SnippetReference | undefined,
-): SnippetReference | undefined {
+function getDefaultOperationReference(
+  clients: SnippetOperationClients,
+  reference: SnippetOperationReference | undefined,
+): SnippetOperationReference | undefined {
   if (reference) return reference
-  if (includesSnippetReference(clients, defaultGeneratedSnippetReference)) return defaultGeneratedSnippetReference
+  if (includesOperationReference(clients, defaultOperationReference)) return defaultOperationReference
 
   for (const [target, targetClients] of Object.entries(clients)) {
     const [client] = targetClients ?? []
-    if (client) return { target, client } as SnippetReference
+    if (client) return { target, client } as SnippetOperationReference
   }
 
   return
 }
 
-type GeneratedSnippetClients = z.output<typeof generatedSnippetClientsSchema>
+type SnippetOperationClients = z.output<typeof operationClientsSchema>
 
-export type SnippetReference = z.output<typeof snippetReferenceSchema>
+export type SnippetOperationReference = z.output<typeof operationReferenceSchema>
