@@ -516,6 +516,52 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /rabbits:
+    post:
+      summary: Creates a new rabbit
+      description: Creates a new rabbit
+      tags:
+        - animals
+      requestBody:
+        description: Rabbit to add
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                colors:
+                  type: array
+                  items:
+                    type: string
+                habitat:
+                  type: object
+                  properties:
+                    region:
+                      type: string
+                    type:
+                      type: string
+            encoding:
+              colors:
+                style: form
+                explode: false
+              habitat:
+                style: form
+                explode: false
+            example:
+              colors:
+                - brown
+                - white
+              habitat:
+                region: meadow
+                type: burrow
+      responses:
+        '200':
+          description: animal response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Animal'
   /feed:
     post:
       description: Subscribe a client to receive data

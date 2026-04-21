@@ -81,7 +81,19 @@ test('displays a generated request body example for a v3.0 schema', async ({ doc
 
   await requestBody.getByRole('combobox').selectOption('application/x-www-form-urlencoded')
 
-  await expect(example).toHaveCount(0)
+  await expect(example).toBeVisible()
+  await expect(example).toContainText('id=1&name=example')
+})
+
+test('displays authored x-www-form-urlencoded request body examples', async ({ docPage }) => {
+  await docPage.goto('/v3/animals/operations/rabbits')
+
+  const requestBody = docPage.getRequestBody()
+  const example = docPage.getVisibleExample(requestBody)
+
+  await expect(example).toBeVisible()
+  await expect(example).toContainText('colors=brown,white&habitat=region,meadow,type,burrow')
+  await expect(example).not.toContainText('%2C')
 })
 
 test('supports schema object for implicit objects', async ({ docPage }) => {

@@ -15,10 +15,11 @@ export function getContentEntries(content: Content): MediaEntry[] {
     const examples = getDefinedValue(media, 'examples')
 
     entries.push({
+      media: media,
       mediaType,
       ...(hasSchemaObject(media) ? { schema: media.schema } : {}),
       ...(example === undefined ? {} : { example }),
-      ...(isExamples(examples) ? { examples: examples } : {}),
+      ...(isExamples(examples) ? { examples } : {}),
     })
   }
   return entries
@@ -34,6 +35,7 @@ export interface MediaEntry {
   example?: unknown
   examples?: ExamplesV3
   generated?: boolean
+  media?: Content[string]
   mediaType?: string
   schema?: SchemaObject
 }

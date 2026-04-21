@@ -9,7 +9,6 @@ import {
   formatParameterValue,
   getCollectionFormat,
   getParametersByLocation,
-  getParameterValueStyle,
   isOpenAPIV2ArrayParameter,
   serializeArrayWithCollectionFormat,
   serializeCookieParameter,
@@ -23,7 +22,15 @@ import {
 } from './parameter'
 import { getURLWithPath } from './path'
 import { hasDefinedValue, isArray, isObjectLike } from './predicate'
-import { getOpenAPIV2OperationConsumes, getOpenAPIV2RequestBodyParameter, getOpenAPIV3RequestBody } from './requestBody'
+import {
+  getFormFieldEncodingOptions,
+  getOpenAPIV2OperationConsumes,
+  getOpenAPIV2RequestBodyParameter,
+  getOpenAPIV3RequestBody,
+  serializeRequestBodyFieldValue,
+  serializeUrlEncodedFormParams,
+  stringifyRequestBodyInline,
+} from './requestBody'
 import {
   getProperties,
   getSchemaFormat,
@@ -363,7 +370,7 @@ function getMediaTypeRequestBody(
   if (mimeType.includes('json')) {
     return createOperationRequestBody({
       mimeType,
-      text: stringifyBodyInline(value),
+      text: stringifyRequestBodyInline(value),
     })
   }
 
@@ -376,7 +383,7 @@ function getMediaTypeRequestBody(
 
   return createOperationRequestBody({
     mimeType,
-    text: typeof value === 'string' ? value : stringifyBodyInline(value),
+    text: typeof value === 'string' ? value : stringifyRequestBodyInline(value),
   })
 }
 
@@ -411,7 +418,13 @@ function serializeMultipartField(
     metadata.contentType !== undefined &&
     (metadata.hasExplicitContentType || metadata.contentType === 'application/json')
   ) {
-    return [{ name, value: serializeFieldValue(fieldValue, metadata.contentType), contentType: metadata.contentType }]
+    return [
+      {
+        name,
+        value: serializeRequestBodyFieldValue(fieldValue, metadata.contentType),
+        contentType: metadata.contentType,
+      },
+    ]
   }
 
   return serializeParameterValue(name, fieldValue, metadata.style, metadata.explode).map((parameter) => ({
@@ -456,48 +469,6 @@ function getMultipartFieldMetadata(
     hasExplicitBinaryFileName: hasValidBinaryFileNameExample(fieldSchema),
     hasExplicitContentType,
     style,
-  }
-}
-
-function getFormFieldEncodingOptions(
-  mediaType: Record<string, unknown> | undefined,
-  fieldName: string,
-): FormFieldEncodingOptions {
-  const defaultStyle: ParameterValueStyle = 'form'
-  const defaultOptions: FormFieldEncodingOptions = {
-    allowReserved: false,
-    explode: true,
-    style: defaultStyle,
-  }
-
-  if (!mediaType || !hasDefinedValue(mediaType, 'encoding') || !isObjectLike(mediaType.encoding)) {
-    return defaultOptions
-  }
-
-  const fieldEncoding = mediaType.encoding[fieldName]
-  if (!isObjectLike(fieldEncoding)) return defaultOptions
-
-  const style = getParameterValueStyle(
-    hasDefinedValue(fieldEncoding, 'style') ? fieldEncoding.style : undefined,
-    'form',
-  )
-
-  const contentType =
-    hasDefinedValue(fieldEncoding, 'contentType') && typeof fieldEncoding.contentType === 'string'
-      ? fieldEncoding.contentType
-      : undefined
-
-  return {
-    allowReserved:
-      hasDefinedValue(fieldEncoding, 'allowReserved') && typeof fieldEncoding.allowReserved === 'boolean'
-        ? fieldEncoding.allowReserved
-        : false,
-    explode:
-      hasDefinedValue(fieldEncoding, 'explode') && typeof fieldEncoding.explode === 'boolean'
-        ? fieldEncoding.explode
-        : style === 'form',
-    style,
-    ...(contentType === undefined ? {} : { contentType }),
   }
 }
 
@@ -547,43 +518,6 @@ function createMultipartFileParams(
     fileName: typeof fileValue === 'string' && metadata.hasExplicitBinaryFileName ? fileValue : 'file',
     ...(metadata.contentType ? { contentType: metadata.contentType } : {}),
   }))
-}
-
-function serializeUrlEncodedFormParams(
-  mediaType: Record<string, unknown> | undefined,
-  value: Record<string, unknown>,
-): OperationRequestBodyParam[] {
-  return Object.entries(value).flatMap(([name, fieldValue]) => {
-    const { contentType, explode, style } = getFormFieldEncodingOptions(mediaType, name)
-
-    if (contentType !== undefined) return [{ name, value: serializeFieldValue(fieldValue, contentType) }]
-
-    return serializeParameterValue(name, fieldValue, style, explode)
-  })
-}
-
-function serializeFieldValue(fieldValue: unknown, contentType: string): string {
-  if (contentType.includes('json')) return stringifyBodyInline(fieldValue)
-  if (typeof fieldValue === 'string') return fieldValue
-  return formatParameterValue(fieldValue, false)
-}
-
-// Stringify request bodies inline to keep shell snippets compact, but with some spacing to improve readability and
-// without any newlines that could end up being escaped in some clients like Wget with `httpsnippet`.
-function stringifyBodyInline(value: unknown): string {
-  if (value === null || typeof value !== 'object') return JSON.stringify(value)
-
-  if (Array.isArray(value)) {
-    if (value.length === 0) return '[]'
-    return `[ ${value.map((item) => stringifyBodyInline(item)).join(', ')} ]`
-  }
-
-  const entries = Object.entries(value)
-  if (entries.length === 0) return '{}'
-
-  return `{ ${entries
-    .map(([key, entryValue]) => `${JSON.stringify(key)}: ${stringifyBodyInline(entryValue)}`)
-    .join(', ')} }`
 }
 
 // https://github.com/ahmadnassri/har-spec/blob/master/versions/1.2.md#request
@@ -655,13 +589,6 @@ interface MultipartFieldMetadata {
   hasExplicitBinaryFileName: boolean
   // Defines if `encoding.<field>.contentType` is explicitly set.
   hasExplicitContentType: boolean
-  style: ParameterValueStyle
-}
-
-interface FormFieldEncodingOptions {
-  allowReserved: boolean
-  contentType?: string
-  explode: boolean
   style: ParameterValueStyle
 }
 

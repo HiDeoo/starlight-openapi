@@ -170,7 +170,7 @@ test.describe('ui', () => {
 })
 
 test.describe('request body', () => {
-  test('generates a request body example for JSON request bodies when no example is authored', async () => {
+  test('generates request body examples for supported request body media types when no example is authored', async () => {
     const schema = await parseTestSchema('v3.0/animals.yaml')
     const operation = getTestOperation(schema, { path: '/hamsters', method: 'post' })
 
@@ -184,8 +184,8 @@ test.describe('request body', () => {
     expect(jsonEntry?.generated).toBe(true)
 
     const formEntry = entries.find((entry) => entry.mediaType === 'application/x-www-form-urlencoded')
-    expect(formEntry?.example).toBeUndefined()
-    expect(formEntry?.generated).toBeUndefined()
+    expect(formEntry?.example).toBe('id=1&name=example')
+    expect(formEntry?.generated).toBe(true)
   })
 
   test('does not generate request body examples when disabled', async () => {
@@ -218,6 +218,16 @@ test.describe('request body', () => {
     const [entry] = getRequestBodyMediaEntries(schema, operation.operation)
 
     expect(entry?.example).toBeUndefined()
+    expect(entry?.generated).toBeUndefined()
+  })
+
+  test('serializes authored x-www-form-urlencoded request body examples', async () => {
+    const schema = await parseTestSchema('v3.0/animals.yaml')
+    const operation = getTestOperation(schema, { path: '/rabbits', method: 'post' })
+
+    const [entry] = getRequestBodyMediaEntries(schema, operation.operation)
+
+    expect(entry?.example).toBe('colors=brown,white&habitat=region,meadow,type,burrow')
     expect(entry?.generated).toBeUndefined()
   })
 })
