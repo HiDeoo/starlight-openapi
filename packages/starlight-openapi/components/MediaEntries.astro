@@ -6,9 +6,10 @@ import Schema from './schema/Schema.astro'
 
 interface Props {
   entries: MediaEntry[]
+  pickerLabel?: string | undefined
 }
 
-const { entries } = Astro.props
+const { entries, pickerLabel = 'Select media type' } = Astro.props
 
 const isSingleEntryWithoutMediaType = entries.length === 1 && entries[0]?.mediaType === undefined
 const namedEntries = isSingleEntryWithoutMediaType
@@ -26,7 +27,7 @@ const namedEntries = isSingleEntryWithoutMediaType
       type={entries[0]?.mediaType}
     />
   ) : (
-    <ContentPicker label="Select media type" types={namedEntries.map((entry) => entry.mediaType)}>
+    <ContentPicker label={pickerLabel} types={namedEntries.map((entry) => entry.mediaType)}>
       {namedEntries.map((entry, index) => (
         <div data-openapi-content-type={entry.mediaType} hidden={index > 0} role="tabpanel">
           <Schema

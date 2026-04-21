@@ -1,4 +1,5 @@
 import type { PathItemOperation } from '../libs/operation'
+import { getRequestBodyMediaEntries } from '../libs/requestBody'
 import { getResponseMediaEntries, type Response } from '../libs/response'
 import { getOperationSnippets } from '../libs/snippet'
 
@@ -168,6 +169,59 @@ test.describe('ui', () => {
   })
 })
 
+test.describe('request body', () => {
+  test('generates a request body example for JSON request bodies when no example is authored', async () => {
+    const schema = await parseTestSchema('v3.0/animals.yaml')
+    const operation = getTestOperation(schema, { path: '/hamsters', method: 'post' })
+
+    const entries = getRequestBodyMediaEntries(schema, operation.operation)
+
+    const jsonEntry = entries.find((entry) => entry.mediaType === 'application/json')
+    expect(jsonEntry?.example).toEqual({
+      id: 1,
+      name: 'example',
+    })
+    expect(jsonEntry?.generated).toBe(true)
+
+    const formEntry = entries.find((entry) => entry.mediaType === 'application/x-www-form-urlencoded')
+    expect(formEntry?.example).toBeUndefined()
+    expect(formEntry?.generated).toBeUndefined()
+  })
+
+  test('does not generate request body examples when disabled', async () => {
+    const schema = await parseTestSchema('v3.0/animals.yaml', {
+      snippets: { operation: false, requestBody: false },
+    })
+    const operation = getTestOperation(schema, { path: '/hamsters', method: 'post' })
+
+    const entries = getRequestBodyMediaEntries(schema, operation.operation)
+
+    const jsonEntry = entries.find((entry) => entry.mediaType === 'application/json')
+    expect(jsonEntry?.example).toBeUndefined()
+    expect(jsonEntry?.generated).toBeUndefined()
+  })
+
+  test('preserves authored request body examples', async () => {
+    const schema = await parseTestSchema('v2.0/animals.yaml')
+    const operation = getTestOperation(schema, { operationId: 'addBird' })
+
+    const [entry] = getRequestBodyMediaEntries(schema, operation.operation)
+
+    expect(entry?.example).toBeUndefined()
+    expect(entry?.generated).toBeUndefined()
+  })
+
+  test('preserves recursive explicit schema values for request bodies without marking them as generated', async () => {
+    const schema = await parseTestSchema('v3.0/animals.yaml')
+    const operation = getTestOperation(schema, { path: '/elephant', method: 'post' })
+
+    const [entry] = getRequestBodyMediaEntries(schema, operation.operation)
+
+    expect(entry?.example).toBeUndefined()
+    expect(entry?.generated).toBeUndefined()
+  })
+})
+
 test.describe('response', () => {
   test('generates a response example for JSON responses when no example is authored', async () => {
     const schema = await parseTestSchema('v3.0/animals.yaml')
@@ -180,8 +234,20 @@ test.describe('response', () => {
       code: 1,
       message: 'example',
     })
-
     expect(entry?.generated).toBe(true)
+  })
+
+  test('uses recursive explicit schema values for response examples without marking them as generated', async () => {
+    const schema = await parseTestSchema('v3.0/animals.yaml')
+    const operation = getTestOperation(schema, { path: '/feed', method: 'post' })
+    const response = getTestResponse(operation, '201')
+
+    const [entry] = getResponseMediaEntries(schema, operation.operation, response)
+
+    expect(entry?.example).toEqual({
+      subscriptionId: '2531329f-fb09-4ef7-887e-84e648214436',
+    })
+    expect(entry?.generated).toBeUndefined()
   })
 
   test('does not generate response examples when disabled', async () => {

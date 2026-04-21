@@ -50,6 +50,10 @@ export class DocPage {
     return this.page.getByRole('combobox', { name: 'Select code sample' })
   }
 
+  getVisibleMediaPanel(container: Locator) {
+    return container.locator('[role="tabpanel"]:not([hidden])')
+  }
+
   getVisibleOperationSnippet() {
     return this.page.locator('.sl-openapi-snippet:not([hidden])')
   }
@@ -68,8 +72,12 @@ export class DocPage {
     return this.page.locator('section:has(> .sl-heading-wrapper h2:first-child:text-is("Request Body"))')
   }
 
+  getVisibleRequestBodyPanel() {
+    return this.getVisibleMediaPanel(this.getRequestBody())
+  }
+
   getRequestBodyParameter(name: string) {
-    return this.getRequestBody().locator('.sl-openapi-key').filter({ hasText: name })
+    return this.getVisibleRequestBodyPanel().locator('.sl-openapi-key').filter({ hasText: name })
   }
 
   getCallback(identifier: string, siblingLocator?: string) {

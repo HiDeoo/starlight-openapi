@@ -1,8 +1,8 @@
 import type { OpenAPIV2, OpenAPIV3, OpenAPIV3_1 } from 'openapi-types'
 
-import { getContentEntries, type MediaEntry } from './content'
+import { getContentEntries, isJsonLikeMediaType, type MediaEntry } from './content'
 import { isOpenAPIV2ResponseWithExamples } from './example'
-import { createSchemaExampleValue, getSchemaExampleValueByPrecedence } from './exampleValue'
+import { createSchemaExampleValue, getSchemaAuthoredExampleValue } from './exampleValue'
 import type { Operation } from './operation'
 import { getDefinedValue, hasDefinedValue, isObjectLike } from './predicate'
 import { getOpenAPIV2OperationProduces } from './requestBody'
@@ -58,20 +58,15 @@ function getOpenAPIV2ResponseMediaTypes(schema: Schema, operation: Operation, re
 function addGeneratedResponseExamples(entries: MediaEntry[]): MediaEntry[] {
   return entries.map((entry) => {
     if (entry.example !== undefined || entry.examples !== undefined) return entry
-    if (!isJsonLikeResponseMediaType(entry.mediaType)) return entry
+    if (!isJsonLikeMediaType(entry.mediaType)) return entry
     if (!entry.schema) return entry
 
-    const schemaExample = getSchemaExampleValueByPrecedence(entry.schema)
-
+    const schemaExample = getSchemaAuthoredExampleValue(entry.schema)
     if (schemaExample !== undefined) return { ...entry, example: schemaExample }
 
     const generatedExample = createSchemaExampleValue(entry.schema)
     return generatedExample === undefined ? entry : { ...entry, example: generatedExample, generated: true }
   })
-}
-
-function isJsonLikeResponseMediaType(mediaType: string | undefined): boolean {
-  return mediaType?.includes('json') ?? false
 }
 
 export type Response = OpenAPIV2.ResponseObject | OpenAPIV3.ResponseObject | OpenAPIV3_1.ResponseObject

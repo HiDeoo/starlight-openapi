@@ -1,17 +1,15 @@
 ---
 import type { Operation } from '../libs/operation'
 import {
-  getOpenAPIV2OperationConsumes,
   getOpenAPIV2RequestBodyParameter,
   getOpenAPIV3RequestBody,
+  getRequestBodyMediaEntries,
 } from '../libs/requestBody'
 import type { Schema } from '../libs/schemas/schema'
 
-import Content from './Content.astro'
 import Md from './Md.astro'
-import SchemaObject from './schema/SchemaObject.astro'
+import MediaEntries from './MediaEntries.astro'
 import Section, { type SectionHeadingProps } from './Section.astro'
-import Select from './Select.astro'
 
 interface Props extends SectionHeadingProps {
   operation: Operation
@@ -28,26 +26,22 @@ const description = openAPIV2RequestBodyParameter
   ? openAPIV2RequestBodyParameter.description
   : openAPIV3RequestBody?.description
 
-const consumes = getOpenAPIV2OperationConsumes(schema, operation)
+const mediaEntries = getRequestBodyMediaEntries(schema, operation)
+const isEmpty = mediaEntries.length === 0
 ---
 
 {
   hasRequestBody && (
-    <Section {level} {prefix} title="Request Body">
+    <Section empty={isEmpty} {level} {prefix} title="Request Body">
       {openAPIV3RequestBody?.required && (
         <sup class="sl-openapi-request-body-required" slot="post-title">
           required
         </sup>
       )}
       <Md text={description} slot="pre-panel" />
-      {openAPIV2RequestBodyParameter ? (
-        <>
-          <Select label="The list of MIME types the operation can consume" options={consumes} />
-          <SchemaObject schemaObject={openAPIV2RequestBodyParameter.schema} />
-        </>
-      ) : openAPIV3RequestBody ? (
-        <Content content={openAPIV3RequestBody.content} />
-      ) : null}
+      {!isEmpty && (
+        <MediaEntries entries={mediaEntries} pickerLabel="The list of MIME types the operation can consume" />
+      )}
     </Section>
   )
 }

@@ -17,6 +17,7 @@ const expectedDefaultConfig = {
     clients: expectedDefaultOperationClients,
     default: expectedDefaultOperationClient,
   },
+  requestBody: true,
   response: true,
 }
 
@@ -37,7 +38,7 @@ test('normalizes `{ operation: true }` snippets config to the default config', (
 })
 
 test('parses `{ operation: false }` snippets config', () => {
-  expect(SnippetsSchema.parse({ operation: false })).toEqual({ operation: false, response: true })
+  expect(SnippetsSchema.parse({ operation: false })).toEqual({ operation: false, requestBody: true, response: true })
 })
 
 test('uses default clients with a custom default client', () => {
@@ -52,6 +53,7 @@ test('uses default clients with a custom default client', () => {
       clients: expectedDefaultOperationClients,
       default: { target: 'javascript', client: 'fetch' },
     },
+    requestBody: true,
     response: true,
   })
 })
@@ -75,6 +77,7 @@ test('uses default client when available with custom clients', () => {
       ],
       default: expectedDefaultOperationClient,
     },
+    requestBody: true,
     response: true,
   })
 })
@@ -112,6 +115,7 @@ test('uses the single enabled client when custom clients enable a single client'
         client: 'wget',
       },
     },
+    requestBody: true,
     response: true,
   })
 })
@@ -137,6 +141,7 @@ test('uses the first enabled client when the built-in default client is not enab
         client: 'axios',
       },
     },
+    requestBody: true,
     response: true,
   })
 })
@@ -175,6 +180,18 @@ test('throws when operation clients contain duplicates', () => {
   ).toThrow('Operation snippet clients must be unique.')
 })
 
+test('normalizes `{ requestBody: true }` snippets config to the default config', () => {
+  expect(SnippetsSchema.parse({ requestBody: true })).toEqual(expectedDefaultConfig)
+})
+
+test('parses `{ requestBody: false }` snippets config', () => {
+  expect(SnippetsSchema.parse({ requestBody: false })).toEqual({
+    operation: expectedDefaultConfig.operation,
+    requestBody: false,
+    response: true,
+  })
+})
+
 test('normalizes `{ response: true }` snippets config to the default config', () => {
   expect(SnippetsSchema.parse({ response: true })).toEqual(expectedDefaultConfig)
 })
@@ -182,6 +199,7 @@ test('normalizes `{ response: true }` snippets config to the default config', ()
 test('parses `{ response: false }` snippets config', () => {
   expect(SnippetsSchema.parse({ response: false })).toEqual({
     operation: expectedDefaultConfig.operation,
+    requestBody: true,
     response: false,
   })
 })

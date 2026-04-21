@@ -24,6 +24,10 @@ export function getContentEntries(content: Content): MediaEntry[] {
   return entries
 }
 
+export function isJsonLikeMediaType(mediaType: string | undefined): boolean {
+  return mediaType?.includes('json') ?? false
+}
+
 export type Content = Record<string, OpenAPIV3.MediaTypeObject | OpenAPIV3_1.MediaTypeObject>
 
 export interface MediaEntry {

@@ -12,11 +12,12 @@ test('displays the request body for a v2.0 schema', async ({ docPage }) => {
   const requestBody = docPage.getRequestBody()
 
   await expect(requestBody).toBeVisible()
-
   await expect(requestBody.getByText('Animal to add')).toBeVisible()
 
-  await expect(requestBody.getByText('>= 1 properties')).toBeVisible()
-  await expect(requestBody.getByText('<= 4 properties')).toBeVisible()
+  const panel = docPage.getVisibleRequestBodyPanel()
+
+  await expect(panel.getByText('>= 1 properties')).toBeVisible()
+  await expect(panel.getByText('<= 4 properties')).toBeVisible()
 
   const nameParameter = docPage.getRequestBodyParameter('name')
 
@@ -34,6 +35,23 @@ test('displays the request body for a v2.0 schema', async ({ docPage }) => {
   await expect(additionalProperties.getByText('additional properties')).toBeVisible()
 })
 
+test('displays a generated request body example for a v2.0 schema', async ({ docPage }) => {
+  await docPage.goto('/v2/animals/operations/addanimal/')
+
+  const requestBody = docPage.getRequestBody()
+
+  await requestBody.getByRole('combobox').selectOption('application/json')
+
+  const example = docPage.getVisibleExample(requestBody)
+
+  await expect(example).toBeVisible()
+  await expect(example).toContainText('"name": "example"')
+
+  await requestBody.getByRole('combobox').selectOption('application/xml')
+
+  await expect(example).toHaveCount(0)
+})
+
 test('displays the request body for a v3.0 schema', async ({ docPage }) => {
   await docPage.goto('/v3/animals/operations/addanimal/')
 
@@ -46,6 +64,24 @@ test('displays the request body for a v3.0 schema', async ({ docPage }) => {
   await expect(requestBody.getByText('Animal to add')).toBeVisible()
 
   expect(await requestBody.getByRole('combobox').inputValue()).toBe('application/json')
+})
+
+test('displays a generated request body example for a v3.0 schema', async ({ docPage }) => {
+  await docPage.goto('/v3/animals/operations/hamsters')
+
+  const requestBody = docPage.getRequestBody()
+
+  await requestBody.getByRole('combobox').selectOption('application/json')
+
+  const example = docPage.getVisibleExample(requestBody)
+
+  await expect(example).toBeVisible()
+  await expect(example).toContainText('"id": 1')
+  await expect(example).toContainText('"name": "example"')
+
+  await requestBody.getByRole('combobox').selectOption('application/x-www-form-urlencoded')
+
+  await expect(example).toHaveCount(0)
 })
 
 test('supports schema object for implicit objects', async ({ docPage }) => {
@@ -156,13 +192,15 @@ test('sanitizes schema object used with the `oneOf` or `anyOf` property', async 
 
   await expect(requestBody.getByRole('tab')).toContainText(['object', 'object'])
 
-  await expect(requestBody.getByText('name')).toBeVisible()
-  await expect(requestBody.getByText('age')).not.toBeVisible()
+  const schemaPanel = docPage.getVisibleMediaPanel(requestBody).last()
+
+  await expect(schemaPanel.getByText('name')).toBeVisible()
+  await expect(schemaPanel.getByText('age')).toHaveCount(0)
 
   await requestBody.getByRole('tab', { name: 'object' }).nth(1).click()
 
-  await expect(requestBody.getByText('name')).not.toBeVisible()
-  await expect(requestBody.getByText('age')).toBeVisible()
+  await expect(schemaPanel.getByText('name')).toHaveCount(0)
+  await expect(schemaPanel.getByText('age')).toBeVisible()
 })
 
 test('supports schema object `not` property', async ({ docPage }) => {
@@ -195,6 +233,10 @@ test('displays examples', async ({ docPage }) => {
   const requestBody = docPage.getRequestBody()
 
   await expect(requestBody.getByText('Aubrey')).toBeVisible()
+
+  await requestBody.getByRole('tab', { name: 'object' }).click()
+
+  await expect(requestBody.getByText(`{ "name": "Harley"}`)).toBeVisible()
 })
 
 test('displays the global `consumes` property for a v2.0 schema', async ({ docPage }) => {
