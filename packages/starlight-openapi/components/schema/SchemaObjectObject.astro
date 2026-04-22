@@ -5,17 +5,17 @@ import Keys from '../Keys.astro'
 import Tags from '../Tags.astro'
 import Type from '../Type.astro'
 
-import Schema from './SchemaObject.astro'
+import Schema, { type HideSchemaExampleProps } from './SchemaObject.astro'
 import SchemaObjectAllOf from './SchemaObjectAllOf.astro'
 import SchemaObjectObjectProperties from './SchemaObjectObjectProperties.astro'
 
-interface Props {
+interface Props extends HideSchemaExampleProps {
   nested: boolean
   parents?: SchemaObject[]
   schemaObject: SchemaObject
 }
 
-const { nested, parents = [], schemaObject } = Astro.props
+const { hideExample, nested, parents = [], schemaObject } = Astro.props
 
 const properties = getProperties(schemaObject)
 ---
@@ -31,15 +31,24 @@ const properties = getProperties(schemaObject)
     ]}
   />
   <Keys>
-    <SchemaObjectObjectProperties parents={[...parents, schemaObject]} {properties} required={schemaObject.required} />
-    <SchemaObjectAllOf {nested} {parents} {schemaObject} />
+    <SchemaObjectObjectProperties
+      hideExample={hideExample}
+      parents={[...parents, schemaObject]}
+      {properties}
+      required={schemaObject.required}
+    />
+    <SchemaObjectAllOf {hideExample} {nested} {parents} {schemaObject} />
     {
       schemaObject.additionalProperties && (
         <Key additional name="key">
           {schemaObject.additionalProperties === true ? (
             <Type>any</Type>
           ) : isAdditionalPropertiesWithSchemaObject(schemaObject.additionalProperties) ? (
-            <Schema parents={[...parents, schemaObject]} schemaObject={schemaObject.additionalProperties} />
+            <Schema
+              {hideExample}
+              parents={[...parents, schemaObject]}
+              schemaObject={schemaObject.additionalProperties}
+            />
           ) : null}
         </Key>
       )

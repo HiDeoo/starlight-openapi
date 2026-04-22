@@ -49,6 +49,22 @@ test('displays the responses for a v3.0 schema', async ({ docPage }) => {
   await expect(example).toContainText('"message": "example"')
 })
 
+test('hides nested schema examples when a response example is displayed', async ({ docPage }) => {
+  await docPage.goto('/v3/animals/operations/listbirds/')
+
+  const okResponse = docPage.getResponse('200')
+
+  const panel = docPage.getVisibleMediaPanel(okResponse)
+
+  await expect(panel.locator('.sl-openapi-examples')).toHaveCount(1)
+
+  const example = docPage.getVisibleExample(okResponse)
+
+  await expect(example).toContainText('"id": 1')
+  await expect(example).toContainText('"name": "dog"')
+  await expect(example).toContainText('"tag": "pet"')
+})
+
 test('displays the global `produces` property for a v2.0 schema', async ({ docPage }) => {
   await docPage.goto('/v2/petstore-simple/operations/addpet/')
 

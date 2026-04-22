@@ -9,16 +9,17 @@ import {
 } from '../../libs/schemaObject'
 import Items from '../Items.astro'
 
+import type { HideSchemaExampleProps } from './SchemaObject.astro'
 import SchemaObjectObjectProperties from './SchemaObjectObjectProperties.astro'
 import SchemaObjects from './SchemaObjects.astro'
 
-interface Props {
+interface Props extends HideSchemaExampleProps {
   nested: boolean
   parents?: SchemaObject[]
   schemaObject: SchemaObject
 }
 
-const { nested, schemaObject, parents = [] } = Astro.props
+const { hideExample, nested, schemaObject, parents = [] } = Astro.props
 ---
 
 {
@@ -29,6 +30,7 @@ const { nested, schemaObject, parents = [] } = Astro.props
       if (schemaObjects !== undefined) {
         return (
           <SchemaObjects
+            {hideExample}
             parents={[...parents, schemaObject]}
             discriminator={schemaObject.discriminator}
             {nested}
@@ -39,16 +41,18 @@ const { nested, schemaObject, parents = [] } = Astro.props
         return (
           <>
             <SchemaObjectObjectProperties
+              {hideExample}
               parents={[...parents, schemaObject]}
               properties={getProperties(allOfSchemaObject)}
               required={allOfSchemaObject.required}
             />
-            <Astro.self {nested} parents={[...parents, schemaObject]} schemaObject={allOfSchemaObject} />
+            <Astro.self {hideExample} {nested} parents={[...parents, schemaObject]} schemaObject={allOfSchemaObject} />
           </>
         )
       }
       return (
         <Items
+          {hideExample}
           items={allOfSchemaObject}
           negated={allOfSchemaObject.not !== undefined}
           nullable={getNullable(allOfSchemaObject)}

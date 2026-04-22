@@ -6,9 +6,9 @@ import { isObjectLike } from '../../libs/predicate'
 import type { Discriminator, SchemaObjects, SchemaObject as SchemaObjectType } from '../../libs/schemaObject'
 import Tag from '../Tag.astro'
 
-import SchemaObject from './SchemaObject.astro'
+import SchemaObject, { type HideSchemaExampleProps } from './SchemaObject.astro'
 
-interface Props {
+interface Props extends HideSchemaExampleProps {
   discriminator: Discriminator
   nested: boolean
   parents?: SchemaObjectType[]
@@ -17,6 +17,7 @@ interface Props {
 
 const {
   discriminator,
+  hideExample,
   nested,
   parents = [],
   schemaObjects: { schemaObjects, type },
@@ -43,7 +44,7 @@ const humanReadableType: Record<SchemaObjects['type'], string> = {
   {
     schemaObjects.map((schemaObject) => (
       <TabItem label={schemaObject.title ?? getType(schemaObject) ?? 'unknown'}>
-        <SchemaObject {parents} {nested} schemaObject={schemaObject} />
+        <SchemaObject {hideExample} {parents} {nested} schemaObject={schemaObject} />
       </TabItem>
     ))
   }
