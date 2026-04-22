@@ -227,7 +227,8 @@ paths:
             application/xml:
               schema:
                 type: integer
-              example: 30
+              example: |
+                <limit>30</limit>
       responses:
         '200':
           description: A paged array of cats

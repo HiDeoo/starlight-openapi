@@ -148,7 +148,8 @@ test('uses the `content` property over a schema', async ({ docPage }) => {
   await expect(limitParameter.getByText('integer').first()).not.toBeVisible()
   await expect(limitParameter.getByText('integer').last()).toBeVisible()
   await expect(limitParameter.getByRole('heading', { level: 5, name: 'Example' })).toBeVisible()
-  await expect(limitParameter.getByText('30')).toBeVisible()
+  await expect(limitParameter.getByText('<limit>30</limit>')).toBeVisible()
+  await expect(limitParameter.locator('pre[data-language="xml"]')).toBeVisible()
 
   expect(await docPage.getMediaTypePicker(docPage.getResponse('200')).inputValue()).toBe('application/json')
 })

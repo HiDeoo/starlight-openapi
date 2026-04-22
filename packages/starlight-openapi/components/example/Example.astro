@@ -25,7 +25,9 @@ function getFallbackValue(value: unknown): string {
   return formatParameterValue(value, true)
 }
 
-function getExampleLang(code: string, type: string | undefined) {
+function getExampleLang(value: unknown, code: string, type: string | undefined) {
+  if (typeof value === 'string' && type?.includes('xml')) return 'xml'
+
   switch (type) {
     case 'application/json': {
       return 'json'
@@ -55,7 +57,7 @@ const code = exampleToRender ? getExampleValue(exampleToRender.value).trim() : '
           <a href={exampleToRender.externalValue}>{exampleToRender.externalValue}</a>
         </Text>
       )}
-      {code.length > 0 && <Code {code} lang={getExampleLang(code, type)} />}
+      {code.length > 0 && <Code {code} lang={getExampleLang(exampleToRender.value, code, type)} />}
     </div>
   )
 }
