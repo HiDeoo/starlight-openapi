@@ -21,7 +21,7 @@ const { example, examples, generated, parameter, type } = Astro.props
     examples ? (
       <div class="sl-openapi-examples">
         <h5 class="sl-openapi-examples-heading">Examples</h5>
-        <ContentPicker label="Select example" types={Object.keys(examples)}>
+        <ContentPicker label="Select example" singleLabel="Example" types={Object.keys(examples)}>
           {Object.entries(examples).map(([exampleType, data], index) => (
             <div data-openapi-content-type={exampleType} hidden={index > 0} role="tabpanel">
               <Example example={data} {type} />

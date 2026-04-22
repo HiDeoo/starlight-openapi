@@ -35,13 +35,12 @@ test('displays the responses for a v3.0 schema', async ({ docPage }) => {
 
   await expect(okResponse.getByText('animal response')).toBeVisible()
 
-  expect(await docPage.getMediaTypePicker(okResponse).inputValue()).toBe('application/json')
+  await expect(docPage.getMediaTypePickerValue(okResponse)).toHaveText('application/json')
 
   const defaultResponse = docPage.getResponse('default')
 
   await expect(defaultResponse.getByText('unexpected error')).toBeVisible()
-
-  expect(await docPage.getMediaTypePicker(defaultResponse).inputValue()).toBe('application/json')
+  await expect(docPage.getMediaTypePickerValue(defaultResponse)).toHaveText('application/json')
 
   const example = docPage.getVisibleExample(defaultResponse)
 
@@ -69,7 +68,10 @@ test('hides nested schema examples when a response example is displayed', async 
 test('displays the global `produces` property for a v2.0 schema', async ({ docPage }) => {
   await docPage.goto('/v2/petstore-simple/operations/addpet/')
 
-  await docPage.getMediaTypePicker(docPage.getResponse('200')).selectOption('application/json')
+  const okResponse = docPage.getResponse('200')
+
+  await expect(docPage.getMediaTypePicker(okResponse)).toHaveCount(0)
+  await expect(docPage.getMediaTypePickerValue(okResponse)).toHaveText('application/json')
 })
 
 test('overrides the global `produces` property for a v2.0 schema', async ({ docPage }) => {

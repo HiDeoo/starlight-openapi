@@ -27,7 +27,7 @@ const namedEntries = isSingleEntryWithoutMediaType
       type={entries[0]?.mediaType}
     />
   ) : (
-    <ContentPicker label={pickerLabel} types={namedEntries.map((entry) => entry.mediaType)}>
+    <ContentPicker label={pickerLabel} singleLabel="Media type" types={namedEntries.map((entry) => entry.mediaType)}>
       {namedEntries.map((entry, index) => (
         <div data-openapi-content-type={entry.mediaType} hidden={index > 0} role="tabpanel">
           <Schema

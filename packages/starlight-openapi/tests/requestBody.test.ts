@@ -64,7 +64,7 @@ test('displays the request body for a v3.0 schema', async ({ docPage }) => {
 
   await expect(requestBody.getByText('Animal to add')).toBeVisible()
 
-  expect(await docPage.getMediaTypePicker(requestBody).inputValue()).toBe('application/json')
+  await expect(docPage.getMediaTypePickerValue(requestBody)).toHaveText('application/json')
 })
 
 test('displays a generated request body example for a v3.0 schema', async ({ docPage }) => {
@@ -254,7 +254,10 @@ test('displays examples', async ({ docPage }) => {
 test('displays the global `consumes` property for a v2.0 schema', async ({ docPage }) => {
   await docPage.goto('/v2/petstore-simple/operations/addpet/')
 
-  await docPage.getMediaTypePicker(docPage.getRequestBody()).selectOption('application/json')
+  const requestBody = docPage.getRequestBody()
+
+  await expect(docPage.getMediaTypePicker(requestBody)).toHaveCount(0)
+  await expect(docPage.getMediaTypePickerValue(requestBody)).toHaveText('application/json')
 })
 
 test('overrides the global `consumes` property for a v2.0 schema', async ({ docPage }) => {
@@ -290,4 +293,13 @@ test('supports the `const` property in schemas', async ({ docPage }) => {
   await docPage.getSchemaTab(requestBody, 'string').nth(1).click()
 
   await expect(requestBody.getByText('Allowed value: small')).toBeVisible()
+})
+
+test('does not render a request body media type picker when there is only one media type', async ({ docPage }) => {
+  await docPage.goto('/v3/animals/operations/addanimal/')
+
+  const requestBody = docPage.getRequestBody()
+
+  await expect(docPage.getMediaTypePicker(requestBody)).toHaveCount(0)
+  await expect(docPage.getMediaTypePickerValue(requestBody)).toHaveText('application/json')
 })

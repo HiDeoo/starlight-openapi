@@ -63,6 +63,13 @@ export class DocPage {
     return container.locator('starlight-openapi-content-picker').first().getByRole('combobox')
   }
 
+  getMediaTypePickerValue(container: Locator) {
+    return container
+      .locator('starlight-openapi-content-picker')
+      .first()
+      .locator('.sl-openapi-content-picker-select-value')
+  }
+
   getVisibleMediaPanel(container: Locator) {
     return this.#getSectionPanel(container).locator(
       ':scope > starlight-openapi-content-picker > [role="tabpanel"]:not([hidden])',
