@@ -3,7 +3,7 @@ import { expect, test } from './test'
 test('hides the parameters section with no parameters', async ({ docPage }) => {
   await docPage.goto('/v3/animals/operations/listcats/')
 
-  await expect(docPage.page.getByRole('heading', { level: 2, name: 'Parameters' })).not.toBeVisible()
+  await expect(docPage.getSectionHeading('Parameters')).not.toBeVisible()
 })
 
 test('displays all parameters grouped by location', async ({ docPage }) => {
@@ -113,10 +113,11 @@ test('displays multiple examples', async ({ docPage }) => {
   await docPage.goto('/v3/animals/operations/listdogs/')
 
   const limitParameter = docPage.getParameter('query', 'limit')
+  const mediaTypeSelector = docPage.getMediaTypePicker(limitParameter)
 
   await expect(limitParameter.getByRole('heading', { level: 5, name: 'Examples' })).toBeVisible()
 
-  await limitParameter.getByRole('combobox').selectOption('single')
+  await mediaTypeSelector.selectOption('single')
 
   await expect(limitParameter.getByText('A single dog')).toBeVisible()
   await expect(limitParameter.getByText('A unique dog')).toBeVisible()
@@ -124,7 +125,7 @@ test('displays multiple examples', async ({ docPage }) => {
     'https://example.com/dogs/1',
   )
 
-  await limitParameter.getByRole('combobox').selectOption('multiple')
+  await mediaTypeSelector.selectOption('multiple')
 
   await expect(limitParameter.getByText('30')).toBeVisible()
 })
@@ -133,7 +134,7 @@ test('uses the `content` property over a schema', async ({ docPage }) => {
   await docPage.goto('/v3/animals/operations/listbears/')
 
   const limitParameter = docPage.getParameter('query', 'limit')
-  const mediaTypeSelector = limitParameter.getByRole('combobox')
+  const mediaTypeSelector = docPage.getMediaTypePicker(limitParameter)
 
   await expect(mediaTypeSelector).toBeVisible()
 
@@ -149,16 +150,14 @@ test('uses the `content` property over a schema', async ({ docPage }) => {
   await expect(limitParameter.getByRole('heading', { level: 5, name: 'Example' })).toBeVisible()
   await expect(limitParameter.getByText('30')).toBeVisible()
 
-  expect(await docPage.getResponse('200').getByRole('combobox').inputValue()).toBe('application/json')
+  expect(await docPage.getMediaTypePicker(docPage.getResponse('200')).inputValue()).toBe('application/json')
 })
 
 test('displays path parameters first then other parameters', async ({ docPage }) => {
   await docPage.goto('/petstore/operations/find-pet-by-id/')
 
   await expect(
-    docPage.page.locator(
-      'section:has(> .sl-heading-wrapper h3:first-child:text-is("Path Parameters")) + section:has(> .sl-heading-wrapper h3:first-child:text-is("Query Parameters"))',
-    ),
+    docPage.page.locator('section:has([id="path-parameters"]) + section:has([id="query-parameters"])'),
   ).toBeVisible()
 })
 

@@ -5,7 +5,7 @@ test('displays a basic overview', async ({ docPage }) => {
 
   await docPage.expectToHaveTitle('Overview')
 
-  await expect(docPage.getByRole('heading', { level: 2, name: 'Swagger Petstore 1.0.0' })).toBeVisible()
+  await expect(docPage.getSectionHeading('Swagger Petstore 1.0.0')).toBeVisible()
 
   const infos = docPage.getByRole('article').first()
 
@@ -18,7 +18,7 @@ test('displays advanced overviews', async ({ docPage }) => {
 
   await docPage.expectToHaveTitle('Overview')
 
-  await expect(docPage.getByRole('heading', { level: 2, name: 'Swagger Petstore 1.0.0' })).toBeVisible()
+  await expect(docPage.getSectionHeading('Swagger Petstore 1.0.0')).toBeVisible()
 
   await expect(
     docPage.getByText(
@@ -47,7 +47,7 @@ test('displays advanced overviews', async ({ docPage }) => {
 
   await expect(infos.getByText('OpenAPI version: 3.1.0')).toBeVisible()
 
-  await expect(docPage.getByRole('heading', { level: 2, name: 'Operations' })).toBeVisible()
+  await expect(docPage.getSectionHeading('Operations')).toBeVisible()
 
   const operations = docPage.getOperations()
   await expect(operations).toHaveCount(5)

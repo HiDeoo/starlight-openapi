@@ -157,7 +157,7 @@ test.describe('ui', () => {
 
     await expect(docPage.getOperationSnippetPicker()).not.toBeVisible()
 
-    await expect(docPage.page.locator('.sl-openapi-snippet')).toHaveCount(0)
+    await expect(docPage.getOperationSnippets()).toHaveCount(0)
   })
 
   test('does not display operation snippets for webhook operations', async ({ docPage }) => {
@@ -165,7 +165,7 @@ test.describe('ui', () => {
 
     await expect(docPage.getOperationSnippetPicker()).not.toBeVisible()
 
-    await expect(docPage.page.locator('.sl-openapi-snippet')).toHaveCount(0)
+    await expect(docPage.getOperationSnippets()).toHaveCount(0)
   })
 })
 

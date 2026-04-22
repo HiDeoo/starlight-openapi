@@ -5,11 +5,11 @@ test('displays an operation tag overview', async ({ docPage }) => {
 
   await docPage.expectToHaveTitle('Overview')
 
-  await expect(docPage.getByRole('heading', { level: 2, name: 'Items' })).toBeVisible()
+  await expect(docPage.getSectionHeading('Items')).toBeVisible()
 
   await expect(docPage.getByText('Access and manage items inside 1Password Vaults')).toBeVisible()
 
-  await expect(docPage.getByRole('heading', { level: 2, name: 'Operations' })).toBeVisible()
+  await expect(docPage.getSectionHeading('Operations')).toBeVisible()
 
   const operations = docPage.getOperations()
   await expect(operations).toHaveCount(6)

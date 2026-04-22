@@ -17,12 +17,13 @@ test('displays a generated response example for a v2.0 schema', async ({ docPage
 
   const okResponse = docPage.getResponse('200')
   const example = docPage.getVisibleExample(okResponse)
+  const mediaTypeSelector = docPage.getMediaTypePicker(okResponse)
 
-  await okResponse.getByRole('combobox').selectOption('application/json')
+  await mediaTypeSelector.selectOption('application/json')
 
   await expect(example).toBeVisible()
 
-  await okResponse.getByRole('combobox').selectOption('application/xml')
+  await mediaTypeSelector.selectOption('application/xml')
 
   await expect(example).toHaveCount(0)
 })
@@ -34,13 +35,13 @@ test('displays the responses for a v3.0 schema', async ({ docPage }) => {
 
   await expect(okResponse.getByText('animal response')).toBeVisible()
 
-  expect(await okResponse.getByRole('combobox').inputValue()).toBe('application/json')
+  expect(await docPage.getMediaTypePicker(okResponse).inputValue()).toBe('application/json')
 
   const defaultResponse = docPage.getResponse('default')
 
   await expect(defaultResponse.getByText('unexpected error')).toBeVisible()
 
-  expect(await defaultResponse.getByRole('combobox').inputValue()).toBe('application/json')
+  expect(await docPage.getMediaTypePicker(defaultResponse).inputValue()).toBe('application/json')
 
   const example = docPage.getVisibleExample(defaultResponse)
 
@@ -68,42 +69,44 @@ test('hides nested schema examples when a response example is displayed', async 
 test('displays the global `produces` property for a v2.0 schema', async ({ docPage }) => {
   await docPage.goto('/v2/petstore-simple/operations/addpet/')
 
-  await docPage.getResponse('200').getByRole('combobox').selectOption('application/json')
+  await docPage.getMediaTypePicker(docPage.getResponse('200')).selectOption('application/json')
 })
 
 test('overrides the global `produces` property for a v2.0 schema', async ({ docPage }) => {
   await docPage.goto('/v2/animals/operations/addanimal/')
 
   const okResponse = docPage.getResponse('200')
+  const mediaTypeSelector = docPage.getMediaTypePicker(okResponse)
 
-  await okResponse.getByRole('combobox').selectOption('application/json')
-  await okResponse.getByRole('combobox').selectOption('application/xml')
+  await mediaTypeSelector.selectOption('application/json')
+  await mediaTypeSelector.selectOption('application/xml')
 })
 
 test('display the examples for a v2.0 schema', async ({ docPage }) => {
   await docPage.goto('/v2/animals/operations/findanimals/')
 
   const okResponse = docPage.getResponse('200')
+  const mediaTypeSelector = docPage.getMediaTypePicker(okResponse)
 
   await expect(okResponse.getByText('animal response')).toBeVisible()
 
-  await okResponse.getByRole('combobox').selectOption('application/json')
+  await mediaTypeSelector.selectOption('application/json')
 
   const example = docPage.getVisibleExample(okResponse)
 
   await expect(example).toBeVisible()
   await expect(example.getByText(`[ { "id": 1, "name": "Bessy" }, { "id": 2, "name": "Hazel" }]`)).toBeVisible()
 
-  await okResponse.getByRole('combobox').selectOption('application/xml')
+  await mediaTypeSelector.selectOption('application/xml')
 
   await expect(example).toBeVisible()
   await expect(example.getByText(`[ { "id": 3, "name": "Cleo" }, { "id": 4, "name": "Daisy" }]`)).toBeVisible()
 
-  await okResponse.getByRole('combobox').selectOption('text/xml')
+  await mediaTypeSelector.selectOption('text/xml')
 
   await expect(example).toHaveCount(0)
 
-  await okResponse.getByRole('combobox').selectOption('text/html')
+  await mediaTypeSelector.selectOption('text/html')
 
   await expect(example).toHaveCount(0)
 })

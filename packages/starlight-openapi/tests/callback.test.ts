@@ -3,7 +3,7 @@ import { expect, test } from './test'
 test('hides the callback section with no callbacks', async ({ docPage }) => {
   await docPage.goto('/v3/animals/operations/listcats/')
 
-  await expect(docPage.page.getByRole('heading', { level: 2, name: 'Callbacks' })).not.toBeVisible()
+  await expect(docPage.getSectionHeading('Callbacks')).not.toBeVisible()
 })
 
 test('displays callback sections', async ({ docPage }) => {

@@ -39,15 +39,16 @@ test('displays a generated request body example for a v2.0 schema', async ({ doc
   await docPage.goto('/v2/animals/operations/addanimal/')
 
   const requestBody = docPage.getRequestBody()
+  const mediaTypeSelector = docPage.getMediaTypePicker(requestBody)
 
-  await requestBody.getByRole('combobox').selectOption('application/json')
+  await mediaTypeSelector.selectOption('application/json')
 
   const example = docPage.getVisibleExample(requestBody)
 
   await expect(example).toBeVisible()
   await expect(example).toContainText('"name": "example"')
 
-  await requestBody.getByRole('combobox').selectOption('application/xml')
+  await mediaTypeSelector.selectOption('application/xml')
 
   await expect(example).toHaveCount(0)
 })
@@ -63,15 +64,16 @@ test('displays the request body for a v3.0 schema', async ({ docPage }) => {
 
   await expect(requestBody.getByText('Animal to add')).toBeVisible()
 
-  expect(await requestBody.getByRole('combobox').inputValue()).toBe('application/json')
+  expect(await docPage.getMediaTypePicker(requestBody).inputValue()).toBe('application/json')
 })
 
 test('displays a generated request body example for a v3.0 schema', async ({ docPage }) => {
   await docPage.goto('/v3/animals/operations/hamsters')
 
   const requestBody = docPage.getRequestBody()
+  const mediaTypeSelector = docPage.getMediaTypePicker(requestBody)
 
-  await requestBody.getByRole('combobox').selectOption('application/json')
+  await mediaTypeSelector.selectOption('application/json')
 
   const example = docPage.getVisibleExample(requestBody)
 
@@ -79,7 +81,7 @@ test('displays a generated request body example for a v3.0 schema', async ({ doc
   await expect(example).toContainText('"id": 1')
   await expect(example).toContainText('"name": "example"')
 
-  await requestBody.getByRole('combobox').selectOption('application/x-www-form-urlencoded')
+  await mediaTypeSelector.selectOption('application/x-www-form-urlencoded')
 
   await expect(example).toBeVisible()
   await expect(example).toContainText('id=1&name=example')
@@ -99,8 +101,8 @@ test('displays authored x-www-form-urlencoded request body examples', async ({ d
 test('supports schema object for implicit objects', async ({ docPage }) => {
   await docPage.goto('/v3/animals/operations/hamsters')
 
-  await expect(docPage.getRequestBodyParameter('id').first()).toBeVisible()
-  await expect(docPage.getRequestBodyParameter('name').first()).toBeVisible()
+  await expect(docPage.getRequestBodyParameter('id')).toBeVisible()
+  await expect(docPage.getRequestBodyParameter('name')).toBeVisible()
 })
 
 test('supports schema object `allOf` property for explicit objects', async ({ docPage }) => {
@@ -146,9 +148,9 @@ test('supports schema object `allOf` property with nested schema objects like `a
 
   await expect(requestBody.getByText('Any of:')).toBeVisible()
 
-  await expect(requestBody.getByRole('tab')).toContainText(['basic details', 'advanced details'])
+  await expect(docPage.getSchemaTabs(requestBody)).toContainText(['basic details', 'advanced details'])
 
-  await requestBody.getByRole('tab', { name: 'advanced details' }).click()
+  await docPage.getSchemaTab(requestBody, 'advanced details').click()
 
   await expect(requestBody.getByText('age')).toBeVisible()
 })
@@ -160,11 +162,11 @@ test('supports schema object `oneOf` property', async ({ docPage }) => {
 
   await expect(requestBody.getByText('One of:')).toBeVisible()
 
-  await expect(requestBody.getByRole('tab')).toContainText(['string', 'object'])
+  await expect(docPage.getSchemaTabs(requestBody)).toContainText(['string', 'object'])
 
   await expect(requestBody.getByText('Aubrey')).toBeVisible()
 
-  await requestBody.getByRole('tab', { name: 'object' }).click()
+  await docPage.getSchemaTab(requestBody, 'object').click()
 
   await expect(requestBody.getByText(`{ "name": "Harley"}`)).toBeVisible()
 })
@@ -176,11 +178,11 @@ test('supports schema object `anyOf` property', async ({ docPage }) => {
 
   await expect(requestBody.getByText('Any of:')).toBeVisible()
 
-  await expect(requestBody.getByRole('tab')).toContainText(['object', 'object'])
+  await expect(docPage.getSchemaTabs(requestBody)).toContainText(['object', 'object'])
 
   await expect(requestBody.getByText('A representation of an animal')).toBeVisible()
 
-  await requestBody.getByRole('tab', { name: 'object' }).nth(1).click()
+  await docPage.getSchemaTab(requestBody, 'object').nth(1).click()
 
   await expect(requestBody.getByText('integer format: int32')).toBeVisible()
 })
@@ -192,7 +194,7 @@ test('supports array using the `oneOf` or `anyOf` property', async ({ docPage })
 
   await expect(requestBody.getByText('One of:')).toBeVisible()
 
-  await expect(requestBody.getByRole('tab')).toContainText(['object', 'object'])
+  await expect(docPage.getSchemaTabs(requestBody)).toContainText(['object', 'object'])
 })
 
 test('sanitizes schema object used with the `oneOf` or `anyOf` property', async ({ docPage }) => {
@@ -202,17 +204,15 @@ test('sanitizes schema object used with the `oneOf` or `anyOf` property', async 
 
   await expect(requestBody.getByText('One of:')).toBeVisible()
 
-  await expect(requestBody.getByRole('tab')).toContainText(['object', 'object'])
+  await expect(docPage.getSchemaTabs(requestBody)).toContainText(['object', 'object'])
 
-  const schemaPanel = docPage.getVisibleMediaPanel(requestBody).last()
+  await expect(docPage.getRequestBodyParameter('name')).toBeVisible()
+  await expect(docPage.getRequestBodyParameter('age')).toHaveCount(0)
 
-  await expect(schemaPanel.getByText('name')).toBeVisible()
-  await expect(schemaPanel.getByText('age')).toHaveCount(0)
+  await docPage.getSchemaTab(requestBody, 'object').nth(1).click()
 
-  await requestBody.getByRole('tab', { name: 'object' }).nth(1).click()
-
-  await expect(schemaPanel.getByText('name')).toHaveCount(0)
-  await expect(schemaPanel.getByText('age')).toBeVisible()
+  await expect(docPage.getRequestBodyParameter('name')).toHaveCount(0)
+  await expect(docPage.getRequestBodyParameter('age')).toBeVisible()
 })
 
 test('supports schema object `not` property', async ({ docPage }) => {
@@ -246,7 +246,7 @@ test('displays examples', async ({ docPage }) => {
 
   await expect(requestBody.getByText('Aubrey')).toBeVisible()
 
-  await requestBody.getByRole('tab', { name: 'object' }).click()
+  await docPage.getSchemaTab(requestBody, 'object').click()
 
   await expect(requestBody.getByText(`{ "name": "Harley"}`)).toBeVisible()
 })
@@ -254,16 +254,17 @@ test('displays examples', async ({ docPage }) => {
 test('displays the global `consumes` property for a v2.0 schema', async ({ docPage }) => {
   await docPage.goto('/v2/petstore-simple/operations/addpet/')
 
-  await docPage.getRequestBody().getByRole('combobox').selectOption('application/json')
+  await docPage.getMediaTypePicker(docPage.getRequestBody()).selectOption('application/json')
 })
 
 test('overrides the global `consumes` property for a v2.0 schema', async ({ docPage }) => {
   await docPage.goto('/v2/animals/operations/addanimal/')
 
   const requestBody = docPage.getRequestBody()
+  const mediaTypeSelector = docPage.getMediaTypePicker(requestBody)
 
-  await requestBody.getByRole('combobox').selectOption('application/json')
-  await requestBody.getByRole('combobox').selectOption('application/xml')
+  await mediaTypeSelector.selectOption('application/json')
+  await mediaTypeSelector.selectOption('application/xml')
 })
 
 test('displays property titles when provided', async ({ docPage }) => {
@@ -282,11 +283,11 @@ test('supports the `const` property in schemas', async ({ docPage }) => {
 
   await expect(requestBody.getByText('One of:')).toBeVisible()
 
-  await expect(requestBody.getByRole('tab')).toContainText(['string', 'string'])
+  await expect(docPage.getSchemaTabs(requestBody)).toContainText(['string', 'string'])
 
   await expect(requestBody.getByText('Allowed value: large')).toBeVisible()
 
-  await requestBody.getByRole('tab', { name: 'string' }).nth(1).click()
+  await docPage.getSchemaTab(requestBody, 'string').nth(1).click()
 
   await expect(requestBody.getByText('Allowed value: small')).toBeVisible()
 })
