@@ -28,7 +28,7 @@ export async function parseTestSchema(
         operations: { badges: false, labels: 'summary', sort: 'document' },
         tags: { sort: 'document' },
       },
-      snippets: { generated: false },
+      snippets: { operation: false },
       ...schemaConfig,
     }),
   )

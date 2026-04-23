@@ -2,13 +2,12 @@
 import { getBound, getType, type Items } from '../libs/items'
 import { isSchemaObjectObject, type SchemaObject as SchemaObjectType } from '../libs/schemaObject'
 
-import SchemaObject from './schema/SchemaObject.astro'
+import SchemaObject, { type HideSchemaExampleProps } from './schema/SchemaObject.astro'
 import Tag from './Tag.astro'
 import Tags from './Tags.astro'
 import Type from './Type.astro'
 
-interface Props {
-  hideExample?: boolean
+interface Props extends HideSchemaExampleProps {
   items: Items
   negated?: boolean | undefined
   nullable?: boolean | undefined

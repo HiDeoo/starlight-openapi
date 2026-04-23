@@ -3,11 +3,11 @@ import { HTTPSnippet, type HarRequest as HTTPSnippetHarRequest } from 'httpsnipp
 import { getOperationHarRequest, type HarRequest } from './har'
 import type { OperationCodeSample, PathItemOperation } from './operation'
 import type { Schema } from './schemas/schema'
-import type { SnippetReference } from './schemas/snippet'
+import type { SnippetOperationReference } from './schemas/snippet'
 
 const snippetPlaceholderRegex = /^<[^<>]+>$/
 
-export const GeneratedSnippetTargetMetadata: Record<SnippetReference['target'], { label: string }> = {
+export const OperationSnippetTargetMetadata: Record<SnippetOperationReference['target'], { label: string }> = {
   c: { label: 'C' },
   csharp: { label: 'C#' },
   go: { label: 'Go' },
@@ -18,7 +18,7 @@ export const GeneratedSnippetTargetMetadata: Record<SnippetReference['target'], 
   shell: { label: 'Shell' },
 }
 
-export const GeneratedSnippetClientMetadata: GeneratedSnippetClientMetadata = {
+export const OperationSnippetClientMetadata: OperationSnippetClientMetadata = {
   c: {
     libcurl: { label: 'libcurl', lang: 'c' },
   },
@@ -75,20 +75,20 @@ function normalizeOperationCodeSamples(codeSamples: OperationCodeSample[] | unde
 
 function generateOperationSnippets(schema: Schema, operation: PathItemOperation): OperationSnippets | undefined {
   if (!operation.path) return
-  if (!schema.config.snippets.generated) return
+  if (!schema.config.snippets.operation) return
 
   const harRequest = getOperationHarRequest(schema, operation)
   let items: OperationSnippet[] = []
 
-  for (const reference of schema.config.snippets.generated.clients) {
+  for (const reference of schema.config.snippets.operation.clients) {
     const content = generateOperationSnippet(harRequest, reference)
     if (!content) continue
 
-    const clientMetadata = getGeneratedSnippetClientMetadata(reference)
+    const clientMetadata = getOperationSnippetClientMetadata(reference)
 
     items.push({
       content,
-      groupLabel: GeneratedSnippetTargetMetadata[reference.target].label,
+      groupLabel: OperationSnippetTargetMetadata[reference.target].label,
       id: `${reference.target}:${reference.client}`,
       label: clientMetadata.label,
       lang: clientMetadata.lang,
@@ -100,13 +100,13 @@ function generateOperationSnippets(schema: Schema, operation: PathItemOperation)
 
   items = items.toSorted(sortOperationSnippets)
 
-  const configuredDefaultId = `${schema.config.snippets.generated.default.target}:${schema.config.snippets.generated.default.client}`
+  const configuredDefaultId = `${schema.config.snippets.operation.default.target}:${schema.config.snippets.operation.default.client}`
   const defaultId = items.some((item) => item.id === configuredDefaultId) ? configuredDefaultId : firstItemId
 
   return { defaultId, items }
 }
 
-function generateOperationSnippet(harRequest: HarRequest, reference: SnippetReference): string | undefined {
+function generateOperationSnippet(harRequest: HarRequest, reference: SnippetOperationReference): string | undefined {
   try {
     const httpSnippet = new HTTPSnippet(toHTTPSnippetHarRequest(harRequest))
     const httpSnippetReference = toHTTPSnippetReference(reference)
@@ -120,9 +120,9 @@ function generateOperationSnippet(harRequest: HarRequest, reference: SnippetRefe
   }
 }
 
-function getGeneratedSnippetClientMetadata(reference: SnippetReference): GeneratedSnippetClientMetadataValue {
-  return GeneratedSnippetClientMetadata[reference.target][
-    reference.client as keyof (typeof GeneratedSnippetClientMetadata)[typeof reference.target]
+function getOperationSnippetClientMetadata(reference: SnippetOperationReference): OperationSnippetClientMetadataValue {
+  return OperationSnippetClientMetadata[reference.target][
+    reference.client as keyof (typeof OperationSnippetClientMetadata)[typeof reference.target]
   ]
 }
 
@@ -168,8 +168,8 @@ function toHTTPSnippetHarRequest(harRequest: HarRequest): HTTPSnippetHarRequest 
   }
 }
 
-function toHTTPSnippetReference(reference: SnippetReference) {
-  const metadata = getGeneratedSnippetClientMetadata(reference)
+function toHTTPSnippetReference(reference: SnippetOperationReference) {
+  const metadata = getOperationSnippetClientMetadata(reference)
 
   return { target: reference.target, client: metadata.httpsnippetClient ?? reference.client }
 }
@@ -178,16 +178,16 @@ function sortOperationSnippets(a: OperationSnippet, b: OperationSnippet): number
   return (a.groupLabel ?? '').localeCompare(b.groupLabel ?? '') || a.label.localeCompare(b.label)
 }
 
-interface GeneratedSnippetClientMetadataValue {
+interface OperationSnippetClientMetadataValue {
   httpsnippetClient?: string
   label: string
   lang: string
 }
 
-type GeneratedSnippetClientMetadata = {
-  [Target in SnippetReference['target']]: Record<
-    Extract<SnippetReference, { target: Target }>['client'],
-    GeneratedSnippetClientMetadataValue
+type OperationSnippetClientMetadata = {
+  [Target in SnippetOperationReference['target']]: Record<
+    Extract<SnippetOperationReference, { target: Target }>['client'],
+    OperationSnippetClientMetadataValue
   >
 }
 

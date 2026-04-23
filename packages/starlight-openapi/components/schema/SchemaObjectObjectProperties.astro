@@ -5,15 +5,15 @@ import Key from '../Key.astro'
 import Tag from '../Tag.astro'
 import Type from '../Type.astro'
 
-import Schema from './SchemaObject.astro'
+import Schema, { type HideSchemaExampleProps } from './SchemaObject.astro'
 
-interface Props {
+interface Props extends HideSchemaExampleProps {
   parents: SchemaObject[]
   properties: Properties
   required: string[] | undefined
 }
 
-const { parents, properties, required } = Astro.props
+const { hideExample, parents, properties, required } = Astro.props
 ---
 
 {
@@ -30,7 +30,7 @@ const { parents, properties, required } = Astro.props
             <Tag>recursive</Tag>
           </div>
         ) : (
-          <Schema parents={parents} nested schemaObject={schema} />
+          <Schema {hideExample} parents={parents} nested schemaObject={schema} />
         )}
       </Key>
     )

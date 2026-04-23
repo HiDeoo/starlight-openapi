@@ -25,7 +25,9 @@ function getFallbackValue(value: unknown): string {
   return formatParameterValue(value, true)
 }
 
-function getExampleLang(code: string, type: string | undefined) {
+function getExampleLang(value: unknown, code: string, type: string | undefined) {
+  if (typeof value === 'string' && type?.includes('xml')) return 'xml'
+
   switch (type) {
     case 'application/json': {
       return 'json'
@@ -55,7 +57,7 @@ const code = exampleToRender ? getExampleValue(exampleToRender.value).trim() : '
           <a href={exampleToRender.externalValue}>{exampleToRender.externalValue}</a>
         </Text>
       )}
-      {code.length > 0 && <Code {code} lang={getExampleLang(code, type)} />}
+      {code.length > 0 && <Code {code} lang={getExampleLang(exampleToRender.value, code, type)} />}
     </div>
   )
 }
@@ -65,6 +67,10 @@ const code = exampleToRender ? getExampleValue(exampleToRender.value).trim() : '
     background-color: var(--sl-color-gray-5);
     border: 1px solid var(--sl-color-gray-4);
     margin-block: 0.5rem;
+  }
+
+  .sl-openapi-example > :global(div.expressive-code:last-child .frame pre) {
+    margin-block-end: 0;
   }
 
   .sl-openapi-example :global(div.expressive-code pre > code) {

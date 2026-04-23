@@ -16,11 +16,20 @@ import {
 const schemaExampleValuePrecedence = ['const', 'enum', 'default', 'example', 'examples'] as const
 const parameterExampleValuePrecedence = ['example', 'examples', 'default', 'const', 'enum'] as const
 
+export function getSchemaAuthoredExampleValue(rootSchema: SchemaObject): unknown {
+  return getOrCreateSchemaExampleValue(rootSchema, { createFallback: false })
+}
+
 export function createSchemaExampleValue(rootSchema: SchemaObject): unknown {
+  return getOrCreateSchemaExampleValue(rootSchema, { createFallback: true })
+}
+
+function getOrCreateSchemaExampleValue(rootSchema: SchemaObject, options: { createFallback: boolean }): unknown {
   const seen = new WeakSet<SchemaObject>()
 
   function visit(schema: SchemaObject): unknown {
     if (seen.has(schema)) {
+      if (!options.createFallback) return undefined
       if (isArraySchemaType(schema.type)) return []
       if (isSchemaObjectObject(schema)) return {}
 
@@ -34,26 +43,17 @@ export function createSchemaExampleValue(rootSchema: SchemaObject): unknown {
       const value = getSchemaExampleValueByPrecedence(schema)
       if (value !== undefined) return value
 
-      // For `oneOf` and `anyOf`, use the schema object with the highest fallback priority based on an explicit order
-      // of precedence.
+      // For `oneOf` and `anyOf`, try the schema objects based on a priority order and return the first authored or
+      // generated value, depending on the `createFallback` option.
       const otherSchemaObjects = getSchemaObjects(schema)?.schemaObjects
       if (otherSchemaObjects) {
-        const [firstSchemaObject, ...remainingSchemaObjects] = otherSchemaObjects
+        const sortedSchemaObjects = otherSchemaObjects.toSorted(
+          (a, b) => getSchemaExamplePriority(b) - getSchemaExamplePriority(a),
+        )
 
-        if (firstSchemaObject) {
-          let selectedSchemaObject = firstSchemaObject
-          let higherPriority = getSchemaExamplePriority(firstSchemaObject)
-
-          for (const remainingSchemaObject of remainingSchemaObjects) {
-            const priority = getSchemaExamplePriority(remainingSchemaObject)
-
-            if (priority > higherPriority) {
-              selectedSchemaObject = remainingSchemaObject
-              higherPriority = priority
-            }
-          }
-
-          return visit(selectedSchemaObject)
+        for (const otherSchemaObject of sortedSchemaObjects) {
+          const value = visit(otherSchemaObject)
+          if (value !== undefined) return value
         }
       }
 
@@ -76,31 +76,44 @@ export function createSchemaExampleValue(rootSchema: SchemaObject): unknown {
         if (firstValue !== undefined) return firstValue
       }
 
-      // If the schema is an object, skip `readOnly` properties and recurse in all remaining properties.
+      // If the schema is an object, recurse through its properties and skip `readOnly` properties when generating a
+      // fallback example value.
       if (isSchemaObjectObject(schema)) {
         const value: Record<string, unknown> = {}
 
         for (const [propertyName, propertySchema] of Object.entries(getProperties(schema))) {
-          if (hasDefinedValue(propertySchema, 'readOnly') && propertySchema.readOnly === true) continue
+          if (
+            options.createFallback &&
+            hasDefinedValue(propertySchema, 'readOnly') &&
+            propertySchema.readOnly === true
+          ) {
+            continue
+          }
 
-          value[propertyName] = visit(propertySchema)
+          const propertyValue = visit(propertySchema)
+          if (propertyValue !== undefined) value[propertyName] = propertyValue
         }
 
         if (Object.keys(value).length > 0) return value
-
         if (isAdditionalPropertiesWithSchemaObject(schema.additionalProperties)) {
-          return { additionalProperty: visit(schema.additionalProperties) }
+          const additionalPropertyValue = visit(schema.additionalProperties)
+          if (additionalPropertyValue !== undefined) return { additionalProperty: additionalPropertyValue }
         }
 
-        return {}
+        return options.createFallback ? {} : undefined
       }
 
       // For array types, use the first item if possible and fall back to an array of primitive values.
       if (isArraySchemaType(schema.type)) {
-        return 'items' in schema && isSchemaObject(schema.items) ? [visit(schema.items)] : ['example']
+        if ('items' in schema && isSchemaObject(schema.items)) {
+          const itemValue = visit(schema.items)
+          if (itemValue !== undefined) return [itemValue]
+        }
+
+        return options.createFallback ? ['example'] : undefined
       }
 
-      return createPrimitiveExampleValue(schema.type, getSchemaFormat(schema))
+      return options.createFallback ? createPrimitiveExampleValue(schema.type, getSchemaFormat(schema)) : undefined
     } finally {
       seen.delete(schema)
     }

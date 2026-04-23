@@ -16,8 +16,11 @@ import SchemaObjectAllOf from './SchemaObjectAllOf.astro'
 import SchemaObjectObject from './SchemaObjectObject.astro'
 import SchemaObjects from './SchemaObjects.astro'
 
-interface Props {
+export interface HideSchemaExampleProps {
   hideExample?: boolean | undefined
+}
+
+interface Props extends HideSchemaExampleProps {
   negated?: boolean
   nested?: boolean
   parents?: SchemaObject[]
@@ -25,7 +28,7 @@ interface Props {
   type?: string | undefined
 }
 
-const { hideExample = false, negated, nested = false, parents = [], schemaObject, type } = Astro.props
+const { hideExample, negated, nested = false, parents = [], schemaObject, type } = Astro.props
 
 const schemaObjects = getSchemaObjects(schemaObject)
 
@@ -34,20 +37,20 @@ const hasMany = schemaObjects !== undefined
 
 {
   hasMany ? (
-    <SchemaObjects {parents} discriminator={schemaObject.discriminator} {nested} {schemaObjects} />
+    <SchemaObjects {hideExample} {parents} discriminator={schemaObject.discriminator} {nested} {schemaObjects} />
   ) : isSchemaObject(schemaObject.not) ? (
-    <Astro.self negated schemaObject={schemaObject.not} />
+    <Astro.self {hideExample} negated schemaObject={schemaObject.not} />
   ) : (
     <>
       {schemaObject.title && <em>{schemaObject.title}</em>}
       <Md text={schemaObject.description} />
       <ExternalDocs docs={schemaObject.externalDocs} />
       {isSchemaObjectObject(schemaObject) ? (
-        <SchemaObjectObject {parents} {nested} {schemaObject} />
+        <SchemaObjectObject {hideExample} {parents} {nested} {schemaObject} />
       ) : isSchemaObjectAllOf(schemaObject) ? (
-        <SchemaObjectAllOf {nested} {parents} {schemaObject} />
+        <SchemaObjectAllOf {hideExample} {nested} {parents} {schemaObject} />
       ) : (
-        <Items {parents} items={schemaObject} {negated} nullable={getNullable(schemaObject)} {type} />
+        <Items {hideExample} {parents} items={schemaObject} {negated} nullable={getNullable(schemaObject)} {type} />
       )}
       {!hideExample && schemaObject.example !== undefined && (
         <Examples example={schemaObject.example} examples={undefined} {type} />

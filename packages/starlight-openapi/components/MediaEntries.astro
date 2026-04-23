@@ -1,0 +1,44 @@
+---
+import type { MediaEntry } from '../libs/content'
+
+import ContentPicker from './ContentPicker.astro'
+import Schema from './schema/Schema.astro'
+
+interface Props {
+  entries: MediaEntry[]
+  pickerLabel?: string | undefined
+}
+
+const { entries, pickerLabel = 'Select media type' } = Astro.props
+
+const isSingleEntryWithoutMediaType = entries.length === 1 && entries[0]?.mediaType === undefined
+const namedEntries = isSingleEntryWithoutMediaType
+  ? []
+  : entries.filter((entry): entry is MediaEntry & { mediaType: string } => entry.mediaType !== undefined)
+---
+
+{
+  isSingleEntryWithoutMediaType ? (
+    <Schema
+      example={entries[0]?.example}
+      examples={entries[0]?.examples}
+      generated={entries[0]?.generated}
+      schema={entries[0]?.schema}
+      type={entries[0]?.mediaType}
+    />
+  ) : (
+    <ContentPicker label={pickerLabel} singleLabel="Media type" types={namedEntries.map((entry) => entry.mediaType)}>
+      {namedEntries.map((entry, index) => (
+        <div data-openapi-content-type={entry.mediaType} hidden={index > 0} role="tabpanel">
+          <Schema
+            example={entry.example}
+            examples={entry.examples}
+            generated={entry.generated}
+            schema={entry.schema}
+            type={entry.mediaType}
+          />
+        </div>
+      ))}
+    </ContentPicker>
+  )
+}

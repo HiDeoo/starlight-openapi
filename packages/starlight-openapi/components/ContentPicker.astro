@@ -1,16 +1,39 @@
 ---
-import Select from './Select.astro'
+import { Icon } from '@astrojs/starlight/components'
 
 interface Props {
   label: string
+  singleLabel?: string | undefined
   types: string[] | undefined
 }
 
-const { label, types } = Astro.props
+const { label, singleLabel, types } = Astro.props
+
+const singleType = types?.length === 1 ? types[0] : undefined
 ---
 
 <starlight-openapi-content-picker>
-  <Select {label} options={types} />
+  {
+    singleType ? (
+      <div class="not-content sl-openapi-content-picker-select">
+        <span class="sr-only">{singleLabel ?? label}</span>
+        <span class="sl-openapi-content-picker-select-value">{singleType}</span>
+      </div>
+    ) : (
+      types &&
+      types.length > 1 && (
+        <label class="not-content sl-openapi-content-picker-select">
+          <span class="sr-only">{label}</span>
+          <select>
+            {types.map((type) => (
+              <option value={type}>{type}</option>
+            ))}
+          </select>
+          <Icon name="down-caret" class="sl-openapi-content-picker-select-caret" />
+        </label>
+      )
+    )
+  }
   <slot />
 </starlight-openapi-content-picker>
 
@@ -23,7 +46,7 @@ const { label, types } = Astro.props
       constructor() {
         super()
 
-        const select = this.querySelector<HTMLSelectElement>(':scope > label > select')
+        const select = this.querySelector<HTMLSelectElement>(':scope > .sl-openapi-content-picker-select > select')
 
         if (select) {
           select.addEventListener('change', (event) => {
@@ -44,3 +67,55 @@ const { label, types } = Astro.props
     },
   )
 </script>
+
+<style>
+  .sl-openapi-content-picker-select {
+    color: var(--sl-color-gray-2);
+    display: flex;
+    margin-bottom: 0.5rem;
+    position: relative;
+  }
+
+  .sl-openapi-content-picker-select:has(select):hover {
+    color: var(--sl-color-gray-1);
+  }
+
+  .sl-openapi-content-picker-select select,
+  .sl-openapi-content-picker-select-value {
+    background-color: var(--sl-color-gray-5);
+    border: 1px solid var(--sl-color-gray-4);
+    color: inherit;
+    padding-block: 0.375rem;
+    padding-inline-start: 0.5rem;
+    width: 100%;
+  }
+
+  .sl-openapi-content-picker-select select {
+    appearance: none;
+    padding-inline-end: 2rem;
+    text-overflow: ellipsis;
+  }
+
+  .sl-openapi-content-picker-select-value {
+    display: block;
+    max-inline-size: 100%;
+    overflow: hidden;
+    padding-inline-end: 0.5rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .sl-openapi-content-picker-select select:hover {
+    border-color: var(--sl-color-gray-2);
+  }
+
+  .sl-openapi-content-picker-select-caret {
+    color: inherit;
+    font-size: 1.375rem;
+    inset-inline-end: 0.8rem;
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+</style>
