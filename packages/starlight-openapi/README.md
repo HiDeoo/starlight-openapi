@@ -2,8 +2,8 @@
   <h1>starlight-openapi 🧭</h1>
   <p>Starlight plugin to generate documentation from OpenAPI/Swagger specifications.</p>
   <p>
-    <a href="https://i.imgur.com/pbOqvMT.png" title="Screenshot of starlight-openapi">
-      <img alt="Screenshot of starlight-openapi" src="https://i.imgur.com/pbOqvMT.png" width="520" />
+    <a href="https://i.imgur.com/1NvGlCw.png" title="Screenshot of starlight-openapi">
+      <img alt="Screenshot of starlight-openapi" src="https://i.imgur.com/1NvGlCw.png" width="520" />
     </a>
   </p>
 </div>
