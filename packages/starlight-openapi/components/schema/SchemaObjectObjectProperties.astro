@@ -23,15 +23,15 @@ const sameSchema = (a: SchemaObject | undefined, b: SchemaObject | undefined) =>
 
 {
   Object.entries(properties).map(([name, schema]) => {
-    const items = schema.items as SchemaObject | undefined
+    const items = 'items' in schema ? (schema.items as SchemaObject | undefined) : undefined
     const isRecursive = parents?.some(
       (parent) =>
         sameSchema(parent, schema) ||
         (isArraySchemaType(schema.type) &&
           (sameSchema(parent, items) ||
-            items?.oneOf?.some((s: SchemaObject) => sameSchema(s, parent)) ||
-            items?.anyOf?.some((s: SchemaObject) => sameSchema(s, parent)) ||
-            items?.allOf?.some((s: SchemaObject) => sameSchema(s, parent)))),
+            (items?.oneOf as SchemaObject[] | undefined)?.some((s) => sameSchema(s, parent)) ||
+            (items?.anyOf as SchemaObject[] | undefined)?.some((s) => sameSchema(s, parent)) ||
+            (items?.allOf as SchemaObject[] | undefined)?.some((s) => sameSchema(s, parent)))),
     )
 
     return (
