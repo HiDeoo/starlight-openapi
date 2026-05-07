@@ -81,6 +81,16 @@ export default defineConfig({
             sidebar: { label: 'Simple Recursion v3.0' },
           },
           {
+            base: 'api/v3/recursive-nullable-array',
+            schema: '../schemas/v3.0/recursive-nullable-array.yaml',
+            sidebar: { label: 'Recursive Nullable Array v3.1' },
+          },
+          {
+            base: 'api/v3/recursive-compound-items',
+            schema: '../schemas/v3.0/recursive-compound-items.yaml',
+            sidebar: { label: 'Recursive Compound Items v3.1' },
+          },
+          {
             base: 'api/v3/no-servers',
             schema: '../schemas/v3.0/no-servers.yaml',
             sidebar: { label: 'No Servers v3.0' },

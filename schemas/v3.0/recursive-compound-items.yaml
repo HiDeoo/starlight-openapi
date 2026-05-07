@@ -1,0 +1,37 @@
+openapi: 3.1.0
+info:
+  title: Recursive Compound Items
+  description: Reproduces cycle-detection failure with items.oneOf wrapping a circular ref.
+  version: 1.0.0
+servers:
+  - url: 'http://localhost'
+paths:
+  /shapes:
+    get:
+      summary: Get shapes
+      operationId: getShapes
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeometryCollection'
+components:
+  schemas:
+    Geometry:
+      type: object
+      properties:
+        type:
+          type: string
+    GeometryCollection:
+      allOf:
+        - $ref: '#/components/schemas/Geometry'
+        - type: object
+          properties:
+            geometries:
+              type: array
+              items:
+                oneOf:
+                  - $ref: '#/components/schemas/Geometry'
+                  - $ref: '#/components/schemas/GeometryCollection'

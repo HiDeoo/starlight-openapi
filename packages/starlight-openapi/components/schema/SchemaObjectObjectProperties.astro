@@ -1,6 +1,6 @@
 ---
 import { getType } from '../../libs/items'
-import type { Properties, SchemaObject } from '../../libs/schemaObject'
+import { isArraySchemaType, type Properties, type SchemaObject } from '../../libs/schemaObject'
 import Key from '../Key.astro'
 import Tag from '../Tag.astro'
 import Type from '../Type.astro'
@@ -14,12 +14,24 @@ interface Props extends HideSchemaExampleProps {
 }
 
 const { hideExample, parents, properties, required } = Astro.props
+
+// sanitizeSchemaObjects() spreads parents into new objects, so clones share the same allOf array
+// reference but fail strict === equality. Check allOf identity as a spread-equivalence fallback.
+const sameSchema = (a: SchemaObject | undefined, b: SchemaObject | undefined) =>
+  a !== undefined && b !== undefined && (a === b || (a.allOf !== undefined && a.allOf === b.allOf))
 ---
 
 {
   Object.entries(properties).map(([name, schema]) => {
+    const items = schema.items as SchemaObject | undefined
     const isRecursive = parents?.some(
-      (parent) => parent === schema || (schema.type === 'array' && parent === schema.items),
+      (parent) =>
+        sameSchema(parent, schema) ||
+        (isArraySchemaType(schema.type) &&
+          (sameSchema(parent, items) ||
+            items?.oneOf?.some((s: SchemaObject) => sameSchema(s, parent)) ||
+            items?.anyOf?.some((s: SchemaObject) => sameSchema(s, parent)) ||
+            items?.allOf?.some((s: SchemaObject) => sameSchema(s, parent)))),
     )
 
     return (
