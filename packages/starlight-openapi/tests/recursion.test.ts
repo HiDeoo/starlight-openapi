@@ -18,6 +18,14 @@ test('displays the recursive tag for a compound items.oneOf containing a circula
   await expect(okResponse.getByText('recursive')).toHaveCount(1)
 })
 
+test('displays the recursive tag for a compound items.anyOf containing a circular ref', async ({ docPage }) => {
+  await docPage.goto('/v3/recursive-compound-items-anyof/operations/getnodes')
+
+  const okResponse = docPage.getResponse('200')
+
+  await expect(okResponse.getByText('recursive')).toHaveCount(1)
+})
+
 test('displays the recursive tag for a recursive category schema', async ({ docPage }) => {
   await docPage.goto('/v3/recursive/operations/listcategories')
 

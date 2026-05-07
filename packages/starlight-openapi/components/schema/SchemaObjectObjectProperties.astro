@@ -15,10 +15,15 @@ interface Props extends HideSchemaExampleProps {
 
 const { hideExample, parents, properties, required } = Astro.props
 
-// sanitizeSchemaObjects() spreads parents into new objects, so clones share the same allOf array
-// reference but fail strict === equality. Check allOf identity as a spread-equivalence fallback.
+// sanitizeSchemaObjects() spreads parents into new objects, so clones share the same allOf/oneOf/anyOf
+// array reference but fail strict === equality. Check keyword array identity as a fallback.
 const sameSchema = (a: SchemaObject | undefined, b: SchemaObject | undefined) =>
-  a !== undefined && b !== undefined && (a === b || (a.allOf !== undefined && a.allOf === b.allOf))
+  a !== undefined &&
+  b !== undefined &&
+  (a === b ||
+    (a.allOf !== undefined && a.allOf === b.allOf) ||
+    (a.oneOf !== undefined && a.oneOf === b.oneOf) ||
+    (a.anyOf !== undefined && a.anyOf === b.anyOf))
 ---
 
 {
