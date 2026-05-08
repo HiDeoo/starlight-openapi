@@ -3,10 +3,16 @@ import { Tabs, TabItem } from '@astrojs/starlight/components'
 
 import { getType } from '../../libs/items'
 import { isObjectLike } from '../../libs/predicate'
-import type { Discriminator, SchemaObjects, SchemaObject as SchemaObjectType } from '../../libs/schemaObject'
+import {
+  isSchemaObjectObject,
+  type Discriminator,
+  type SchemaObjects,
+  type SchemaObject as SchemaObjectType,
+} from '../../libs/schemaObject'
 import Tag from '../Tag.astro'
 
 import SchemaObject, { type HideSchemaExampleProps } from './SchemaObject.astro'
+import SchemaObjectRecursive from './SchemaObjectRecursive.astro'
 
 interface Props extends HideSchemaExampleProps {
   discriminator: Discriminator
@@ -42,11 +48,21 @@ const humanReadableType: Record<SchemaObjects['type'], string> = {
 </div>
 <Tabs>
   {
-    schemaObjects.map((schemaObject) => (
-      <TabItem label={schemaObject.title ?? getType(schemaObject) ?? 'unknown'}>
-        <SchemaObject {hideExample} {parents} {nested} schemaObject={schemaObject} />
-      </TabItem>
-    ))
+    schemaObjects.map((schemaObject) => {
+      const isRecursive = parents.includes(schemaObject)
+      const schemaObjectType = getType(schemaObject) ?? (isSchemaObjectObject(schemaObject) ? 'object' : 'unknown')
+      const label = schemaObject.title ?? (isRecursive ? `recursive ${schemaObjectType}` : schemaObjectType)
+
+      return (
+        <TabItem label={label}>
+          {isRecursive ? (
+            <SchemaObjectRecursive {schemaObject} />
+          ) : (
+            <SchemaObject {hideExample} {parents} {nested} {schemaObject} />
+          )}
+        </TabItem>
+      )
+    })
   }
 </Tabs>
 

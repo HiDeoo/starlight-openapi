@@ -1,11 +1,9 @@
 ---
-import { getType } from '../../libs/items'
-import { isArraySchemaType, type Properties, type SchemaObject } from '../../libs/schemaObject'
+import { getRecursiveSchemaObject, type Properties, type SchemaObject } from '../../libs/schemaObject'
 import Key from '../Key.astro'
-import Tag from '../Tag.astro'
-import Type from '../Type.astro'
 
 import Schema, { type HideSchemaExampleProps } from './SchemaObject.astro'
+import SchemaObjectRecursive from './SchemaObjectRecursive.astro'
 
 interface Props extends HideSchemaExampleProps {
   parents: SchemaObject[]
@@ -14,38 +12,16 @@ interface Props extends HideSchemaExampleProps {
 }
 
 const { hideExample, parents, properties, required } = Astro.props
-
-// sanitizeSchemaObjects() spreads parents into new objects, so clones share the same allOf/oneOf/anyOf
-// array reference but fail strict === equality. Check keyword array identity as a fallback.
-const sameSchema = (a: SchemaObject | undefined, b: SchemaObject | undefined) =>
-  a !== undefined &&
-  b !== undefined &&
-  (a === b ||
-    (a.allOf !== undefined && a.allOf === b.allOf) ||
-    (a.oneOf !== undefined && a.oneOf === b.oneOf) ||
-    (a.anyOf !== undefined && a.anyOf === b.anyOf))
 ---
 
 {
   Object.entries(properties).map(([name, schema]) => {
-    const items = 'items' in schema ? (schema.items as SchemaObject | undefined) : undefined
-    const isRecursive = parents?.some(
-      (parent) =>
-        sameSchema(parent, schema) ||
-        (isArraySchemaType(schema.type) &&
-          (sameSchema(parent, items) ||
-            (items?.oneOf as SchemaObject[] | undefined)?.some((s) => sameSchema(s, parent)) ||
-            (items?.anyOf as SchemaObject[] | undefined)?.some((s) => sameSchema(s, parent)) ||
-            (items?.allOf as SchemaObject[] | undefined)?.some((s) => sameSchema(s, parent)))),
-    )
+    const recursiveSchemaObject = getRecursiveSchemaObject(schema, parents)
 
     return (
       <Key name={name} required={required?.includes(name)}>
-        {isRecursive ? (
-          <div>
-            <Type>{getType(schema)}</Type>
-            <Tag>recursive</Tag>
-          </div>
+        {recursiveSchemaObject ? (
+          <SchemaObjectRecursive {recursiveSchemaObject} schemaObject={schema} />
         ) : (
           <Schema {hideExample} parents={parents} nested schemaObject={schema} />
         )}

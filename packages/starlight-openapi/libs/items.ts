@@ -7,11 +7,18 @@ export function isOpenAPIV2Items(items: unknown): items is Items {
   return hasDefinedValue(items, 'type') && !('schema' in items)
 }
 
-export function getType(items: Items): string | undefined {
-  if (items.type === 'array' && items.items) {
-    const arrayType = getType(items.items)
+export function getType(items: Items, seen = new WeakSet<object>()): string | undefined {
+  if (seen.has(items)) return 'recursive'
+  seen.add(items)
 
-    return arrayType ? `Array<${arrayType}>` : 'Array'
+  const types = Array.isArray(items.type) ? items.type : items.type ? [items.type] : []
+
+  if (types.includes('array') && items.items) {
+    const arrayType = getType(items.items, seen)
+    const type = arrayType ? `Array<${arrayType}>` : 'Array'
+    const otherTypes = types.filter((type) => type !== 'array')
+
+    return [type, ...otherTypes].join(' | ')
   }
 
   return Array.isArray(items.type) ? items.type.join(' | ') : items.type
