@@ -87,6 +87,12 @@ components:
           type: string
         posts:
           $ref: '#/components/schemas/Posts'
+        related:
+          type: array
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/Post'
+              - $ref: '#/components/schemas/Category'
     Categories:
       type: array
       maxItems: 100
@@ -123,3 +129,7 @@ components:
           format: int32
         message:
           type: string
+        causes:
+          type: ['array', 'null']
+          items:
+            $ref: '#/components/schemas/Error'

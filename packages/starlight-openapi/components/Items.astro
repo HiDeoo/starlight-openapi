@@ -1,8 +1,14 @@
 ---
 import { getBound, getType, type Items } from '../libs/items'
-import { isSchemaObjectObject, type SchemaObject as SchemaObjectType } from '../libs/schemaObject'
+import {
+  getRecursiveSchemaObjectItems,
+  getSchemaObjectItems,
+  isSchemaObjectObject,
+  type SchemaObject as SchemaObjectType,
+} from '../libs/schemaObject'
 
 import SchemaObject, { type HideSchemaExampleProps } from './schema/SchemaObject.astro'
+import SchemaObjectRecursive from './schema/SchemaObjectRecursive.astro'
 import Tag from './Tag.astro'
 import Tags from './Tags.astro'
 import Type from './Type.astro'
@@ -12,10 +18,16 @@ interface Props extends HideSchemaExampleProps {
   negated?: boolean | undefined
   nullable?: boolean | undefined
   parents?: SchemaObjectType[]
+  schemaObject?: SchemaObjectType | undefined
   type?: string | undefined
 }
 
-const { hideExample, items, negated, nullable, parents = [], type } = Astro.props
+const { hideExample, items, negated, nullable, parents = [], schemaObject, type } = Astro.props
+
+const itemSchemaObject = getSchemaObjectItems(items)
+const nestedParents = schemaObject ? [...parents, schemaObject] : parents
+const recursiveSchemaObject = schemaObject && getRecursiveSchemaObjectItems(schemaObject, nestedParents)
+const recursiveItem = schemaObject && recursiveSchemaObject ? { recursiveSchemaObject, schemaObject } : undefined
 
 const enumItems = items.enum ?? items.items?.enum
 ---
@@ -23,10 +35,18 @@ const enumItems = items.enum ?? items.items?.enum
 {
   items.type && (
     <div>
-      <Type>
-        {negated && 'not '}
-        {getType(items)}
-      </Type>
+      {recursiveItem ? (
+        <SchemaObjectRecursive
+          {negated}
+          recursiveSchemaObject={recursiveItem.recursiveSchemaObject}
+          schemaObject={recursiveItem.schemaObject}
+        />
+      ) : (
+        <Type>
+          {negated && 'not '}
+          {getType(items)}
+        </Type>
+      )}
       {items.format && <Tag>format: {items.format}</Tag>}
     </div>
   )
@@ -50,7 +70,7 @@ const enumItems = items.enum ?? items.items?.enum
 {items.const && <Tags label="Allowed value:" tags={[items.const]} />}
 {enumItems && <Tags label="Allowed values:" tags={enumItems} />}
 {
-  items.items && isSchemaObjectObject(items.items) && (
-    <SchemaObject {parents} nested schemaObject={items.items} {hideExample} {type} />
+  itemSchemaObject && isSchemaObjectObject(itemSchemaObject) && !recursiveItem && (
+    <SchemaObject parents={nestedParents} nested schemaObject={itemSchemaObject} {hideExample} {type} />
   )
 }

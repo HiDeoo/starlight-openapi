@@ -1,0 +1,52 @@
+---
+import { getType } from '../../libs/items'
+import {
+  getSchemaObjectItems,
+  isArraySchemaType,
+  isSchemaObjectObject,
+  type SchemaObject,
+} from '../../libs/schemaObject'
+import Tag from '../Tag.astro'
+import Type from '../Type.astro'
+
+interface Props {
+  negated?: boolean | undefined
+  recursiveSchemaObject?: SchemaObject
+  schemaObject: SchemaObject
+}
+
+const { negated = false, recursiveSchemaObject = Astro.props.schemaObject, schemaObject } = Astro.props
+
+function getSchemaObjectType(schemaObject: SchemaObject) {
+  return getType(schemaObject) ?? (isSchemaObjectObject(schemaObject) ? 'object' : 'unknown')
+}
+
+const items = getSchemaObjectItems(schemaObject)
+const types = Array.isArray(schemaObject.type) ? schemaObject.type : schemaObject.type ? [schemaObject.type] : []
+const otherTypes = types.filter((type) => type !== 'array')
+const isRecursiveArray = isArraySchemaType(schemaObject.type) && recursiveSchemaObject === items
+const recursiveArrayItemType = items === schemaObject ? 'recursive' : items ? getSchemaObjectType(items) : 'unknown'
+---
+
+<div>
+  {
+    isRecursiveArray ? (
+      <>
+        <Type>{`${negated ? 'not ' : ''}Array<${recursiveArrayItemType}>`}</Type>
+        <Tag>recursive</Tag>
+        {otherTypes.length > 0 && <Type>{`| ${otherTypes.join(' | ')}`}</Type>}
+      </>
+    ) : (
+      <>
+        <Type>{`${negated ? 'not ' : ''}${getSchemaObjectType(schemaObject)}`}</Type>
+        <Tag>recursive</Tag>
+      </>
+    )
+  }
+</div>
+
+<style>
+  :global(.sl-openapi-type + .sl-openapi-tag:has(+ .sl-openapi-type)) {
+    margin-inline-end: 0.3rem;
+  }
+</style>

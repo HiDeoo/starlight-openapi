@@ -1,5 +1,10 @@
 ---
-import { getProperties, isAdditionalPropertiesWithSchemaObject, type SchemaObject } from '../../libs/schemaObject'
+import {
+  getProperties,
+  getRecursiveSchemaObject,
+  isAdditionalPropertiesWithSchemaObject,
+  type SchemaObject,
+} from '../../libs/schemaObject'
 import Key from '../Key.astro'
 import Keys from '../Keys.astro'
 import Tags from '../Tags.astro'
@@ -8,6 +13,7 @@ import Type from '../Type.astro'
 import Schema, { type HideSchemaExampleProps } from './SchemaObject.astro'
 import SchemaObjectAllOf from './SchemaObjectAllOf.astro'
 import SchemaObjectObjectProperties from './SchemaObjectObjectProperties.astro'
+import SchemaObjectRecursive from './SchemaObjectRecursive.astro'
 
 interface Props extends HideSchemaExampleProps {
   nested: boolean
@@ -18,6 +24,14 @@ interface Props extends HideSchemaExampleProps {
 const { hideExample, nested, parents = [], schemaObject } = Astro.props
 
 const properties = getProperties(schemaObject)
+
+const nestedParents = [...parents, schemaObject]
+const additionalProperties = isAdditionalPropertiesWithSchemaObject(schemaObject.additionalProperties)
+  ? schemaObject.additionalProperties
+  : undefined
+const recursiveAdditionalProperties = additionalProperties
+  ? getRecursiveSchemaObject(additionalProperties, nestedParents)
+  : undefined
 ---
 
 <details class:list={[!nested && 'sl-openapi-schema-object-root']} open={!nested}>
@@ -31,24 +45,22 @@ const properties = getProperties(schemaObject)
     ]}
   />
   <Keys>
-    <SchemaObjectObjectProperties
-      hideExample={hideExample}
-      parents={[...parents, schemaObject]}
-      {properties}
-      required={schemaObject.required}
-    />
+    <SchemaObjectObjectProperties {hideExample} parents={nestedParents} {properties} required={schemaObject.required} />
     <SchemaObjectAllOf {hideExample} {nested} {parents} {schemaObject} />
     {
       schemaObject.additionalProperties && (
         <Key additional name="key">
           {schemaObject.additionalProperties === true ? (
             <Type>any</Type>
-          ) : isAdditionalPropertiesWithSchemaObject(schemaObject.additionalProperties) ? (
-            <Schema
-              {hideExample}
-              parents={[...parents, schemaObject]}
-              schemaObject={schemaObject.additionalProperties}
-            />
+          ) : additionalProperties ? (
+            recursiveAdditionalProperties ? (
+              <SchemaObjectRecursive
+                recursiveSchemaObject={recursiveAdditionalProperties}
+                schemaObject={additionalProperties}
+              />
+            ) : (
+              <Schema {hideExample} parents={nestedParents} schemaObject={additionalProperties} />
+            )
           ) : null}
         </Key>
       )

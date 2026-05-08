@@ -14,6 +14,7 @@ import Md from '../Md.astro'
 
 import SchemaObjectAllOf from './SchemaObjectAllOf.astro'
 import SchemaObjectObject from './SchemaObjectObject.astro'
+import SchemaObjectRecursive from './SchemaObjectRecursive.astro'
 import SchemaObjects from './SchemaObjects.astro'
 
 export interface HideSchemaExampleProps {
@@ -31,15 +32,26 @@ interface Props extends HideSchemaExampleProps {
 const { hideExample, negated, nested = false, parents = [], schemaObject, type } = Astro.props
 
 const schemaObjects = getSchemaObjects(schemaObject)
+const nestedParents = [...parents, schemaObject]
 
 const hasMany = schemaObjects !== undefined
 ---
 
 {
   hasMany ? (
-    <SchemaObjects {hideExample} {parents} discriminator={schemaObject.discriminator} {nested} {schemaObjects} />
+    <SchemaObjects
+      {hideExample}
+      parents={nestedParents}
+      discriminator={schemaObject.discriminator}
+      {nested}
+      {schemaObjects}
+    />
   ) : isSchemaObject(schemaObject.not) ? (
-    <Astro.self {hideExample} negated schemaObject={schemaObject.not} />
+    nestedParents.includes(schemaObject.not) ? (
+      <SchemaObjectRecursive negated schemaObject={schemaObject.not} />
+    ) : (
+      <Astro.self {hideExample} {nested} parents={nestedParents} negated schemaObject={schemaObject.not} />
+    )
   ) : (
     <>
       {schemaObject.title && <em>{schemaObject.title}</em>}
@@ -50,7 +62,15 @@ const hasMany = schemaObjects !== undefined
       ) : isSchemaObjectAllOf(schemaObject) ? (
         <SchemaObjectAllOf {hideExample} {nested} {parents} {schemaObject} />
       ) : (
-        <Items {hideExample} {parents} items={schemaObject} {negated} nullable={getNullable(schemaObject)} {type} />
+        <Items
+          {hideExample}
+          {parents}
+          items={schemaObject}
+          {negated}
+          nullable={getNullable(schemaObject)}
+          {schemaObject}
+          {type}
+        />
       )}
       {!hideExample && schemaObject.example !== undefined && (
         <Examples example={schemaObject.example} examples={undefined} {type} />

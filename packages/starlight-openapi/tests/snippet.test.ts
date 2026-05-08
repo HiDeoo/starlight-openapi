@@ -247,6 +247,21 @@ test.describe('response', () => {
     expect(entry?.generated).toBe(true)
   })
 
+  test('generates empty arrays for recursive response examples', async () => {
+    const schema = await parseTestSchema('v3.0/recursive.yaml')
+    const operation = getTestOperation(schema, { operationId: 'listCategories' })
+    const response = getTestResponse(operation, 'default')
+
+    const [entry] = getResponseMediaEntries(schema, operation.operation, response)
+
+    expect(entry?.example).toEqual({
+      code: 1,
+      message: 'example',
+      causes: [],
+    })
+    expect(entry?.generated).toBe(true)
+  })
+
   test('uses recursive explicit schema values for response examples without marking them as generated', async () => {
     const schema = await parseTestSchema('v3.0/animals.yaml')
     const operation = getTestOperation(schema, { path: '/feed', method: 'post' })

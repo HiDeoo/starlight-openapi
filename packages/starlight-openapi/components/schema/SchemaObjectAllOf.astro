@@ -11,6 +11,7 @@ import Items from '../Items.astro'
 
 import type { HideSchemaExampleProps } from './SchemaObject.astro'
 import SchemaObjectObjectProperties from './SchemaObjectObjectProperties.astro'
+import SchemaObjectRecursive from './SchemaObjectRecursive.astro'
 import SchemaObjects from './SchemaObjects.astro'
 
 interface Props extends HideSchemaExampleProps {
@@ -26,12 +27,20 @@ const { hideExample, nested, schemaObject, parents = [] } = Astro.props
   schemaObject.allOf &&
     schemaObject.allOf.map((allOfSchemaObject) => {
       if (!isSchemaObject(allOfSchemaObject)) return null
+
+      const nestedParents = [...parents, schemaObject]
+
+      if (nestedParents.includes(allOfSchemaObject)) {
+        return <SchemaObjectRecursive schemaObject={allOfSchemaObject} />
+      }
+
       const schemaObjects = getSchemaObjects(allOfSchemaObject)
+
       if (schemaObjects !== undefined) {
         return (
           <SchemaObjects
             {hideExample}
-            parents={[...parents, schemaObject]}
+            parents={nestedParents}
             discriminator={schemaObject.discriminator}
             {nested}
             {schemaObjects}
@@ -42,11 +51,11 @@ const { hideExample, nested, schemaObject, parents = [] } = Astro.props
           <>
             <SchemaObjectObjectProperties
               {hideExample}
-              parents={[...parents, schemaObject]}
+              parents={nestedParents}
               properties={getProperties(allOfSchemaObject)}
               required={allOfSchemaObject.required}
             />
-            <Astro.self {hideExample} {nested} parents={[...parents, schemaObject]} schemaObject={allOfSchemaObject} />
+            <Astro.self {hideExample} {nested} parents={nestedParents} schemaObject={allOfSchemaObject} />
           </>
         )
       }
@@ -56,7 +65,8 @@ const { hideExample, nested, schemaObject, parents = [] } = Astro.props
           items={allOfSchemaObject}
           negated={allOfSchemaObject.not !== undefined}
           nullable={getNullable(allOfSchemaObject)}
-          parents={[...parents, schemaObject]}
+          parents={nestedParents}
+          schemaObject={allOfSchemaObject}
         />
       )
     })

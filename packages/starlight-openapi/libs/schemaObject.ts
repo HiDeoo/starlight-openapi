@@ -1,4 +1,4 @@
-import type { IJsonSchema, OpenAPIV2, OpenAPIV3, OpenAPIV3_1 } from 'openapi-types'
+import type { OpenAPIV2, OpenAPIV3, OpenAPIV3_1 } from 'openapi-types'
 
 import type { Parameter } from './parameter'
 import { hasDefinedValue, isObjectLike } from './predicate'
@@ -35,9 +35,7 @@ export function isAdditionalPropertiesWithSchemaObject(
   return isObjectLike(additionalProperties)
 }
 
-export function isSchemaObject(
-  schemaObject: OpenAPIV2.SchemaObject | OpenAPIV3.SchemaObject | OpenAPIV3_1.SchemaObject | IJsonSchema | undefined,
-): schemaObject is SchemaObject {
+export function isSchemaObject(schemaObject: unknown): schemaObject is SchemaObject {
   return isObjectLike(schemaObject)
 }
 
@@ -67,6 +65,30 @@ export function getSchemaObjects(schemaObject: SchemaObject): SchemaObjects | un
   }
 
   return
+}
+
+export function getSchemaObjectItems(schemaObject: unknown): SchemaObject | undefined {
+  if (!isObjectLike(schemaObject) || !('items' in schemaObject)) return
+
+  return isSchemaObject(schemaObject['items']) ? schemaObject['items'] : undefined
+}
+
+export function getRecursiveSchemaObject(
+  schemaObject: SchemaObject,
+  parents: SchemaObject[],
+): SchemaObject | undefined {
+  const items = getSchemaObjectItems(schemaObject)
+
+  return parents.find((parent) => parent === schemaObject || parent === items)
+}
+
+export function getRecursiveSchemaObjectItems(
+  schemaObject: SchemaObject,
+  parents: SchemaObject[],
+): SchemaObject | undefined {
+  const items = getSchemaObjectItems(schemaObject)
+
+  return items && parents.includes(items) ? items : undefined
 }
 
 export function getSchemaFormat(schema: SchemaObject) {

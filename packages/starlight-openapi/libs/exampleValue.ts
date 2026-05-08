@@ -47,9 +47,9 @@ function getOrCreateSchemaExampleValue(rootSchema: SchemaObject, options: { crea
       // generated value, depending on the `createFallback` option.
       const otherSchemaObjects = getSchemaObjects(schema)?.schemaObjects
       if (otherSchemaObjects) {
-        const sortedSchemaObjects = otherSchemaObjects.toSorted(
-          (a, b) => getSchemaExamplePriority(b) - getSchemaExamplePriority(a),
-        )
+        const sortedSchemaObjects = otherSchemaObjects
+          .filter((otherSchemaObject) => !seen.has(otherSchemaObject))
+          .toSorted((a, b) => getSchemaExamplePriority(b) - getSchemaExamplePriority(a))
 
         for (const otherSchemaObject of sortedSchemaObjects) {
           const value = visit(otherSchemaObject)
@@ -106,6 +106,8 @@ function getOrCreateSchemaExampleValue(rootSchema: SchemaObject, options: { crea
       // For array types, use the first item if possible and fall back to an array of primitive values.
       if (isArraySchemaType(schema.type)) {
         if ('items' in schema && isSchemaObject(schema.items)) {
+          if (seen.has(schema.items)) return options.createFallback ? [] : undefined
+
           const itemValue = visit(schema.items)
           if (itemValue !== undefined) return [itemValue]
         }
