@@ -1,5 +1,11 @@
 # starlight-openapi
 
+## 0.25.1
+
+### Patch Changes
+
+- [#154](https://github.com/HiDeoo/starlight-openapi/pull/154) [`16fd42a`](https://github.com/HiDeoo/starlight-openapi/commit/16fd42af982b214ba058da6a497e3bac2b5f68c0) Thanks [@pulsar256](https://github.com/pulsar256)! - Fixes rendering of compound recursive schemas.
+
 ## 0.25.0
 
 ### Minor Changes
