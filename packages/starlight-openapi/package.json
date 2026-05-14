@@ -15,6 +15,7 @@
   },
   "scripts": {
     "test": "playwright install --with-deps chromium && playwright test",
+    "test:ci": "playwright test",
     "lint": "eslint . --cache --max-warnings=0"
   },
   "dependencies": {
