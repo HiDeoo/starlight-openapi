@@ -155,6 +155,35 @@ test('supports schema object `allOf` property with nested schema objects like `a
   await expect(requestBody.getByText('age')).toBeVisible()
 })
 
+test('supports sibling object metadata with schema composition', async ({ docPage }) => {
+  await docPage.goto('/v3/animals/operations/addotter/')
+
+  const allOfCase = docPage.getRequestBodyParameter('allOfCase')
+  await allOfCase.getByRole('group').first().click()
+
+  await expect(docPage.getProperty(allOfCase, 'id').getByText('required')).toBeVisible()
+
+  const oneOfCase = docPage.getRequestBodyParameter('oneOfCase')
+  const riverPanel = oneOfCase.getByRole('tabpanel', { name: 'river' })
+  await riverPanel.getByRole('group').first().click()
+
+  await expect(docPage.getProperty(riverPanel, 'id').getByText('required')).toBeVisible()
+  await expect(docPage.getProperty(riverPanel, 'river')).toBeVisible()
+
+  const anyOfCase = docPage.getRequestBodyParameter('anyOfCase')
+  const playfulPanel = anyOfCase.getByRole('tabpanel', { name: 'playful' })
+  await playfulPanel.getByRole('group').first().click()
+
+  await expect(docPage.getProperty(playfulPanel, 'id').getByText('required')).toBeVisible()
+  await expect(docPage.getProperty(playfulPanel, 'toy')).toBeVisible()
+
+  const notCase = docPage.getRequestBodyParameter('notCase')
+  await notCase.getByRole('group').first().click()
+
+  await expect(docPage.getProperty(notCase, 'id').getByText('required')).toBeVisible()
+  await expect(notCase.getByText('not matching')).toBeVisible()
+})
+
 test('supports schema object `oneOf` property', async ({ docPage }) => {
   await docPage.goto('/v2/animals/operations/addbird/')
 

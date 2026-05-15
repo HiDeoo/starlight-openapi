@@ -52,14 +52,14 @@ export function getSchemaObjects(schemaObject: SchemaObject): SchemaObjects | un
     const { oneOf, ...otherProperties } = schemaObject
 
     return {
-      schemaObjects: sanitizeSchemaObjects(oneOf as SchemaObject[], otherProperties),
+      schemaObjects: normalizeSchemaObjects(oneOf as SchemaObject[], otherProperties),
       type: 'oneOf',
     }
   } else if (schemaObject.anyOf && schemaObject.anyOf.length > 0) {
     const { anyOf, ...otherProperties } = schemaObject
 
     return {
-      schemaObjects: sanitizeSchemaObjects(anyOf as SchemaObject[], otherProperties),
+      schemaObjects: normalizeSchemaObjects(anyOf as SchemaObject[], otherProperties),
       type: 'anyOf',
     }
   }
@@ -95,23 +95,63 @@ export function getSchemaFormat(schema: SchemaObject) {
   return hasDefinedValue(schema, 'format') && typeof schema.format === 'string' ? schema.format : undefined
 }
 
-function sanitizeSchemaObjects(schemaObjects: SchemaObject[], parentProperties: SchemaObject) {
-  if (schemaObjects.some((schemaObjectsObject) => schemaObjectsObject.type !== undefined)) {
-    return schemaObjects
-  }
+export function getSchemaObjectRequired(schemaObject: SchemaObject): string[] | undefined {
+  const required = mergeRequired(
+    schemaObject.required,
+    'allOf' in schemaObject && Array.isArray(schemaObject.allOf)
+      ? schemaObject.allOf.filter(isSchemaObject).flatMap((allOfSchemaObject) => allOfSchemaObject.required ?? [])
+      : undefined,
+  )
 
+  return required
+}
+
+function normalizeSchemaObjects(schemaObjects: SchemaObject[], parentSchemaObject: SchemaObject) {
   return schemaObjects.map((schemaObjectsObject) => {
-    const sanitizeSchemaObject = {
-      ...parentProperties,
+    const parentIsObject = isSchemaObjectObject(parentSchemaObject)
+    const schemaObjectIsObject = isSchemaObjectObject(schemaObjectsObject)
+    const shouldNormalize = schemaObjectsObject.type === undefined || (parentIsObject && schemaObjectIsObject)
+
+    if (!shouldNormalize) return schemaObjectsObject
+
+    if (parentIsObject && schemaObjectIsObject) {
+      const properties = { ...getProperties(parentSchemaObject), ...getProperties(schemaObjectsObject) }
+      const required = mergeRequired(
+        getSchemaObjectRequired(parentSchemaObject),
+        getSchemaObjectRequired(schemaObjectsObject),
+      )
+
+      const normalizedSchemaObject = {
+        ...parentSchemaObject,
+        ...schemaObjectsObject,
+        ...(Object.keys(properties).length > 0 ? { properties } : {}),
+        ...(required ? { required } : {}),
+      } as SchemaObject
+
+      if (!normalizedSchemaObject.type && normalizedSchemaObject.properties) {
+        normalizedSchemaObject.type = 'object'
+      }
+
+      return normalizedSchemaObject
+    }
+
+    const normalizedSchemaObject = {
+      ...parentSchemaObject,
       ...schemaObjectsObject,
     } as SchemaObject
 
-    if (!sanitizeSchemaObject.type && sanitizeSchemaObject.properties) {
-      sanitizeSchemaObject.type = 'object'
+    if (!normalizedSchemaObject.type && normalizedSchemaObject.properties) {
+      normalizedSchemaObject.type = 'object'
     }
 
-    return sanitizeSchemaObject
+    return normalizedSchemaObject
   })
+}
+
+function mergeRequired(...requiredValues: (string[] | undefined)[]): string[] | undefined {
+  const required = requiredValues.flatMap((value) => value ?? [])
+
+  return required.length > 0 ? [...new Set(required)] : undefined
 }
 
 export type SchemaObject = OpenAPIV2.SchemaObject | OpenAPIV3.NonArraySchemaObject | OpenAPIV3_1.NonArraySchemaObject

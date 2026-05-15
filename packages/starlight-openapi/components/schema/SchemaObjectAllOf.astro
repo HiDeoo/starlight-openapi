@@ -2,6 +2,7 @@
 import {
   getNullable,
   getProperties,
+  getSchemaObjectRequired,
   getSchemaObjects,
   isSchemaObject,
   isSchemaObjectObject,
@@ -53,7 +54,7 @@ const { hideExample, nested, schemaObject, parents = [] } = Astro.props
               {hideExample}
               parents={nestedParents}
               properties={getProperties(allOfSchemaObject)}
-              required={allOfSchemaObject.required}
+              required={getSchemaObjectRequired(schemaObject)}
             />
             <Astro.self {hideExample} {nested} parents={nestedParents} schemaObject={allOfSchemaObject} />
           </>

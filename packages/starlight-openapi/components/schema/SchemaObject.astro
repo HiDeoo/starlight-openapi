@@ -35,6 +35,7 @@ const schemaObjects = getSchemaObjects(schemaObject)
 const nestedParents = [...parents, schemaObject]
 
 const hasMany = schemaObjects !== undefined
+const notSchemaObject = isSchemaObject(schemaObject.not) ? schemaObject.not : undefined
 ---
 
 {
@@ -46,19 +47,13 @@ const hasMany = schemaObjects !== undefined
       {nested}
       {schemaObjects}
     />
-  ) : isSchemaObject(schemaObject.not) ? (
-    nestedParents.includes(schemaObject.not) ? (
-      <SchemaObjectRecursive negated schemaObject={schemaObject.not} />
-    ) : (
-      <Astro.self {hideExample} {nested} parents={nestedParents} negated schemaObject={schemaObject.not} />
-    )
   ) : (
     <>
       {schemaObject.title && <em>{schemaObject.title}</em>}
       <Md text={schemaObject.description} />
       <ExternalDocs docs={schemaObject.externalDocs} />
       {isSchemaObjectObject(schemaObject) ? (
-        <SchemaObjectObject {hideExample} {parents} {nested} {schemaObject} />
+        <SchemaObjectObject {hideExample} {parents} {nested} {negated} {schemaObject} />
       ) : isSchemaObjectAllOf(schemaObject) ? (
         <SchemaObjectAllOf {hideExample} {nested} {parents} {schemaObject} />
       ) : (
@@ -77,4 +72,12 @@ const hasMany = schemaObjects !== undefined
       )}
     </>
   )
+}
+{
+  notSchemaObject &&
+    (nestedParents.includes(notSchemaObject) ? (
+      <SchemaObjectRecursive negated schemaObject={notSchemaObject} />
+    ) : (
+      <Astro.self {hideExample} {nested} parents={nestedParents} negated schemaObject={notSchemaObject} />
+    ))
 }

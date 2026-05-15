@@ -2,6 +2,7 @@
 import {
   getProperties,
   getRecursiveSchemaObject,
+  getSchemaObjectRequired,
   isAdditionalPropertiesWithSchemaObject,
   type SchemaObject,
 } from '../../libs/schemaObject'
@@ -16,12 +17,13 @@ import SchemaObjectObjectProperties from './SchemaObjectObjectProperties.astro'
 import SchemaObjectRecursive from './SchemaObjectRecursive.astro'
 
 interface Props extends HideSchemaExampleProps {
+  negated?: boolean | undefined
   nested: boolean
   parents?: SchemaObject[]
   schemaObject: SchemaObject
 }
 
-const { hideExample, nested, parents = [], schemaObject } = Astro.props
+const { hideExample, negated = false, nested, parents = [], schemaObject } = Astro.props
 
 const properties = getProperties(schemaObject)
 
@@ -36,7 +38,7 @@ const recursiveAdditionalProperties = additionalProperties
 
 <details class:list={[!nested && 'sl-openapi-schema-object-root']} open={!nested}>
   <summary>
-    <Type>object</Type>
+    <Type>{negated ? 'not matching' : 'object'}</Type>
   </summary>
   <Tags
     tags={[
@@ -45,7 +47,12 @@ const recursiveAdditionalProperties = additionalProperties
     ]}
   />
   <Keys>
-    <SchemaObjectObjectProperties {hideExample} parents={nestedParents} {properties} required={schemaObject.required} />
+    <SchemaObjectObjectProperties
+      {hideExample}
+      parents={nestedParents}
+      {properties}
+      required={getSchemaObjectRequired(schemaObject)}
+    />
     <SchemaObjectAllOf {hideExample} {nested} {parents} {schemaObject} />
     {
       schemaObject.additionalProperties && (
