@@ -1,5 +1,11 @@
 # starlight-openapi
 
+## 0.25.2
+
+### Patch Changes
+
+- [#159](https://github.com/HiDeoo/starlight-openapi/pull/159) [`79e0e12`](https://github.com/HiDeoo/starlight-openapi/commit/79e0e12c26712ed9d3c8e6687a1c1c5b115b752c) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Fixes `required` schema property tags being omitted when combined with `allOf`, `oneOf`, `anyOf`, or `not`.
+
 ## 0.25.1
 
 ### Patch Changes
