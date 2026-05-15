@@ -108,6 +108,10 @@ export class DocPage {
     )
   }
 
+  getProperty(container: Locator, name: string) {
+    return this.#getKeyByName(container.locator('.sl-openapi-key:visible'), name)
+  }
+
   getParameter(location: string, name: string) {
     return this.#getKeyByName(this.getParameters(location), name)
   }
@@ -176,7 +180,7 @@ export class DocPage {
 
   #getKeyByName(rows: Locator, name: string) {
     return rows.filter({
-      has: this.page.locator('.sl-openapi-key-name').getByText(name, { exact: true }),
+      has: this.page.locator(':scope > .sl-openapi-key-name').getByText(name, { exact: true }),
     })
   }
 

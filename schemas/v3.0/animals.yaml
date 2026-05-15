@@ -517,6 +517,82 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /otters:
+    post:
+      summary: Creates a new otter
+      operationId: addOtter
+      tags:
+        - animals
+      requestBody:
+        description: Otter to add
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                allOfCase:
+                  type: object
+                  required:
+                    - id
+                  allOf:
+                    - type: object
+                      properties:
+                        id:
+                          type: string
+                        color:
+                          type: string
+                oneOfCase:
+                  type: object
+                  required:
+                    - id
+                  properties:
+                    id:
+                      type: string
+                  oneOf:
+                    - type: object
+                      title: river
+                      properties:
+                        river:
+                          type: string
+                    - type: object
+                      title: sea
+                      properties:
+                        ocean:
+                          type: string
+                anyOfCase:
+                  type: object
+                  required:
+                    - id
+                  properties:
+                    id:
+                      type: string
+                  anyOf:
+                    - type: object
+                      title: playful
+                      properties:
+                        toy:
+                          type: string
+                    - type: object
+                      title: hungry
+                      properties:
+                        food:
+                          type: string
+                notCase:
+                  type: object
+                  required:
+                    - id
+                  properties:
+                    id:
+                      type: string
+                  not:
+                    type: object
+                    properties:
+                      archived:
+                        type: boolean
+      responses:
+        '200':
+          description: animal response
   /rabbits:
     post:
       summary: Creates a new rabbit
