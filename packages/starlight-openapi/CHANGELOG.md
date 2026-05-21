@@ -1,5 +1,11 @@
 # starlight-openapi
 
+## 0.25.3
+
+### Patch Changes
+
+- [#162](https://github.com/HiDeoo/starlight-openapi/pull/162) [`9a36aac`](https://github.com/HiDeoo/starlight-openapi/commit/9a36aac895eb696c287e2af170cb240c6382e162) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Fixes the overview page information card title.
+
 ## 0.25.2
 
 ### Patch Changes
