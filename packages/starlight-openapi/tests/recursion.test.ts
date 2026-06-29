@@ -41,7 +41,7 @@ test('displays the recursive tags for nullable arrays', async ({ docPage }) => {
     has: docPage.page.locator('.sl-openapi-key-name').getByText('causes', { exact: true }),
   })
 
-  await expect(causes.locator('.sl-openapi-key-description')).toHaveText(/Array<object>\s+recursive\s+\| null/)
+  await expect(causes.locator('.sl-openapi-key-description')).toHaveText(/Array<object>\s?recursive\s?\| null/)
 })
 
 test('displays the recursive tag for simple and array recursive schema', async ({ docPage }) => {
