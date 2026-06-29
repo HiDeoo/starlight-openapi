@@ -1,5 +1,15 @@
 # starlight-openapi
 
+## 0.26.0
+
+### Minor Changes
+
+- [#166](https://github.com/HiDeoo/starlight-openapi/pull/166) [`ab3d189`](https://github.com/HiDeoo/starlight-openapi/commit/ab3d1898fd07cab0269feb86b8ab25b2d8492b17) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Adds support for Astro v7, drops support for Astro v6.
+
+  ⚠️ **BREAKING CHANGE:** The minimum supported version of Starlight is now `0.41.0`.
+
+  Please follow the [upgrade guide](https://github.com/withastro/starlight/releases/tag/%40astrojs%2Fstarlight%400.41.0) to update your project.
+
 ## 0.25.3
 
 ### Patch Changes
