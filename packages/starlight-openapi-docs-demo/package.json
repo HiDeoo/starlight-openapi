@@ -10,7 +10,7 @@
     "./package.json": "./package.json"
   },
   "peerDependencies": {
-    "@astrojs/starlight": ">=0.38.0"
+    "@astrojs/starlight": ">=0.41.0"
   },
   "engines": {
     "node": ">=22.12.0"

@@ -1,6 +1,6 @@
-import { createMarkdownProcessor } from '@astrojs/markdown-remark'
+import { createSatteriMarkdownProcessor } from '@astrojs/markdown-satteri'
 
-const processor = await createMarkdownProcessor()
+const processor = await createSatteriMarkdownProcessor()
 
 export async function transformMarkdown(markdown: string) {
   const result = await processor.render(markdown)
