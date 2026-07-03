@@ -14,6 +14,8 @@ export const OperationSnippetTargetMetadata: Record<SnippetOperationReference['t
   java: { label: 'Java' },
   javascript: { label: 'JavaScript' },
   kotlin: { label: 'Kotlin' },
+  php: { label: 'PHP' },
+  python: { label: 'Python' },
   rust: { label: 'Rust' },
   shell: { label: 'Shell' },
 }
@@ -38,6 +40,14 @@ export const OperationSnippetClientMetadata: OperationSnippetClientMetadata = {
   },
   kotlin: {
     okhttp: { label: 'OkHttp', lang: 'kt' },
+  },
+  php: {
+    curl: { label: 'cURL', lang: 'php' },
+    guzzle: { label: 'Guzzle', lang: 'php' },
+  },
+  python: {
+    python3: { label: 'http.client', lang: 'python' },
+    requests: { label: 'Requests', lang: 'python' },
   },
   rust: {
     reqwest: { label: 'Reqwest', lang: 'rs' },

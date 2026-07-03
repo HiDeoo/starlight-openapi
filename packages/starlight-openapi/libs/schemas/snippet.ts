@@ -6,6 +6,8 @@ const operationGoClientSchema = z.enum(['nethttp'])
 const operationJavaClientSchema = z.enum(['nethttp', 'okhttp'])
 const operationJavaScriptClientSchema = z.enum(['axios', 'fetch'])
 const operationKotlinClientSchema = z.enum(['okhttp'])
+const operationPhpClientSchema = z.enum(['curl', 'guzzle'])
+const operationPythonClientSchema = z.enum(['python3', 'requests'])
 const operationRustClientSchema = z.enum(['reqwest'])
 const operationShellClientSchema = z.enum(['curl', 'wget'])
 
@@ -16,6 +18,8 @@ const operationReferenceSchema = z.discriminatedUnion('target', [
   z.object({ target: z.literal('java'), client: operationJavaClientSchema }),
   z.object({ target: z.literal('javascript'), client: operationJavaScriptClientSchema }),
   z.object({ target: z.literal('kotlin'), client: operationKotlinClientSchema }),
+  z.object({ target: z.literal('php'), client: operationPhpClientSchema }),
+  z.object({ target: z.literal('python'), client: operationPythonClientSchema }),
   z.object({ target: z.literal('rust'), client: operationRustClientSchema }),
   z.object({ target: z.literal('shell'), client: operationShellClientSchema }),
 ])
@@ -28,6 +32,8 @@ const operationClientsSchema = z
     java: z.array(operationJavaClientSchema).optional(),
     javascript: z.array(operationJavaScriptClientSchema).optional(),
     kotlin: z.array(operationKotlinClientSchema).optional(),
+    php: z.array(operationPhpClientSchema).optional(),
+    python: z.array(operationPythonClientSchema).optional(),
     rust: z.array(operationRustClientSchema).optional(),
     shell: z.array(operationShellClientSchema).optional(),
   })

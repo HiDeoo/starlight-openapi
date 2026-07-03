@@ -110,6 +110,39 @@ requests.post('http://petstore.swagger.io/api/pets', json={'name': 'Fido'})
     })
   })
 
+  test('generates php and python snippets', async () => {
+    const schema = await parseTestSchema('v3.0/no-servers.yaml', {
+      snippets: {
+        operation: {
+          clients: {
+            php: ['guzzle'],
+            python: ['requests'],
+          },
+          default: { target: 'python', client: 'requests' },
+        },
+      },
+    })
+    const operation = getTestOperation(schema, { operationId: 'listAnimals' })
+
+    expect(getOperationSnippets(schema, operation)).toEqual({
+      defaultId: 'python:requests',
+      items: expect.arrayContaining([
+        expect.objectContaining({
+          id: 'php:guzzle',
+          label: 'Guzzle',
+          lang: 'php',
+          content: expect.stringContaining('https://example.com/animals'),
+        }),
+        expect.objectContaining({
+          id: 'python:requests',
+          label: 'Requests',
+          lang: 'python',
+          content: expect.stringContaining('https://example.com/animals'),
+        }),
+      ]),
+    })
+  })
+
   test('generates snippets for x-www-form-urlencoded request bodies', async () => {
     const schema = await parseTestSchema('v3.0/animals.yaml', {
       snippets: {
