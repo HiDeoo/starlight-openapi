@@ -135,7 +135,7 @@ test('sorts tags and operations alphabetically if configured to do so', async ({
     {
       collapsed: true,
       label: 'places',
-      items: [{ name: 'List all shelters' }],
+      items: [{ name: 'List all animals' }, { name: 'List all shelters' }],
     },
     {
       collapsed: true,
@@ -143,6 +143,16 @@ test('sorts tags and operations alphabetically if configured to do so', async ({
       items: [{ name: 'New animal' }, { name: 'newCat' }],
     },
   ])
+})
+
+test('links to the same operation page from each tag group', async ({ sidebarPage }) => {
+  await sidebarPage.goto()
+
+  const links = sidebarPage.sidebar.getByRole('link', { name: 'List all animals', exact: true })
+
+  for (const link of await links.all()) {
+    await expect(link).toHaveAttribute('href', '/api/v3/animals/operations/listanimals/')
+  }
 })
 
 test('create operation tag overview page for non-minimal tags', async ({ sidebarPage }) => {

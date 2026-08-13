@@ -15,12 +15,12 @@ export class SidebarPage {
     return this.#getSidebarChildrenItems(this.#getSidebarRootDetails(label).locator('> ul'))
   }
 
-  get #sidebar() {
+  get sidebar() {
     return this.page.getByRole('navigation', { name: 'Main' }).locator('div.sidebar-content')
   }
 
   #getSidebarRootDetails(label: string) {
-    return this.#sidebar.getByRole('listitem').locator(`details:has(summary > span > span:text-is("${label}"))`).last()
+    return this.sidebar.getByRole('listitem').locator(`details:has(summary > span > span:text-is("${label}"))`).last()
   }
 
   async #getSidebarChildrenItems(list: Locator): Promise<SidebarItem[]> {
