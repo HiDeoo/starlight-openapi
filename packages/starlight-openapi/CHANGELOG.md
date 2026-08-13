@@ -1,5 +1,11 @@
 # starlight-openapi
 
+## 0.26.1
+
+### Patch Changes
+
+- [#172](https://github.com/HiDeoo/starlight-openapi/pull/172) [`0e1a6f4`](https://github.com/HiDeoo/starlight-openapi/commit/0e1a6f4b798c9d6fd5d326b520c607d71905aeee) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Fixes a build issue for operations with multiple tags.
+
 ## 0.26.0
 
 ### Minor Changes
