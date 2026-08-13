@@ -52,6 +52,7 @@ paths:
         url: https://example.com/more-info
       tags:
         - animals
+        - places
       parameters:
         - name: limit
           in: query

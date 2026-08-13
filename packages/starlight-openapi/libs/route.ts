@@ -38,17 +38,27 @@ export function getSchemaRouteFromPathname(pathname: string): StarlightOpenAPIRo
 function getPathItemRoutes(schema: Schema): StarlightOpenAPIRoute[] {
   const schemaBasePath = getSchemaBasePath(schema.config)
   const operations = getOperationsByTag(schema)
+  const operationKeys = new Set<string>()
+
   return [...operations.entries()].flatMap(([, operations]) => {
-    const routes: StarlightOpenAPIRoute[] = operations.entries.map((operation) => ({
-      params: {
-        openAPISlug: stripLeadingAndTrailingSlashes(schemaBasePath + operation.slug),
-      },
-      props: {
-        operation,
-        schema,
-        type: 'operation',
-      },
-    }))
+    const routes: StarlightOpenAPIRoute[] = []
+
+    for (const operation of operations.entries) {
+      const operationKey = `${operation.method}${operation.path}`
+      if (operationKeys.has(operationKey)) continue
+
+      operationKeys.add(operationKey)
+      routes.push({
+        params: {
+          openAPISlug: stripLeadingAndTrailingSlashes(schemaBasePath + operation.slug),
+        },
+        props: {
+          operation,
+          schema,
+          type: 'operation',
+        },
+      })
+    }
 
     if (!isMinimalOperationTag(operations.tag)) {
       routes.unshift({
