@@ -16,3 +16,9 @@ test('displays authored code samples in the snippet picker', async ({ docPage })
 
   await expect(snippet).toContainText("requests.post('http://petstore.swagger.io/api/pets', json={'name': 'Fido'})")
 })
+
+test('preserves Expressive Code configuration', async ({ docPage }) => {
+  await docPage.goto('/v2/petstore-simple/operations/addpet/')
+
+  await expect(docPage.getVisibleOperationSnippet().locator('.expressive-code')).toHaveCSS('--ec-brdRad', '10px')
+})

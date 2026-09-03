@@ -38,12 +38,11 @@ export default function starlightOpenAPIPlugin(userConfig: StarlightOpenAPIUserC
           customCss: [...(starlightConfig.customCss ?? []), 'starlight-openapi/styles'],
         }
 
-        if (updatedConfig.expressiveCode !== false) {
-          updatedConfig.expressiveCode =
-            updatedConfig.expressiveCode === true || updatedConfig.expressiveCode === undefined
-              ? {}
-              : updatedConfig.expressiveCode
-          updatedConfig.expressiveCode.removeUnusedThemes = false
+        if (starlightConfig.expressiveCode !== false) {
+          updatedConfig.expressiveCode = {
+            ...(typeof starlightConfig.expressiveCode === 'object' ? starlightConfig.expressiveCode : {}),
+            removeUnusedThemes: false,
+          }
         }
 
         updateConfig(updatedConfig)
