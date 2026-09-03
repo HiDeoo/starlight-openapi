@@ -1,5 +1,11 @@
 # starlight-openapi
 
+## 0.26.2
+
+### Patch Changes
+
+- [#176](https://github.com/HiDeoo/starlight-openapi/pull/176) [`a4342e6`](https://github.com/HiDeoo/starlight-openapi/commit/a4342e6250ac0509b625e9b2569bff0603a94eec) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Fixes custom Expressive Code configuration being overwritten.
+
 ## 0.26.1
 
 ### Patch Changes
