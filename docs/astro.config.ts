@@ -19,6 +19,7 @@ export default defineConfig({
       editLink: {
         baseUrl: 'https://github.com/HiDeoo/starlight-openapi/edit/main/docs/',
       },
+      expressiveCode: process.env['TEST'] === '1' ? { styleOverrides: { borderRadius: '10px' } } : true,
       head: [
         {
           tag: 'meta',
