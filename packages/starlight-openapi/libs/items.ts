@@ -27,11 +27,14 @@ export function getType(items: Items, seen = new WeakSet<object>()): string | un
 export function getBound(items: Items, type: 'maximum' | 'minimum'): string | undefined {
   const exclusive = items[type === 'maximum' ? 'exclusiveMaximum' : 'exclusiveMinimum']
   const sign = type === 'maximum' ? '<' : '>'
-  const value = items[type]
 
   if (typeof exclusive === 'number') {
     return `${sign} ${exclusive}`
-  } else if (value) {
+  }
+
+  const value = items[type]
+
+  if (value) {
     return `${sign}${exclusive ? '' : '='} ${value}`
   }
 

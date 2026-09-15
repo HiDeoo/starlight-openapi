@@ -71,8 +71,8 @@ export function getSchemaNavigationGroups(schema: Schema, context: StarlightOpen
 
   const operationGroups =
     config.sidebar.tags.sort === 'alphabetical'
-      ? [...operationsByTag.entries()].toSorted(([a], [b]) => a.localeCompare(b))
-      : [...operationsByTag.entries()]
+      ? [...operationsByTag].toSorted(([a], [b]) => a.localeCompare(b))
+      : operationsByTag.entries().toArray()
 
   const groups: SchemaNavigationGroup[] = operationGroups.map(([label, operations]) => ({
     label,

@@ -96,7 +96,7 @@ function generateOperationSnippets(schema: Schema, operation: PathItemOperation)
   }
 
   const firstItemId = items[0]?.id
-  if (items.length === 0 || !firstItemId) return
+  if (!firstItemId || items.length === 0) return
 
   items = items.toSorted(sortOperationSnippets)
 

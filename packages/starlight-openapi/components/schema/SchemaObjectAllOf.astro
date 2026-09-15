@@ -47,7 +47,9 @@ const { hideExample, nested, schemaObject, parents = [] } = Astro.props
             {schemaObjects}
           />
         )
-      } else if (isSchemaObjectObject(schemaObject)) {
+      }
+
+      if (isSchemaObjectObject(schemaObject)) {
         return (
           <>
             <SchemaObjectObjectProperties
@@ -60,6 +62,7 @@ const { hideExample, nested, schemaObject, parents = [] } = Astro.props
           </>
         )
       }
+
       return (
         <Items
           {hideExample}

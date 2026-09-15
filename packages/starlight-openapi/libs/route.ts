@@ -40,41 +40,46 @@ function getPathItemRoutes(schema: Schema): StarlightOpenAPIRoute[] {
   const operations = getOperationsByTag(schema)
   const operationKeys = new Set<string>()
 
-  return [...operations.entries()].flatMap(([, operations]) => {
-    const routes: StarlightOpenAPIRoute[] = []
+  return operations
+    .entries()
+    .flatMap(([, operations]) => {
+      const routes: StarlightOpenAPIRoute[] = []
 
-    for (const operation of operations.entries) {
-      const operationKey = `${operation.method}${operation.path}`
-      if (operationKeys.has(operationKey)) continue
+      for (const operation of operations.entries) {
+        const operationKey = `${operation.method}${operation.path}`
+        if (operationKeys.has(operationKey)) continue
 
-      operationKeys.add(operationKey)
-      routes.push({
-        params: {
-          openAPISlug: stripLeadingAndTrailingSlashes(schemaBasePath + operation.slug),
-        },
-        props: {
-          operation,
-          schema,
-          type: 'operation',
-        },
-      })
-    }
+        operationKeys.add(operationKey)
+        routes.push({
+          params: {
+            openAPISlug: stripLeadingAndTrailingSlashes(schemaBasePath + operation.slug),
+          },
+          props: {
+            operation,
+            schema,
+            type: 'operation',
+          },
+        })
+      }
 
-    if (!isMinimalOperationTag(operations.tag)) {
-      routes.unshift({
-        params: {
-          openAPISlug: stripLeadingAndTrailingSlashes(`${schemaBasePath}operations/tags/${slug(operations.tag.name)}`),
-        },
-        props: {
-          schema,
-          tag: operations.tag,
-          type: 'operation-tag-overview',
-        },
-      })
-    }
+      if (!isMinimalOperationTag(operations.tag)) {
+        routes.unshift({
+          params: {
+            openAPISlug: stripLeadingAndTrailingSlashes(
+              `${schemaBasePath}operations/tags/${slug(operations.tag.name)}`,
+            ),
+          },
+          props: {
+            schema,
+            tag: operations.tag,
+            type: 'operation-tag-overview',
+          },
+        })
+      }
 
-    return routes
-  })
+      return routes
+    })
+    .toArray()
 }
 
 function getWebhooksRoutes(schema: Schema): StarlightOpenAPIRoute[] {

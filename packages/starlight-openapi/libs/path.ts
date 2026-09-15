@@ -60,7 +60,7 @@ export function getSlugFromPathname(pathname: string): string | undefined {
   } else if (segments.at(-1)?.endsWith(htmlExt)) {
     // Remove trailing `.html`.
     const lastSegment = segments.pop()
-    if (lastSegment) segments.push(lastSegment.slice(0, -1 * htmlExt.length))
+    if (lastSegment) segments.push(lastSegment.slice(0, -htmlExt.length))
   }
 
   return segments.filter(Boolean).join('/') || undefined

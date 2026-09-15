@@ -6,6 +6,8 @@ import type { AstroConfig, AstroIntegrationLogger } from 'astro'
 
 import type { Schema, StarlightOpenAPISchemaConfig } from './schemas/schema'
 
+const schemaUrlProtocols = new Set(['https:', 'http:', 'file:'])
+
 export async function parseSchema(
   logger: AstroIntegrationLogger,
   root: AstroConfig['root'],
@@ -37,7 +39,7 @@ function getSchemaLocation(root: AstroConfig['root'], schemaPath: string): strin
 function isSchemaUrl(schemaPath: string): boolean {
   try {
     const url = new URL(schemaPath)
-    return url.protocol === 'https:' || url.protocol === 'http:' || url.protocol === 'file:'
+    return schemaUrlProtocols.has(url.protocol)
   } catch {
     return false
   }

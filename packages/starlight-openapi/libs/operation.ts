@@ -70,12 +70,15 @@ export function getOperationsByTag({ config, document }: Schema) {
 
   if (document.tags) {
     const orderedTags = new Map(document.tags.map((tag, index) => [tag.name, { index, tag }]))
-    const operationsByTagArray = [...operationsByTag.entries()].toSorted(([tagA], [tagB]) => {
-      const orderA = orderedTags.get(tagA)?.index ?? Number.POSITIVE_INFINITY
-      const orderB = orderedTags.get(tagB)?.index ?? Number.POSITIVE_INFINITY
+    const operationsByTagArray = operationsByTag
+      .entries()
+      .toArray()
+      .toSorted(([tagA], [tagB]) => {
+        const orderA = orderedTags.get(tagA)?.index ?? Infinity
+        const orderB = orderedTags.get(tagB)?.index ?? Infinity
 
-      return orderA - orderB
-    })
+        return orderA - orderB
+      })
 
     operationsByTag.clear()
 
@@ -142,7 +145,7 @@ export function isPathItemOperation<TMethod extends OperationHttpMethod>(
   pathItem: PathItem,
   method: TMethod,
 ): pathItem is Record<TMethod, Operation> {
-  return method in pathItem
+  return Object.hasOwn(pathItem, method)
 }
 
 export function isMinimalOperationTag(tag: OperationTag): boolean {
@@ -178,7 +181,7 @@ function getRequestServerURL(serverObject: ServerObject): string {
   if (url.startsWith('//')) return `https:${url}`
   if (absoluteURLRegex.test(url)) return url
 
-  return new URL(url, defaultServerOrigin).toString()
+  return new URL(url, defaultServerOrigin).href
 }
 
 export function replaceTemplateVariables(template: string, values: Record<string, string>): string {

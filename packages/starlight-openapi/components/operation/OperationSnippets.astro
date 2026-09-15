@@ -16,7 +16,7 @@ const { snippets } = Astro.props
     class StarlightOpenAPISnippets extends HTMLElement {
       connectedCallback() {
         const openAPISnippets = this.parentElement
-        if (!(openAPISnippets instanceof HTMLDivElement) || typeof localStorage === 'undefined') return
+        if (typeof localStorage === 'undefined' || !(openAPISnippets instanceof HTMLDivElement)) return
         const id = localStorage.getItem('starlight-openapi-snippet-id')
         if (!id) return
         const snippets = [...openAPISnippets.querySelectorAll('.sl-openapi-snippet')]
