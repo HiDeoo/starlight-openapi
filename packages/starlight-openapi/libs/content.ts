@@ -7,19 +7,16 @@ import { hasSchemaObject, type SchemaObject } from './schemaObject'
 export function getContentEntries(content: Content): MediaEntry[] {
   const entries: MediaEntry[] = []
 
-  for (const mediaType of Object.keys(content)) {
-    const media = content[mediaType]
-    if (media === undefined) continue
-
+  for (const [mediaType, media] of Object.entries(content)) {
     const example = getDefinedValue(media, 'example')
     const examples = getDefinedValue(media, 'examples')
 
     entries.push({
       media: media,
       mediaType,
-      ...(hasSchemaObject(media) ? { schema: media.schema } : {}),
-      ...(example === undefined ? {} : { example }),
-      ...(isExamples(examples) ? { examples } : {}),
+      ...(hasSchemaObject(media) && { schema: media.schema }),
+      ...(example !== undefined && { example }),
+      ...(isExamples(examples) && { examples }),
     })
   }
   return entries

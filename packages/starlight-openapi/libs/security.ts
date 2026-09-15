@@ -7,7 +7,9 @@ import type { Schema } from './schemas/schema'
 export function getSecurityRequirements(operation: Operation, schema?: Schema): SecurityRequirement[] | undefined {
   if ('security' in operation) {
     return operation.security
-  } else if (schema && 'security' in schema.document) {
+  }
+
+  if (schema && 'security' in schema.document) {
     return schema.document.security
   }
 
@@ -17,7 +19,9 @@ export function getSecurityRequirements(operation: Operation, schema?: Schema): 
 export function getSecurityDefinitions(document: Document): SecurityDefinitions | undefined {
   if ('securityDefinitions' in document) {
     return document.securityDefinitions
-  } else if ('components' in document && 'securitySchemes' in document.components) {
+  }
+
+  if ('components' in document && 'securitySchemes' in document.components) {
     return document.components.securitySchemes as SecurityDefinitions
   }
 

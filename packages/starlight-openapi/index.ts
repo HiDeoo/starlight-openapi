@@ -40,7 +40,7 @@ export default function starlightOpenAPIPlugin(userConfig: StarlightOpenAPIUserC
 
         if (starlightConfig.expressiveCode !== false) {
           updatedConfig.expressiveCode = {
-            ...(typeof starlightConfig.expressiveCode === 'object' ? starlightConfig.expressiveCode : {}),
+            ...(typeof starlightConfig.expressiveCode === 'object' && starlightConfig.expressiveCode),
             removeUnusedThemes: false,
           }
         }

@@ -21,7 +21,7 @@ export function vitePluginStarlightOpenAPI(schemas: Schema[], context: Starlight
       return moduleId ? modules[moduleId] : undefined
     },
     resolveId(id) {
-      return id in modules ? resolveVirtualModuleId(id) : undefined
+      return Object.hasOwn(modules, id) ? resolveVirtualModuleId(id) : undefined
     },
   }
 }

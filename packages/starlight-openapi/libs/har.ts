@@ -91,7 +91,7 @@ export function getOperationHarRequest(schema: Schema, pathItemOperation: PathIt
     cookies,
     headers,
     queryString,
-    ...(requestBody.postData ? { postData: requestBody.postData } : {}),
+    ...(requestBody.postData && { postData: requestBody.postData }),
     headersSize: -1,
     bodySize: -1,
   }
@@ -155,7 +155,7 @@ function getOperationSecurity(schema: Schema, { operation }: PathItemOperation):
   const securityRequirements = getSecurityRequirements(operation, schema)
   const securityDefinitions = getSecurityDefinitions(schema.document)
 
-  if (!securityRequirements || securityRequirements.length === 0 || !securityDefinitions) {
+  if (!securityRequirements || !securityDefinitions || securityRequirements.length === 0) {
     return defaultOperationSecurity
   }
 
@@ -429,7 +429,7 @@ function serializeMultipartField(
 
   return serializeParameterValue(name, fieldValue, metadata.style, metadata.explode).map((parameter) => ({
     ...parameter,
-    ...(metadata.contentType ? { contentType: metadata.contentType } : {}),
+    ...(metadata.contentType && { contentType: metadata.contentType }),
   }))
 }
 
@@ -516,7 +516,7 @@ function createMultipartFileParams(
   return fileValues.map((fileValue) => ({
     name,
     fileName: typeof fileValue === 'string' && metadata.hasExplicitBinaryFileName ? fileValue : 'file',
-    ...(metadata.contentType ? { contentType: metadata.contentType } : {}),
+    ...(metadata.contentType && { contentType: metadata.contentType }),
   }))
 }
 

@@ -8,7 +8,7 @@ export function hasDefinedValue<T extends object, K extends string>(
 ): value is T & Record<K, unknown>
 export function hasDefinedValue<K extends string>(value: unknown, key: K): value is Record<K, unknown>
 export function hasDefinedValue(value: unknown, key: string): boolean {
-  return isObjectLike(value) && key in value && value[key] !== undefined
+  return isObjectLike(value) && Object.hasOwn(value, key) && value[key] !== undefined
 }
 
 export function getDefinedValue(value: unknown, key: string): unknown {

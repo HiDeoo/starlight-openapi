@@ -55,7 +55,9 @@ export function getSchemaObjects(schemaObject: SchemaObject): SchemaObjects | un
       schemaObjects: normalizeSchemaObjects(oneOf as SchemaObject[], otherProperties),
       type: 'oneOf',
     }
-  } else if (schemaObject.anyOf && schemaObject.anyOf.length > 0) {
+  }
+
+  if (schemaObject.anyOf && schemaObject.anyOf.length > 0) {
     const { anyOf, ...otherProperties } = schemaObject
 
     return {
@@ -124,8 +126,8 @@ function normalizeSchemaObjects(schemaObjects: SchemaObject[], parentSchemaObjec
       const normalizedSchemaObject = {
         ...parentSchemaObject,
         ...schemaObjectsObject,
-        ...(Object.keys(properties).length > 0 ? { properties } : {}),
-        ...(required ? { required } : {}),
+        ...(Object.keys(properties).length > 0 && { properties }),
+        ...(required && { required }),
       } as SchemaObject
 
       if (!normalizedSchemaObject.type && normalizedSchemaObject.properties) {

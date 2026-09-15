@@ -129,7 +129,7 @@ export function getPaginationLinks(
 
   return {
     prev: applyPaginationLinkConfig(links[currentIndex - 1], config.prev, context),
-    next: applyPaginationLinkConfig(currentIndex > -1 ? links[currentIndex + 1] : undefined, config.next, context),
+    next: applyPaginationLinkConfig(currentIndex === -1 ? undefined : links[currentIndex + 1], config.next, context),
   }
 }
 
@@ -226,7 +226,7 @@ function getOperationHeadings(schema: Schema, { operation, pathItem }: PathItemO
   if (parametersByLocation.size > 0) {
     items.push(
       makeHeading(2, 'Parameters'),
-      ...[...parametersByLocation.keys()].map((location) => makeHeading(3, `${capitalize(location)} Parameters`)),
+      ...parametersByLocation.keys().map((location) => makeHeading(3, `${capitalize(location)} Parameters`)),
     )
   }
 

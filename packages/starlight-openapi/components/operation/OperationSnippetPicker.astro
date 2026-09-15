@@ -89,8 +89,7 @@ for (const snippet of snippets.items) {
           const id = event.currentTarget.value
 
           for (const snippet of this.#snippets) {
-            if (snippet.dataset['openapiSnippetId'] === id) snippet.removeAttribute('hidden')
-            else snippet.setAttribute('hidden', 'true')
+            snippet.toggleAttribute('hidden', snippet.dataset['openapiSnippetId'] !== id)
           }
 
           if (this.#status) {

@@ -16,6 +16,8 @@ const collectionFormatSeparators = {
   tsv: '\t',
 }
 
+const parameterValueStyles = new Set(['deepObject', 'form', 'pipeDelimited', 'spaceDelimited'])
+
 export function getParametersByLocation(
   operationParameters: OpenAPI.Parameters | undefined,
   pathItemParameters: OpenAPI.Parameters | undefined,
@@ -51,7 +53,7 @@ export function formatQueryParameterExample(parameter: Parameter, value: unknown
 
   switch (parameter.style) {
     case 'deepObject': {
-      if (!isObjectLike(value) || !explode) return formatParameterValue(value, true)
+      if (!explode || !isObjectLike(value)) return formatParameterValue(value, true)
 
       return `?${Object.entries(value)
         .map(([key, entryValue]) => `${parameter.name}[${key}]=${String(entryValue)}`)
@@ -148,7 +150,7 @@ export function serializeUriComponent(
   if (!allowReserved) return encodedValue
 
   for (const character of reservedUriCharacters) {
-    encodedValue = encodedValue.replaceAll(encodeURIComponent(character), character)
+    encodedValue = encodedValue.replaceAll(encodeURIComponent(character), () => character)
   }
 
   return encodedValue
@@ -256,7 +258,7 @@ function serializeParameterEntries(
 
   switch (style) {
     case 'deepObject': {
-      if (!isObjectLike(value) || Array.isArray(value) || !explode) {
+      if (!explode || !isObjectLike(value) || Array.isArray(value)) {
         return [{ name: serializeName(name), value: serializeValue(value) }]
       }
 
@@ -412,7 +414,7 @@ export function getParameterValueStyle(style: unknown, fallback: ParameterValueS
 }
 
 function isParameterValueStyle(style: unknown): style is ParameterValueStyle {
-  return style === 'deepObject' || style === 'form' || style === 'pipeDelimited' || style === 'spaceDelimited'
+  return typeof style === 'string' && parameterValueStyles.has(style)
 }
 
 function getParameterExplode(explode: unknown, fallback: boolean): boolean {
@@ -440,7 +442,7 @@ export function getCollectionFormatSeparator(collectionFormat: string | undefine
 }
 
 function isCollectionFormatSeparatorKey(value: string): value is keyof typeof collectionFormatSeparators {
-  return value in collectionFormatSeparators
+  return Object.hasOwn(collectionFormatSeparators, value)
 }
 
 export type Parameter = OpenAPIV2.Parameter | OpenAPIV3.ParameterObject | OpenAPIV3_1.ParameterObject

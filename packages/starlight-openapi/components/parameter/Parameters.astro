@@ -20,12 +20,13 @@ const { level = 2, parameters, prefix } = Astro.props
       <Heading level={level} id={prefix ? `${prefix}-parameters` : 'parameters'}>
         Parameters
       </Heading>
-      {[...parameters.entries()].map(([location, parameters]) => (
+      {[...parameters].map(([location, parameters]) => (
         <Section level={level + 1} {prefix} title={`${capitalize(location)} Parameters`}>
           <Keys>
-            {[...parameters.values()].map((parameter) => (
-              <Parameter {parameter} />
-            ))}
+            {parameters
+              .values()
+              .map((parameter) => <Parameter {parameter} />)
+              .toArray()}
           </Keys>
         </Section>
       ))}

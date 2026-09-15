@@ -37,8 +37,8 @@ function getOpenAPIV2ResponseMediaEntries(schema: Schema, operation: Operation, 
 
     return {
       mediaType,
-      ...(schemaObject ? { schema: schemaObject } : {}),
-      ...(example === undefined ? {} : { example }),
+      ...(schemaObject && { schema: schemaObject }),
+      ...(example !== undefined && { example }),
     }
   })
 }

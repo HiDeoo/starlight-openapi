@@ -54,7 +54,9 @@ export function hasRequestBody(operation: Operation): boolean {
 export function getOpenAPIV2OperationConsumes(schema: Schema, operation: Operation): OpenAPIV2.MimeTypes | undefined {
   if ('consumes' in operation) {
     return operation.consumes
-  } else if ('consumes' in schema.document) {
+  }
+
+  if ('consumes' in schema.document) {
     return schema.document.consumes
   }
 
@@ -64,7 +66,9 @@ export function getOpenAPIV2OperationConsumes(schema: Schema, operation: Operati
 export function getOpenAPIV2OperationProduces(schema: Schema, operation: Operation): OpenAPIV2.MimeTypes | undefined {
   if ('produces' in operation) {
     return operation.produces
-  } else if ('produces' in schema.document) {
+  }
+
+  if ('produces' in schema.document) {
     return schema.document.produces
   }
 
@@ -143,7 +147,7 @@ export function getFormFieldEncodingOptions(mediaType: unknown, fieldName: strin
         ? fieldEncoding.explode
         : style === 'form',
     style,
-    ...(contentType === undefined ? {} : { contentType }),
+    ...(contentType !== undefined && { contentType }),
   }
 }
 
@@ -200,8 +204,8 @@ function normalizeRequestBodyMediaEntry(entry: MediaEntry): MediaEntry {
 
   return {
     ...entry,
-    ...(entry.example === undefined ? {} : { example: serializeRequestBodyExample(entry, entry.example) }),
-    ...(entry.examples === undefined ? {} : { examples: normalizeRequestBodyExamples(entry, entry.examples) }),
+    ...(entry.example !== undefined && { example: serializeRequestBodyExample(entry, entry.example) }),
+    ...(entry.examples !== undefined && { examples: normalizeRequestBodyExamples(entry, entry.examples) }),
   }
 }
 

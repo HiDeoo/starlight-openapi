@@ -43,7 +43,9 @@ export function getTestOperation(
   selector: { operationId: string } | { path: string; method: OperationHttpMethod },
 ): PathItemOperation {
   const operations = [
-    ...[...getOperationsByTag(schema).values()].flatMap((group) => group.entries),
+    ...getOperationsByTag(schema)
+      .values()
+      .flatMap((group) => group.entries),
     ...getWebhooksOperations(schema),
   ]
 

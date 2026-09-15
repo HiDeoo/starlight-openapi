@@ -35,7 +35,7 @@ export class TestApp {
   }
 
   url(pathname: string) {
-    return new URL(pathname, this.baseURL).toString()
+    return new URL(pathname, this.baseURL).href
   }
 
   async start() {
