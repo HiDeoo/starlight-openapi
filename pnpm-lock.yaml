@@ -111,7 +111,7 @@ importers:
     devDependencies:
       '@astrojs/check':
         specifier: ^0.9.7
-        version: 0.9.7(prettier-plugin-astro@0.14.1)(prettier@3.8.1)(typescript@6.0.3)
+        version: 0.9.7(prettier-plugin-astro@1.1.0(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(prettier@3.8.1))(prettier@3.8.1)(typescript@6.0.3)
       '@changesets/changelog-github':
         specifier: ^1.0.1
         version: 1.0.1
@@ -135,13 +135,13 @@ importers:
         version: 10.10.0(supports-color@7.2.0)
       node:
         specifier: runtime:>=22.12.0
-        version: runtime:26.8.2
+        version: runtime:26.10.0
       prettier:
         specifier: ^3.8.1
         version: 3.8.1
       prettier-plugin-astro:
-        specifier: ^0.14.1
-        version: 0.14.1
+        specifier: ^1.1.0
+        version: 1.1.0(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(prettier@3.8.1)
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
@@ -1149,6 +1149,9 @@ packages:
   '@pnpm/deps.graph-sequencer@1100.0.1':
     resolution: {integrity: sha512-pOr5+q1fLYKwFN3LAJuGZEnfXDcQ73zqgDHMtGy+K+uIoUqyY+6MeDCWFwfu+4EFuq76I5EPFofoNAI+Bmmq4A==}
     engines: {node: '>=22.13'}
+
+  '@prettier/parse-srcset@3.1.0':
+    resolution: {integrity: sha512-FIRv2rZotO9NP/r66taYqD1zICpPiBbrECqjKV/xqNotqDxF7fLzzUeK+1RSRx9Tenk0DajR/GcRmTJ2qtHaKQ==}
 
   '@readme/better-ajv-errors@2.4.0':
     resolution: {integrity: sha512-9WODaOAKSl/mU+MYNZ2aHCrkoRSvmQ+1YkLj589OEqqjOAhbn8j7Z+ilYoiTu/he6X63/clsxxAB4qny9/dDzg==}
@@ -3121,7 +3124,7 @@ packages:
     resolution: {integrity: sha512-mIrE/Cw9y+9Au6dS5vDKDhQza9YvG6w+ZrS6X+ZzA7yFW/soAeaups4Qzn1bL6g5FVy8WtP79+0j82oPIbqRjQ==}
     engines: {node: '>=18'}
 
-  node@runtime:26.8.2:
+  node@runtime:26.10.0:
     resolution:
       type: variations
       variants:
@@ -3129,9 +3132,9 @@ packages:
             archive: tarball
             bin:
               node: bin/node
-            integrity: sha256-iXqaQYiTLhmwQqxiRUGPgHuauXFVncxCiN1XcZHVNr0=
+            integrity: sha256-9ak/5zz1WDQU1Ni+WYxOx+cr4ygbWCDUlcKhXOaqE8g=
             type: binary
-            url: https://nodejs.org/download/release/v26.8.2/node-v26.8.2-aix-ppc64.tar.gz
+            url: https://nodejs.org/download/release/v26.10.0/node-v26.10.0-aix-ppc64.tar.gz
           targets:
             - cpu: ppc64
               os: aix
@@ -3139,9 +3142,9 @@ packages:
             archive: tarball
             bin:
               node: bin/node
-            integrity: sha256-l0ttX7L8fDP/I1TbCQK06Rwt4B7IrMbeSOVDyX4YyeE=
+            integrity: sha256-dR/fdDnxFdh+4qjz8YwGW2FRhSBo4+ZmrGCsKZb3Wsk=
             type: binary
-            url: https://nodejs.org/download/release/v26.8.2/node-v26.8.2-darwin-arm64.tar.gz
+            url: https://nodejs.org/download/release/v26.10.0/node-v26.10.0-darwin-arm64.tar.gz
           targets:
             - cpu: arm64
               os: darwin
@@ -3149,9 +3152,9 @@ packages:
             archive: tarball
             bin:
               node: bin/node
-            integrity: sha256-rbj+stSYffPXLS7Eb0/EtYA5yFm4w/DjzC08bLr4Ypw=
+            integrity: sha256-676aubWK1rtUOQ1uLIYsGvp9RHX7foroFGrN4hG/cN8=
             type: binary
-            url: https://nodejs.org/download/release/v26.8.2/node-v26.8.2-darwin-x64.tar.gz
+            url: https://nodejs.org/download/release/v26.10.0/node-v26.10.0-darwin-x64.tar.gz
           targets:
             - cpu: x64
               os: darwin
@@ -3159,9 +3162,9 @@ packages:
             archive: tarball
             bin:
               node: bin/node
-            integrity: sha256-dGzb8hVltOoG93ZCuw6FRm3ou3IiQr4sXgBvJyw2HGM=
+            integrity: sha256-QjpBv/jiovoV5wL+/ikZ75WCOyN4dE2sy4Q5MCU0tE8=
             type: binary
-            url: https://nodejs.org/download/release/v26.8.2/node-v26.8.2-linux-arm64.tar.gz
+            url: https://nodejs.org/download/release/v26.10.0/node-v26.10.0-linux-arm64.tar.gz
           targets:
             - cpu: arm64
               os: linux
@@ -3169,9 +3172,9 @@ packages:
             archive: tarball
             bin:
               node: bin/node
-            integrity: sha256-1ghXhcX4cZJ1P8coJWU7P6A/hGj4AJEcz9wnAcrN4K8=
+            integrity: sha256-DMa5qZBiFvjefXAUYDj+a6tffo86itKdjb6r3xOBtS0=
             type: binary
-            url: https://nodejs.org/download/release/v26.8.2/node-v26.8.2-linux-ppc64le.tar.gz
+            url: https://nodejs.org/download/release/v26.10.0/node-v26.10.0-linux-ppc64le.tar.gz
           targets:
             - cpu: ppc64le
               os: linux
@@ -3179,9 +3182,9 @@ packages:
             archive: tarball
             bin:
               node: bin/node
-            integrity: sha256-rT5/0BNAFuub2jZT1u832fNgnsbiWg0SLmwz/bsrsNc=
+            integrity: sha256-eHQCtH8Pj9RioZpEw9cHBSyryV7LlG/oBBobXIEOPWM=
             type: binary
-            url: https://nodejs.org/download/release/v26.8.2/node-v26.8.2-linux-s390x.tar.gz
+            url: https://nodejs.org/download/release/v26.10.0/node-v26.10.0-linux-s390x.tar.gz
           targets:
             - cpu: s390x
               os: linux
@@ -3189,9 +3192,9 @@ packages:
             archive: tarball
             bin:
               node: bin/node
-            integrity: sha256-aIVMZpAfiL/oVFDDsuQCmW7yfvccdVFQGSL4aXAaiD8=
+            integrity: sha256-G99gyBQeUVJgS6+LOPMeGRs3lPYPzitxNR54xAIfAWY=
             type: binary
-            url: https://nodejs.org/download/release/v26.8.2/node-v26.8.2-linux-x64-musl.tar.gz
+            url: https://nodejs.org/download/release/v26.10.0/node-v26.10.0-linux-x64-musl.tar.gz
           targets:
             - cpu: x64
               os: linux
@@ -3200,9 +3203,9 @@ packages:
             archive: tarball
             bin:
               node: bin/node
-            integrity: sha256-uts/5qYbheE1LKZWTcVri3vV7NXEdMUqzCHdDN1YbzU=
+            integrity: sha256-y1yc6cgNe4gh46JYVDxxuTkTjPF8dNXMRLvoXW28Wtg=
             type: binary
-            url: https://nodejs.org/download/release/v26.8.2/node-v26.8.2-linux-x64.tar.gz
+            url: https://nodejs.org/download/release/v26.10.0/node-v26.10.0-linux-x64.tar.gz
           targets:
             - cpu: x64
               os: linux
@@ -3210,10 +3213,10 @@ packages:
             archive: zip
             bin:
               node: node.exe
-            integrity: sha256-pOg2LiaPH88XNfBG4K2wiLKO60APscM/5cyU0aPUJXA=
-            prefix: node-v26.8.2-win-arm64
+            integrity: sha256-t3hkDXJxVmvKqWeZEs3waEwT6CTBFOQai2lvsUr3p6o=
+            prefix: node-v26.10.0-win-arm64
             type: binary
-            url: https://nodejs.org/download/release/v26.8.2/node-v26.8.2-win-arm64.zip
+            url: https://nodejs.org/download/release/v26.10.0/node-v26.10.0-win-arm64.zip
           targets:
             - cpu: arm64
               os: win32
@@ -3221,10 +3224,10 @@ packages:
             archive: zip
             bin:
               node: node.exe
-            integrity: sha256-zwL10MBseUuE8ncXfVzzdD0JJMpJ9mQc1DXdfLbukIU=
-            prefix: node-v26.8.2-win-x64
+            integrity: sha256-n+9+ymdDprkQmJzY54cSN2s5T8ubbh6cRKB5mih/kMU=
+            prefix: node-v26.10.0-win-x64
             type: binary
-            url: https://nodejs.org/download/release/v26.8.2/node-v26.8.2-win-x64.zip
+            url: https://nodejs.org/download/release/v26.10.0/node-v26.10.0-win-x64.zip
           targets:
             - cpu: x64
               os: win32
@@ -3232,9 +3235,9 @@ packages:
             archive: tarball
             bin:
               node: bin/node
-            integrity: sha256-ElQ3oLWdaVkrj0u4E6RyRTN6+sjJc9Fat3IPDsVdGC0=
+            integrity: sha256-0mAnv/MZcFDSorC/oVGxjoN47YGv+iv1CTgE2xWJebY=
             type: binary
-            url: https://unofficial-builds.nodejs.org/download/release/v26.8.2/node-v26.8.2-linux-arm64-musl.tar.gz
+            url: https://unofficial-builds.nodejs.org/download/release/v26.10.0/node-v26.10.0-linux-arm64-musl.tar.gz
           targets:
             - cpu: arm64
               os: linux
@@ -3243,14 +3246,14 @@ packages:
             archive: tarball
             bin:
               node: bin/node
-            integrity: sha256-aW6wGAJIoGyYk/Pwe8xOJoCJHIMRjHOq8d4zDv0FORA=
+            integrity: sha256-5C2pSCG5Qi63a/Wq9N4Jd+BLoyC4r/YUjYlalLCO4iM=
             type: binary
-            url: https://unofficial-builds.nodejs.org/download/release/v26.8.2/node-v26.8.2-linux-x64-musl.tar.gz
+            url: https://unofficial-builds.nodejs.org/download/release/v26.10.0/node-v26.10.0-linux-x64-musl.tar.gz
           targets:
             - cpu: x64
               os: linux
               libc: musl
-    version: 26.8.2
+    version: 26.10.0
     hasBin: true
 
   normalize-path@3.0.0:
@@ -3442,9 +3445,11 @@ packages:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
 
-  prettier-plugin-astro@0.14.1:
-    resolution: {integrity: sha512-RiBETaaP9veVstE4vUwSIcdATj6dKmXljouXc/DDNwBSPTp8FRkLGDSGFClKsAFeeg+13SB0Z1JZvbD76bigJw==}
-    engines: {node: ^14.15.0 || >=16.0.0}
+  prettier-plugin-astro@1.1.0:
+    resolution: {integrity: sha512-ujJ1VX+iin4eYJPHVCEbmXHzrEVsi1SaVehHtbAteTZv8VTrZyBiZPmYc6Ud6+fkr/UBMXuEu3N3+d49h7YfKw==}
+    engines: {node: '>=22.12.0'}
+    peerDependencies:
+      prettier: ^3.5.3
 
   prettier@3.8.1:
     resolution: {integrity: sha512-UOnG6LftzbdaHZcKoPFtOcCKztrQ57WkHDeRD9t/PTQtmT0NHSeWWepj6pS0z/N7+08BHFDQVUrfmfMRcZwbMg==}
@@ -3623,8 +3628,9 @@ packages:
     resolution: {integrity: sha512-x/+Cz4YrimQxQccJf5mKEbIa1NzeCRNI5Ecl/ekmlYaampdNLPalVyIcCZNNH3MvmqBugV5TMYZXv0ljslUlaw==}
     engines: {node: '>= 0.4'}
 
-  sass-formatter@0.7.9:
-    resolution: {integrity: sha512-CWZ8XiSim+fJVG0cFLStwDvft1VI7uvXdCNJYXhDvowiv+DsbD1nXLiQ4zrE5UBvj5DWZJ93cwN0NX5PMsr1Pw==}
+  sass-formatter@0.8.0:
+    resolution: {integrity: sha512-Nf4eMGE2O5vnJG7KPCRyksWS9gVKSYoUWtPeMXRRxwZSPVQhSGtL602xVYS65LvMkHmkvKa7xpauF0+/5pPwrg==}
+    hasBin: true
 
   satteri@0.9.3:
     resolution: {integrity: sha512-2XfBh89LCnBMFkNOeVKkBLelAZcIA17VLHsgJum1tJ2fXiPZDN/TDXv4ku46rFOQXYd41LJ0kiZh5gPqExcCsg==}
@@ -4304,9 +4310,9 @@ snapshots:
     dependencies:
       lite-youtube-embed: 0.3.4
 
-  '@astrojs/check@0.9.7(prettier-plugin-astro@0.14.1)(prettier@3.8.1)(typescript@6.0.3)':
+  '@astrojs/check@0.9.7(prettier-plugin-astro@1.1.0(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(prettier@3.8.1))(prettier@3.8.1)(typescript@6.0.3)':
     dependencies:
-      '@astrojs/language-server': 2.16.4(prettier-plugin-astro@0.14.1)(prettier@3.8.1)(typescript@6.0.3)
+      '@astrojs/language-server': 2.16.4(prettier-plugin-astro@1.1.0(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(prettier@3.8.1))(prettier@3.8.1)(typescript@6.0.3)
       chokidar: 4.0.3
       kleur: 4.1.5
       typescript: 6.0.3
@@ -4436,7 +4442,7 @@ snapshots:
       smol-toml: 1.6.0
       unified: 11.0.5
 
-  '@astrojs/language-server@2.16.4(prettier-plugin-astro@0.14.1)(prettier@3.8.1)(typescript@6.0.3)':
+  '@astrojs/language-server@2.16.4(prettier-plugin-astro@1.1.0(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(prettier@3.8.1))(prettier@3.8.1)(typescript@6.0.3)':
     dependencies:
       '@astrojs/compiler': 2.13.1
       '@astrojs/yaml2ts': 0.2.3
@@ -4458,7 +4464,7 @@ snapshots:
       vscode-uri: 3.1.0
     optionalDependencies:
       prettier: 3.8.1
-      prettier-plugin-astro: 0.14.1
+      prettier-plugin-astro: 1.1.0(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(prettier@3.8.1)
     transitivePeerDependencies:
       - typescript
 
@@ -5296,6 +5302,8 @@ snapshots:
       playwright: 1.63.0
 
   '@pnpm/deps.graph-sequencer@1100.0.1': {}
+
+  '@prettier/parse-srcset@3.1.0': {}
 
   '@readme/better-ajv-errors@2.4.0(ajv@8.18.0)':
     dependencies:
@@ -7975,7 +7983,7 @@ snapshots:
 
   node-releases@2.0.55: {}
 
-  node@runtime:26.8.2: {}
+  node@runtime:26.10.0: {}
 
   normalize-path@3.0.0: {}
 
@@ -8191,11 +8199,15 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier-plugin-astro@0.14.1:
+  prettier-plugin-astro@1.1.0(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(prettier@3.8.1):
     dependencies:
-      '@astrojs/compiler': 2.13.1
+      '@astrojs/compiler-rs': 0.4.0(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)
+      '@prettier/parse-srcset': 3.1.0
       prettier: 3.8.1
-      sass-formatter: 0.7.9
+      sass-formatter: 0.8.0
+    transitivePeerDependencies:
+      - '@emnapi/core'
+      - '@emnapi/runtime'
 
   prettier@3.8.1: {}
 
@@ -8469,7 +8481,7 @@ snapshots:
       is-regex: 1.2.1
     optional: true
 
-  sass-formatter@0.7.9:
+  sass-formatter@0.8.0:
     dependencies:
       suf-log: 2.5.3
 

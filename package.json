@@ -20,7 +20,7 @@
     "astro": "^7.0.3",
     "eslint": "^10.10.0",
     "prettier": "^3.8.1",
-    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-astro": "^1.1.0",
     "typescript": "^6.0.3"
   },
   "devEngines": {
