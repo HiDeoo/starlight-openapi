@@ -17,30 +17,16 @@ const { empty, level = 3, prefix = '', title } = Astro.props
 ---
 
 <section class="sl-openapi-section" data-openapi-section-level={level}>
-  <Heading {level} id={slug(prefix ? `${prefix}-${title}` : title)}>
-    {title}<slot name="post-title" />
-  </Heading>
-  {
-    Astro.slots.has('pre-panel') && (
-      <div class="sl-openapi-section-pre-panel">
-        <slot name="pre-panel" />
-      </div>
-    )
-  }
-  {
-    !empty && (
-      <div class="sl-openapi-section-panel">
-        <slot />
-      </div>
-    )
-  }
-  {
-    Astro.slots.has('post-panel') && (
-      <div class="sl-openapi-section-post-panel">
-        <slot name="post-panel" />
-      </div>
-    )
-  }
+  <Heading {level} id={slug(prefix ? `${prefix}-${title}` : title)}>{title}<slot name="post-title" /></Heading>
+  {Astro.slots.has('pre-panel') && <div class="sl-openapi-section-pre-panel">
+    <slot name="pre-panel" />
+  </div>}
+  {!empty && <div class="sl-openapi-section-panel">
+    <slot />
+  </div>}
+  {Astro.slots.has('post-panel') && <div class="sl-openapi-section-post-panel">
+    <slot name="post-panel" />
+  </div>}
 </section>
 
 <style>

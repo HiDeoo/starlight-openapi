@@ -20,28 +20,22 @@ const docLinks: Record<`${string}:${string}`, string> = {
 ---
 
 <ul>
-  {
-    Object.keys(OperationSnippetTargetMetadata).map((target) => {
-      const clients = Object.keys(
-        OperationSnippetClientMetadata[target as keyof typeof OperationSnippetClientMetadata],
-      ).map((client) => {
-        const id = `${target}:${client}`
-        const docLink = docLinks[`${target}:${client}`]
-        if (!docLink) throw new Error(`Missing doc link for target/client: '${id}'`)
+  {Object.keys(OperationSnippetTargetMetadata).map((target) => {
+    const clients = Object.keys(
+      OperationSnippetClientMetadata[target as keyof typeof OperationSnippetClientMetadata],
+    ).map((client) => {
+      const id = `${target}:${client}`
+      const docLink = docLinks[`${target}:${client}`]
+      if (!docLink) throw new Error(`Missing doc link for target/client: '${id}'`)
 
-        return `<a href={"${docLink}"}><code>${client}</code></a>`
-      })
-
-      const clientsList = new Intl.ListFormat('en', {
-        style: 'long',
-        type: 'conjunction',
-      }).format(clients)
-
-      return (
-        <li>
-          <code>{target}</code>: <span set:html={clientsList} />
-        </li>
-      )
+      return `<a href={"${docLink}"}><code>${client}</code></a>`
     })
-  }
+
+    const clientsList = new Intl.ListFormat('en', {
+      style: 'long',
+      type: 'conjunction',
+    }).format(clients)
+
+    return <li><code>{target}</code>: <span set:html={clientsList} /></li>
+  })}
 </ul>

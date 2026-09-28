@@ -13,27 +13,21 @@ const { groups } = Astro.props
 const visibleGroups = groups.filter((group) => group.links.length > 0)
 ---
 
-{
-  visibleGroups.length > 0 && (
-    <div class="sl-openapi-overview-navigation">
-      <Heading level={2} id="operations">
-        Operations
-      </Heading>
-      <div class="sl-openapi-overview-navigation-links not-content">
-        {visibleGroups.map((group) =>
-          group.links.map((link) => (
-            <OverviewNavigationLink
-              href={link.href}
-              isWebhook={link.path === undefined}
-              label={link.path ?? link.label}
-              method={link.method}
-            />
-          )),
-        )}
-      </div>
-    </div>
-  )
-}
+{visibleGroups.length > 0 && <div class="sl-openapi-overview-navigation">
+  <Heading level={2} id="operations">Operations</Heading>
+  <div class="sl-openapi-overview-navigation-links not-content">
+    {visibleGroups.map((group) =>
+      group.links.map((link) => (
+        <OverviewNavigationLink
+          href={link.href}
+          isWebhook={link.path === undefined}
+          label={link.path ?? link.label}
+          method={link.method}
+        />
+      )),
+    )}
+  </div>
+</div>}
 
 <style>
   .sl-openapi-overview-navigation {

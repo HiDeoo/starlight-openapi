@@ -19,42 +19,32 @@ const { operation, schema } = Astro.props
 const requirements = getSecurityRequirements(operation, schema)
 ---
 
-{
-  requirements && requirements.length > 0 ? (
-    <Section level={2} title="Authorizations">
-      <ul class="sl-openapi-security-schemes">
-        {requirements.map((requirement) => {
-          const schemes = Object.keys(requirement)
+{requirements && requirements.length > 0 ? (
+  <Section level={2} title="Authorizations">
+    <ul class="sl-openapi-security-schemes">
+      {requirements.map((requirement) => {
+        const schemes = Object.keys(requirement)
 
-          if (schemes.length === 0) {
-            return (
-              <li class="sl-openapi-security-scheme">
-                <Icon name="seti:ignored" />
-                <strong>None</strong>
-              </li>
-            )
-          }
+        if (schemes.length === 0) {
+          return <li class="sl-openapi-security-scheme">
+            <Icon name="seti:ignored" />
+            <strong>None</strong>
+          </li>
+        }
 
-          return Object.entries(requirement).map(([scheme, scopes]) => {
-            return (
-              <li class="sl-openapi-security-scheme not-content">
-                <Icon name="seti:lock" />
-                <strong>
-                  {schema ? (
-                    <a href={`${getSchemaBaseLink(schema.config, context)}#${slug(scheme)}`}>{scheme}</a>
-                  ) : (
-                    scheme
-                  )}
-                </strong>
-                {scopes.length > 0 ? <Tags tags={[...scopes]} /> : null}
-              </li>
-            )
-          })
-        })}
-      </ul>
-    </Section>
-  ) : null
-}
+        return Object.entries(requirement).map(([scheme, scopes]) => {
+          return <li class="sl-openapi-security-scheme not-content">
+            <Icon name="seti:lock" />
+            <strong>
+              {schema ? <a href={`${getSchemaBaseLink(schema.config, context)}#${slug(scheme)}`}>{scheme}</a> : scheme}
+            </strong>
+            {scopes.length > 0 ? <Tags tags={[...scopes]} /> : null}
+          </li>
+        })
+      })}
+    </ul>
+  </Section>
+) : null}
 
 <style>
   ul.sl-openapi-security-schemes {

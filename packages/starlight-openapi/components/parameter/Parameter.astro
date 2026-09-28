@@ -16,25 +16,23 @@ const { parameter } = Astro.props
 ---
 
 <Key deprecated={parameter.deprecated} name={parameter.name} required={parameter.required}>
-  {
-    isOpenAPIV2Items(parameter) ? (
-      <>
-        <Items items={parameter} />
-        <Md text={parameter.description} />
-      </>
-    ) : parameter.content ? (
-      <>
-        <Content content={parameter.content} />
-        <Md text={parameter.description} />
-      </>
-    ) : isParameterWithSchemaObject(parameter) ? (
-      <Schema
-        description={parameter.description}
-        example={parameter.example}
-        examples={parameter.examples}
-        {parameter}
-        schema={parameter.schema}
-      />
-    ) : null
-  }
+  {isOpenAPIV2Items(parameter) ? (
+    <>
+      <Items items={parameter} />
+      <Md text={parameter.description} />
+    </>
+  ) : parameter.content ? (
+    <>
+      <Content content={parameter.content} />
+      <Md text={parameter.description} />
+    </>
+  ) : isParameterWithSchemaObject(parameter) ? (
+    <Schema
+      description={parameter.description}
+      example={parameter.example}
+      examples={parameter.examples}
+      {parameter}
+      schema={parameter.schema}
+    />
+  ) : null}
 </Key>

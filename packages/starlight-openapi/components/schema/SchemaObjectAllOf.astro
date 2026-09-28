@@ -24,54 +24,52 @@ interface Props extends HideSchemaExampleProps {
 const { hideExample, nested, schemaObject, parents = [] } = Astro.props
 ---
 
-{
-  schemaObject.allOf &&
-    schemaObject.allOf.map((allOfSchemaObject) => {
-      if (!isSchemaObject(allOfSchemaObject)) return null
+{schemaObject.allOf &&
+  schemaObject.allOf.map((allOfSchemaObject) => {
+    if (!isSchemaObject(allOfSchemaObject)) return null
 
-      const nestedParents = [...parents, schemaObject]
+    const nestedParents = [...parents, schemaObject]
 
-      if (nestedParents.includes(allOfSchemaObject)) {
-        return <SchemaObjectRecursive schemaObject={allOfSchemaObject} />
-      }
+    if (nestedParents.includes(allOfSchemaObject)) {
+      return <SchemaObjectRecursive schemaObject={allOfSchemaObject} />
+    }
 
-      const schemaObjects = getSchemaObjects(allOfSchemaObject)
+    const schemaObjects = getSchemaObjects(allOfSchemaObject)
 
-      if (schemaObjects !== undefined) {
-        return (
-          <SchemaObjects
-            {hideExample}
-            parents={nestedParents}
-            discriminator={schemaObject.discriminator}
-            {nested}
-            {schemaObjects}
-          />
-        )
-      }
-
-      if (isSchemaObjectObject(schemaObject)) {
-        return (
-          <>
-            <SchemaObjectObjectProperties
-              {hideExample}
-              parents={nestedParents}
-              properties={getProperties(allOfSchemaObject)}
-              required={getSchemaObjectRequired(schemaObject)}
-            />
-            <Astro.self {hideExample} {nested} parents={nestedParents} schemaObject={allOfSchemaObject} />
-          </>
-        )
-      }
-
+    if (schemaObjects !== undefined) {
       return (
-        <Items
+        <SchemaObjects
           {hideExample}
-          items={allOfSchemaObject}
-          negated={allOfSchemaObject.not !== undefined}
-          nullable={getNullable(allOfSchemaObject)}
           parents={nestedParents}
-          schemaObject={allOfSchemaObject}
+          discriminator={schemaObject.discriminator}
+          {nested}
+          {schemaObjects}
         />
       )
-    })
-}
+    }
+
+    if (isSchemaObjectObject(schemaObject)) {
+      return (
+        <>
+          <SchemaObjectObjectProperties
+            {hideExample}
+            parents={nestedParents}
+            properties={getProperties(allOfSchemaObject)}
+            required={getSchemaObjectRequired(schemaObject)}
+          />
+          <Astro.self {hideExample} {nested} parents={nestedParents} schemaObject={allOfSchemaObject} />
+        </>
+      )
+    }
+
+    return (
+      <Items
+        {hideExample}
+        items={allOfSchemaObject}
+        negated={allOfSchemaObject.not !== undefined}
+        nullable={getNullable(allOfSchemaObject)}
+        parents={nestedParents}
+        schemaObject={allOfSchemaObject}
+      />
+    )
+  })}

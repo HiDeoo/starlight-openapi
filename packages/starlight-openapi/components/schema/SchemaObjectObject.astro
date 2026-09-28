@@ -54,24 +54,20 @@ const recursiveAdditionalProperties = additionalProperties
       required={getSchemaObjectRequired(schemaObject)}
     />
     <SchemaObjectAllOf {hideExample} {nested} {parents} {schemaObject} />
-    {
-      schemaObject.additionalProperties && (
-        <Key additional name="key">
-          {schemaObject.additionalProperties === true ? (
-            <Type>any</Type>
-          ) : additionalProperties ? (
-            recursiveAdditionalProperties ? (
-              <SchemaObjectRecursive
-                recursiveSchemaObject={recursiveAdditionalProperties}
-                schemaObject={additionalProperties}
-              />
-            ) : (
-              <Schema {hideExample} parents={nestedParents} schemaObject={additionalProperties} />
-            )
-          ) : null}
-        </Key>
-      )
-    }
+    {schemaObject.additionalProperties && <Key additional name="key">
+      {schemaObject.additionalProperties === true ? (
+        <Type>any</Type>
+      ) : additionalProperties ? (
+        recursiveAdditionalProperties ? (
+          <SchemaObjectRecursive
+            recursiveSchemaObject={recursiveAdditionalProperties}
+            schemaObject={additionalProperties}
+          />
+        ) : (
+          <Schema {hideExample} parents={nestedParents} schemaObject={additionalProperties} />
+        )
+      ) : null}
+    </Key>}
   </Keys>
 </details>
 

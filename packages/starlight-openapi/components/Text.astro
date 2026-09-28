@@ -11,20 +11,16 @@ const { label, tag } = Astro.props
 const text: string | undefined = await Astro.slots.render('default')
 ---
 
-{
-  text && text.length > 0 && (
-    <p class="sl-openapi-text">
-      {label && <b>{label}: </b>}
-      {tag ? (
-        <Tag>
-          <Fragment set:html={text} />
-        </Tag>
-      ) : (
-        <Fragment set:html={text} />
-      )}
-    </p>
-  )
-}
+{text && text.length > 0 && <p class="sl-openapi-text">
+  {label && <b>{label}: </b>}
+  {tag ? (
+    <Tag>
+      <Fragment set:html={text} />
+    </Tag>
+  ) : (
+    <Fragment set:html={text} />
+  )}
+</p>}
 
 <style>
   .sl-openapi-text :global(a) {

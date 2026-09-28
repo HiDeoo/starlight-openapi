@@ -29,20 +29,18 @@ const recursiveArrayItemType = items === schemaObject ? 'recursive' : items ? ge
 ---
 
 <div>
-  {
-    isRecursiveArray ? (
-      <>
-        <Type>{`${negated ? 'not ' : ''}Array<${recursiveArrayItemType}>`}</Type>
-        <Tag>recursive</Tag>
-        {otherTypes.length > 0 && <Type>{`| ${otherTypes.join(' | ')}`}</Type>}
-      </>
-    ) : (
-      <>
-        <Type>{`${negated ? 'not ' : ''}${getSchemaObjectType(schemaObject)}`}</Type>
-        <Tag>recursive</Tag>
-      </>
-    )
-  }
+  {isRecursiveArray ? (
+    <>
+      <Type>{`${negated ? 'not ' : ''}Array<${recursiveArrayItemType}>`}</Type>
+      <Tag>recursive</Tag>
+      {otherTypes.length > 0 && <Type>{`| ${otherTypes.join(' | ')}`}</Type>}
+    </>
+  ) : (
+    <>
+      <Type>{`${negated ? 'not ' : ''}${getSchemaObjectType(schemaObject)}`}</Type>
+      <Tag>recursive</Tag>
+    </>
+  )}
 </div>
 
 <style>

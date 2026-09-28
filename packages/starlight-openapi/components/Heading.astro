@@ -12,14 +12,12 @@ const headingLevel = Math.min(Math.max(level, 1), 6) as 1 | 2 | 3 | 4 | 5 | 6
 const Element = `h${headingLevel}` as const
 ---
 
-{
-  starlightConfig.markdown.headingLinks ? (
-    <AnchorHeading class="sl-openapi-heading" {id} level={headingLevel}>
-      <slot />
-    </AnchorHeading>
-  ) : (
-    <Element class="sl-openapi-heading" {id}>
-      <slot />
-    </Element>
-  )
-}
+{starlightConfig.markdown.headingLinks ? (
+  <AnchorHeading class="sl-openapi-heading" {id} level={headingLevel}>
+    <slot />
+  </AnchorHeading>
+) : (
+  <Element class="sl-openapi-heading" {id}>
+    <slot />
+  </Element>
+)}

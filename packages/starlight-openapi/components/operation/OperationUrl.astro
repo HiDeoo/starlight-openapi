@@ -16,16 +16,14 @@ const inputAttributes: HTMLAttributes<'input'> = {
 ---
 
 <li class="sl-openapi-operation-url">
-  {
-    description && description.length > 0 ? (
-      <label>
-        {description}
-        <input {...inputAttributes} />
-      </label>
-    ) : (
+  {description && description.length > 0 ? (
+    <label>
+      {description}
       <input {...inputAttributes} />
-    )
-  }
+    </label>
+  ) : (
+    <input {...inputAttributes} />
+  )}
 </li>
 
 <style>

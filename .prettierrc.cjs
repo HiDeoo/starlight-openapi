@@ -9,6 +9,7 @@ const prettierConfig = {
     {
       files: '*.astro',
       options: {
+        astroCompressHTML: 'none',
         parser: 'astro',
       },
     },

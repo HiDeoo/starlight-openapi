@@ -35,39 +35,31 @@ for (const snippet of snippets.items) {
 ---
 
 <sl-openapi-snippet-picker>
-  {
-    singleSnippet ? (
-      <div class="sl-openapi-snippet-picker">
-        <span class="sr-only">Code sample: </span>
-        <span class="sl-openapi-snippet-picker-value">{singleSnippetLabel}</span>
-      </div>
-    ) : (
-      <>
-        <label class="sl-openapi-snippet-picker">
-          <span class="sr-only">Select code sample</span>
-          <select autocomplete="off">
-            {hasGroupedSnippets
-              ? groupedSnippets.map((group) => (
-                  <optgroup label={group.label}>
-                    {group.items.map((snippet) => (
-                      <option value={snippet.id} selected={snippet.id === snippets.defaultId}>
-                        {snippet.label}
-                      </option>
-                    ))}
-                  </optgroup>
-                ))
-              : snippets.items.map((snippet) => (
-                  <option value={snippet.id} selected={snippet.id === snippets.defaultId}>
-                    {snippet.label}
-                  </option>
-                ))}
-          </select>
-          <Icon name="down-caret" class="sl-openapi-snippet-picker-caret" />
-        </label>
-        <div aria-live="polite" class="sr-only" id="sl-openapi-snippet-status" />
-      </>
-    )
-  }
+  {singleSnippet ? (
+    <div class="sl-openapi-snippet-picker">
+      <span class="sr-only">Code sample: </span>
+      <span class="sl-openapi-snippet-picker-value">{singleSnippetLabel}</span>
+    </div>
+  ) : (
+    <>
+      <label class="sl-openapi-snippet-picker">
+        <span class="sr-only">Select code sample</span>
+        <select autocomplete="off">
+          {hasGroupedSnippets
+            ? groupedSnippets.map((group) => <optgroup label={group.label}>
+                {group.items.map((snippet) => <option value={snippet.id} selected={snippet.id === snippets.defaultId}>
+                  {snippet.label}
+                </option>)}
+              </optgroup>)
+            : snippets.items.map((snippet) => <option value={snippet.id} selected={snippet.id === snippets.defaultId}>
+                {snippet.label}
+              </option>)}
+        </select>
+        <Icon name="down-caret" class="sl-openapi-snippet-picker-caret" />
+      </label>
+      <div aria-live="polite" class="sr-only" id="sl-openapi-snippet-status" />
+    </>
+  )}
 </sl-openapi-snippet-picker>
 
 <script>

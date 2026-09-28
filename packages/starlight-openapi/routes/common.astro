@@ -28,13 +28,11 @@ const title = isSchemaOverview || isOperationTagOverview ? 'Overview' : Astro.pr
     isOperationTagOverview ? Astro.props.tag : undefined,
   )}
 >
-  {
-    isSchemaOverview ? (
-      <OverviewSchema {schema} />
-    ) : isOperationTagOverview ? (
-      <OverviewOperationTag {schema} tag={Astro.props.tag} />
-    ) : (
-      <Operation {schema} operation={Astro.props.operation} />
-    )
-  }
+  {isSchemaOverview ? (
+    <OverviewSchema {schema} />
+  ) : isOperationTagOverview ? (
+    <OverviewOperationTag {schema} tag={Astro.props.tag} />
+  ) : (
+    <Operation {schema} operation={Astro.props.operation} />
+  )}
 </StarlightPage>

@@ -16,21 +16,17 @@ interface Props {
 const headers = Object.entries(Astro.props.headers).filter(([key]) => key.toLowerCase() !== 'content-type')
 ---
 
-{
-  headers.length > 0 && (
-    <Section level={4} title="Headers">
-      <Keys>
-        {headers.map(([name, header]) =>
-          isOpenAPIV2Items(header) ? (
-            <Key {name}>
-              <Items items={header} />
-              <Md text={header.description} />
-            </Key>
-          ) : isHeaderParameter(header) ? (
-            <Parameter parameter={{ ...header, name }} />
-          ) : null,
-        )}
-      </Keys>
-    </Section>
-  )
-}
+{headers.length > 0 && <Section level={4} title="Headers">
+  <Keys>
+    {headers.map(([name, header]) =>
+      isOpenAPIV2Items(header) ? (
+        <Key {name}>
+          <Items items={header} />
+          <Md text={header.description} />
+        </Key>
+      ) : isHeaderParameter(header) ? (
+        <Parameter parameter={{ ...header, name }} />
+      ) : null,
+    )}
+  </Keys>
+</Section>}

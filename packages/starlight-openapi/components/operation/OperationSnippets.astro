@@ -34,13 +34,13 @@ const { snippets } = Astro.props
 </script>
 
 <div class="sl-openapi-snippets">
-  {
-    snippets.items.map((snippet) => (
-      <div class="sl-openapi-snippet" data-openapi-snippet-id={snippet.id} hidden={snippet.id !== snippets.defaultId}>
-        <Code code={snippet.content} frame="none" lang={snippet.lang} />
-      </div>
-    ))
-  }
+  {snippets.items.map((snippet) => <div
+    class="sl-openapi-snippet"
+    data-openapi-snippet-id={snippet.id}
+    hidden={snippet.id !== snippets.defaultId}
+  >
+    <Code code={snippet.content} frame="none" lang={snippet.lang} />
+  </div>)}
   <sl-openapi-snippets></sl-openapi-snippets>
 </div>
 

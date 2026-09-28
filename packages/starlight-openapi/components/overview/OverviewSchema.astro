@@ -37,40 +37,26 @@ const contacts = [
 <ExternalDocs docs={document.externalDocs} />
 
 <div class="sl-openapi-overview-meta">
-  {
-    contacts.length > 0 && (
-      <Card icon="external" title={document.info.contact?.name ?? 'Contact'}>
-        <ul>
-          {contacts.map((contact) => (
-            <li>
-              <a href={contact.href}>{contact.label}</a>
-            </li>
-          ))}
-        </ul>
-      </Card>
-    )
-  }
+  {contacts.length > 0 && <Card icon="external" title={document.info.contact?.name ?? 'Contact'}>
+    <ul>
+      {contacts.map((contact) => <li>
+        <a href={contact.href}>{contact.label}</a>
+      </li>)}
+    </ul>
+  </Card>}
   <Card icon="information" title="Information">
     <ul>
-      {
-        document.info.termsOfService && (
-          <li>
-            <a href={document.info.termsOfService}>Terms of Service</a>
-          </li>
-        )
-      }
-      {
-        document.info.license && (
-          <li>
-            License:{' '}
-            {document.info.license.url ? (
-              <a href={document.info.license.url}>{document.info.license.name}</a>
-            ) : (
-              document.info.license.name
-            )}
-          </li>
-        )
-      }
+      {document.info.termsOfService && <li>
+        <a href={document.info.termsOfService}>Terms of Service</a>
+      </li>}
+      {document.info.license && <li>
+        License:{' '}
+        {document.info.license.url ? (
+          <a href={document.info.license.url}>{document.info.license.name}</a>
+        ) : (
+          document.info.license.name
+        )}
+      </li>}
       <li>OpenAPI version: <code>{getOpenAPIVersion(document)}</code></li>
     </ul>
   </Card>

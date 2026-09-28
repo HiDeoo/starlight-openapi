@@ -25,35 +25,27 @@ const showOperationUrls = hasOperationUrls && !hasOnlyImplicitOperationUrl
 
 <div class="not-content sl-openapi-operation-description">
   <div class="sl-openapi-operation-description-header">
-    {
-      showOperationUrls && (
-        <button
-          aria-controls="sl-openapi-operation-description-popover"
-          aria-label="Toggle operation URLs"
-          class="sl-openapi-operation-description-button"
-          popovertarget="sl-openapi-operation-description-popover"
-        >
-          <Icon class="sl-openapi-operation-description-caret" name="down-caret" />
-        </button>
-      )
-    }
+    {showOperationUrls && <button
+      aria-controls="sl-openapi-operation-description-popover"
+      aria-label="Toggle operation URLs"
+      class="sl-openapi-operation-description-button"
+      popovertarget="sl-openapi-operation-description-popover"
+    >
+      <Icon class="sl-openapi-operation-description-caret" name="down-caret" />
+    </button>}
     <OperationMethod {method} {path} />
     {snippets && snippets.items.length > 0 && <OperationSnippetPicker {snippets} />}
   </div>
   {snippets && snippets.items.length > 0 && <OperationSnippets {snippets} />}
 </div>
 
-{
-  showOperationUrls && (
-    <div id="sl-openapi-operation-description-popover" popover>
-      <ul class="sl-openapi-operation-description-urls">
-        {urls.map(({ description, url }) => (
-          <OperationUrl {description} {url} />
-        ))}
-      </ul>
-    </div>
-  )
-}
+{showOperationUrls && <div id="sl-openapi-operation-description-popover" popover>
+  <ul class="sl-openapi-operation-description-urls">
+    {urls.map(({ description, url }) => (
+      <OperationUrl {description} {url} />
+    ))}
+  </ul>
+</div>}
 
 <style>
   .sl-openapi-operation-description {
