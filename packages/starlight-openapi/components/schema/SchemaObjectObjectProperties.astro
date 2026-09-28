@@ -14,18 +14,14 @@ interface Props extends HideSchemaExampleProps {
 const { hideExample, parents, properties, required } = Astro.props
 ---
 
-{
-  Object.entries(properties).map(([name, schema]) => {
-    const recursiveSchemaObject = getRecursiveSchemaObject(schema, parents)
+{Object.entries(properties).map(([name, schema]) => {
+  const recursiveSchemaObject = getRecursiveSchemaObject(schema, parents)
 
-    return (
-      <Key name={name} required={required?.includes(name)}>
-        {recursiveSchemaObject ? (
-          <SchemaObjectRecursive {recursiveSchemaObject} schemaObject={schema} />
-        ) : (
-          <Schema {hideExample} parents={parents} nested schemaObject={schema} />
-        )}
-      </Key>
-    )
-  })
-}
+  return <Key name={name} required={required?.includes(name)}>
+    {recursiveSchemaObject ? (
+      <SchemaObjectRecursive {recursiveSchemaObject} schemaObject={schema} />
+    ) : (
+      <Schema {hideExample} parents={parents} nested schemaObject={schema} />
+    )}
+  </Key>
+})}

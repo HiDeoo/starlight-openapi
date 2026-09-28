@@ -47,23 +47,19 @@ const humanReadableType: Record<SchemaObjects['type'], string> = {
   {discriminatorPropertyName && <Tag>discriminator: {discriminatorPropertyName}</Tag>}
 </div>
 <Tabs>
-  {
-    schemaObjects.map((schemaObject) => {
-      const isRecursive = parents.includes(schemaObject)
-      const schemaObjectType = getType(schemaObject) ?? (isSchemaObjectObject(schemaObject) ? 'object' : 'unknown')
-      const label = schemaObject.title ?? (isRecursive ? `recursive ${schemaObjectType}` : schemaObjectType)
+  {schemaObjects.map((schemaObject) => {
+    const isRecursive = parents.includes(schemaObject)
+    const schemaObjectType = getType(schemaObject) ?? (isSchemaObjectObject(schemaObject) ? 'object' : 'unknown')
+    const label = schemaObject.title ?? (isRecursive ? `recursive ${schemaObjectType}` : schemaObjectType)
 
-      return (
-        <TabItem label={label}>
-          {isRecursive ? (
-            <SchemaObjectRecursive {schemaObject} />
-          ) : (
-            <SchemaObject {hideExample} {parents} {nested} {schemaObject} />
-          )}
-        </TabItem>
-      )
-    })
-  }
+    return <TabItem label={label}>
+      {isRecursive ? (
+        <SchemaObjectRecursive {schemaObject} />
+      ) : (
+        <SchemaObject {hideExample} {parents} {nested} {schemaObject} />
+      )}
+    </TabItem>
+  })}
 </Tabs>
 
 <style>

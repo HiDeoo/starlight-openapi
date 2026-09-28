@@ -14,22 +14,20 @@ interface Props extends SectionHeadingProps {
 const { level = 2, parameters, prefix } = Astro.props
 ---
 
-{
-  parameters.size > 0 && (
-    <>
-      <Heading level={level} id={prefix ? `${prefix}-parameters` : 'parameters'}>
-        Parameters
-      </Heading>
-      {[...parameters].map(([location, parameters]) => (
-        <Section level={level + 1} {prefix} title={`${capitalize(location)} Parameters`}>
-          <Keys>
-            {parameters
-              .values()
-              .map((parameter) => <Parameter {parameter} />)
-              .toArray()}
-          </Keys>
-        </Section>
-      ))}
-    </>
-  )
-}
+{parameters.size > 0 && (
+  <>
+    <Heading level={level} id={prefix ? `${prefix}-parameters` : 'parameters'}>Parameters</Heading>
+    {[...parameters].map(([location, parameters]) => <Section
+      level={level + 1}
+      {prefix}
+      title={`${capitalize(location)} Parameters`}
+    >
+      <Keys>
+        {parameters
+          .values()
+          .map((parameter) => <Parameter {parameter} />)
+          .toArray()}
+      </Keys>
+    </Section>)}
+  </>
+)}

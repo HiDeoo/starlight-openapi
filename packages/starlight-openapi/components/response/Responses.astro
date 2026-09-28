@@ -22,28 +22,18 @@ const responseSectionHeadingProps: SectionHeadingProps = {
 }
 ---
 
-{
-  responses && (
-    <>
-      <Heading {level} {id}>
-        Responses
-      </Heading>
-      {Object.entries(responses).map(([name, response]) => {
-        if (name === 'default') {
-          return null
-        }
+{responses && (
+  <>
+    <Heading {level} {id}>Responses</Heading>
+    {Object.entries(responses).map(([name, response]) => {
+      if (name === 'default') {
+        return null
+      }
 
-        return <Response {...responseSectionHeadingProps} {name} {operation} {response} {schema} />
-      })}
-      {includesDefaultResponse(responses) && (
-        <Response
-          {...responseSectionHeadingProps}
-          name="default"
-          {operation}
-          response={responses['default']}
-          {schema}
-        />
-      )}
-    </>
-  )
-}
+      return <Response {...responseSectionHeadingProps} {name} {operation} {response} {schema} />
+    })}
+    {includesDefaultResponse(responses) && (
+      <Response {...responseSectionHeadingProps} name="default" {operation} response={responses['default']} {schema} />
+    )}
+  </>
+)}

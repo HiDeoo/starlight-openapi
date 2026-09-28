@@ -12,10 +12,6 @@ interface Props {
 const { docs } = Astro.props
 ---
 
-{
-  docs && (
-    <p class="sl-openapi-external-docs">
-      <a href={docs.url}>{docs.description ?? 'More information'}</a>
-    </p>
-  )
-}
+{docs && <p class="sl-openapi-external-docs">
+  <a href={docs.url}>{docs.description ?? 'More information'}</a>
+</p>}

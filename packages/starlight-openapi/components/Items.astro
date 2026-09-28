@@ -32,25 +32,21 @@ const recursiveItem = schemaObject && recursiveSchemaObject ? { recursiveSchemaO
 const enumItems = items.enum ?? items.items?.enum
 ---
 
-{
-  items.type && (
-    <div>
-      {recursiveItem ? (
-        <SchemaObjectRecursive
-          {negated}
-          recursiveSchemaObject={recursiveItem.recursiveSchemaObject}
-          schemaObject={recursiveItem.schemaObject}
-        />
-      ) : (
-        <Type>
-          {negated && 'not '}
-          {getType(items)}
-        </Type>
-      )}
-      {items.format && <Tag>format: {items.format}</Tag>}
-    </div>
-  )
-}
+{items.type && <div>
+  {recursiveItem ? (
+    <SchemaObjectRecursive
+      {negated}
+      recursiveSchemaObject={recursiveItem.recursiveSchemaObject}
+      schemaObject={recursiveItem.schemaObject}
+    />
+  ) : (
+    <Type>
+      {negated && 'not '}
+      {getType(items)}
+    </Type>
+  )}
+  {items.format && <Tag>format: {items.format}</Tag>}
+</div>}
 <Tags
   tags={[
     items.default && `default: ${items.default}`,
@@ -69,8 +65,6 @@ const enumItems = items.enum ?? items.items?.enum
 
 {items.const && <Tags label="Allowed value:" tags={[items.const]} />}
 {enumItems && <Tags label="Allowed values:" tags={enumItems} />}
-{
-  itemSchemaObject && isSchemaObjectObject(itemSchemaObject) && !recursiveItem && (
-    <SchemaObject parents={nestedParents} nested schemaObject={itemSchemaObject} {hideExample} {type} />
-  )
-}
+{itemSchemaObject && isSchemaObjectObject(itemSchemaObject) && !recursiveItem && (
+  <SchemaObject parents={nestedParents} nested schemaObject={itemSchemaObject} {hideExample} {type} />
+)}

@@ -13,20 +13,16 @@ const tags = Array.isArray(allTags)
   : []
 ---
 
-{
-  tags.length > 0 && (
-    <div class="sl-openapi-tags">
-      {label && <>{label}</>}
-      {tags.map((tag) => {
-        if (typeof tag === 'string' && tag.length === 0) {
-          return <Tag>&quot;&quot;</Tag>
-        }
+{tags.length > 0 && <div class="sl-openapi-tags">
+  {label && <>{label}</>}
+  {tags.map((tag) => {
+    if (typeof tag === 'string' && tag.length === 0) {
+      return <Tag>&quot;&quot;</Tag>
+    }
 
-        return <Tag>{tag}</Tag>
-      })}
-    </div>
-  )
-}
+    return <Tag>{tag}</Tag>
+  })}
+</div>}
 
 <style>
   .sl-openapi-tags {

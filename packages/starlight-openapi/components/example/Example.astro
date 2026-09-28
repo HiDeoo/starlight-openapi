@@ -47,20 +47,14 @@ function getExampleLang(value: unknown, code: string, type: string | undefined) 
 const code = exampleToRender ? getExampleValue(exampleToRender.value).trim() : ''
 ---
 
-{
-  exampleToRender && (
-    <div class="sl-openapi-example">
-      <Text>{exampleToRender.summary}</Text>
-      <Md text={exampleToRender.description} />
-      {exampleToRender.externalValue && (
-        <Text>
-          <a href={exampleToRender.externalValue}>{exampleToRender.externalValue}</a>
-        </Text>
-      )}
-      {code.length > 0 && <Code {code} lang={getExampleLang(exampleToRender.value, code, type)} />}
-    </div>
-  )
-}
+{exampleToRender && <div class="sl-openapi-example">
+  <Text>{exampleToRender.summary}</Text>
+  <Md text={exampleToRender.description} />
+  {exampleToRender.externalValue && <Text>
+    <a href={exampleToRender.externalValue}>{exampleToRender.externalValue}</a>
+  </Text>}
+  {code.length > 0 && <Code {code} lang={getExampleLang(exampleToRender.value, code, type)} />}
+</div>}
 
 <style>
   .sl-openapi-example :global(div.expressive-code .frame pre) {

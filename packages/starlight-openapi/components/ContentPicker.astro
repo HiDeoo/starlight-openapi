@@ -13,27 +13,21 @@ const singleType = types?.length === 1 ? types[0] : undefined
 ---
 
 <starlight-openapi-content-picker>
-  {
-    singleType ? (
-      <div class="not-content sl-openapi-content-picker-select">
-        <span class="sr-only">{singleLabel ?? label}</span>
-        <span class="sl-openapi-content-picker-select-value">{singleType}</span>
-      </div>
-    ) : (
-      types &&
-      types.length > 1 && (
-        <label class="not-content sl-openapi-content-picker-select">
-          <span class="sr-only">{label}</span>
-          <select>
-            {types.map((type) => (
-              <option value={type}>{type}</option>
-            ))}
-          </select>
-          <Icon name="down-caret" class="sl-openapi-content-picker-select-caret" />
-        </label>
-      )
-    )
-  }
+  {singleType ? (
+    <div class="not-content sl-openapi-content-picker-select">
+      <span class="sr-only">{singleLabel ?? label}</span>
+      <span class="sl-openapi-content-picker-select-value">{singleType}</span>
+    </div>
+  ) : (
+    types &&
+    types.length > 1 && <label class="not-content sl-openapi-content-picker-select">
+      <span class="sr-only">{label}</span>
+      <select>
+        {types.map((type) => <option value={type}>{type}</option>)}
+      </select>
+      <Icon name="down-caret" class="sl-openapi-content-picker-select-caret" />
+    </label>
+  )}
   <slot />
 </starlight-openapi-content-picker>
 

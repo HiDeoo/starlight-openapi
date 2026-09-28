@@ -19,37 +19,33 @@ const callbacks = getCallbacks(operation)
 const identifiers = Object.keys(callbacks ?? {})
 ---
 
-{
-  callbacks && identifiers.length > 0 && (
-    <>
-      <Heading level={2} id="callbacks">
-        Callbacks
-      </Heading>
-      {identifiers.map((identifier) => {
-        const callbackObject = getCallbackObject(callbacks, identifier)
-        const id = slug(identifier)
+{callbacks && identifiers.length > 0 && (
+  <>
+    <Heading level={2} id="callbacks">Callbacks</Heading>
+    {identifiers.map((identifier) => {
+      const callbackObject = getCallbackObject(callbacks, identifier)
+      const id = slug(identifier)
 
-        return (
-          <>
-            <Heading level={3} {id}>
-              <code>{identifier}</code>
-            </Heading>
-            {Object.entries(callbackObject).map(([url, callback]) => {
-              const operations = getCallbackOperations(callback)
+      return (
+        <>
+          <Heading level={3} {id}>
+            <code>{identifier}</code>
+          </Heading>
+          {Object.entries(callbackObject).map(([url, callback]) => {
+            const operations = getCallbackOperations(callback)
 
-              return (
-                <>
-                  {callback.summary && <Text>{callback.summary}</Text>}
-                  <Md text={callback.description} />
-                  {operations.map((operation) => (
-                    <CallbackOperation {callback} {id} {operation} {schema} {url} />
-                  ))}
-                </>
-              )
-            })}
-          </>
-        )
-      })}
-    </>
-  )
-}
+            return (
+              <>
+                {callback.summary && <Text>{callback.summary}</Text>}
+                <Md text={callback.description} />
+                {operations.map((operation) => (
+                  <CallbackOperation {callback} {id} {operation} {schema} {url} />
+                ))}
+              </>
+            )
+          })}
+        </>
+      )
+    })}
+  </>
+)}
