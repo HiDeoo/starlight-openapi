@@ -1,5 +1,11 @@
 # starlight-openapi
 
+## 0.26.3
+
+### Patch Changes
+
+- [#181](https://github.com/HiDeoo/starlight-openapi/pull/181) [`e81882f`](https://github.com/HiDeoo/starlight-openapi/commit/e81882ffd4a85b1c113fd477422ee6b524715d58) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Fixes a potential spacing issue with heading anchor links.
+
 ## 0.26.2
 
 ### Patch Changes
