@@ -11,13 +11,20 @@ interface Props extends ExamplesProps {
   type?: string | undefined
 }
 
-const { description, example, examples, generated, parameter, schema, type } = Astro.props
+const { description, example, examples, generated, headingLevel, parameter, schema, type } = Astro.props
 
 // For objects, we want to show the description before the object itself.
 const isObject = schema && isSchemaObjectObject(schema)
 ---
 
 {isObject && <Md text={description} />}
-{schema && <SchemaObject schemaObject={schema} hideExample={example !== undefined || examples !== undefined} {type} />}
+{schema && (
+  <SchemaObject
+    {headingLevel}
+    schemaObject={schema}
+    hideExample={example !== undefined || examples !== undefined}
+    {type}
+  />
+)}
 {!isObject && <Md text={description} />}
-<Examples {example} {examples} {generated} {parameter} {type} />
+<Examples {example} {examples} {generated} {headingLevel} {parameter} {type} />

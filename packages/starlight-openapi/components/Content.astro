@@ -5,11 +5,12 @@ import MediaEntries from './MediaEntries.astro'
 
 interface Props {
   content: Content
+  headingLevel: number
 }
 
-const { content } = Astro.props
+const { content, headingLevel } = Astro.props
 
 const entries = getContentEntries(content)
 ---
 
-<MediaEntries {entries} />
+<MediaEntries {entries} {headingLevel} />

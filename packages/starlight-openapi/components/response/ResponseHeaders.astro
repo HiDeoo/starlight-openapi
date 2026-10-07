@@ -11,21 +11,24 @@ import Section from '../Section.astro'
 
 interface Props {
   headers: Headers
+  level: number
 }
+
+const { level } = Astro.props
 
 const headers = Object.entries(Astro.props.headers).filter(([key]) => key.toLowerCase() !== 'content-type')
 ---
 
-{headers.length > 0 && <Section level={4} title="Headers">
+{headers.length > 0 && <Section {level} title="Headers">
   <Keys>
     {headers.map(([name, header]) =>
       isOpenAPIV2Items(header) ? (
         <Key {name}>
-          <Items items={header} />
+          <Items headingLevel={level + 1} items={header} />
           <Md text={header.description} />
         </Key>
       ) : isHeaderParameter(header) ? (
-        <Parameter parameter={{ ...header, name }} />
+        <Parameter headingLevel={level + 1} parameter={{ ...header, name }} />
       ) : null,
     )}
   </Keys>

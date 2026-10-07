@@ -9,21 +9,22 @@ import Md from '../Md.astro'
 import Schema from '../schema/Schema.astro'
 
 interface Props {
+  headingLevel: number
   parameter: Parameter
 }
 
-const { parameter } = Astro.props
+const { headingLevel, parameter } = Astro.props
 ---
 
 <Key deprecated={parameter.deprecated} name={parameter.name} required={parameter.required}>
   {isOpenAPIV2Items(parameter) ? (
     <>
-      <Items items={parameter} />
+      <Items {headingLevel} items={parameter} />
       <Md text={parameter.description} />
     </>
   ) : parameter.content ? (
     <>
-      <Content content={parameter.content} />
+      <Content content={parameter.content} {headingLevel} />
       <Md text={parameter.description} />
     </>
   ) : isParameterWithSchemaObject(parameter) ? (
@@ -31,6 +32,7 @@ const { parameter } = Astro.props
       description={parameter.description}
       example={parameter.example}
       examples={parameter.examples}
+      {headingLevel}
       {parameter}
       schema={parameter.schema}
     />

@@ -9,17 +9,21 @@ export interface Props {
   example: unknown | undefined
   examples: ExamplesV3 | undefined
   generated?: boolean | undefined
+  headingLevel: number
   parameter?: Parameter | undefined
   type?: string | undefined
 }
 
-const { example, examples, generated, parameter, type } = Astro.props
+const { example, examples, generated, headingLevel, parameter, type } = Astro.props
+
+const level = Math.min(headingLevel, 6) as 1 | 2 | 3 | 4 | 5 | 6
+const HeadingElement = `h${level}` as const
 ---
 
 {example !== undefined || examples ? (
   examples ? (
     <div class="sl-openapi-examples">
-      <h5 class="sl-openapi-examples-heading">Examples</h5>
+      <HeadingElement class="sl-openapi-examples-heading">Examples</HeadingElement>
       <ContentPicker label="Select example" singleLabel="Example" types={Object.keys(examples)}>
         {Object.entries(examples).map(([exampleType, data], index) => <div
           data-openapi-content-type={exampleType}
@@ -32,10 +36,10 @@ const { example, examples, generated, parameter, type } = Astro.props
     </div>
   ) : (
     <div class="sl-openapi-examples">
-      <h5 class="sl-openapi-examples-heading">
+      <HeadingElement class="sl-openapi-examples-heading">
         Example
         {generated && <sup class="sl-openapi-examples-generated">generated</sup>}
-      </h5>
+      </HeadingElement>
       <Example raw={example} {parameter} {type} />
     </div>
   )
@@ -43,7 +47,12 @@ const { example, examples, generated, parameter, type } = Astro.props
 
 <style>
   .sl-openapi-examples-heading {
+    font-size: var(--sl-text-h5);
     margin-block: 0.8rem;
+  }
+
+  :global(.not-content) .sl-openapi-examples-heading {
+    font-size: 0.83em;
   }
 
   .sl-openapi-examples-generated {

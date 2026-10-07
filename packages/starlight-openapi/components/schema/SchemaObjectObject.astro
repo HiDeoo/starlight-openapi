@@ -11,19 +11,19 @@ import Keys from '../Keys.astro'
 import Tags from '../Tags.astro'
 import Type from '../Type.astro'
 
-import Schema, { type HideSchemaExampleProps } from './SchemaObject.astro'
+import Schema, { type SchemaExampleProps } from './SchemaObject.astro'
 import SchemaObjectAllOf from './SchemaObjectAllOf.astro'
 import SchemaObjectObjectProperties from './SchemaObjectObjectProperties.astro'
 import SchemaObjectRecursive from './SchemaObjectRecursive.astro'
 
-interface Props extends HideSchemaExampleProps {
+interface Props extends SchemaExampleProps {
   negated?: boolean | undefined
   nested: boolean
   parents?: SchemaObject[]
   schemaObject: SchemaObject
 }
 
-const { hideExample, negated = false, nested, parents = [], schemaObject } = Astro.props
+const { headingLevel, hideExample, negated = false, nested, parents = [], schemaObject } = Astro.props
 
 const properties = getProperties(schemaObject)
 
@@ -48,12 +48,13 @@ const recursiveAdditionalProperties = additionalProperties
   />
   <Keys>
     <SchemaObjectObjectProperties
+      {headingLevel}
       {hideExample}
       parents={nestedParents}
       {properties}
       required={getSchemaObjectRequired(schemaObject)}
     />
-    <SchemaObjectAllOf {hideExample} {nested} {parents} {schemaObject} />
+    <SchemaObjectAllOf {headingLevel} {hideExample} {nested} {parents} {schemaObject} />
     {schemaObject.additionalProperties && <Key additional name="key">
       {schemaObject.additionalProperties === true ? (
         <Type>any</Type>
@@ -64,7 +65,7 @@ const recursiveAdditionalProperties = additionalProperties
             schemaObject={additionalProperties}
           />
         ) : (
-          <Schema {hideExample} parents={nestedParents} schemaObject={additionalProperties} />
+          <Schema {headingLevel} {hideExample} parents={nestedParents} schemaObject={additionalProperties} />
         )
       ) : null}
     </Key>}

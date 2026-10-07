@@ -17,11 +17,12 @@ import SchemaObjectObject from './SchemaObjectObject.astro'
 import SchemaObjectRecursive from './SchemaObjectRecursive.astro'
 import SchemaObjects from './SchemaObjects.astro'
 
-export interface HideSchemaExampleProps {
+export interface SchemaExampleProps {
+  headingLevel: number
   hideExample?: boolean | undefined
 }
 
-interface Props extends HideSchemaExampleProps {
+interface Props extends SchemaExampleProps {
   negated?: boolean
   nested?: boolean
   parents?: SchemaObject[]
@@ -29,7 +30,7 @@ interface Props extends HideSchemaExampleProps {
   type?: string | undefined
 }
 
-const { hideExample, negated, nested = false, parents = [], schemaObject, type } = Astro.props
+const { headingLevel, hideExample, negated, nested = false, parents = [], schemaObject, type } = Astro.props
 
 const schemaObjects = getSchemaObjects(schemaObject)
 const nestedParents = [...parents, schemaObject]
@@ -40,6 +41,7 @@ const notSchemaObject = isSchemaObject(schemaObject.not) ? schemaObject.not : un
 
 {hasMany ? (
   <SchemaObjects
+    {headingLevel}
     {hideExample}
     parents={nestedParents}
     discriminator={schemaObject.discriminator}
@@ -52,11 +54,12 @@ const notSchemaObject = isSchemaObject(schemaObject.not) ? schemaObject.not : un
     <Md text={schemaObject.description} />
     <ExternalDocs docs={schemaObject.externalDocs} />
     {isSchemaObjectObject(schemaObject) ? (
-      <SchemaObjectObject {hideExample} {parents} {nested} {negated} {schemaObject} />
+      <SchemaObjectObject {headingLevel} {hideExample} {parents} {nested} {negated} {schemaObject} />
     ) : isSchemaObjectAllOf(schemaObject) ? (
-      <SchemaObjectAllOf {hideExample} {nested} {parents} {schemaObject} />
+      <SchemaObjectAllOf {headingLevel} {hideExample} {nested} {parents} {schemaObject} />
     ) : (
       <Items
+        {headingLevel}
         {hideExample}
         {parents}
         items={schemaObject}
@@ -67,7 +70,7 @@ const notSchemaObject = isSchemaObject(schemaObject.not) ? schemaObject.not : un
       />
     )}
     {!hideExample && schemaObject.example !== undefined && (
-      <Examples example={schemaObject.example} examples={undefined} {type} />
+      <Examples example={schemaObject.example} examples={undefined} {headingLevel} {type} />
     )}
   </>
 )}
@@ -75,5 +78,5 @@ const notSchemaObject = isSchemaObject(schemaObject.not) ? schemaObject.not : un
   (nestedParents.includes(notSchemaObject) ? (
     <SchemaObjectRecursive negated schemaObject={notSchemaObject} />
   ) : (
-    <Astro.self {hideExample} {nested} parents={nestedParents} negated schemaObject={notSchemaObject} />
+    <Astro.self {headingLevel} {hideExample} {nested} parents={nestedParents} negated schemaObject={notSchemaObject} />
   ))}
