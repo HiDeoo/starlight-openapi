@@ -25,7 +25,7 @@ const { level = 2, parameters, prefix } = Astro.props
       <Keys>
         {parameters
           .values()
-          .map((parameter) => <Parameter {parameter} />)
+          .map((parameter) => <Parameter headingLevel={level + 2} {parameter} />)
           .toArray()}
       </Keys>
     </Section>)}

@@ -10,13 +10,14 @@ import Section, { type SectionHeadingProps } from '../Section.astro'
 import ResponseHeaders from './ResponseHeaders.astro'
 
 interface Props extends SectionHeadingProps {
+  headingLevel: number
   name: keyof Responses
   operation: Operation
   response: Response
   schema: Schema
 }
 
-const { name, operation, response, schema, ...sectionHeadingProps } = Astro.props
+const { headingLevel, name, operation, response, schema, ...sectionHeadingProps } = Astro.props
 
 const mediaEntries = getResponseMediaEntries(schema, operation, response)
 
@@ -25,6 +26,8 @@ const isEmpty = mediaEntries.length === 0
 
 <Section {...sectionHeadingProps} empty={isEmpty} title={name}>
   <Md text={response.description} slot="pre-panel" />
-  {!isEmpty && <MediaEntries entries={mediaEntries} />}
-  {isResponseWithHeaders(response) && <ResponseHeaders headers={response.headers} slot="post-panel" />}
+  {!isEmpty && <MediaEntries entries={mediaEntries} {headingLevel} />}
+  {isResponseWithHeaders(response) && (
+    <ResponseHeaders headers={response.headers} level={headingLevel} slot="post-panel" />
+  )}
 </Section>

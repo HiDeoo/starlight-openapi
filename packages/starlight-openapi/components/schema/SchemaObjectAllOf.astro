@@ -10,18 +10,18 @@ import {
 } from '../../libs/schemaObject'
 import Items from '../Items.astro'
 
-import type { HideSchemaExampleProps } from './SchemaObject.astro'
+import type { SchemaExampleProps } from './SchemaObject.astro'
 import SchemaObjectObjectProperties from './SchemaObjectObjectProperties.astro'
 import SchemaObjectRecursive from './SchemaObjectRecursive.astro'
 import SchemaObjects from './SchemaObjects.astro'
 
-interface Props extends HideSchemaExampleProps {
+interface Props extends SchemaExampleProps {
   nested: boolean
   parents?: SchemaObject[]
   schemaObject: SchemaObject
 }
 
-const { hideExample, nested, schemaObject, parents = [] } = Astro.props
+const { headingLevel, hideExample, nested, schemaObject, parents = [] } = Astro.props
 ---
 
 {schemaObject.allOf &&
@@ -39,6 +39,7 @@ const { hideExample, nested, schemaObject, parents = [] } = Astro.props
     if (schemaObjects !== undefined) {
       return (
         <SchemaObjects
+          {headingLevel}
           {hideExample}
           parents={nestedParents}
           discriminator={schemaObject.discriminator}
@@ -52,18 +53,20 @@ const { hideExample, nested, schemaObject, parents = [] } = Astro.props
       return (
         <>
           <SchemaObjectObjectProperties
+            {headingLevel}
             {hideExample}
             parents={nestedParents}
             properties={getProperties(allOfSchemaObject)}
             required={getSchemaObjectRequired(schemaObject)}
           />
-          <Astro.self {hideExample} {nested} parents={nestedParents} schemaObject={allOfSchemaObject} />
+          <Astro.self {headingLevel} {hideExample} {nested} parents={nestedParents} schemaObject={allOfSchemaObject} />
         </>
       )
     }
 
     return (
       <Items
+        {headingLevel}
         {hideExample}
         items={allOfSchemaObject}
         negated={allOfSchemaObject.not !== undefined}

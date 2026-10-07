@@ -7,13 +7,13 @@ import {
   type SchemaObject as SchemaObjectType,
 } from '../libs/schemaObject'
 
-import SchemaObject, { type HideSchemaExampleProps } from './schema/SchemaObject.astro'
+import SchemaObject, { type SchemaExampleProps } from './schema/SchemaObject.astro'
 import SchemaObjectRecursive from './schema/SchemaObjectRecursive.astro'
 import Tag from './Tag.astro'
 import Tags from './Tags.astro'
 import Type from './Type.astro'
 
-interface Props extends HideSchemaExampleProps {
+interface Props extends SchemaExampleProps {
   items: Items
   negated?: boolean | undefined
   nullable?: boolean | undefined
@@ -22,7 +22,7 @@ interface Props extends HideSchemaExampleProps {
   type?: string | undefined
 }
 
-const { hideExample, items, negated, nullable, parents = [], schemaObject, type } = Astro.props
+const { headingLevel, hideExample, items, negated, nullable, parents = [], schemaObject, type } = Astro.props
 
 const itemSchemaObject = getSchemaObjectItems(items)
 const nestedParents = schemaObject ? [...parents, schemaObject] : parents
@@ -66,5 +66,5 @@ const enumItems = items.enum ?? items.items?.enum
 {items.const && <Tags label="Allowed value:" tags={[items.const]} />}
 {enumItems && <Tags label="Allowed values:" tags={enumItems} />}
 {itemSchemaObject && isSchemaObjectObject(itemSchemaObject) && !recursiveItem && (
-  <SchemaObject parents={nestedParents} nested schemaObject={itemSchemaObject} {hideExample} {type} />
+  <SchemaObject parents={nestedParents} nested schemaObject={itemSchemaObject} {headingLevel} {hideExample} {type} />
 )}

@@ -33,7 +33,13 @@ const isEmpty = mediaEntries.length === 0
 {hasRequestBody && <Section empty={isEmpty} {level} {prefix} title="Request Body">
   {openAPIV3RequestBody?.required && <sup class="sl-openapi-request-body-required" slot="post-title">required</sup>}
   <Md text={description} slot="pre-panel" />
-  {!isEmpty && <MediaEntries entries={mediaEntries} pickerLabel="The list of MIME types the operation can consume" />}
+  {!isEmpty && (
+    <MediaEntries
+      entries={mediaEntries}
+      headingLevel={level + 1}
+      pickerLabel="The list of MIME types the operation can consume"
+    />
+  )}
 </Section>}
 
 <style>

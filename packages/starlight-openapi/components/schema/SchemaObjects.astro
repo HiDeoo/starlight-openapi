@@ -11,10 +11,10 @@ import {
 } from '../../libs/schemaObject'
 import Tag from '../Tag.astro'
 
-import SchemaObject, { type HideSchemaExampleProps } from './SchemaObject.astro'
+import SchemaObject, { type SchemaExampleProps } from './SchemaObject.astro'
 import SchemaObjectRecursive from './SchemaObjectRecursive.astro'
 
-interface Props extends HideSchemaExampleProps {
+interface Props extends SchemaExampleProps {
   discriminator: Discriminator
   nested: boolean
   parents?: SchemaObjectType[]
@@ -23,6 +23,7 @@ interface Props extends HideSchemaExampleProps {
 
 const {
   discriminator,
+  headingLevel,
   hideExample,
   nested,
   parents = [],
@@ -56,7 +57,7 @@ const humanReadableType: Record<SchemaObjects['type'], string> = {
       {isRecursive ? (
         <SchemaObjectRecursive {schemaObject} />
       ) : (
-        <SchemaObject {hideExample} {parents} {nested} {schemaObject} />
+        <SchemaObject {headingLevel} {hideExample} {parents} {nested} {schemaObject} />
       )}
     </TabItem>
   })}

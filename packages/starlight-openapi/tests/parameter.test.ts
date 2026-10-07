@@ -115,7 +115,7 @@ test('displays multiple examples', async ({ docPage }) => {
   const limitParameter = docPage.getParameter('query', 'limit')
   const mediaTypeSelector = docPage.getMediaTypePicker(limitParameter)
 
-  await expect(limitParameter.getByRole('heading', { level: 5, name: 'Examples' })).toBeVisible()
+  await expect(limitParameter.getByRole('heading', { level: 4, name: 'Examples' })).toBeVisible()
 
   await mediaTypeSelector.selectOption('single')
 
@@ -141,13 +141,13 @@ test('uses the `content` property over a schema', async ({ docPage }) => {
   await mediaTypeSelector.selectOption('application/json')
   await expect(limitParameter.getByText('integer').first()).toBeVisible()
   await expect(limitParameter.getByText('integer').last()).not.toBeVisible()
-  await expect(limitParameter.getByRole('heading', { level: 5, name: 'Example' })).toBeVisible()
+  await expect(limitParameter.getByRole('heading', { level: 4, name: 'Example' })).toBeVisible()
   await expect(limitParameter.getByText('20')).toBeVisible()
 
   await mediaTypeSelector.selectOption('application/xml')
   await expect(limitParameter.getByText('integer').first()).not.toBeVisible()
   await expect(limitParameter.getByText('integer').last()).toBeVisible()
-  await expect(limitParameter.getByRole('heading', { level: 5, name: 'Example' })).toBeVisible()
+  await expect(limitParameter.getByRole('heading', { level: 4, name: 'Example' })).toBeVisible()
   await expect(limitParameter.getByText('<limit>30</limit>')).toBeVisible()
   await expect(limitParameter.locator('pre[data-language="xml"]')).toBeVisible()
 

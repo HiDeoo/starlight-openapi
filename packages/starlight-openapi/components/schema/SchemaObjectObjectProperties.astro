@@ -2,16 +2,16 @@
 import { getRecursiveSchemaObject, type Properties, type SchemaObject } from '../../libs/schemaObject'
 import Key from '../Key.astro'
 
-import Schema, { type HideSchemaExampleProps } from './SchemaObject.astro'
+import Schema, { type SchemaExampleProps } from './SchemaObject.astro'
 import SchemaObjectRecursive from './SchemaObjectRecursive.astro'
 
-interface Props extends HideSchemaExampleProps {
+interface Props extends SchemaExampleProps {
   parents: SchemaObject[]
   properties: Properties
   required: string[] | undefined
 }
 
-const { hideExample, parents, properties, required } = Astro.props
+const { headingLevel, hideExample, parents, properties, required } = Astro.props
 ---
 
 {Object.entries(properties).map(([name, schema]) => {
@@ -21,7 +21,7 @@ const { hideExample, parents, properties, required } = Astro.props
     {recursiveSchemaObject ? (
       <SchemaObjectRecursive {recursiveSchemaObject} schemaObject={schema} />
     ) : (
-      <Schema {hideExample} parents={parents} nested schemaObject={schema} />
+      <Schema {headingLevel} {hideExample} parents={parents} nested schemaObject={schema} />
     )}
   </Key>
 })}

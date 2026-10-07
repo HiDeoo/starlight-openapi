@@ -6,10 +6,11 @@ import Schema from './schema/Schema.astro'
 
 interface Props {
   entries: MediaEntry[]
+  headingLevel: number
   pickerLabel?: string | undefined
 }
 
-const { entries, pickerLabel = 'Select media type' } = Astro.props
+const { entries, headingLevel, pickerLabel = 'Select media type' } = Astro.props
 
 const isSingleEntryWithoutMediaType = entries.length === 1 && entries[0]?.mediaType === undefined
 const namedEntries = isSingleEntryWithoutMediaType
@@ -22,6 +23,7 @@ const namedEntries = isSingleEntryWithoutMediaType
     example={entries[0]?.example}
     examples={entries[0]?.examples}
     generated={entries[0]?.generated}
+    {headingLevel}
     schema={entries[0]?.schema}
     type={entries[0]?.mediaType}
   />
@@ -36,6 +38,7 @@ const namedEntries = isSingleEntryWithoutMediaType
         example={entry.example}
         examples={entry.examples}
         generated={entry.generated}
+        {headingLevel}
         schema={entry.schema}
         type={entry.mediaType}
       />

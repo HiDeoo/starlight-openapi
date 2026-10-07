@@ -30,10 +30,19 @@ const responseSectionHeadingProps: SectionHeadingProps = {
         return null
       }
 
-      return <Response {...responseSectionHeadingProps} {name} {operation} {response} {schema} />
+      return (
+        <Response {...responseSectionHeadingProps} headingLevel={level + 2} {name} {operation} {response} {schema} />
+      )
     })}
     {includesDefaultResponse(responses) && (
-      <Response {...responseSectionHeadingProps} name="default" {operation} response={responses['default']} {schema} />
+      <Response
+        {...responseSectionHeadingProps}
+        headingLevel={level + 2}
+        name="default"
+        {operation}
+        response={responses['default']}
+        {schema}
+      />
     )}
   </>
 )}
