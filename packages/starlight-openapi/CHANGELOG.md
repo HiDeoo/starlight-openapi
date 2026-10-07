@@ -1,5 +1,13 @@
 # starlight-openapi
 
+## 0.27.0
+
+### Minor Changes
+
+- [#184](https://github.com/HiDeoo/starlight-openapi/pull/184) [`df7a4e4`](https://github.com/HiDeoo/starlight-openapi/commit/df7a4e497a087fa11c833d31d2551dd947e22af4) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Fixes a potential issue where some heading levels in operation pages could be skipped.
+
+  ⚠️ **Potentially breaking change:** The heading level of examples and callback response headers now depends on where they are rendered. If you use custom CSS targeting these headings by their element, e.g. `h5`, you may need to update it.
+
 ## 0.26.3
 
 ### Patch Changes
