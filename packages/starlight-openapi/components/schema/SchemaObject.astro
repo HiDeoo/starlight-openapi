@@ -11,6 +11,7 @@ import Examples from '../example/Examples.astro'
 import ExternalDocs from '../ExternalDocs.astro'
 import Items from '../Items.astro'
 import Md from '../Md.astro'
+import Tags from '../Tags.astro'
 
 import SchemaObjectAllOf from './SchemaObjectAllOf.astro'
 import SchemaObjectObject from './SchemaObjectObject.astro'
@@ -39,20 +40,23 @@ const hasMany = schemaObjects !== undefined
 const notSchemaObject = isSchemaObject(schemaObject.not) ? schemaObject.not : undefined
 ---
 
+{schemaObject.title && <em>{schemaObject.title}</em>}
+<Md text={schemaObject.description} />
+<ExternalDocs docs={schemaObject.externalDocs} />
 {hasMany ? (
-  <SchemaObjects
-    {headingLevel}
-    {hideExample}
-    parents={nestedParents}
-    discriminator={schemaObject.discriminator}
-    {nested}
-    {schemaObjects}
-  />
+  <>
+    <Tags tags={[getNullable(schemaObject) && 'nullable']} />
+    <SchemaObjects
+      {headingLevel}
+      {hideExample}
+      parents={nestedParents}
+      discriminator={schemaObject.discriminator}
+      {nested}
+      {schemaObjects}
+    />
+  </>
 ) : (
   <>
-    {schemaObject.title && <em>{schemaObject.title}</em>}
-    <Md text={schemaObject.description} />
-    <ExternalDocs docs={schemaObject.externalDocs} />
     {isSchemaObjectObject(schemaObject) ? (
       <SchemaObjectObject {headingLevel} {hideExample} {parents} {nested} {negated} {schemaObject} />
     ) : isSchemaObjectAllOf(schemaObject) ? (

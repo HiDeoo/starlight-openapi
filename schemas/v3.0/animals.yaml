@@ -545,6 +545,7 @@ paths:
                           type: string
                 oneOfCase:
                   type: object
+                  description: Where the otter lives.
                   required:
                     - id
                   properties:
@@ -552,6 +553,7 @@ paths:
                       type: string
                   oneOf:
                     - type: object
+                      description: Rivers where the otter lives.
                       title: river
                       properties:
                         river:
@@ -591,6 +593,25 @@ paths:
                     properties:
                       archived:
                         type: boolean
+                nullableAnyOfCase:
+                  description: Nickname of the otter, if it has one.
+                  anyOf:
+                    - type: string
+                    - type: 'null'
+                untypedAnyOfCase:
+                  title: Size
+                  description: Size category of the otter.
+                  externalDocs:
+                    url: https://example.com/otter-sizes
+                  anyOf:
+                    - const: small
+                    - const: large
+                      description: Only for adult otters.
+                nullableOneOfCase:
+                  description: Country of origin of the otter, if known.
+                  nullable: true
+                  oneOf:
+                    - $ref: '#/components/schemas/Country'
       responses:
         '200':
           description: animal response
