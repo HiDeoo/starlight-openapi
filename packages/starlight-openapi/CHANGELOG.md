@@ -1,5 +1,11 @@
 # starlight-openapi
 
+## 0.27.1
+
+### Patch Changes
+
+- [#187](https://github.com/HiDeoo/starlight-openapi/pull/187) [`5ca2798`](https://github.com/HiDeoo/starlight-openapi/commit/5ca27989b77dbf8a4eb9e09a16ff2203e499f5ff) Thanks [@HiDeoo](https://github.com/HiDeoo)! - Fixes an issue where some metadata of schemas using `oneOf` or `anyOf` could be missing or incorrectly repeated.
+
 ## 0.27.0
 
 ### Minor Changes
