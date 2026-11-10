@@ -184,6 +184,58 @@ test('supports sibling object metadata with schema composition', async ({ docPag
   await expect(notCase.getByText('not matching')).toBeVisible()
 })
 
+test('displays the description of a nullable schema using `anyOf`', async ({ docPage }) => {
+  await docPage.goto('/v3/animals/operations/addotter/')
+
+  const property = docPage.getRequestBodyParameter('nullableAnyOfCase')
+
+  await expect(property.getByText('Nickname of the otter, if it has one.')).toBeVisible()
+})
+
+test('displays the description and nullable tag of a nullable schema using `oneOf`', async ({ docPage }) => {
+  await docPage.goto('/v3/animals/operations/addotter/')
+
+  const property = docPage.getRequestBodyParameter('nullableOneOfCase')
+
+  await expect(property.getByText('Country of origin of the otter, if known.')).toBeVisible()
+  await expect(property.getByText('nullable', { exact: true })).toBeVisible()
+})
+
+test('displays the description of an object schema using `oneOf` once above its tabs', async ({ docPage }) => {
+  await docPage.goto('/v3/animals/operations/addotter/')
+
+  const property = docPage.getRequestBodyParameter('oneOfCase')
+  const description = property.getByText('Where the otter lives.', { exact: true })
+
+  await expect(description).toBeVisible()
+  await expect(
+    property.getByRole('tabpanel', { name: 'river' }).getByText('Rivers where the otter lives.'),
+  ).toBeVisible()
+
+  await docPage.getSchemaTab(property, 'sea').click()
+
+  await expect(description).toBeVisible()
+})
+
+test('displays the metadata of a schema using `anyOf` with untyped variants once above its tabs', async ({
+  docPage,
+}) => {
+  await docPage.goto('/v3/animals/operations/addotter/')
+
+  const property = docPage.getRequestBodyParameter('untypedAnyOfCase')
+  const title = property.getByText('Size', { exact: true })
+  const description = property.getByText('Size category of the otter.', { exact: true })
+  const externalDocs = property.getByText('More information', { exact: true })
+
+  await docPage.getSchemaTabs(property).nth(1).click()
+
+  await expect(title).toBeVisible()
+  await expect(description).toBeVisible()
+  await expect(externalDocs).toBeVisible()
+
+  await expect(property.getByText('Only for adult otters.')).toBeVisible()
+})
+
 test('supports schema object `oneOf` property', async ({ docPage }) => {
   await docPage.goto('/v2/animals/operations/addbird/')
 

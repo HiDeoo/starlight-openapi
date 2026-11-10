@@ -49,7 +49,7 @@ export function isArraySchemaType(type: SchemaObject['type']) {
 
 export function getSchemaObjects(schemaObject: SchemaObject): SchemaObjects | undefined {
   if (schemaObject.oneOf && schemaObject.oneOf.length > 0) {
-    const { oneOf, ...otherProperties } = schemaObject
+    const { description, externalDocs, oneOf, title, ...otherProperties } = schemaObject
 
     return {
       schemaObjects: normalizeSchemaObjects(oneOf as SchemaObject[], otherProperties),
@@ -58,7 +58,7 @@ export function getSchemaObjects(schemaObject: SchemaObject): SchemaObjects | un
   }
 
   if (schemaObject.anyOf && schemaObject.anyOf.length > 0) {
-    const { anyOf, ...otherProperties } = schemaObject
+    const { anyOf, description, externalDocs, title, ...otherProperties } = schemaObject
 
     return {
       schemaObjects: normalizeSchemaObjects(anyOf as SchemaObject[], otherProperties),
